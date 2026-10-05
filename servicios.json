@@ -1,0 +1,720 @@
+[
+  {
+    "id": "agent-builder-pro",
+    "name": "AI Agent Builder PRO",
+    "port": 5556,
+    "tailscaleUrl": "http://100.100.2.10:5556",
+    "localUrl": "http://localhost:5556",
+    "category": "ai",
+    "type": "Visual LLM Studio",
+    "pm2": "AGENT-BUILDER",
+    "description": "Estudio visual avanzado para entrenamiento, asignación de herramientas y despliegue de agentes inteligentes.",
+    "tags": [
+      "Agent Studio",
+      "LLM Workflows",
+      "Prompt Chains",
+      "Visual UI"
+    ],
+    "status": "online",
+    "accentColor": "#0ea5e9",
+    "accentRgb": "14, 165, 233"
+  },
+  {
+    "id": "agent-forge",
+    "name": "Agent Forge Studio",
+    "port": 5555,
+    "tailscaleUrl": "http://100.100.2.10:5555",
+    "localUrl": "http://localhost:5555",
+    "category": "ai",
+    "type": "Agent Designer UI",
+    "pm2": "AGENT-PREMIUM",
+    "description": "Interfaz de usuario para diseñar, configurar prompts de sistema y exportar arquitecturas de agentes autónomos.",
+    "tags": [
+      "Agent UI",
+      "System Prompt",
+      "AI Builder",
+      "Export"
+    ],
+    "status": "online",
+    "accentColor": "#06b6d4",
+    "accentRgb": "6, 182, 212"
+  },
+  {
+    "id": "cuentos-magicos",
+    "name": "Cuentos Mágicos",
+    "port": 6012,
+    "tailscaleUrl": "http://100.100.2.10:6012",
+    "localUrl": "http://localhost:6012",
+    "category": "ai",
+    "type": "React + FastAPI + OpenAI",
+    "pm2": "CUENTOS-MAGICOS-UI",
+    "description": "Generador de cuentos infantiles personalizados mediante Inteligencia Artificial con ilustraciones y narración.",
+    "tags": [
+      "Generative AI",
+      "Stories",
+      "Kids",
+      "OpenAI"
+    ],
+    "status": "online",
+    "accentColor": "#818cf8",
+    "accentRgb": "129, 140, 248",
+    "staticPath": "apps/cuentos-magicos/"
+  },
+  {
+    "id": "jartosdto",
+    "name": "JartosDTo",
+    "port": 6016,
+    "tailscaleUrl": "http://100.100.2.10:6016",
+    "localUrl": "http://localhost:6016",
+    "category": "ai",
+    "type": "Next.js 14 + Ollama + Tailscale",
+    "pm2": "JARTOSDTO-UI",
+    "description": "Tu asistente Senior IT gruñón y sarcástico. Chat conversacional con LLMs locales.",
+    "tags": [
+      "IT Assistant",
+      "Ollama",
+      "Chat",
+      "Tailscale"
+    ],
+    "status": "online",
+    "accentColor": "#475569",
+    "accentRgb": "71, 85, 105",
+    "staticPath": "apps/jartosdto/"
+  },
+  {
+    "id": "logisearch",
+    "name": "LogiSearch AI",
+    "port": 6006,
+    "tailscaleUrl": "http://100.100.2.10:6006",
+    "localUrl": "http://localhost:6006",
+    "category": "ai",
+    "type": "React + Tailwind + Supabase",
+    "pm2": "LOGISEARCH",
+    "description": "Motor de búsqueda logística inteligente. Calcula rutas óptimas, costes y genera RFQs con IA.",
+    "tags": [
+      "Logistics",
+      "AI Search",
+      "RFQs",
+      "Supabase"
+    ],
+    "status": "online",
+    "accentColor": "#00b4d8",
+    "accentRgb": "0, 180, 216",
+    "staticPath": "apps/logisearch/"
+  },
+  {
+    "id": "msbross",
+    "name": "MSBrOSs",
+    "port": 8005,
+    "tailscaleUrl": "http://100.100.2.10:8005/",
+    "localUrl": "http://localhost:8005/",
+    "category": "ai",
+    "type": "React + FastAPI + Multi-LLM",
+    "pm2": "msbross-backend",
+    "description": "Interfaz web holográfica del asistente conversacional MSBrOSs con visualizador de espectro sonoro reactivo en tiempo real.",
+    "tags": [
+      "Voice UI",
+      "MSBrOSs AI",
+      "Canvas Audio",
+      "Neural Speech"
+    ],
+    "status": "online",
+    "accentColor": "#00f0ff",
+    "accentRgb": "0, 240, 255"
+  },
+  {
+    "id": "multi-agent-orch",
+    "name": "Multi-Agent Orchestrator",
+    "port": 5557,
+    "tailscaleUrl": "http://100.100.2.10:5557",
+    "localUrl": "http://localhost:5557",
+    "category": "ai",
+    "type": "PWA Swarm Orchestrator",
+    "pm2": "MULTI-AGENT-ORCH",
+    "description": "Consola de control PWA para orquestación de enjambres multi-agente, consenso y distribución de tareas.",
+    "tags": [
+      "PWA",
+      "Swarm",
+      "Consensus",
+      "Multi-Agent"
+    ],
+    "status": "online",
+    "accentColor": "#38bdf8",
+    "accentRgb": "56, 189, 248"
+  },
+  {
+    "id": "nikolina",
+    "name": "Nikolina AI",
+    "port": 6014,
+    "tailscaleUrl": "http://100.100.2.10:6014",
+    "localUrl": "http://localhost:6014",
+    "category": "ai",
+    "type": "LiveKit Agents + Gemini 2.0",
+    "pm2": "NIKOLINA-UI",
+    "description": "Asistente virtual de voz en tiempo real con Google STT/TTS y Gemini 2.0 Flash vía LiveKit Agents.",
+    "tags": [
+      "Voice",
+      "LiveKit",
+      "Gemini",
+      "Real-time"
+    ],
+    "status": "online",
+    "accentColor": "#6366f1",
+    "accentRgb": "99, 102, 241",
+    "staticPath": "apps/livekit-nikolina/"
+  },
+  {
+    "id": "prompt-generator",
+    "name": "PromptForge Studio",
+    "port": 9123,
+    "tailscaleUrl": "http://100.100.2.10:9123",
+    "localUrl": "http://localhost:9123",
+    "category": "ai",
+    "type": "Fastify + Next.js PWA",
+    "pm2": "PROMPT-GENERATOR",
+    "description": "Compilador cognitivo de prompts multi-proveedor con 17 motores de IA integrados y optimización neural de instrucciones.",
+    "tags": [
+      "PWA",
+      "Prompt AI",
+      "Fastify",
+      "17 Motores IA"
+    ],
+    "status": "online",
+    "accentColor": "#22d3ee",
+    "accentRgb": "34, 211, 238"
+  },
+  {
+    "id": "traductor-pro",
+    "name": "Traductor Pro",
+    "port": 6011,
+    "tailscaleUrl": "http://100.100.2.10:6011",
+    "localUrl": "http://localhost:6011",
+    "category": "ai",
+    "type": "React + Tailwind + DeepL API",
+    "pm2": "TRADUCTOR-PRO-UI",
+    "description": "Traductor neural multi-idioma de alta precisión con API DeepL REST integrada.",
+    "tags": [
+      "Translation",
+      "DeepL",
+      "Neural",
+      "Language"
+    ],
+    "status": "online",
+    "accentColor": "#2563eb",
+    "accentRgb": "37, 99, 235",
+    "staticPath": "apps/traductor-pro/"
+  },
+  {
+    "id": "atenea",
+    "name": "Web Atenea",
+    "port": 6013,
+    "tailscaleUrl": "http://100.100.2.10:6013",
+    "localUrl": "http://localhost:6013",
+    "category": "business",
+    "type": "HTML5 + CSS3 + Vanilla JS",
+    "pm2": "ATENEA-UI",
+    "description": "Web y sistema de gestión digital para Restaurante Atenea con carta, pedidos y reservas.",
+    "tags": [
+      "Restaurant",
+      "Food",
+      "Reservations",
+      "Management"
+    ],
+    "status": "online",
+    "accentColor": "#e11d48",
+    "accentRgb": "225, 29, 72",
+    "staticPath": "apps/web-restaurante-atenea/"
+  },
+  {
+    "id": "cuadrante-horarios",
+    "name": "Cuadrante de Horarios",
+    "port": 5178,
+    "tailscaleUrl": "http://100.100.2.10:5178",
+    "localUrl": "http://localhost:5178",
+    "category": "business",
+    "type": "Interactive Planner SPA",
+    "pm2": "CUADRANTE-HORARIOS",
+    "description": "Gestor interactivo visual de cuadrantes laborales, turnos rotativos, vacaciones y control de dotaciones operativas.",
+    "tags": [
+      "Planificador",
+      "Turnos Rotativos",
+      "Calendario",
+      "Excel Sync"
+    ],
+    "status": "online",
+    "accentColor": "#f97316",
+    "accentRgb": "249, 115, 22"
+  },
+  {
+    "id": "edelweiss",
+    "name": "Edelweiss",
+    "port": 6004,
+    "tailscaleUrl": "http://100.100.2.10:6004",
+    "localUrl": "http://localhost:6004",
+    "category": "business",
+    "type": "Next.js 14 + Tailwind + Prisma",
+    "pm2": "EDELWEISS",
+    "description": "Plataforma administrativa Edelweiss con gestión de usuarios, dashboard analítico y base de datos PostgreSQL.",
+    "tags": [
+      "Next.js",
+      "Prisma",
+      "PostgreSQL",
+      "Dashboard"
+    ],
+    "status": "online",
+    "accentColor": "#fbbf24",
+    "accentRgb": "251, 191, 36",
+    "staticPath": "apps/edelweiss/"
+  },
+  {
+    "id": "gas-station",
+    "name": "Gas Station Dashboard",
+    "port": 6009,
+    "tailscaleUrl": "http://100.100.2.10:6009",
+    "localUrl": "http://localhost:6009",
+    "category": "business",
+    "type": "React PWA + FastAPI + SQLite",
+    "pm2": "GAS-STATION-UI",
+    "description": "Panel de monitorización PWA para red de estaciones de servicio con control de surtidores y stock.",
+    "tags": [
+      "PWA",
+      "Dashboard",
+      "Gas Station",
+      "FastAPI"
+    ],
+    "status": "online",
+    "accentColor": "#ef4444",
+    "accentRgb": "239, 68, 68",
+    "staticPath": "apps/gas-station/"
+  },
+  {
+    "id": "industrialpro",
+    "name": "Industrial Pro",
+    "port": 6010,
+    "tailscaleUrl": "http://100.100.2.10:6010",
+    "localUrl": "http://localhost:6010",
+    "category": "business",
+    "type": "React + Tailwind + FastAPI",
+    "pm2": "INDUSTRIALPRO-UI",
+    "description": "Plataforma de gestión logística e industrial con control de inventario y trazabilidad de productos.",
+    "tags": [
+      "Industrial",
+      "B2B",
+      "Logistics",
+      "PostgreSQL"
+    ],
+    "status": "online",
+    "accentColor": "#ea580c",
+    "accentRgb": "234, 88, 12",
+    "staticPath": "apps/industrialpro/"
+  },
+  {
+    "id": "mapfre-infocol",
+    "name": "Mapfre",
+    "port": 3333,
+    "tailscaleUrl": "http://100.100.2.10:3333/app/mapfre",
+    "localUrl": "http://localhost:3333/app/mapfre",
+    "category": "business",
+    "type": "Next.js SSR Suite",
+    "pm2": "mapfre-infocol",
+    "description": "Aplicación web integral para digitalización, OCR, validación de partes periciales y automatización de siniestros Mapfre.",
+    "tags": [
+      "Next.js",
+      "Peritajes",
+      "Mapfre Suite",
+      "OCR Partes"
+    ],
+    "status": "online",
+    "accentColor": "#dc2626",
+    "accentRgb": "220, 38, 38"
+  },
+  {
+    "id": "perfume-ean",
+    "name": "PERFUME EAN",
+    "port": 4000,
+    "tailscaleUrl": "http://100.100.2.10:4000",
+    "localUrl": "http://localhost:4000",
+    "category": "business",
+    "type": "Next.js Luxury Catalog",
+    "pm2": "PERFUME-EAN",
+    "description": "Buscador y catálogo digital de fragancias premium con escáner de códigos de barras EAN-13, notas olfativas y stock.",
+    "tags": [
+      "Next.js",
+      "EAN-13 Scanner",
+      "Alta Gama",
+      "Catálogo"
+    ],
+    "status": "online",
+    "accentColor": "#f59e0b",
+    "accentRgb": "245, 158, 11"
+  },
+  {
+    "id": "perfume-trading",
+    "name": "Perfume Trading Luxury ERP",
+    "port": 3011,
+    "tailscaleUrl": "http://100.100.2.10:3011/app/perfume-trading/",
+    "localUrl": "http://localhost:3011/app/perfume-trading/",
+    "category": "business",
+    "type": "Next.js Commercial ERP",
+    "pm2": "perfume-trading",
+    "description": "ERP y panel comercial para importación/exportación, gestión de lotes y cotización de perfumería exclusiva al por mayor.",
+    "tags": [
+      "Next.js",
+      "B2B Trading",
+      "ERP Fragancias",
+      "Luxury"
+    ],
+    "status": "online",
+    "accentColor": "#d97706",
+    "accentRgb": "217, 119, 6"
+  },
+  {
+    "id": "teringo-inbox",
+    "name": "Teringo Neural Cockpit",
+    "port": 5179,
+    "tailscaleUrl": "http://100.100.2.10:5179",
+    "localUrl": "http://localhost:5179",
+    "category": "business",
+    "type": "Enterprise Helpdesk SPA",
+    "pm2": "TERINGO",
+    "description": "Panel central para clasificación inteligente de tickets, bandeja de entrada automatizada y soporte al cliente.",
+    "tags": [
+      "Helpdesk",
+      "Inbox AI",
+      "Enterprise",
+      "Frontier V.2026"
+    ],
+    "status": "online",
+    "accentColor": "#fb923c",
+    "accentRgb": "251, 146, 60"
+  },
+  {
+    "id": "beca-laud",
+    "name": "Beca Laud Suite Principal",
+    "port": 5173,
+    "tailscaleUrl": "http://100.100.2.10:5173",
+    "localUrl": "http://localhost:5173",
+    "category": "creative",
+    "type": "Vite + React Music Suite",
+    "pm2": "BECA_LAUD",
+    "description": "Portal interactivo de la academia y propuesta musical de Beca Laud con catálogo y reproductor de audio.",
+    "tags": [
+      "Vite",
+      "React",
+      "Catálogo Musical",
+      "Reproductor"
+    ],
+    "status": "online",
+    "accentColor": "#e879f9",
+    "accentRgb": "232, 121, 249"
+  },
+  {
+    "id": "beca-laud-band",
+    "name": "Beca Laud Band Live",
+    "port": 5174,
+    "tailscaleUrl": "http://100.100.2.10:5174",
+    "localUrl": "http://localhost:5174",
+    "category": "creative",
+    "type": "Landing Page Interactiva",
+    "pm2": "BECA_LAUD_BAND",
+    "description": "Landing page promocional interactiva para contratación de repertorio musical en eventos y ceremonias.",
+    "tags": [
+      "Landing Page",
+      "Música en Vivo",
+      "Bodas & Eventos",
+      "Audio"
+    ],
+    "status": "online",
+    "accentColor": "#f472b6",
+    "accentRgb": "244, 114, 182"
+  },
+  {
+    "id": "beca-laud-crm",
+    "name": "Beca Laud CRM Alumnos",
+    "port": 5175,
+    "tailscaleUrl": "http://100.100.2.10:5175",
+    "localUrl": "http://localhost:5175",
+    "category": "creative",
+    "type": "Academy Management CRM",
+    "pm2": "BECA_LAUD_CRM",
+    "description": "Panel de administración para gestión de matrículas, alumnos, instrumentos y cobros de la academia.",
+    "tags": [
+      "CRM",
+      "Gestión Alumnos",
+      "Dashboard",
+      "Matrículas"
+    ],
+    "status": "online",
+    "accentColor": "#fb7185",
+    "accentRgb": "251, 113, 133"
+  },
+  {
+    "id": "cv-portfolio",
+    "name": "CV Portfolio",
+    "port": 6001,
+    "tailscaleUrl": "http://100.100.2.10:6001",
+    "localUrl": "http://localhost:6001",
+    "category": "creative",
+    "type": "React + Tailwind + Framer Motion",
+    "pm2": "CV-PORTFOLIO",
+    "description": "Portfolio y currículum interactivo personal con animaciones fluidas y diseño responsive premium.",
+    "tags": [
+      "Portfolio",
+      "CV",
+      "Framer Motion",
+      "Frontend"
+    ],
+    "status": "online",
+    "accentColor": "#c084fc",
+    "accentRgb": "192, 132, 252",
+    "staticPath": "apps/cv/"
+  },
+  {
+    "id": "expositator-rte",
+    "name": "Expositator RTE",
+    "port": 6005,
+    "tailscaleUrl": "http://100.100.2.10:6005",
+    "localUrl": "http://localhost:6005",
+    "category": "creative",
+    "type": "React PWA + Speech Recognition",
+    "pm2": "EXPOSITATOR",
+    "description": "Editor de texto enriquecido PWA con reconocimiento de voz nativo para dictado y presentaciones.",
+    "tags": [
+      "PWA",
+      "Editor RTE",
+      "Speech",
+      "Content"
+    ],
+    "status": "online",
+    "accentColor": "#a78bfa",
+    "accentRgb": "167, 139, 250",
+    "staticPath": "apps/expositator-rte/"
+  },
+  {
+    "id": "tarot-maya",
+    "name": "TAROT MAYA Tzolk'in",
+    "port": 5177,
+    "tailscaleUrl": "http://100.100.2.10:5177",
+    "localUrl": "http://localhost:5177",
+    "category": "creative",
+    "type": "Vite SPA + CSS Neón",
+    "pm2": "TAROT-MAYA",
+    "description": "Oráculo sagrado maya interactivo con tiradas de cartas animadas, efectos luminosos neón y arquetipos del calendario maya.",
+    "tags": [
+      "Vite SPA",
+      "Neón UI",
+      "Tiradas 3D",
+      "Arquetipos"
+    ],
+    "status": "online",
+    "accentColor": "#f43f5e",
+    "accentRgb": "244, 63, 94"
+  },
+  {
+    "id": "tarot-rws",
+    "name": "TAROT RWS Manual",
+    "port": 6017,
+    "tailscaleUrl": "http://100.100.2.10:6017",
+    "localUrl": "http://localhost:6017",
+    "category": "creative",
+    "type": "PWA + Tailwind + Oráculo RWS",
+    "pm2": "TAROT-RWS",
+    "description": "Manual interactivo completo de 78 cartas del Tarot Rider-Waite-Smith con simbología, notas de Waite y laboratorio de tiradas aleatorias.",
+    "tags": [
+      "Tarot 78 Cartas",
+      "Rider-Waite",
+      "Laboratorio Tiradas",
+      "PWA Offline"
+    ],
+    "status": "online",
+    "accentColor": "#d4af37",
+    "accentRgb": "212, 175, 55",
+    "staticPath": "apps/tarot-rws/",
+    "webUrl": "https://manu-alvarez.github.io/tarot-rws/"
+  },
+  {
+    "id": "tu-energia-maya",
+    "name": "Tu Energía Maya",
+    "port": 5176,
+    "tailscaleUrl": "http://100.100.2.10:5176",
+    "localUrl": "http://localhost:5176",
+    "category": "creative",
+    "type": "Vite + React + CSS Modules",
+    "pm2": "TU-ENERGIA-MAYA",
+    "description": "Aplicación esotérica interactiva para el cálculo del Kin Maya diario, sellos solares sagrados y tonos galácticos.",
+    "tags": [
+      "Vite",
+      "React",
+      "Tzolk'in",
+      "Misticismo"
+    ],
+    "status": "online",
+    "accentColor": "#eab308",
+    "accentRgb": "234, 179, 8"
+  },
+  {
+    "id": "app-generator",
+    "name": "App Generator",
+    "port": 6002,
+    "tailscaleUrl": "http://100.100.2.10:6002",
+    "localUrl": "http://localhost:6002",
+    "category": "devtools",
+    "type": "React 19 + Vite + Gemini Pro",
+    "pm2": "APP-GENERATOR",
+    "description": "Generador de aplicaciones completas con scaffolding inteligente e integración con Gemini Pro API.",
+    "tags": [
+      "React 19",
+      "Vite",
+      "Code Gen",
+      "Gemini API"
+    ],
+    "status": "online",
+    "accentColor": "#a3e635",
+    "accentRgb": "163, 230, 53",
+    "staticPath": "apps/app-generator/"
+  },
+  {
+    "id": "combipro",
+    "name": "CombiPro",
+    "port": 6003,
+    "tailscaleUrl": "http://100.100.2.10:6003",
+    "localUrl": "http://localhost:6003",
+    "category": "devtools",
+    "type": "React 19 + Material-UI",
+    "pm2": "COMBIPRO",
+    "description": "Herramienta avanzada de análisis y optimización combinatoria con interfaz Material Design.",
+    "tags": [
+      "React 19",
+      "MUI",
+      "Math",
+      "Combinations"
+    ],
+    "status": "online",
+    "accentColor": "#34d399",
+    "accentRgb": "52, 211, 153",
+    "staticPath": "apps/combipro/"
+  },
+  {
+    "id": "iaprod-os",
+    "name": "IAProd OS",
+    "port": 6015,
+    "tailscaleUrl": "http://100.100.2.10:6015",
+    "localUrl": "http://localhost:6015",
+    "category": "devtools",
+    "type": "React + Vite + FastAPI + Ollama",
+    "pm2": "IAPROD-OS",
+    "description": "Sistema operativo de productividad IA con terminal integrada, pipeline de LLMs locales y automatización.",
+    "tags": [
+      "OS",
+      "Ollama",
+      "FastAPI",
+      "Production"
+    ],
+    "status": "online",
+    "accentColor": "#14b8a6",
+    "accentRgb": "20, 184, 166",
+    "staticPath": "apps/iaprod-os/"
+  },
+  {
+    "id": "intercompiler",
+    "name": "Intercompiler 3D",
+    "port": 3000,
+    "tailscaleUrl": "http://100.100.2.10:3000",
+    "localUrl": "http://localhost:3000",
+    "category": "devtools",
+    "type": "Next.js 16 + Three.js 3D",
+    "pm2": "INTERCOMPILER",
+    "description": "Estudio visual de ingeniería de repositorios GitHub con grafo tridimensional interactivo y mapa semántico de dependencias.",
+    "tags": [
+      "Next.js 16",
+      "Three.js 3D",
+      "GitHub Intel",
+      "Dependency Graph"
+    ],
+    "status": "online",
+    "accentColor": "#059669",
+    "accentRgb": "5, 150, 105"
+  },
+  {
+    "id": "moko-tools",
+    "name": "Moko Tools",
+    "port": 6007,
+    "tailscaleUrl": "http://100.100.2.10:6007",
+    "localUrl": "http://localhost:6007",
+    "category": "devtools",
+    "type": "Vanilla JS + HTML5 + CSS3",
+    "pm2": "MOKO-TOOLS",
+    "description": "Colección de herramientas técnicas para desarrollo: generadores, convertidores, validadores y utilidades web.",
+    "tags": [
+      "Vanilla JS",
+      "Tools",
+      "Dev Utils",
+      "Web"
+    ],
+    "status": "online",
+    "accentColor": "#22c55e",
+    "accentRgb": "34, 197, 94",
+    "staticPath": "apps/moko-tools/"
+  },
+  {
+    "id": "omnidev-os",
+    "name": "OmniDev OS",
+    "port": 8765,
+    "tailscaleUrl": "http://100.100.2.10:8765",
+    "localUrl": "http://localhost:8765",
+    "category": "devtools",
+    "type": "Cognitive Web OS",
+    "pm2": "OMNIDEV-OS",
+    "description": "Sistema operativo web cognitivo con terminal integrada, editor de código colaborativo y factoría de desarrollo agéntico.",
+    "tags": [
+      "Web OS",
+      "SDLC Factory",
+      "Terminal Web",
+      "Full-Stack"
+    ],
+    "status": "online",
+    "accentColor": "#0d9488",
+    "accentRgb": "13, 148, 136"
+  },
+  {
+    "id": "taskflow",
+    "name": "TaskFlow Pro",
+    "port": 6008,
+    "tailscaleUrl": "http://100.100.2.10:6008",
+    "localUrl": "http://localhost:6008",
+    "category": "devtools",
+    "type": "React + Tailwind + Firebase",
+    "pm2": "TASKFLOW-PRO",
+    "description": "Gestor avanzado de tareas y flujos de trabajo con sincronización Firebase en tiempo real.",
+    "tags": [
+      "Tasks",
+      "Firebase",
+      "Realtime",
+      "Workflow"
+    ],
+    "status": "online",
+    "accentColor": "#10b981",
+    "accentRgb": "16, 185, 129",
+    "staticPath": "apps/taskflow/"
+  },
+  {
+    "id": "uiep",
+    "name": "UIEP Platform",
+    "port": 5180,
+    "tailscaleUrl": "http://100.100.2.10:5180",
+    "localUrl": "http://localhost:5180",
+    "category": "devtools",
+    "type": "Next.js 15 Platform",
+    "pm2": "UIEP",
+    "description": "Plataforma de ingeniería cognitiva para gestión de entidades, agentes autónomos, autenticación y plugins en tiempo real.",
+    "tags": [
+      "Next.js 15",
+      "Entity Registry",
+      "Auth System",
+      "Design Engine"
+    ],
+    "status": "online",
+    "accentColor": "#16a34a",
+    "accentRgb": "22, 163, 74"
+  }
+]

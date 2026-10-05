@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurante Atenea — Brasa y Brasas, Torrente de Cinca</title>
+<meta name="description" content="Restaurante Atenea en Torrente de Cinca. Especialistas en brasa, chuletón y cocina de temporada. Reserva tu mesa.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Manrope:wght@300;400;600&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+<style>
+:root{
+  --charcoal:#F5F3FF;--cream:#2E1065;--stone:#EDE9FE;
+  --ash:#DDD6FE;--smoke:#8B5CF6;--gold:#7C3AED;--ember:#6D28D9;
+  --glow:rgba(139,92,246,0.2);--text-dim:rgba(46,16,101,0.7);
+}
+:root.light-mode{
+  --charcoal:#0B090F;--cream:#F8F5F9;--stone:#15101A;
+  --ash:#221A2C;--smoke:#6B5C7C;--gold:#c4b5fd;--ember:#8b5cf6;
+  --glow:rgba(139,92,246,0.15);--text-dim:rgba(248,245,249,0.7);
+}
+*{box-sizing:border-box; transition: background-color 0.4s, color 0.4s, border-color 0.4s, opacity 0.4s;}
+body{background:var(--charcoal);color:var(--cream);font-family:'Manrope',sans-serif}
+.font-serif{font-family:'Noto Serif',serif}
+.material-symbols-outlined{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-smoothing:antialiased}
+
+/* Ember glow animations */
+@keyframes emberPulse{0%,100%{box-shadow:0 0 30px var(--glow),0 0 60px rgba(139,92,246,0.08)}50%{box-shadow:0 0 60px rgba(139,92,246,0.25),0 0 120px rgba(139,92,246,0.12)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes orbPulse{0%,100%{box-shadow:0 0 60px rgba(196,181,253,0.3)}50%{box-shadow:0 0 120px rgba(139,92,246,0.5),0 0 60px rgba(196,181,253,0.4)}}
+@keyframes flame{0%,100%{transform:scaleY(1) scaleX(1);opacity:.9}50%{transform:scaleY(1.05) scaleX(.97);opacity:1}}
+@keyframes smokeRise{0%{transform:translateY(0) scaleX(1);opacity:.4}100%{transform:translateY(-60px) scaleX(2);opacity:0}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.ember-glow{animation:emberPulse 3s ease-in-out infinite}
+.float{animation:float 4s ease-in-out infinite}
+.fade-in{animation:fadeIn .8s ease forwards}
+
+/* Hero */
+.hero-overlay{background:linear-gradient(to bottom,rgba(245,243,255,.2) 0%,rgba(245,243,255,.5) 40%,rgba(245,243,255,.92) 100%)}
+
+/* Ember line divider */
+.ember-divider{height:1px;background:linear-gradient(to right,transparent,var(--ember),var(--gold),var(--ember),transparent)}
+
+/* Section bg variants */
+.bg-stone{background:var(--stone)}
+.bg-ash{background:var(--ash)}
+
+/* Nav */
+nav a{transition:color .3s}
+nav a:hover{color:var(--gold)}
+
+/* Cards */
+.card-brasa{background:linear-gradient(135deg,var(--ash),var(--stone));border:1px solid rgba(196,181,253,.12);transition:transform .4s,border-color .4s}
+.card-brasa:hover{transform:translateY(-4px);border-color:rgba(139,92,246,.4)}
+
+/* Buttons */
+.btn-primary{background:var(--ember);color:#fff;padding:.9rem 2.5rem;font-family:'Manrope',sans-serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent,rgba(255,255,255,.1),transparent);transform:translateX(-100%);transition:transform .5s}
+.btn-primary:hover::after{transform:translateX(100%)}
+.btn-primary:hover{background:#6d28d9;box-shadow:0 0 30px rgba(139,92,246,.4)}
+.btn-ghost{border:1px solid rgba(196,181,253,.4);color:var(--gold);padding:.9rem 2.5rem;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all .3s;background:transparent}
+.btn-ghost:hover{border-color:var(--ember);color:var(--ember);background:rgba(139,92,246,.05)}
+
+/* Inputs */
+.input-dark{background:transparent;border-bottom:1px solid rgba(196,181,253,.3);color:var(--cream);width:100%;padding:.5rem 0;font-size:1rem;outline:none;transition:border-color .3s;border-radius:0}
+.input-dark:focus{border-bottom-color:var(--ember)}
+.input-dark::placeholder{color:var(--smoke)}
+label.field-label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--smoke);font-weight:600;display:block;margin-bottom:.4rem}
+
+/* Modal backdrop */
+dialog::backdrop{background:var(--charcoal);opacity:0.97;backdrop-filter:blur(8px)}
+dialog{background:transparent;border:none;padding:0;max-width:100vw;max-height:100vh;width:100%;height:100%}
+
+/* Orb */
+.nikolina-orb{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#c4b5fd,#7c3aed 55%,#4c1d95 80%);box-shadow:0 0 60px rgba(196,181,253,.3);margin:0 auto}
+
+/* Tab active */
+.tab-active{background:var(--ember);color:#fff}
+.tab-inactive{border:1px solid rgba(196,181,253,.2);color:var(--smoke);background:transparent}
+.tab-inactive:hover{border-color:var(--ember);color:var(--ember)}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--charcoal)}
+::-webkit-scrollbar-thumb{background:var(--ember)}
+</style>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <meta property="og:title" content="Atenea Restaurante" />
+    <meta property="og:description" content="Plataforma Gastronómica con Gestión de Reservas Automatizada" />
+    <meta property="og:url" content="https://msbross.me/app/web-restaurante-atenea" />
+    <meta property="og:image" content="https://msbross.me/app/jartosdto/favicon.ico" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Atenea Restaurante" />
+    <meta name="twitter:description" content="Plataforma Gastronómica con Gestión de Reservas Automatizada" />
+    <meta name="twitter:image" content="https://msbross.me/app/jartosdto/favicon.ico" />
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-500" id="main-header">
+  <div class="max-w-7xl mx-auto px-6 md:px-12 h-20 flex justify-between items-center">
+    <a href="index.html#inicio" class="font-serif text-xl tracking-[.2em]" style="color:var(--gold)">Restaurante Atenea</a>
+    <nav class="hidden md:flex gap-8 text-xs tracking-widest uppercase" style="color:var(--cream)">
+      <a href="index.html#inicio">Inicio</a>
+      <a href="index.html#nosotros">Nosotros</a>
+      <a href="index.html#brasa">La Brasa</a>
+      <a href="index.html#carta">Carta</a>
+      <a href="index.html#encuentranos">Encuéntranos</a>
+    </nav>
+    <div class="flex items-center gap-2 md:gap-4">
+      <button onclick="toggleTheme()" id="theme-toggle" class="btn-ghost flex items-center justify-center p-2 rounded-full" style="padding:0.5rem; border-radius:50%; min-width: 40px; min-height: 40px; border-color: transparent;" aria-label="Cambiar tema">
+        <span class="material-symbols-outlined" style="font-size: 1.2rem;">light_mode</span>
+      </button>
+      <button onclick="openReservationModal()" class="btn-primary hidden sm:block">Reservar</button>
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleMobileMenu()" class="md:hidden flex items-center justify-center p-2" style="color:var(--gold)">
+        <span class="material-symbols-outlined" style="font-size: 1.8rem;" id="menu-icon">menu</span>
+      </button>
+    </div>
+  </div>
+  <!-- Mobile Navigation Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 bg-stone/95 backdrop-blur-xl z-[60] flex flex-col items-center justify-center gap-8 transition-all duration-500 opacity-0 pointer-events-none md:hidden">
+    <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 text-gold">
+      <span class="material-symbols-outlined" style="font-size: 2rem;">close</span>
+    </button>
+    <nav class="flex flex-col items-center gap-8 text-lg tracking-widest uppercase font-serif">
+      <a href="index.html#inicio" onclick="toggleMobileMenu()">Inicio</a>
+      <a href="index.html#nosotros" onclick="toggleMobileMenu()">Nosotros</a>
+      <a href="index.html#brasa" onclick="toggleMobileMenu()">La Brasa</a>
+      <a href="index.html#carta" onclick="toggleMobileMenu()">Carta</a>
+      <a href="index.html#encuentranos" onclick="toggleMobileMenu()">Encuéntranos</a>
+    </nav>
+    <button onclick="openReservationModal(); toggleMobileMenu();" class="btn-primary mt-4">Reservar Mesa</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="inicio" class="relative h-screen min-h-[700px] flex items-end justify-center overflow-hidden">
+  <div class="absolute inset-0">
+    <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=1600&q=85" alt="Chuletón a la brasa" class="w-full h-full object-cover">
+    <div class="hero-overlay absolute inset-0"></div>
+    <!-- Ember particles -->
+    <div class="absolute inset-0 pointer-events-none" id="ember-layer"></div>
+  </div>
+  <div class="relative z-10 text-center px-6 pb-24 max-w-4xl mx-auto" style="color:#F5EFE8">
+    <span class="text-xs tracking-[.4em] uppercase mb-4 block" style="color:var(--ember)">Torrente de Cinca · Huesca</span>
+    <h1 class="font-serif text-5xl md:text-7xl font-light mb-6 leading-tight">
+      El Arte<br><em>de la Brasa</em>
+    </h1>
+    <div class="w-24 h-px mx-auto mb-6 ember-divider"></div>
+    <p class="text-lg font-light mb-10" style="color:rgba(245,239,232,0.8);max-width:520px;margin-left:auto;margin-right:auto">
+      Fuego, producto y tiempo. La trinidad que eleva cada corte al rango de experiencia.
+    </p>
+    <div class="flex gap-4 justify-center flex-wrap">
+      <button onclick="openReservationModal()" class="btn-primary ember-glow">Reservar Mesa</button>
+      <a href="index.html#brasa" class="btn-ghost">Descubrir la Brasa</a>
+    </div>
+  </div>
+</section>
+
+<!-- EMBER STRIP -->
+<div class="ember-divider"></div>
+
+<!-- NOSOTROS -->
+<section id="nosotros" class="py-32 bg-stone">
+  <div class="max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+    <div>
+      <span class="text-xs tracking-[.3em] uppercase mb-4 block" style="color:var(--ember)">Nuestra Historia</span>
+      <h2 class="font-serif text-4xl md:text-5xl font-light mb-6">Pasión por la<br>cocina honesta</h2>
+      <div class="w-12 h-px mb-8" style="background:var(--gold)"></div>
+      <p class="text-base font-light mb-5 leading-relaxed" style="color:var(--text-dim)">
+        Ubicados en Torrente de Cinca (Huesca), Restaurante Atenea nace de una profunda reverencia por el entorno y sus frutos. Nuestra propuesta cabalga entre la innovación más respetuosa y la tradición más arraigada.
+      </p>
+      <p class="text-base font-light leading-relaxed" style="color:var(--text-dim)">
+        Utilizamos siempre productos de temporada, con especial devoción por las brasas como técnica cumbre que concentra sabores y despierta aromas primitivos en cada corte.
+      </p>
+      <blockquote class="mt-10 pl-6 border-l-2" style="border-color:var(--ember)">
+        <p class="font-serif text-lg italic mb-2" style="color:var(--gold)">"No se puede cocinar bien si no se pone en ello el corazón."</p>
+        <footer class="text-xs tracking-widest uppercase" style="color:var(--smoke)">— Fernand Point</footer>
+      </blockquote>
+    </div>
+    <div class="relative h-[500px]">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=85" alt="Chef cocinando" class="w-full h-full object-cover" style="border:1px solid rgba(217,185,155,.1)">
+      <div class="absolute -bottom-6 -right-6 w-48 h-48" style="background:var(--ash);z-index:-1"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BRASA HERO SECTION -->
+<section id="brasa" class="relative py-32 overflow-hidden" style="background:var(--charcoal)">
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse at 50% 100%,rgba(139,92,246,.12) 0%,transparent 70%)"></div>
+  <div class="max-w-6xl mx-auto px-6 md:px-12 text-center mb-20">
+    <span class="text-xs tracking-[.3em] uppercase mb-4 block" style="color:var(--ember)">Nuestra Especialidad</span>
+    <h2 class="font-serif text-4xl md:text-5xl font-light mb-4">El Templo de la Brasa</h2>
+    <div class="ember-divider w-32 mx-auto mt-6"></div>
+  </div>
+  <div class="max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-6 mb-20">
+    <div class="card-brasa p-10 text-center">
+      <span class="material-symbols-outlined text-4xl mb-5 block" style="color:var(--ember);font-variation-settings:'FILL' 1">local_fire_department</span>
+      <h3 class="font-serif text-xl mb-3" style="color:var(--gold)">La Brasa</h3>
+      <p class="text-sm font-light leading-relaxed" style="color:var(--smoke)">Madera de encina seleccionada. El fuego vivo que transforma, carameliza y concentra sabores imposibles de replicar.</p>
+    </div>
+    <div class="card-brasa p-10 text-center">
+      <span class="material-symbols-outlined text-4xl mb-5 block" style="color:var(--ember);font-variation-settings:'FILL' 1">restaurant</span>
+      <h3 class="font-serif text-xl mb-3" style="color:var(--gold)">El Chuletón</h3>
+      <p class="text-sm font-light leading-relaxed" style="color:var(--smoke)">Vaca vieja con maduración mínima de 30 días. Grasa entreverada que funde y aporta profundidad de sabor única.</p>
+    </div>
+    <div class="card-brasa p-10 text-center">
+      <span class="material-symbols-outlined text-4xl mb-5 block" style="color:var(--ember);font-variation-settings:'FILL' 1">timer</span>
+      <h3 class="font-serif text-xl mb-3" style="color:var(--gold)">El Tiempo</h3>
+      <p class="text-sm font-light leading-relaxed" style="color:var(--smoke)">No se apresura lo que merece espera. Cada pieza se trabaja con paciencia hasta alcanzar su punto exacto de perfección.</p>
+    </div>
+  </div>
+  <!-- Full width chuletón image -->
+  <div class="max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="relative h-[420px] overflow-hidden" style="border:1px solid rgba(139,92,246,.2)">
+      <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=900&q=85" alt="Chuletón a la brasa" class="w-full h-full object-cover transition-transform duration-1000 hover:scale-105">
+      <div class="absolute bottom-0 left-0 right-0 p-6" style="background:linear-gradient(to top,rgba(13,11,9,.9),transparent); color:#F5EFE8">
+        <span class="text-xs tracking-widest uppercase" style="color:var(--ember)">Especialidad</span>
+        <p class="font-serif text-2xl" style="color:var(--gold)">Chuletón de Vaca Vieja</p>
+      </div>
+    </div>
+    <div>
+      <span class="text-xs tracking-[.3em] uppercase mb-4 block" style="color:var(--ember)">La Técnica</span>
+      <h3 class="font-serif text-3xl font-light mb-6">Especialistas en Brasa</h3>
+      <p class="text-base font-light leading-relaxed mb-4" style="color:var(--text-dim)">
+        Entendemos la cocina como un estudio donde las brasas son nuestros pinceles. Dominamos el fuego para extraer los matices más profundos de carnes y vegetales de proximidad.
+      </p>
+      <p class="text-base font-light leading-relaxed" style="color:var(--text-dim)">
+        El Ternasco de Aragón asado, la lubina a la plancha y nuestras verduras de temporada completan una propuesta honesta y rotunda.
+      </p>
+      <button onclick="openReservationModal()" class="btn-primary mt-8">Reservar una Mesa</button>
+    </div>
+  </div>
+</section>
+
+<!-- CARTA -->
+<section id="carta" class="py-32 bg-stone">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <div class="text-center mb-16">
+      <span class="text-xs tracking-[.3em] uppercase mb-4 block" style="color:var(--ember)">Descubre</span>
+      <h2 class="font-serif text-4xl md:text-5xl font-light mb-4">Nuestra Carta</h2>
+      <div class="ember-divider w-32 mx-auto mt-6"></div>
+      <blockquote class="max-w-xl mx-auto mt-8">
+        <p class="font-serif text-lg italic" style="color:var(--smoke)">"El descubrimiento de un nuevo plato hace más por la felicidad de la humanidad que el descubrimiento de una nueva estrella."</p>
+        <footer class="text-xs tracking-widest uppercase mt-3" style="color:var(--smoke)">— Talleyrand</footer>
+      </blockquote>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div>
+        <h3 class="font-serif text-lg mb-6 pb-3" style="color:var(--gold);border-bottom:1px solid rgba(139,92,246,.3)">Para Comenzar</h3>
+        <ul class="space-y-3 text-sm font-light" style="color:var(--text-dim)">
+          <li class="flex justify-between border-b pb-2" style="border-color:rgba(196,181,253,.1)">Calamares a la romana</li>
+          <li class="flex justify-between border-b pb-2" style="border-color:rgba(196,181,253,.1)">Croquetas de jamón ibérico</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-serif text-lg mb-6 pb-3" style="color:var(--gold);border-bottom:1px solid rgba(139,92,246,.3)">De la Brasa</h3>
+        <ul class="space-y-3 text-sm font-light" style="color:var(--text-dim)">
+          <li class="border-b pb-2" style="border-color:rgba(196,181,253,.1)">Chuletón de vaca vieja ✦</li>
+          <li class="border-b pb-2" style="border-color:rgba(196,181,253,.1)">Ternasco de Aragón asado</li>
+          <li class="border-b pb-2" style="border-color:rgba(196,181,253,.1)">Bacalao a la vizcaína</li>
+          <li class="border-b pb-2" style="border-color:rgba(196,181,253,.1)">Lubina de pincho a la plancha</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-serif text-lg mb-6 pb-3" style="color:var(--gold);border-bottom:1px solid rgba(139,92,246,.3)">El Toque Dulce</h3>
+        <ul class="space-y-3 text-sm font-light" style="color:var(--text-dim)">
+          <li class="border-b pb-2" style="border-color:rgba(196,181,253,.1)">Coulant de chocolate</li>
+          <li class="border-b pb-2" style="border-color:rgba(196,181,253,.1)">Torrija caramelizada</li>
+        </ul>
+        <h3 class="font-serif text-lg mt-8 mb-6 pb-3" style="color:var(--gold);border-bottom:1px solid rgba(139,92,246,.3)">Bodega</h3>
+        <ul class="space-y-2 text-sm font-light" style="color:var(--smoke)">
+          <li>Glárima · Viñas del Vero</li>
+          <li>Enate · Sommos · Ramón Bilbao</li>
+        </ul>
+      </div>
+    </div>
+    <div class="text-center mt-12">
+      <button onclick="openReservationModal()" class="btn-primary">Reservar Mesa</button>
+    </div>
+  </div>
+</section>
+
+<!-- ENCUENTRANOS -->
+<section id="encuentranos" class="py-32" style="background:var(--charcoal)">
+  <div class="max-w-5xl mx-auto px-6 md:px-12">
+    <div class="text-center mb-16">
+      <span class="text-xs tracking-[.3em] uppercase mb-4 block" style="color:var(--ember)">Visítanos</span>
+      <h2 class="font-serif text-4xl font-light mb-4">Encuéntranos</h2>
+      <div class="ember-divider w-32 mx-auto mt-6"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="card-brasa p-12 text-center space-y-8">
+        <div>
+          <span class="material-symbols-outlined text-3xl mb-3 block" style="color:var(--ember);font-variation-settings:'FILL' 0">location_on</span>
+          <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--smoke)">Dirección</p>
+          <p class="font-serif text-lg" style="color:var(--cream)">Calle la Vía s/n<br>22590 Torrente de Cinca, Huesca</p>
+        </div>
+        <div class="w-full h-px" style="background:rgba(196,181,253,.1)"></div>
+        <div>
+          <span class="material-symbols-outlined text-3xl mb-3 block" style="color:var(--ember);font-variation-settings:'FILL' 0">phone</span>
+          <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--smoke)">Reservas</p>
+          <p class="font-serif text-lg" style="color:var(--gold)">+34 609 917 007</p>
+        </div>
+        <div class="w-full h-px" style="background:rgba(196,181,253,.1)"></div>
+        <div>
+          <span class="material-symbols-outlined text-3xl mb-3 block" style="color:var(--ember);font-variation-settings:'FILL' 0">schedule</span>
+          <p class="text-xs tracking-widest uppercase mb-2" style="color:var(--smoke)">Horario</p>
+          <p class="text-sm font-light" style="color:var(--text-dim)">Comida: 13:30 – 15:30<br>Cena: 20:30 – 22:30</p>
+        </div>
+        <button onclick="openReservationModal()" class="btn-primary w-full">Reservar Ahora</button>
+      </div>
+      <div class="relative overflow-hidden h-[400px] md:h-auto" style="border:1px solid rgba(139,92,246,.15)">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2972.5!2d0.3215!3d41.5017!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a8e700000000%3A0x1!2sTorrente+de+Cinca!5e0!3m2!1ses!2ses!4v1"
+          width="100%" height="100%" style="border:0;filter:invert(.9) hue-rotate(180deg) saturate(.6)" allowfullscreen loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-16 bg-stone border-t" style="border-color:rgba(196,181,253,.08)">
+  <div class="max-w-6xl mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
+    <div class="font-serif text-xl tracking-widest" style="color:var(--gold)">Restaurante Atenea</div>
+    <div class="flex justify-center gap-6 text-xs tracking-widest uppercase" style="color:var(--smoke)">
+      <a href="index.html#" class="hover:text-gold transition-colors" style="--tw-text-opacity:1">Contacto</a>
+      <a href="index.html#" class="hover:text-gold transition-colors">Ubicación</a>
+      <a href="index.html#" class="hover:text-gold transition-colors">Privacidad</a>
+    </div>
+    <div class="text-xs" style="color:var(--smoke);text-align:center" class="md:text-right">© 2025 Restaurante Atenea. Todos los derechos reservados.</div>
+  </div>
+</footer>
+<!-- CONFIG Nikolina -->
+<script>
+  var NIKOLINA_SERVER = '';
+  (function detectApi() {
+    // If served from nominalia (msbross.me), APIs are at the tunnel URL
+    // Try loading /__config from the same origin first (works via tunnel/proxy.js)
+    var x = new XMLHttpRequest();
+    x.open('GET', '/__config', false);
+    try { x.send(); } catch(e) {}
+    if (x.status === 200) {
+      try { var cfg = JSON.parse(x.responseText); NIKOLINA_SERVER = cfg.ateneaApi; } catch(e) {}
+    } else if (window.__MSBROSS_CONFIG__ && window.__MSBROSS_CONFIG__.NIKOLINA_SERVER) {
+      NIKOLINA_SERVER = window.__MSBROSS_CONFIG__.NIKOLINA_SERVER;
+    }
+    // On nominalia, /__config won't exist, and __MSBROSS_CONFIG__ set via deploy
+  })();</script>
+
+<!-- MODAL -->
+<dialog id="reservation-modal">
+  <div style="width:100%;min-height:100vh;background:var(--charcoal);color:var(--cream)">
+    <!-- Close -->
+    <button onclick="closeReservationModal()" style="position:fixed;top:1.5rem;right:1.5rem;z-index:110;background:rgba(13,11,9,.8);border:1px solid rgba(217,185,155,.2);color:var(--gold);padding:.6rem 1.2rem;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:.5rem;border-radius:2rem;backdrop-filter:blur(8px)">
+      <span class="material-symbols-outlined" style="font-size:1.1rem">close</span>Cerrar
+    </button>
+
+    <div style="max-width:1100px;margin:0 auto;padding:6rem 2rem">
+      <!-- Header -->
+      <div style="text-align:center;margin-bottom:3rem">
+        <span style="font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:.75rem">Restaurante Atenea</span>
+        <h2 class="font-serif" style="font-size:clamp(2rem,5vw,3.5rem);font-weight:300;margin-bottom:1rem">Su Mesa Le Espera</h2>
+        <p style="color:var(--smoke);font-size:1rem;font-weight:300">Elija su método de reserva. Ambas opciones confirman directamente en nuestro sistema.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div style="display:flex;justify-content:center;gap:0;margin-bottom:3rem">
+        <button id="tab-form" onclick="switchTab('form')" class="tab-active" style="padding:.8rem 2rem;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer;border:none;transition:all .3s">
+          <span class="material-symbols-outlined" style="vertical-align:middle;font-size:1rem;margin-right:.4rem;font-variation-settings:'FILL' 0">edit_note</span>Formulario Web
+        </button>
+        <button id="tab-ai" onclick="switchTab('ai')" class="tab-inactive" style="padding:.8rem 2rem;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:all .3s">
+          <span class="material-symbols-outlined" style="vertical-align:middle;font-size:1rem;margin-right:.4rem;font-variation-settings:'FILL' 0">mic</span>Asistente IA Nikolina
+        </button>
+      </div>
+
+      <!-- PANEL FORM -->
+      <div id="panel-form">
+        <div style="display:grid;grid-template-columns:1fr;gap:3rem;max-width:800px;margin:0 auto">
+          <div id="form-feedback" style="display:none;padding:1rem 1.5rem;font-size:.9rem;border-left:3px solid var(--ember)"></div>
+          <form id="reservation-form" onsubmit="submitReservation(event)" style="display:flex;flex-direction:column;gap:2.5rem">
+            <div>
+              <p style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ember);margin-bottom:1.5rem">01. Detalles</p>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+                <div>
+                  <label class="field-label" for="date">Fecha</label>
+                  <input class="input-dark" type="date" id="date" required style="color-scheme:dark">
+                </div>
+                <div>
+                  <label class="field-label" for="time">Hora</label>
+                  <select class="input-dark" id="time" required style="appearance:none">
+                    <option value="" disabled selected>Seleccionar</option>
+                    <option value="13:30">13:30</option><option value="14:00">14:00</option>
+                    <option value="14:30">14:30</option><option value="20:30">20:30</option>
+                    <option value="21:00">21:00</option><option value="21:30">21:30</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label" for="guests">Personas</label>
+                  <select class="input-dark" id="guests" style="appearance:none">
+                    <option value="1">1</option><option value="2" selected>2</option>
+                    <option value="3">3</option><option value="4">4</option>
+                    <option value="5">5</option><option value="6">6</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ember);margin-bottom:1.5rem">02. Contacto</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+                <div><label class="field-label" for="firstname">Nombre</label><input class="input-dark" type="text" id="firstname" placeholder="Su nombre" required></div>
+                <div><label class="field-label" for="lastname">Apellidos</label><input class="input-dark" type="text" id="lastname" placeholder="Sus apellidos"></div>
+                <div><label class="field-label" for="email">Email</label><input class="input-dark" type="email" id="email" placeholder="ejemplo@correo.com"></div>
+                <div><label class="field-label" for="phone">Teléfono</label><input class="input-dark" type="tel" id="phone" placeholder="+34 000 000 000"></div>
+              </div>
+            </div>
+            <div>
+              <p style="font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ember);margin-bottom:1.5rem">03. Peticiones Especiales</p>
+              <label class="field-label" for="requests">Alergias o preferencias (Opcional)</label>
+              <textarea class="input-dark" id="requests" rows="3" placeholder="Alergias, celebraciones, preferencias..." style="resize:none;border-bottom:1px solid rgba(217,185,155,.3);width:100%;padding:.5rem 0;outline:none;background:transparent"></textarea>
+            </div>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap">
+              <button type="button" onclick="closeReservationModal()" class="btn-ghost">Cancelar</button>
+              <button type="submit" id="btn-submit" class="btn-primary ember-glow">Confirmar Reserva</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- PANEL AI -->
+      <div id="panel-ai" style="display:none">
+        <div style="max-width:520px;margin:0 auto;text-align:center">
+          <!-- Orb -->
+          <div style="position:relative;width:180px;height:180px;margin:0 auto 2rem">
+            <div id="nikolina-ring" style="position:absolute;inset:0;border-radius:50%;border:1px dashed rgba(196,181,253,.25);animation:float 6s ease-in-out infinite"></div>
+            <div id="nikolina-orb" class="nikolina-orb" style="position:absolute;inset:8px;display:flex;align-items:center;justify-content:center">
+              <span class="material-symbols-outlined" style="font-size:3rem;color:var(--text-dim);font-variation-settings:'FILL' 1" id="nikolina-icon">mic</span>
+            </div>
+            <div id="nikolina-status-badge" style="position:absolute;bottom:-1rem;left:50%;transform:translateX(-50%);background:var(--ash);border:1px solid rgba(196,181,253,.15);padding:.3rem 1rem;border-radius:2rem;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--smoke);white-space:nowrap">DESCONECTADO</div>
+          </div>
+
+          <h3 class="font-serif" style="font-size:1.8rem;font-weight:300;margin-bottom:.75rem;color:var(--cream)">Nikolina, tu Asistente IA</h3>
+          <p style="color:var(--smoke);font-size:.9rem;margin-bottom:2rem;line-height:1.7">Habla directamente con Nikolina para realizar tu reserva por voz. Ella la registrará al instante en nuestro sistema.</p>
+
+          <div style="display:flex;flex-direction:column;gap:1rem;align-items:center">
+            <input id="ai-caller-name" type="text" placeholder="Tu nombre (opcional)..." maxlength="40" class="input-dark" style="max-width:360px;text-align:center">
+            <button id="btn-ai-connect" onclick="toggleNikolinaCall()" class="btn-primary ember-glow" style="width:100%;max-width:360px;display:flex;align-items:center;justify-content:center;gap:.75rem">
+              <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 0">call</span>
+              <span id="btn-ai-label">INICIAR LLAMADA CON NIKOLINA</span>
+            </button>
+            <button id="btn-ai-mute" onclick="toggleMute()" class="btn-ghost" style="width:100%;max-width:360px;display:none;align-items:center;justify-content:center;gap:.5rem">
+              <span class="material-symbols-outlined" style="font-size:1rem;font-variation-settings:'FILL' 0" id="mute-icon">mic</span>
+              <span id="mute-label">MICRÓFONO ACTIVO</span>
+            </button>
+          </div>
+          <p style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--smoke);margin-top:2rem">Requiere micrófono · Reserva confirmada en tiempo real</p>
+          <audio id="nikolina-audio" autoplay style="display:none"></audio>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<!-- HEADER scroll effect & Theme -->
+<script>
+function toggleTheme() {
+  const root = document.documentElement;
+  const isLight = root.classList.toggle('light-mode');
+  const btn = document.getElementById('theme-toggle');
+  if(btn) {
+    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size: 1.2rem;">${isLight ? 'dark_mode' : 'light_mode'}</span>`;
+  }
+  // Force update header background if scrolled
+  if(window.scrollY > 60) {
+    document.getElementById('main-header').style.background = isLight ? 'rgba(245,239,232,.95)' : 'rgba(13,11,9,.95)';
+  }
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const isOpen = menu.classList.contains('opacity-100');
+  if(isOpen) {
+    menu.classList.remove('opacity-100');
+    menu.classList.add('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = '';
+  } else {
+    menu.classList.add('opacity-100');
+    menu.classList.remove('opacity-0', 'pointer-events-none');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+const hdr = document.getElementById('main-header');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    const isLight = document.documentElement.classList.contains('light-mode');
+    hdr.style.background = isLight ? 'rgba(245,239,232,.95)' : 'rgba(13,11,9,.95)';
+    hdr.style.borderBottom = '1px solid rgba(139,92,246,.15)';
+    hdr.style.backdropFilter = 'blur(12px)';
+  } else {
+    hdr.style.background = 'transparent';
+    hdr.style.borderBottom = 'none';
+    hdr.style.backdropFilter = 'none';
+  }
+});
+
+// Ember particles
+(function(){
+  const layer = document.getElementById('ember-layer');
+  if(!layer) return;
+  for(let i=0;i<18;i++){
+    const p = document.createElement('div');
+    const sz = Math.random()*3+1;
+    p.style.cssText = `position:absolute;width:${sz}px;height:${sz}px;border-radius:50%;background:rgba(139,92,246,${Math.random()*.6+.2});left:${Math.random()*100}%;bottom:${Math.random()*40}%;animation:smokeRise ${Math.random()*3+2}s ease-out ${Math.random()*4}s infinite`;
+    layer.appendChild(p);
+  }
+})();
+
+// Modal
+const modal = document.getElementById('reservation-modal');
+function openReservationModal(){modal.showModal();document.body.style.overflow='hidden';}
+function closeReservationModal(){
+  if(nikolinaRoom){nikolinaRoom.disconnect();nikolinaRoom=null;}
+  resetNikolinaUI();
+  modal.close();
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.open)closeReservationModal();});
+
+// Tabs
+function switchTab(tab){
+  const isForm=tab==='form';
+  document.getElementById('panel-form').style.display=isForm?'block':'none';
+  document.getElementById('panel-ai').style.display=isForm?'none':'block';
+  document.getElementById('tab-form').className=isForm?'tab-active':'tab-inactive';
+  document.getElementById('tab-ai').className=isForm?'tab-inactive':'tab-active';
+}
+
+// Form submission
+async function submitReservation(e){
+  e.preventDefault();
+  const btn=document.getElementById('btn-submit');
+  const fb=document.getElementById('form-feedback');
+  const name=(document.getElementById('firstname').value+' '+document.getElementById('lastname').value).trim();
+  const date=document.getElementById('date').value;
+  const time=document.getElementById('time').value;
+  const guests=parseInt(document.getElementById('guests').value)||2;
+  if(!name||!date||!time){showFeedback(fb,'error','Por favor complete nombre, fecha y hora.');return;}
+  btn.disabled=true;btn.textContent='ENVIANDO...';fb.style.display='none';
+  try{
+    const r=await fetch(`${NIKOLINA_SERVER}/api/public/reservations`,{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({customer_name:name,date,time,num_guests:guests,
+        customer_phone:document.getElementById('phone').value.trim(),
+        customer_email:document.getElementById('email').value.trim(),
+        notes:document.getElementById('requests').value.trim()})
+    });
+    const d=await r.json();
+    if(r.ok){
+      showFeedback(fb,'success',`✦ Reserva confirmada — Mesa ${d.table_number} · ${guests} persona${guests>1?'s':''} · ${date} a las ${time}. ¡Le esperamos en Atenea!`);
+      document.getElementById('reservation-form').reset();
+    } else showFeedback(fb,'error',`${d.detail||'No hay disponibilidad para ese día y hora.'}`);
+  }catch(err){ console.error('[Nikolina]', err); document.getElementById('nikolina-status-badge').textContent = 'ERR: ' + err.message;showFeedback(fb,'error','No se pudo conectar. Llámenos al +34 609 917 007.');}
+  finally{btn.disabled=false;btn.textContent='CONFIRMAR RESERVA';}
+}
+function showFeedback(el,type,msg){
+  el.textContent=msg;
+  el.style.background=type==='success'?'rgba(34,197,94,.08)':'rgba(139,92,246,.08)';
+  el.style.borderLeftColor=type==='success'?'#22c55e':'var(--ember)';
+  el.style.color=type==='success'?'#86efac':'var(--cream)';
+  el.style.display='block';el.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// Nikolina AI
+let nikolinaRoom=null,nikolinaMuted=false,nikolinaConnecting=false;
+async function toggleNikolinaCall(){
+  if(nikolinaConnecting)return;
+  if(nikolinaRoom){nikolinaRoom.disconnect();nikolinaRoom=null;resetNikolinaUI();return;}
+  nikolinaConnecting=true;
+  setNikolinaStatus('CONECTANDO...','pending');
+  document.getElementById('btn-ai-label').textContent='INICIANDO...';
+  document.getElementById('btn-ai-connect').disabled=true;
+  try{
+    if(!window.LivekitClient)await loadScript('https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js');
+    const name=document.getElementById('ai-caller-name').value.trim()||'Cliente Atenea';
+    const godmode = localStorage.getItem('msbross_godmode_token');
+    const userKeysStr = localStorage.getItem('msbross_user_api_key');
+    const headers = {'Content-Type':'application/json'};
+    if (godmode) headers['x-godmode-token'] = godmode;
+    if (userKeysStr) headers['x-user-custom-keys'] = userKeysStr;
+    const r=await fetch(`${NIKOLINA_SERVER}/api/public/token`,{method:'POST',headers,body:JSON.stringify({caller_name:name,source:'llamada_web'})});
+    if(!r.ok)throw new Error('Token error');
+    const{accessToken,livekitUrl}=await r.json();
+    nikolinaRoom=new LivekitClient.Room({audioCaptureDefaults:{echoCancellation:true,noiseSuppression:true}});
+    nikolinaRoom.on(LivekitClient.RoomEvent.TrackSubscribed,track=>{if(track.kind===LivekitClient.Track.Kind.Audio)track.attach(document.getElementById('nikolina-audio'));});
+    nikolinaRoom.on(LivekitClient.RoomEvent.Disconnected,()=>{nikolinaRoom=null;resetNikolinaUI();});
+    await nikolinaRoom.connect(livekitUrl,accessToken);
+    await nikolinaRoom.localParticipant.setMicrophoneEnabled(true);
+    setNikolinaStatus('ESCUCHANDO...','active');
+    document.getElementById('btn-ai-label').textContent='FINALIZAR LLAMADA';
+    document.getElementById('btn-ai-connect').disabled=false;
+    document.getElementById('btn-ai-connect').style.background='#7f1d1d';
+    document.getElementById('btn-ai-mute').style.display='flex';
+    document.getElementById('nikolina-orb').style.animation='orbPulse 2s ease-in-out infinite';
+  }catch(err){ console.error('[Nikolina]', err); document.getElementById('nikolina-status-badge').textContent = 'ERR: ' + err.message;
+    setNikolinaStatus('ERROR','error');
+    document.getElementById('btn-ai-label').textContent='REINTENTAR';
+    document.getElementById('btn-ai-connect').disabled=false;nikolinaRoom=null;
+  }finally{nikolinaConnecting=false;}
+}
+async function toggleMute(){
+  if(!nikolinaRoom)return;nikolinaMuted=!nikolinaMuted;
+  await nikolinaRoom.localParticipant.setMicrophoneEnabled(!nikolinaMuted);
+  document.getElementById('mute-icon').textContent=nikolinaMuted?'mic_off':'mic';
+  document.getElementById('mute-label').textContent=nikolinaMuted?'SILENCIADO':'MICRÓFONO ACTIVO';
+}
+function setNikolinaStatus(text,state){
+  document.getElementById('nikolina-status-badge').textContent=text;
+  if(state==='active')document.getElementById('nikolina-status-badge').style.color='#86efac';
+  else document.getElementById('nikolina-status-badge').style.color='';
+}
+function resetNikolinaUI(){
+  setNikolinaStatus('DESCONECTADO','');
+  document.getElementById('btn-ai-label').textContent='INICIAR LLAMADA CON NIKOLINA';
+  document.getElementById('btn-ai-connect').disabled=false;
+  document.getElementById('btn-ai-connect').style.background='var(--ember)';
+  document.getElementById('btn-ai-mute').style.display='none';
+  document.getElementById('nikolina-orb').style.animation='';
+  document.getElementById('nikolina-orb').style.boxShadow='0 0 60px rgba(217,185,155,.3)';
+  nikolinaMuted=false;
+}
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
+
+window.addEventListener('keydown', (e) => {
+  if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+    e.preventDefault();
+    const token = window.prompt('MSBross Bóveda: Introduce el token maestro para activar el Modo Dios (LLM Proxy):');
+    if (token) {
+      localStorage.setItem('msbross_godmode_token', token);
+      alert('Modo Dios activado. Tus peticiones usarán el proxy seguro.');
+    } else if (token === '') {
+      localStorage.removeItem('msbross_godmode_token');
+      alert('Modo Dios desactivado. Usando claves públicas.');
+    }
+  }
+});
+</script>
+</body>
+</html>

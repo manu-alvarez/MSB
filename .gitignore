@@ -1,0 +1,33 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment and secrets
+.env
+.env*.local
+
+# Node modules & build artifacts (if any subproject has them)
+node_modules/
+dist/
+.cache/
+
+# Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files & logs
+*.tmp
+*.bak
+.gh_compare/
+docs/logs/
+docs/backup/

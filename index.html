@@ -1,0 +1,3112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSB · Panel de Control</title>
+  
+  <!-- Favicon & Icons -->
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#05070c">
+
+  <!-- SEO & OpenGraph -->
+  <meta name="description" content="MSB — Panel de control y catálogo centralizado de aplicaciones y servicios.">
+  <meta name="keywords" content="MSB, panel de control, aplicaciones web, Tailscale, PWA, Next.js, Vite">
+  <meta name="author" content="Manuel Álvarez Diánez">
+  <meta name="application-name" content="MSB">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MSB">
+  <meta name="msapplication-TileColor" content="#05070c">
+  <meta name="msapplication-TileImage" content="icons/icon-192.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MSB">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:url" content="http://100.100.2.10:9999/">
+  <meta property="og:title" content="MSB · Panel de Control">
+  <meta property="og:description" content="Panel de control y catálogo centralizado de aplicaciones y servicios.">
+  <meta property="og:image" content="icons/og-preview.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MSB · Panel de Control">
+  <meta name="twitter:description" content="Panel de control y catálogo centralizado de aplicaciones y servicios.">
+  <meta name="twitter:image" content="icons/og-preview.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #05070c;
+      --bg-surface: rgba(11, 15, 25, 0.75);
+      --bg-card: rgba(15, 20, 34, 0.65);
+      --bg-card-hover: rgba(22, 30, 52, 0.88);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 240, 255, 0.35);
+      
+      --neon-cyan: #00f0ff;
+      --neon-purple: #a855f7;
+      --neon-emerald: #10b981;
+      --neon-amber: #f59e0b;
+      --neon-rose: #f43f5e;
+      --neon-blue: #3b82f6;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Cyber Neural Canvas */
+    #space-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Cyber Ambient Blurs */
+    .ambient-glow {
+      position: fixed;
+      width: 650px;
+      height: 650px;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.16;
+      transition: opacity 0.5s ease;
+    }
+    .glow-1 {
+      top: -150px;
+      left: -150px;
+      background: radial-gradient(circle, var(--neon-cyan), transparent 70%);
+    }
+    .glow-2 {
+      bottom: -200px;
+      right: -100px;
+      background: radial-gradient(circle, var(--neon-purple), transparent 70%);
+    }
+    .glow-3 {
+      top: 45%;
+      left: 65%;
+      background: radial-gradient(circle, #2563eb, transparent 70%);
+      opacity: 0.12;
+    }
+
+    /* Main Container */
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1720px;
+      margin: 0 auto;
+      padding: 24px 32px 100px;
+    }
+
+    /* HUD HEADER */
+    header.hud-header {
+      background: rgba(10, 14, 24, 0.82);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 18px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      position: sticky;
+      top: 18px;
+      z-index: 40;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-symbol {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.25), rgba(168, 85, 247, 0.35));
+      border: 1px solid var(--border-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 24px rgba(0, 240, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-symbol::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(transparent, var(--neon-cyan), transparent 30%);
+      animation: rotate 4s linear infinite;
+      opacity: 0.5;
+    }
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+    .brand-symbol svg {
+      position: relative;
+      z-index: 2;
+      width: 26px;
+      height: 26px;
+      color: var(--neon-cyan);
+    }
+
+    .brand-title h1 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff 10%, #cbd5e1 50%, var(--neon-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+    .brand-title p {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    /* Global Environment Selector */
+    .env-switcher {
+      display: flex;
+      background: rgba(5, 7, 14, 0.85);
+      padding: 4px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 4px;
+    }
+
+    .env-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .env-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .env-btn.active {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(59, 130, 246, 0.25));
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      box-shadow: 0 0 16px rgba(0, 240, 255, 0.25);
+    }
+    .env-btn .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    /* HUD Controls */
+    .hud-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hud-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .hud-btn.active {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+    }
+
+    /* TELEMETRY OVERVIEW HERO */
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px 22px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      transition: all 0.3s ease;
+    }
+    .metric-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+    }
+    .metric-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .metric-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    .metric-data h4 {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .metric-data .metric-val {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 2px;
+      line-height: 1.1;
+    }
+    .metric-data .metric-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .metric-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* CONTROLS STRIP */
+    .controls-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-bar-wrap {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+    }
+    .search-bar-wrap svg.search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-dim);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      background: rgba(12, 17, 28, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 14px 50px 14px 48px;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: #fff;
+      outline: none;
+      transition: all 0.25s;
+    }
+    .search-input:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.25), inset 0 0 10px rgba(0, 240, 255, 0.1);
+      background: rgba(18, 25, 42, 0.9);
+    }
+    .search-kbd {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-pill {
+      background: rgba(16, 22, 38, 0.6);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .filter-pill:hover {
+      background: rgba(26, 36, 60, 0.8);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+    .filter-pill.active {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(168, 85, 247, 0.25));
+      border-color: var(--neon-cyan);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.25);
+    }
+    .filter-count {
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 12px;
+      padding: 2px 7px;
+      font-size: 0.68rem;
+      color: var(--neon-cyan);
+    }
+
+    /* SERVICES GRID */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+      gap: 22px;
+    }
+
+    /* Section title: Aplicaciones */
+    .section-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin: 4px 2px 14px;
+    }
+    .section-title-row h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title-row h2::before {
+      content: '';
+      width: 4px;
+      height: 22px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple));
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+      display: inline-block;
+    }
+    .section-title-count {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .section-title-count strong {
+      color: var(--neon-cyan);
+    }
+
+    /* SERVICE CARD WITH 3D TILT & EXTREME NEON GLOW */
+    .service-card {
+      background: var(--bg-card);
+      background-image: radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb, 0, 240, 255), 0.15) 0%, transparent 70%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(var(--accent-rgb, 0, 240, 255), 0.3);
+      border-left: 4px solid rgba(var(--accent-rgb, 0, 240, 255), 1);
+      border-right: 1px solid rgba(var(--accent-rgb, 0, 240, 255), 0.1);
+      border-bottom: 1px solid rgba(var(--accent-rgb, 0, 240, 255), 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: inset 0 0 20px rgba(var(--accent-rgb, 0, 240, 255), 0.05),
+                  0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--neon-cyan)), transparent);
+      opacity: 0.8;
+      transition: opacity 0.3s;
+      box-shadow: 0 0 15px var(--card-accent, var(--neon-cyan));
+    }
+
+    .service-card:hover {
+      background: rgba(15, 20, 34, 0.85);
+      background-image: radial-gradient(ellipse at 50% 0%, rgba(var(--accent-rgb, 0, 240, 255), 0.25) 0%, transparent 80%);
+      transform: translateY(-6px) scale(1.02);
+      border-color: rgba(var(--accent-rgb, 0, 240, 255), 0.8);
+      border-left: 5px solid rgba(var(--accent-rgb, 0, 240, 255), 1);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8), 
+                  0 0 40px rgba(var(--accent-rgb, 0, 240, 255), 0.4),
+                  inset 0 0 30px rgba(var(--accent-rgb, 0, 240, 255), 0.15);
+      z-index: 10;
+    }
+    .service-card:hover::before {
+      opacity: 1;
+      height: 4px;
+      box-shadow: 0 0 25px var(--card-accent, var(--neon-cyan));
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .port-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(var(--accent-rgb, 0, 240, 255), 0.1);
+      border: 1px solid rgba(var(--accent-rgb, 0, 240, 255), 0.3);
+      color: var(--card-accent, var(--neon-cyan));
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .port-pill.no-port {
+      background: rgba(148, 163, 184, 0.1);
+      border-color: rgba(148, 163, 184, 0.2);
+      color: var(--text-dim);
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-badge.online {
+      color: var(--neon-emerald);
+    }
+    .status-badge.stopped {
+      color: var(--neon-amber);
+    }
+    .status-badge.errored {
+      color: var(--neon-rose);
+    }
+    .status-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px currentColor;
+      animation: pulse-glow 2s infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.3); opacity: 0.4; }
+    }
+
+    .card-heading {
+      margin-bottom: 10px;
+    }
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.24rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.3;
+    }
+    .card-pm2-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      margin-top: 3px;
+    }
+
+    .card-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .tag-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    /* Card Actions Footer */
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+    }
+
+    .btn-launch {
+      flex: 1;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.16), rgba(59, 130, 246, 0.25));
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.1);
+    }
+    .btn-launch:hover {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.32), rgba(59, 130, 246, 0.45));
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35);
+      transform: translateY(-1px);
+      color: #fff;
+    }
+
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* MODAL / DRAWER SYSTEM */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 9, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 24px;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: rgba(14, 18, 28, 0.95);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 950px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 70px rgba(0,0,0,0.8), 0 0 40px rgba(0, 240, 255, 0.15);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.96);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-backdrop.open .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: inherit;
+      z-index: 2;
+    }
+    .modal-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-body {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .terminal-block {
+      background: #04060a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: #38bdf8;
+      position: relative;
+      overflow-x: auto;
+    }
+    .terminal-block .btn-copy-code {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+    .terminal-block .btn-copy-code:hover {
+      background: var(--neon-cyan);
+      color: #000;
+    }
+
+    /* PREVIEW IFRAME CONTAINER */
+    .preview-frame-container {
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+      height: 480px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .preview-frame-topbar {
+      background: rgba(16, 22, 34, 0.95);
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .preview-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #fff;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(14, 20, 32, 0.95);
+      border: 1px solid var(--neon-cyan);
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(0, 240, 255, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 200;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* OPERATOR PROFILE SECTION (MANUEL ÁLVAREZ DIÁNEZ) */
+    .operator-profile-section {
+      margin-top: 20px;
+      margin-bottom: 32px;
+      position: relative;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(10, 16, 28, 0.88) 0%, rgba(14, 22, 38, 0.8) 100%);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.1), 0 20px 45px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      overflow: hidden;
+      padding: 36px;
+    }
+    .operator-profile-section::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      right: -120px;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(40px);
+    }
+    .operator-profile-section::after {
+      content: '';
+      position: absolute;
+      bottom: -100px;
+      left: -100px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(40px);
+    }
+    .operator-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 18px;
+      position: relative;
+      z-index: 2;
+    }
+    .operator-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .operator-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.35);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+    .operator-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #34d399;
+      letter-spacing: 0.05em;
+    }
+    .pulse-dot-green {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulseGreen 2s infinite;
+    }
+    @keyframes pulseGreen {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .operator-main-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr 310px;
+      gap: 32px;
+      position: relative;
+      z-index: 2;
+    }
+    @media (max-width: 1200px) {
+      .operator-main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .operator-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .avatar-wrapper {
+      position: relative;
+      width: 180px;
+      height: 180px;
+      margin-bottom: 20px;
+    }
+    .avatar-ring {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--neon-cyan), #ec4899, var(--neon-purple));
+      animation: rotateRing 8s linear infinite;
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.45);
+    }
+    @keyframes rotateRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .avatar-img-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #080d16;
+      background: #080d16;
+    }
+    .avatar-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .avatar-img-box:hover img {
+      transform: scale(1.06);
+    }
+    .operator-name {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+    .operator-role {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .operator-kpis {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .kpi-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .kpi-card:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+      background: rgba(0, 240, 255, 0.05);
+      transform: translateY(-2px);
+    }
+    .kpi-value {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+    .operator-center {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .operator-bio-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .operator-bio-text {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+    .tech-stack-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .tech-tag {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #e2e8f0;
+      transition: all 0.2s;
+    }
+    .tech-tag:hover {
+      background: rgba(0, 240, 255, 0.1);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+    }
+    .sub-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 6px;
+    }
+    @media (max-width: 768px) {
+      .sub-cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .sub-card {
+      background: rgba(14, 20, 32, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 16px 18px;
+    }
+    .sub-card-title {
+      font-family: var(--font-display);
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .sub-card-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sub-card-list li {
+      position: relative;
+      padding-left: 18px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+    .sub-card-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 6px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--neon-cyan);
+      box-shadow: 0 0 6px var(--neon-cyan);
+    }
+    .sub-card-list.exp li::before {
+      background: #ec4899;
+      box-shadow: 0 0 6px #ec4899;
+    }
+    .sub-card-list strong {
+      color: #f1f5f9;
+      display: block;
+    }
+    .operator-right {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(8, 12, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .contact-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-link-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      text-decoration: none;
+      color: #e2e8f0;
+      transition: all 0.2s;
+    }
+    .contact-link-row:hover {
+      background: rgba(0, 240, 255, 0.08);
+      border-color: rgba(0, 240, 255, 0.35);
+      transform: translateX(4px);
+    }
+    .contact-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--neon-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-info-col {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+    .contact-value {
+      font-size: 0.8rem;
+      color: #fff;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .btn-contact-main {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(236, 72, 153, 0.2));
+      border: 1px solid rgba(0, 240, 255, 0.4);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+    }
+    .btn-contact-main:hover {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.35), rgba(236, 72, 153, 0.35));
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.35);
+      transform: translateY(-2px);
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .app-container {
+        padding: 16px 16px 80px;
+      }
+      header.hud-header {
+        position: static;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+      }
+      .brand-group {
+        justify-content: flex-start;
+      }
+      .env-switcher {
+        overflow-x: auto;
+        max-width: 100%;
+      }
+      .env-btn {
+        white-space: nowrap;
+        font-size: 0.68rem;
+        padding: 8px 10px;
+      }
+      .hud-controls {
+        flex-wrap: wrap;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .telemetry-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .operator-profile-section {
+        padding: 22px 18px;
+      }
+      .search-kbd {
+        display: none;
+      }
+      .search-input {
+        padding-right: 16px;
+      }
+      .preview-frame-container {
+        height: 320px;
+      }
+      .modal-box {
+        max-height: 92vh;
+      }
+      .modal-body {
+        padding: 18px;
+      }
+    }
+    @media (max-width: 560px) {
+      .telemetry-grid {
+        grid-template-columns: 1fr;
+      }
+      .metric-card {
+        padding: 14px 16px;
+        gap: 14px;
+      }
+      .metric-data .metric-val {
+        font-size: 1.4rem;
+      }
+      .filter-pill {
+        font-size: 0.7rem;
+        padding: 7px 12px;
+      }
+      .card-actions {
+        flex-wrap: wrap;
+      }
+      .btn-launch {
+        flex: 1 1 100%;
+      }
+      .section-title-row h2 {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Neural Canvas -->
+  <canvas id="space-canvas"></canvas>
+
+  <!-- Ambient Light Shaders -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <div class="app-container">
+    <!-- Top HUD Header -->
+    <header class="hud-header">
+      <div class="brand-group">
+        <div class="brand-symbol" style="display:flex;align-items:center;justify-content:center;">
+          <img src="icons/icon-192.png" alt="MSB Logo" style="width:44px;height:44px;border-radius:12px;filter:drop-shadow(0 0 14px rgba(0,240,255,0.7));transition:transform 0.3s ease;display:block;">
+        </div>
+        <div class="brand-title">
+          <h1>MSB</h1>
+          <p>MSBrossAI · Panel de control y catálogo de aplicaciones</p>
+        </div>
+      </div>
+
+      <!-- Environment Selector -->
+      <div class="env-switcher">
+        <button class="env-btn active" data-env="tailscale" onclick="switchEnv('tailscale')">
+          <span class="dot"></span>
+          <span>TAILSCALE (100.100.2.10)</span>
+        </button>
+        <button class="env-btn" data-env="localhost" onclick="switchEnv('localhost')">
+          <span class="dot"></span>
+          <span>LOCALHOST</span>
+        </button>
+        <button class="env-btn" data-env="cloudflare" onclick="switchEnv('cloudflare')">
+          <span class="dot"></span>
+          <span>CLOUDFLARE EDGE</span>
+        </button>
+        <button class="env-btn" data-env="web" onclick="switchEnv('web')">
+          <span class="dot"></span>
+          <span>GITHUB PAGES / WEB</span>
+        </button>
+      </div>
+
+      <!-- Audio & System HUD Controls -->
+      <div class="hud-controls">
+        <button class="hud-btn" id="sfx-toggle" onclick="toggleAudio()" title="Activar/Silenciar Efectos de Sonido">
+          <svg id="sfx-icon-on" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <span id="sfx-label">SFX: ON</span>
+        </button>
+
+        <button class="hud-btn" onclick="openTerminalModal()">
+          <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          <span>TERMINAL HUB</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Operator Profile Section (Manuel Álvarez Diánez) -->
+    <section class="operator-profile-section" id="operatorProfile">
+      <div class="operator-header">
+        <div class="operator-badge-wrap">
+          <div class="operator-badge-pill">
+            <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>SYSTEM OPERATOR // ARCHITECT</span>
+          </div>
+          <div class="operator-status-pill">
+            <span class="pulse-dot-green"></span>
+            <span>DISPONIBLE • ZARAGOZA, ESPAÑA</span>
+          </div>
+        </div>
+
+        <a href="https://manuelalvarez.dev" target="_blank" rel="noopener noreferrer" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--neon-cyan);text-decoration:none;display:flex;align-items:center;gap:6px;">
+          <span>manuelalvarez.dev</span>
+          <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+      </div>
+
+      <div class="operator-main-grid">
+        <!-- Columna 1: Avatar, Identidad y KPIs -->
+        <div class="operator-left">
+          <div class="avatar-wrapper">
+            <div class="avatar-ring"></div>
+            <div class="avatar-img-box">
+              <img src="profile-photo.png" alt="Manuel Álvarez Diánez" onerror="this.src='https://manuelalvarez.dev/profile-photo.png'" />
+            </div>
+          </div>
+
+          <h4 class="operator-name">Manuel Álvarez Diánez</h4>
+          <div class="operator-role">Técnico IT de Sistemas & Programador</div>
+
+          <div class="operator-kpis">
+            <div class="kpi-card">
+              <div class="kpi-value" style="color:var(--neon-cyan);">20+</div>
+              <div class="kpi-label">Apps Web Online</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value" style="color:#ec4899;">IA & Bots</div>
+              <div class="kpi-label">Agentes Autónomos</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value" style="color:var(--neon-purple);">Docker</div>
+              <div class="kpi-label">Contenedores</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-value" style="color:#34d399;">Tailscale</div>
+              <div class="kpi-label">100.100.2.10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna 2: Sobre Mí, Stack, Certificaciones & Experiencia -->
+        <div class="operator-center">
+          <div>
+            <div class="operator-bio-title">
+              <svg style="width:18px;height:18px;color:var(--neon-cyan);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span>Sobre Mí & Perfil Profesional</span>
+            </div>
+            <p class="operator-bio-text" style="margin-top:8px;">
+              Técnico informático orientado a buscar soluciones y apasionado por la tecnología, la gestión de servidores y la automatización. Desarrollo aplicaciones web, sistemas contenerizados y bots impulsados por Inteligencia Artificial enfocados en resolver problemas prácticos y optimizar procesos operativos del día a día.
+            </p>
+          </div>
+
+          <div>
+            <div class="operator-bio-title" style="font-size:0.92rem;">
+              <svg style="width:16px;height:16px;color:#ec4899;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+              <span>Core Stack Tecnológico</span>
+            </div>
+            <div class="tech-stack-wrap">
+              <span class="tech-tag" style="border-color:rgba(0,240,255,0.4);color:var(--neon-cyan);">React 19</span>
+              <span class="tech-tag" style="border-color:rgba(236,72,153,0.4);color:#f472b6;">Next.js 16</span>
+              <span class="tech-tag">FastAPI</span>
+              <span class="tech-tag">Node.js</span>
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Docker</span>
+              <span class="tech-tag">Traefik</span>
+              <span class="tech-tag">LiveKit WebRTC</span>
+              <span class="tech-tag">Three.js 3D</span>
+              <span class="tech-tag">PM2</span>
+              <span class="tech-tag">Tailscale VPN</span>
+              <span class="tech-tag">Cloudflare Zero-Trust</span>
+            </div>
+          </div>
+
+          <div class="sub-cards-grid">
+            <div class="sub-card">
+              <div class="sub-card-title">
+                <svg style="width:16px;height:16px;color:var(--neon-cyan);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+                <span>Certificaciones Oficiales</span>
+              </div>
+              <ul class="sub-card-list">
+                <li>
+                  <strong>Sistemas Microinformáticos y Redes</strong>
+                  ILERNA &bull; 2022 - 2023
+                </li>
+                <li>
+                  <strong>Cisco CCST Networking & Cyber</strong>
+                  Credencial Profesional Activa
+                </li>
+                <li>
+                  <strong>Six Sigma Yellow Belt</strong>
+                  Lean & Optimización Continua
+                </li>
+                <li>
+                  <strong>Scrum Fundamentals (SFC)</strong>
+                  Metodologías Ágiles & Kanban
+                </li>
+              </ul>
+            </div>
+
+            <div class="sub-card">
+              <div class="sub-card-title">
+                <svg style="width:16px;height:16px;color:#ec4899;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+                <span>Trayectoria Profesional</span>
+              </div>
+              <ul class="sub-card-list exp">
+                <li>
+                  <strong>Técnico Informático</strong>
+                  Teringo S.L.U. &bull; 2025
+                </li>
+                <li>
+                  <strong>Logística & Producción</strong>
+                  GB Foods / Döhler / Newton Energies
+                </li>
+                <li>
+                  <strong>Operario Logístico B2B</strong>
+                  Procter & Gamble &bull; 2020 - 2025
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Columna 3: Contacto Directo & Vías de Comunicación -->
+        <div class="operator-right">
+          <div class="contact-title">
+            <svg style="width:14px;height:14px;color:var(--neon-cyan);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <span>Canales de Contacto Directo</span>
+          </div>
+
+          <a href="mailto:manuelalvarezdianez@hotmail.com" class="contact-link-row" onclick="playSound('click')">
+            <div class="contact-icon-box">
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <div class="contact-info-col">
+              <span class="contact-label">Email Principal</span>
+              <span class="contact-value">manuelalvarezdianez@hotmail.com</span>
+            </div>
+          </a>
+
+          <a href="mailto:manuelalvarezdianez@gmail.com" class="contact-link-row" onclick="playSound('click')">
+            <div class="contact-icon-box" style="background:rgba(236,72,153,0.1);color:#ec4899;">
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <div class="contact-info-col">
+              <span class="contact-label">Email Secundario</span>
+              <span class="contact-value">manuelalvarezdianez@gmail.com</span>
+            </div>
+          </a>
+
+          <a href="tel:+34651352065" class="contact-link-row" onclick="playSound('click')">
+            <div class="contact-icon-box" style="background:rgba(16,185,129,0.1);color:#34d399;">
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <div class="contact-info-col">
+              <span class="contact-label">Teléfono Móvil</span>
+              <span class="contact-value">+34 651 35 20 65</span>
+            </div>
+          </a>
+
+          <a href="https://github.com/manu-alvarez" target="_blank" rel="noopener noreferrer" class="contact-link-row" onclick="playSound('click')">
+            <div class="contact-icon-box">
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+            </div>
+            <div class="contact-info-col">
+              <span class="contact-label">GitHub</span>
+              <span class="contact-value">github.com/manu-alvarez</span>
+            </div>
+          </a>
+
+          <a href="https://www.linkedin.com/in/manu-alvarez-dev/" target="_blank" rel="noopener noreferrer" class="contact-link-row" onclick="playSound('click')">
+            <div class="contact-icon-box" style="background:rgba(59,130,246,0.1);color:#60a5fa;">
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </div>
+            <div class="contact-info-col">
+              <span class="contact-label">LinkedIn</span>
+              <span class="contact-value">in/manu-alvarez-dev</span>
+            </div>
+          </a>
+
+          <a href="https://manuelalvarez.dev" target="_blank" rel="noopener noreferrer" class="btn-contact-main" onclick="playSound('click')">
+            <span>VISITAR PORTFOLIO OFICIAL</span>
+            <svg style="width:15px;height:15px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Telemetry Statistics Hero -->
+    <section class="telemetry-grid">
+      <div class="metric-card" style="border-left: 3px solid var(--neon-cyan); box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);">
+        <div class="metric-icon" style="background: rgba(0, 240, 255, 0.12); color: var(--neon-cyan); box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div class="metric-data">
+          <h4>Aplicaciones Frontend</h4>
+          <div class="metric-val" id="totalAppsVal">20</div>
+          <div class="metric-sub">
+            <span class="metric-indicator" style="background: var(--neon-emerald); box-shadow: 0 0 8px var(--neon-emerald);"></span>
+            <span>20 Online &bull; 100% Interactivas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card" style="border-left: 3px solid var(--neon-emerald); box-shadow: inset 0 0 15px rgba(16, 185, 129, 0.05);">
+        <div class="metric-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--neon-emerald); box-shadow: 0 0 18px rgba(16, 185, 129, 0.3);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <div class="metric-data">
+          <h4>Red Mesh Tailscale</h4>
+          <div class="metric-val" style="color:var(--neon-cyan); font-size:1.22rem;">100.100.2.10</div>
+          <div class="metric-sub">
+            <span class="metric-indicator" style="background: var(--neon-emerald);"></span>
+            <span>Acceso directo sin proxies</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card" style="border-left: 3px solid var(--neon-purple); box-shadow: inset 0 0 15px rgba(168, 85, 247, 0.05);">
+        <div class="metric-icon" style="background: rgba(168, 85, 247, 0.12); color: var(--neon-purple); box-shadow: 0 0 18px rgba(168, 85, 247, 0.3);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+        </div>
+        <div class="metric-data">
+          <h4>Tecnologías UI</h4>
+          <div class="metric-val" style="font-size:1.1rem; color:#fff;">Next &bull; Vite &bull; PWA</div>
+          <div class="metric-sub">
+            <span class="metric-indicator" style="background: var(--neon-cyan);"></span>
+            <span>React 19 &bull; Three.js &bull; Fastify</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card" style="border-left: 3px solid var(--neon-amber); box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.05);">
+        <div class="metric-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--neon-amber); box-shadow: 0 0 18px rgba(245, 158, 11, 0.3);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        </div>
+        <div class="metric-data">
+          <h4>Operador & Creador</h4>
+          <div class="metric-val" style="font-size:1.15rem; color:#fff;">Manuel Álvarez</div>
+          <div class="metric-sub">
+            <span class="metric-indicator" style="background: var(--neon-emerald);"></span>
+            <span>Zaragoza &bull; Disponible</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search & Filters Strip -->
+    <div class="section-title-row">
+      <h2>Aplicaciones</h2>
+      <span class="section-title-count" id="appsResultCount"><strong>20</strong> aplicaciones · 20 online</span>
+    </div>
+    <section class="controls-strip">
+      <div class="search-row">
+        <div class="search-bar-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Buscar por nombre, puerto, categoría, tecnología (ej: 9123, Vite, Next.js, LiveKit)..."
+            autocomplete="off"
+            oninput="handleSearch()"
+          >
+          <span class="search-kbd">⌘K / /</span>
+        </div>
+      </div>
+
+      <div class="filter-pills" id="categoryPills">
+        <button class="filter-pill active" onclick="setCategory('all')">
+          <span>Todas las Apps</span>
+          <span class="filter-count" id="count-all">34</span>
+        </button>
+        <button class="filter-pill" onclick="setCategory('ai')">
+          <span>🧠 IA & Agentes</span>
+          <span class="filter-count" id="count-ai">10</span>
+        </button>
+        <button class="filter-pill" onclick="setCategory('business')">
+          <span>💼 Negocio & ERP</span>
+          <span class="filter-count" id="count-business">9</span>
+        </button>
+        <button class="filter-pill" onclick="setCategory('creative')">
+          <span>🎨 Creatividad & Música</span>
+          <span class="filter-count" id="count-creative">7</span>
+        </button>
+        <button class="filter-pill" onclick="setCategory('devtools')">
+          <span>⚡ Sistemas & Dev Tools</span>
+          <span class="filter-count" id="count-devtools">8</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Services Dynamic Grid -->
+    <main class="services-grid" id="servicesGrid">
+      <!-- Injected by JavaScript -->
+    </main>
+
+    
+  </div>
+
+  <!-- SERVICE DETAIL & INSPECTOR MODAL -->
+  <div class="modal-backdrop" id="serviceModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalTitle">Detalles del Servicio</h3>
+        <button class="modal-close" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMINAL HUB MODAL -->
+  <div class="modal-backdrop" id="terminalModal" onclick="closeTerminalOnBackdrop(event)">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Terminal & CLI Quick Reference</h3>
+        <button class="modal-close" onclick="closeTerminalModal()">
+          <svg viewBox="0 0 24 24" style="width:20px;height:20px;" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="color:var(--text-muted);font-size:0.85rem;">
+          Comandos esenciales de administración para la flota de servicios en macOS Hackintosh. Haz clic en "COPIAR" para pegarlos directamente en tu terminal.
+        </p>
+
+        <div>
+          <h5 style="font-family:var(--font-mono);color:var(--neon-cyan);margin-bottom:8px;">1. Supervisor PM2 (Estado, logs y reinicio)</h5>
+          <div class="terminal-block">
+            <button class="btn-copy-code" onclick="copySnippet('pm2 status && pm2 save')">COPIAR</button>
+            <code>pm2 status          # Ver todos los 36 procesos<br>pm2 save            # Guardar estado actual para arranque<br>pm2 restart all     # Reiniciar toda la flota</code>
+          </div>
+        </div>
+
+        <div>
+          <h5 style="font-family:var(--font-mono);color:var(--neon-emerald);margin-bottom:8px;">2. Verificación de Puertos en Vivo (0 Colisiones)</h5>
+          <div class="terminal-block">
+            <button class="btn-copy-code" onclick="copySnippet('lsof -iTCP -sTCP:LISTEN -P -n')">COPIAR</button>
+            <code>lsof -iTCP -sTCP:LISTEN -P -n | grep -E 'node|python|cloudflared|ollama'</code>
+          </div>
+        </div>
+
+        <div>
+          <h5 style="font-family:var(--font-mono);color:var(--neon-purple);margin-bottom:8px;">3. Tailscale VPN (Red Mesh 100.100.2.10)</h5>
+          <div class="terminal-block">
+            <button class="btn-copy-code" onclick="copySnippet('/Applications/Tailscale.app/Contents/MacOS/Tailscale status')">COPIAR</button>
+            <code>tailscale status    # Ver dispositivos conectados (Redmi, iPhone, VPS)<br>tailscale ip -4     # Debe devolver: 100.100.2.10</code>
+          </div>
+        </div>
+
+        <div>
+          <h5 style="font-family:var(--font-mono);color:var(--neon-amber);margin-bottom:8px;">4. Solución PostgreSQL para cuentos-magicos-backend</h5>
+          <div class="terminal-block">
+            <button class="btn-copy-code" onclick="copySnippet('brew services start postgresql@14 || open -a Postgres')">COPIAR</button>
+            <code># Opción 1: Levantar Postgres.app o brew services<br>brew services start postgresql@14<br>pm2 restart cuentos-magicos-backend<br><br># Opción 2: Cambiar config.py a la URL de Supabase</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Element -->
+  <div class="toast" id="toast">
+    <svg style="width:18px;height:18px;color:var(--neon-cyan);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    <span id="toastMsg">Enlace copiado al portapapeles</span>
+  </div>
+
+  <!-- Embedded Services Data & Application Logic -->
+  <script>
+    let SERVICES = [
+  {
+    "id": "agent-builder-pro",
+    "name": "AI Agent Builder PRO",
+    "port": 5556,
+    "tailscaleUrl": "http://100.100.2.10:5556",
+    "localUrl": "http://localhost:5556",
+    "category": "ai",
+    "type": "Visual LLM Studio",
+    "pm2": "AGENT-BUILDER",
+    "description": "Estudio visual avanzado para entrenamiento, asignación de herramientas y despliegue de agentes inteligentes.",
+    "tags": [
+      "Agent Studio",
+      "LLM Workflows",
+      "Prompt Chains",
+      "Visual UI"
+    ],
+    "status": "online",
+    "accentColor": "#0ea5e9",
+    "accentRgb": "14, 165, 233"
+  },
+  {
+    "id": "agent-forge",
+    "name": "Agent Forge Studio",
+    "port": 5555,
+    "tailscaleUrl": "http://100.100.2.10:5555",
+    "localUrl": "http://localhost:5555",
+    "category": "ai",
+    "type": "Agent Designer UI",
+    "pm2": "AGENT-PREMIUM",
+    "description": "Interfaz de usuario para diseñar, configurar prompts de sistema y exportar arquitecturas de agentes autónomos.",
+    "tags": [
+      "Agent UI",
+      "System Prompt",
+      "AI Builder",
+      "Export"
+    ],
+    "status": "online",
+    "accentColor": "#06b6d4",
+    "accentRgb": "6, 182, 212"
+  },
+  {
+    "id": "cuentos-magicos",
+    "name": "Cuentos Mágicos",
+    "port": 6012,
+    "tailscaleUrl": "http://100.100.2.10:6012",
+    "localUrl": "http://localhost:6012",
+    "category": "ai",
+    "type": "React + FastAPI + OpenAI",
+    "pm2": "CUENTOS-MAGICOS-UI",
+    "description": "Generador de cuentos infantiles personalizados mediante Inteligencia Artificial con ilustraciones y narración.",
+    "tags": [
+      "Generative AI",
+      "Stories",
+      "Kids",
+      "OpenAI"
+    ],
+    "status": "online",
+    "accentColor": "#818cf8",
+    "accentRgb": "129, 140, 248",
+    "staticPath": "apps/cuentos-magicos/"
+  },
+  {
+    "id": "jartosdto",
+    "name": "JartosDTo",
+    "port": 6016,
+    "tailscaleUrl": "http://100.100.2.10:6016",
+    "localUrl": "http://localhost:6016",
+    "category": "ai",
+    "type": "Next.js 14 + Ollama + Tailscale",
+    "pm2": "JARTOSDTO-UI",
+    "description": "Tu asistente Senior IT gruñón y sarcástico. Chat conversacional con LLMs locales.",
+    "tags": [
+      "IT Assistant",
+      "Ollama",
+      "Chat",
+      "Tailscale"
+    ],
+    "status": "online",
+    "accentColor": "#475569",
+    "accentRgb": "71, 85, 105",
+    "staticPath": "apps/jartosdto/"
+  },
+  {
+    "id": "logisearch",
+    "name": "LogiSearch AI",
+    "port": 6006,
+    "tailscaleUrl": "http://100.100.2.10:6006",
+    "localUrl": "http://localhost:6006",
+    "category": "ai",
+    "type": "React + Tailwind + Supabase",
+    "pm2": "LOGISEARCH",
+    "description": "Motor de búsqueda logística inteligente. Calcula rutas óptimas, costes y genera RFQs con IA.",
+    "tags": [
+      "Logistics",
+      "AI Search",
+      "RFQs",
+      "Supabase"
+    ],
+    "status": "online",
+    "accentColor": "#00b4d8",
+    "accentRgb": "0, 180, 216",
+    "staticPath": "apps/logisearch/"
+  },
+  {
+    "id": "msbross",
+    "name": "MSBrOSs",
+    "port": 8005,
+    "tailscaleUrl": "http://100.100.2.10:8005/",
+    "localUrl": "http://localhost:8005/",
+    "category": "ai",
+    "type": "React + FastAPI + Multi-LLM",
+    "pm2": "msbross-backend",
+    "description": "Interfaz web holográfica del asistente conversacional MSBrOSs con visualizador de espectro sonoro reactivo en tiempo real.",
+    "tags": [
+      "Voice UI",
+      "MSBrOSs AI",
+      "Canvas Audio",
+      "Neural Speech"
+    ],
+    "status": "online",
+    "accentColor": "#00f0ff",
+    "accentRgb": "0, 240, 255"
+  },
+  {
+    "id": "multi-agent-orch",
+    "name": "Multi-Agent Orchestrator",
+    "port": 5557,
+    "tailscaleUrl": "http://100.100.2.10:5557",
+    "localUrl": "http://localhost:5557",
+    "category": "ai",
+    "type": "PWA Swarm Orchestrator",
+    "pm2": "MULTI-AGENT-ORCH",
+    "description": "Consola de control PWA para orquestación de enjambres multi-agente, consenso y distribución de tareas.",
+    "tags": [
+      "PWA",
+      "Swarm",
+      "Consensus",
+      "Multi-Agent"
+    ],
+    "status": "online",
+    "accentColor": "#38bdf8",
+    "accentRgb": "56, 189, 248"
+  },
+  {
+    "id": "nikolina",
+    "name": "Nikolina AI",
+    "port": 6014,
+    "tailscaleUrl": "http://100.100.2.10:6014",
+    "localUrl": "http://localhost:6014",
+    "category": "ai",
+    "type": "LiveKit Agents + Gemini 2.0",
+    "pm2": "NIKOLINA-UI",
+    "description": "Asistente virtual de voz en tiempo real con Google STT/TTS y Gemini 2.0 Flash vía LiveKit Agents.",
+    "tags": [
+      "Voice",
+      "LiveKit",
+      "Gemini",
+      "Real-time"
+    ],
+    "status": "online",
+    "accentColor": "#6366f1",
+    "accentRgb": "99, 102, 241",
+    "staticPath": "apps/livekit-nikolina/"
+  },
+  {
+    "id": "prompt-generator",
+    "name": "PromptForge Studio",
+    "port": 9123,
+    "tailscaleUrl": "http://100.100.2.10:9123",
+    "localUrl": "http://localhost:9123",
+    "category": "ai",
+    "type": "Fastify + Next.js PWA",
+    "pm2": "PROMPT-GENERATOR",
+    "description": "Compilador cognitivo de prompts multi-proveedor con 17 motores de IA integrados y optimización neural de instrucciones.",
+    "tags": [
+      "PWA",
+      "Prompt AI",
+      "Fastify",
+      "17 Motores IA"
+    ],
+    "status": "online",
+    "accentColor": "#22d3ee",
+    "accentRgb": "34, 211, 238"
+  },
+  {
+    "id": "traductor-pro",
+    "name": "Traductor Pro",
+    "port": 6011,
+    "tailscaleUrl": "http://100.100.2.10:6011",
+    "localUrl": "http://localhost:6011",
+    "category": "ai",
+    "type": "React + Tailwind + DeepL API",
+    "pm2": "TRADUCTOR-PRO-UI",
+    "description": "Traductor neural multi-idioma de alta precisión con API DeepL REST integrada.",
+    "tags": [
+      "Translation",
+      "DeepL",
+      "Neural",
+      "Language"
+    ],
+    "status": "online",
+    "accentColor": "#2563eb",
+    "accentRgb": "37, 99, 235",
+    "staticPath": "apps/traductor-pro/"
+  },
+  {
+    "id": "atenea",
+    "name": "Web Atenea",
+    "port": 6013,
+    "tailscaleUrl": "http://100.100.2.10:6013",
+    "localUrl": "http://localhost:6013",
+    "category": "business",
+    "type": "HTML5 + CSS3 + Vanilla JS",
+    "pm2": "ATENEA-UI",
+    "description": "Web y sistema de gestión digital para Restaurante Atenea con carta, pedidos y reservas.",
+    "tags": [
+      "Restaurant",
+      "Food",
+      "Reservations",
+      "Management"
+    ],
+    "status": "online",
+    "accentColor": "#e11d48",
+    "accentRgb": "225, 29, 72",
+    "staticPath": "apps/web-restaurante-atenea/"
+  },
+  {
+    "id": "cuadrante-horarios",
+    "name": "Cuadrante de Horarios",
+    "port": 5178,
+    "tailscaleUrl": "http://100.100.2.10:5178",
+    "localUrl": "http://localhost:5178",
+    "category": "business",
+    "type": "Interactive Planner SPA",
+    "pm2": "CUADRANTE-HORARIOS",
+    "description": "Gestor interactivo visual de cuadrantes laborales, turnos rotativos, vacaciones y control de dotaciones operativas.",
+    "tags": [
+      "Planificador",
+      "Turnos Rotativos",
+      "Calendario",
+      "Excel Sync"
+    ],
+    "status": "online",
+    "accentColor": "#f97316",
+    "accentRgb": "249, 115, 22"
+  },
+  {
+    "id": "edelweiss",
+    "name": "Edelweiss",
+    "port": 6004,
+    "tailscaleUrl": "http://100.100.2.10:6004",
+    "localUrl": "http://localhost:6004",
+    "category": "business",
+    "type": "Next.js 14 + Tailwind + Prisma",
+    "pm2": "EDELWEISS",
+    "description": "Plataforma administrativa Edelweiss con gestión de usuarios, dashboard analítico y base de datos PostgreSQL.",
+    "tags": [
+      "Next.js",
+      "Prisma",
+      "PostgreSQL",
+      "Dashboard"
+    ],
+    "status": "online",
+    "accentColor": "#fbbf24",
+    "accentRgb": "251, 191, 36",
+    "staticPath": "apps/edelweiss/"
+  },
+  {
+    "id": "gas-station",
+    "name": "Gas Station Dashboard",
+    "port": 6009,
+    "tailscaleUrl": "http://100.100.2.10:6009",
+    "localUrl": "http://localhost:6009",
+    "category": "business",
+    "type": "React PWA + FastAPI + SQLite",
+    "pm2": "GAS-STATION-UI",
+    "description": "Panel de monitorización PWA para red de estaciones de servicio con control de surtidores y stock.",
+    "tags": [
+      "PWA",
+      "Dashboard",
+      "Gas Station",
+      "FastAPI"
+    ],
+    "status": "online",
+    "accentColor": "#ef4444",
+    "accentRgb": "239, 68, 68",
+    "staticPath": "apps/gas-station/"
+  },
+  {
+    "id": "industrialpro",
+    "name": "Industrial Pro",
+    "port": 6010,
+    "tailscaleUrl": "http://100.100.2.10:6010",
+    "localUrl": "http://localhost:6010",
+    "category": "business",
+    "type": "React + Tailwind + FastAPI",
+    "pm2": "INDUSTRIALPRO-UI",
+    "description": "Plataforma de gestión logística e industrial con control de inventario y trazabilidad de productos.",
+    "tags": [
+      "Industrial",
+      "B2B",
+      "Logistics",
+      "PostgreSQL"
+    ],
+    "status": "online",
+    "accentColor": "#ea580c",
+    "accentRgb": "234, 88, 12",
+    "staticPath": "apps/industrialpro/"
+  },
+  {
+    "id": "mapfre-infocol",
+    "name": "Mapfre",
+    "port": 3333,
+    "tailscaleUrl": "http://100.100.2.10:3333/app/mapfre",
+    "localUrl": "http://localhost:3333/app/mapfre",
+    "category": "business",
+    "type": "Next.js SSR Suite",
+    "pm2": "mapfre-infocol",
+    "description": "Aplicación web integral para digitalización, OCR, validación de partes periciales y automatización de siniestros Mapfre.",
+    "tags": [
+      "Next.js",
+      "Peritajes",
+      "Mapfre Suite",
+      "OCR Partes"
+    ],
+    "status": "online",
+    "accentColor": "#dc2626",
+    "accentRgb": "220, 38, 38"
+  },
+  {
+    "id": "perfume-ean",
+    "name": "PERFUME EAN",
+    "port": 4000,
+    "tailscaleUrl": "http://100.100.2.10:4000",
+    "localUrl": "http://localhost:4000",
+    "category": "business",
+    "type": "Next.js Luxury Catalog",
+    "pm2": "PERFUME-EAN",
+    "description": "Buscador y catálogo digital de fragancias premium con escáner de códigos de barras EAN-13, notas olfativas y stock.",
+    "tags": [
+      "Next.js",
+      "EAN-13 Scanner",
+      "Alta Gama",
+      "Catálogo"
+    ],
+    "status": "online",
+    "accentColor": "#f59e0b",
+    "accentRgb": "245, 158, 11"
+  },
+  {
+    "id": "perfume-trading",
+    "name": "Perfume Trading Luxury ERP",
+    "port": 3011,
+    "tailscaleUrl": "http://100.100.2.10:3011/app/perfume-trading/",
+    "localUrl": "http://localhost:3011/app/perfume-trading/",
+    "category": "business",
+    "type": "Next.js Commercial ERP",
+    "pm2": "perfume-trading",
+    "description": "ERP y panel comercial para importación/exportación, gestión de lotes y cotización de perfumería exclusiva al por mayor.",
+    "tags": [
+      "Next.js",
+      "B2B Trading",
+      "ERP Fragancias",
+      "Luxury"
+    ],
+    "status": "online",
+    "accentColor": "#d97706",
+    "accentRgb": "217, 119, 6"
+  },
+  {
+    "id": "teringo-inbox",
+    "name": "Teringo Neural Cockpit",
+    "port": 5179,
+    "tailscaleUrl": "http://100.100.2.10:5179",
+    "localUrl": "http://localhost:5179",
+    "category": "business",
+    "type": "Enterprise Helpdesk SPA",
+    "pm2": "TERINGO",
+    "description": "Panel central para clasificación inteligente de tickets, bandeja de entrada automatizada y soporte al cliente.",
+    "tags": [
+      "Helpdesk",
+      "Inbox AI",
+      "Enterprise",
+      "Frontier V.2026"
+    ],
+    "status": "online",
+    "accentColor": "#fb923c",
+    "accentRgb": "251, 146, 60"
+  },
+  {
+    "id": "beca-laud",
+    "name": "Beca Laud Suite Principal",
+    "port": 5173,
+    "tailscaleUrl": "http://100.100.2.10:5173",
+    "localUrl": "http://localhost:5173",
+    "category": "creative",
+    "type": "Vite + React Music Suite",
+    "pm2": "BECA_LAUD",
+    "description": "Portal interactivo de la academia y propuesta musical de Beca Laud con catálogo y reproductor de audio.",
+    "tags": [
+      "Vite",
+      "React",
+      "Catálogo Musical",
+      "Reproductor"
+    ],
+    "status": "online",
+    "accentColor": "#e879f9",
+    "accentRgb": "232, 121, 249"
+  },
+  {
+    "id": "beca-laud-band",
+    "name": "Beca Laud Band Live",
+    "port": 5174,
+    "tailscaleUrl": "http://100.100.2.10:5174",
+    "localUrl": "http://localhost:5174",
+    "category": "creative",
+    "type": "Landing Page Interactiva",
+    "pm2": "BECA_LAUD_BAND",
+    "description": "Landing page promocional interactiva para contratación de repertorio musical en eventos y ceremonias.",
+    "tags": [
+      "Landing Page",
+      "Música en Vivo",
+      "Bodas & Eventos",
+      "Audio"
+    ],
+    "status": "online",
+    "accentColor": "#f472b6",
+    "accentRgb": "244, 114, 182"
+  },
+  {
+    "id": "beca-laud-crm",
+    "name": "Beca Laud CRM Alumnos",
+    "port": 5175,
+    "tailscaleUrl": "http://100.100.2.10:5175",
+    "localUrl": "http://localhost:5175",
+    "category": "creative",
+    "type": "Academy Management CRM",
+    "pm2": "BECA_LAUD_CRM",
+    "description": "Panel de administración para gestión de matrículas, alumnos, instrumentos y cobros de la academia.",
+    "tags": [
+      "CRM",
+      "Gestión Alumnos",
+      "Dashboard",
+      "Matrículas"
+    ],
+    "status": "online",
+    "accentColor": "#fb7185",
+    "accentRgb": "251, 113, 133"
+  },
+  {
+    "id": "cv-portfolio",
+    "name": "CV Portfolio",
+    "port": 6001,
+    "tailscaleUrl": "http://100.100.2.10:6001",
+    "localUrl": "http://localhost:6001",
+    "category": "creative",
+    "type": "React + Tailwind + Framer Motion",
+    "pm2": "CV-PORTFOLIO",
+    "description": "Portfolio y currículum interactivo personal con animaciones fluidas y diseño responsive premium.",
+    "tags": [
+      "Portfolio",
+      "CV",
+      "Framer Motion",
+      "Frontend"
+    ],
+    "status": "online",
+    "accentColor": "#c084fc",
+    "accentRgb": "192, 132, 252",
+    "staticPath": "apps/cv/"
+  },
+  {
+    "id": "expositator-rte",
+    "name": "Expositator RTE",
+    "port": 6005,
+    "tailscaleUrl": "http://100.100.2.10:6005",
+    "localUrl": "http://localhost:6005",
+    "category": "creative",
+    "type": "React PWA + Speech Recognition",
+    "pm2": "EXPOSITATOR",
+    "description": "Editor de texto enriquecido PWA con reconocimiento de voz nativo para dictado y presentaciones.",
+    "tags": [
+      "PWA",
+      "Editor RTE",
+      "Speech",
+      "Content"
+    ],
+    "status": "online",
+    "accentColor": "#a78bfa",
+    "accentRgb": "167, 139, 250",
+    "staticPath": "apps/expositator-rte/"
+  },
+  {
+    "id": "tarot-maya",
+    "name": "TAROT MAYA Tzolk'in",
+    "port": 5177,
+    "tailscaleUrl": "http://100.100.2.10:5177",
+    "localUrl": "http://localhost:5177",
+    "category": "creative",
+    "type": "Vite SPA + CSS Neón",
+    "pm2": "TAROT-MAYA",
+    "description": "Oráculo sagrado maya interactivo con tiradas de cartas animadas, efectos luminosos neón y arquetipos del calendario maya.",
+    "tags": [
+      "Vite SPA",
+      "Neón UI",
+      "Tiradas 3D",
+      "Arquetipos"
+    ],
+    "status": "online",
+    "accentColor": "#f43f5e",
+    "accentRgb": "244, 63, 94"
+  },
+  {
+    "id": "tarot-rws",
+    "name": "TAROT RWS Manual",
+    "port": 6017,
+    "tailscaleUrl": "http://100.100.2.10:6017",
+    "localUrl": "http://localhost:6017",
+    "category": "creative",
+    "type": "PWA + Tailwind + Oráculo RWS",
+    "pm2": "TAROT-RWS",
+    "description": "Manual interactivo completo de 78 cartas del Tarot Rider-Waite-Smith con simbología, notas de Waite y laboratorio de tiradas aleatorias.",
+    "tags": [
+      "Tarot 78 Cartas",
+      "Rider-Waite",
+      "Laboratorio Tiradas",
+      "PWA Offline"
+    ],
+    "status": "online",
+    "accentColor": "#d4af37",
+    "accentRgb": "212, 175, 55",
+    "staticPath": "apps/tarot-rws/",
+    "webUrl": "https://manu-alvarez.github.io/tarot-rws/"
+  },
+  {
+    "id": "tu-energia-maya",
+    "name": "Tu Energía Maya",
+    "port": 5176,
+    "tailscaleUrl": "http://100.100.2.10:5176",
+    "localUrl": "http://localhost:5176",
+    "category": "creative",
+    "type": "Vite + React + CSS Modules",
+    "pm2": "TU-ENERGIA-MAYA",
+    "description": "Aplicación esotérica interactiva para el cálculo del Kin Maya diario, sellos solares sagrados y tonos galácticos.",
+    "tags": [
+      "Vite",
+      "React",
+      "Tzolk'in",
+      "Misticismo"
+    ],
+    "status": "online",
+    "accentColor": "#eab308",
+    "accentRgb": "234, 179, 8"
+  },
+  {
+    "id": "app-generator",
+    "name": "App Generator",
+    "port": 6002,
+    "tailscaleUrl": "http://100.100.2.10:6002",
+    "localUrl": "http://localhost:6002",
+    "category": "devtools",
+    "type": "React 19 + Vite + Gemini Pro",
+    "pm2": "APP-GENERATOR",
+    "description": "Generador de aplicaciones completas con scaffolding inteligente e integración con Gemini Pro API.",
+    "tags": [
+      "React 19",
+      "Vite",
+      "Code Gen",
+      "Gemini API"
+    ],
+    "status": "online",
+    "accentColor": "#a3e635",
+    "accentRgb": "163, 230, 53",
+    "staticPath": "apps/app-generator/"
+  },
+  {
+    "id": "combipro",
+    "name": "CombiPro",
+    "port": 6003,
+    "tailscaleUrl": "http://100.100.2.10:6003",
+    "localUrl": "http://localhost:6003",
+    "category": "devtools",
+    "type": "React 19 + Material-UI",
+    "pm2": "COMBIPRO",
+    "description": "Herramienta avanzada de análisis y optimización combinatoria con interfaz Material Design.",
+    "tags": [
+      "React 19",
+      "MUI",
+      "Math",
+      "Combinations"
+    ],
+    "status": "online",
+    "accentColor": "#34d399",
+    "accentRgb": "52, 211, 153",
+    "staticPath": "apps/combipro/"
+  },
+  {
+    "id": "iaprod-os",
+    "name": "IAProd OS",
+    "port": 6015,
+    "tailscaleUrl": "http://100.100.2.10:6015",
+    "localUrl": "http://localhost:6015",
+    "category": "devtools",
+    "type": "React + Vite + FastAPI + Ollama",
+    "pm2": "IAPROD-OS",
+    "description": "Sistema operativo de productividad IA con terminal integrada, pipeline de LLMs locales y automatización.",
+    "tags": [
+      "OS",
+      "Ollama",
+      "FastAPI",
+      "Production"
+    ],
+    "status": "online",
+    "accentColor": "#14b8a6",
+    "accentRgb": "20, 184, 166",
+    "staticPath": "apps/iaprod-os/"
+  },
+  {
+    "id": "intercompiler",
+    "name": "Intercompiler 3D",
+    "port": 3000,
+    "tailscaleUrl": "http://100.100.2.10:3000",
+    "localUrl": "http://localhost:3000",
+    "category": "devtools",
+    "type": "Next.js 16 + Three.js 3D",
+    "pm2": "INTERCOMPILER",
+    "description": "Estudio visual de ingeniería de repositorios GitHub con grafo tridimensional interactivo y mapa semántico de dependencias.",
+    "tags": [
+      "Next.js 16",
+      "Three.js 3D",
+      "GitHub Intel",
+      "Dependency Graph"
+    ],
+    "status": "online",
+    "accentColor": "#059669",
+    "accentRgb": "5, 150, 105"
+  },
+  {
+    "id": "moko-tools",
+    "name": "Moko Tools",
+    "port": 6007,
+    "tailscaleUrl": "http://100.100.2.10:6007",
+    "localUrl": "http://localhost:6007",
+    "category": "devtools",
+    "type": "Vanilla JS + HTML5 + CSS3",
+    "pm2": "MOKO-TOOLS",
+    "description": "Colección de herramientas técnicas para desarrollo: generadores, convertidores, validadores y utilidades web.",
+    "tags": [
+      "Vanilla JS",
+      "Tools",
+      "Dev Utils",
+      "Web"
+    ],
+    "status": "online",
+    "accentColor": "#22c55e",
+    "accentRgb": "34, 197, 94",
+    "staticPath": "apps/moko-tools/"
+  },
+  {
+    "id": "omnidev-os",
+    "name": "OmniDev OS",
+    "port": 8765,
+    "tailscaleUrl": "http://100.100.2.10:8765",
+    "localUrl": "http://localhost:8765",
+    "category": "devtools",
+    "type": "Cognitive Web OS",
+    "pm2": "OMNIDEV-OS",
+    "description": "Sistema operativo web cognitivo con terminal integrada, editor de código colaborativo y factoría de desarrollo agéntico.",
+    "tags": [
+      "Web OS",
+      "SDLC Factory",
+      "Terminal Web",
+      "Full-Stack"
+    ],
+    "status": "online",
+    "accentColor": "#0d9488",
+    "accentRgb": "13, 148, 136"
+  },
+  {
+    "id": "taskflow",
+    "name": "TaskFlow Pro",
+    "port": 6008,
+    "tailscaleUrl": "http://100.100.2.10:6008",
+    "localUrl": "http://localhost:6008",
+    "category": "devtools",
+    "type": "React + Tailwind + Firebase",
+    "pm2": "TASKFLOW-PRO",
+    "description": "Gestor avanzado de tareas y flujos de trabajo con sincronización Firebase en tiempo real.",
+    "tags": [
+      "Tasks",
+      "Firebase",
+      "Realtime",
+      "Workflow"
+    ],
+    "status": "online",
+    "accentColor": "#10b981",
+    "accentRgb": "16, 185, 129",
+    "staticPath": "apps/taskflow/"
+  },
+  {
+    "id": "uiep",
+    "name": "UIEP Platform",
+    "port": 5180,
+    "tailscaleUrl": "http://100.100.2.10:5180",
+    "localUrl": "http://localhost:5180",
+    "category": "devtools",
+    "type": "Next.js 15 Platform",
+    "pm2": "UIEP",
+    "description": "Plataforma de ingeniería cognitiva para gestión de entidades, agentes autónomos, autenticación y plugins en tiempo real.",
+    "tags": [
+      "Next.js 15",
+      "Entity Registry",
+      "Auth System",
+      "Design Engine"
+    ],
+    "status": "online",
+    "accentColor": "#16a34a",
+    "accentRgb": "22, 163, 74"
+  }
+];
+    // Auto-sync with live servicios.json if served over HTTP
+    if (window.location.protocol.startsWith('http')) {
+      fetch('servicios.json')
+        .then(r => r.json())
+        .then(data => {
+          if (Array.isArray(data) && data.length > 0) {
+            SERVICES = data;
+            renderServices();
+            updateFilterCounts();
+          }
+        })
+        .catch(err => console.log('Static fallback SERVICES active'));
+    }
+
+
+    // Current State
+    let currentEnv = 'tailscale'; // 'tailscale' | 'localhost' | 'cloudflare'
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let soundEnabled = true;
+
+    // Web Audio Synthesizer (Zero asset dependencies, procedural sci-fi audio)
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'hover') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(840, now + 0.04);
+          gain.gain.setValueAtTime(0.015, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.04);
+          osc.start(now);
+          osc.stop(now + 0.04);
+        } else if (type === 'click') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(260, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.09);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.start(now);
+          osc.stop(now + 0.09);
+        } else if (type === 'switch') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(660, now + 0.04);
+          osc.frequency.setValueAtTime(880, now + 0.08);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+          osc.start(now);
+          osc.stop(now + 0.14);
+        } else if (type === 'toast') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, now);
+          osc.frequency.setValueAtTime(880, now + 0.06);
+          gain.gain.setValueAtTime(0.05, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        }
+      } catch (e) {
+        // audio might be blocked before first interaction
+      }
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      const label = document.getElementById('sfx-label');
+      const btn = document.getElementById('sfx-toggle');
+      if (soundEnabled) {
+        label.innerText = 'SFX: ON';
+        btn.classList.add('active');
+        playSound('click');
+        showToast('Efectos de sonido activados');
+      } else {
+        label.innerText = 'SFX: MUTE';
+        btn.classList.remove('active');
+        showToast('Efectos de sonido silenciados');
+      }
+    }
+
+    // Compute effective URL based on Environment
+    function getServiceUrl(service) {
+      if (currentEnv === 'web') {
+        if (service.webUrl) return service.webUrl;
+        if (service.staticPath) return service.staticPath;
+        return service.cloudflareUrl || service.tailscaleUrl || `http://100.100.2.10:${service.port}`;
+      } else if (currentEnv === 'tailscale') {
+        return service.tailscaleUrl || `http://100.100.2.10:${service.port}`;
+      } else if (currentEnv === 'localhost') {
+        return service.localUrl || `http://localhost:${service.port}`;
+      } else if (currentEnv === 'cloudflare') {
+        return service.cloudflareUrl || service.tailscaleUrl || `http://100.100.2.10:${service.port}`;
+      }
+      return service.tailscaleUrl || `http://100.100.2.10:${service.port}`;
+    }
+
+    // Environment Switcher
+    function switchEnv(env) {
+      currentEnv = env;
+      playSound('switch');
+      document.querySelectorAll('.env-btn').forEach(btn => {
+        if (btn.dataset.env === env) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      renderServices();
+      const label = env === 'web' ? 'GITHUB PAGES / WEB' : env.toUpperCase();
+      showToast(`Entorno cambiado a ${label}`);
+    }
+
+    // Category Filter
+    function setCategory(cat) {
+      currentCategory = cat;
+      playSound('click');
+      document.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+      renderServices();
+    }
+
+    // Search Input
+    function handleSearch() {
+      searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+      renderServices();
+    }
+
+    // Render Services Grid
+        function updateFilterCounts() {
+      const elAll = document.getElementById('count-all');
+      const elAi = document.getElementById('count-ai');
+      const elBiz = document.getElementById('count-business');
+      const elCre = document.getElementById('count-creative');
+      const elDev = document.getElementById('count-devtools');
+      if (elAll) elAll.innerText = SERVICES.length;
+      if (elAi) elAi.innerText = SERVICES.filter(s => s.category === 'ai').length;
+      if (elBiz) elBiz.innerText = SERVICES.filter(s => s.category === 'business').length;
+      if (elCre) elCre.innerText = SERVICES.filter(s => s.category === 'creative').length;
+      if (elDev) elDev.innerText = SERVICES.filter(s => s.category === 'devtools').length;
+      const elTot = document.getElementById('totalAppsVal');
+      if (elTot) elTot.innerText = SERVICES.length;
+      const elRes = document.getElementById('appsResultCount');
+      if (elRes) {
+        const online = SERVICES.filter(s => s.status !== 'stopped' && s.status !== 'errored').length;
+        elRes.innerHTML = `<strong>${SERVICES.length}</strong> aplicaciones · ${online} online`;
+      }
+    }
+
+    function renderServices() {
+      updateFilterCounts();
+      const grid = document.getElementById('servicesGrid');
+      grid.innerHTML = '';
+
+      const filtered = SERVICES.filter(s => {
+        // Category check
+        if (currentCategory !== 'all' && s.category !== currentCategory) return false;
+
+        // Search check
+        if (searchQuery) {
+          const matchName = s.name.toLowerCase().includes(searchQuery);
+          const matchDisplay = (s.displayName || '').toLowerCase().includes(searchQuery);
+          const matchPort = String(s.port).includes(searchQuery);
+          const matchDesc = (s.description || '').toLowerCase().includes(searchQuery);
+          const matchTags = (s.tags || []).some(t => t.toLowerCase().includes(searchQuery));
+          const matchType = (s.type || '').toLowerCase().includes(searchQuery);
+          return matchName || matchDisplay || matchPort || matchDesc || matchTags || matchType;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        const elResEmpty = document.getElementById('appsResultCount');
+        if (elResEmpty) elResEmpty.innerHTML = `<strong>0</strong> resultados para "${searchQuery}"`;
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-dim); font-family: var(--font-mono);">
+            <svg style="width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.5;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <p>No se encontraron servicios que coincidan con "${searchQuery}"</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(service => {
+        const targetUrl = getServiceUrl(service);
+        const hasUrl = targetUrl && targetUrl !== '#';
+        const isErrored = service.status === 'errored';
+        const isStopped = service.status === 'stopped';
+        let statusBadgeClass = 'online';
+        let statusLabel = 'Online';
+        if (isErrored) {
+          statusBadgeClass = 'errored';
+          statusLabel = 'Requiere BD';
+        } else if (isStopped) {
+          statusBadgeClass = 'stopped';
+          statusLabel = 'Pausado (BD)';
+        }
+
+        // Accent color mapping per category fallback
+        const categoryColors = {
+          ai:       { color: 'var(--neon-purple)',  rgb: '168, 85, 247' },
+          business: { color: 'var(--neon-amber)',   rgb: '245, 158, 11' },
+          creative: { color: '#ec4899',             rgb: '236, 72, 153' },
+          devtools: { color: 'var(--neon-emerald)', rgb: '16, 185, 129' },
+        };
+        const catStyle = categoryColors[service.category] || { color: 'var(--neon-cyan)', rgb: '0, 240, 255' };
+        let accentColor = service.accentColor || catStyle.color;
+        let accentRgb = service.accentRgb || catStyle.rgb;
+
+        const card = document.createElement('article');
+        card.className = 'service-card';
+        card.style.setProperty('--card-accent', accentColor);
+        card.style.setProperty('--accent-rgb', accentRgb);
+        card.onmouseenter = () => playSound('hover');
+
+        card.innerHTML = `
+          <div>
+            <div class="card-top">
+              <div class="port-pill ${service.port ? '' : 'no-port'}">
+                ${service.port ? `:${service.port}` : 'DAEMON'}
+              </div>
+              <div class="status-badge ${statusBadgeClass}">
+                <span class="status-pulse"></span>
+                <span>${statusLabel}</span>
+              </div>
+            </div>
+
+            <div class="card-heading">
+              <h3 class="card-title">${service.displayName || service.name}</h3>
+              <div class="card-pm2-sub">PM2: ${service.pm2 || service.pm2_name || "N/A"} &bull; ${service.type}</div>
+            </div>
+
+            <p class="card-desc">${service.description}</p>
+
+            <div class="card-tags">
+              ${(service.tags || []).map(tag => `<span class="tag-badge">${tag}</span>`).join('')}
+            </div>
+          </div>
+
+          <div class="card-actions">
+            ${hasUrl ? `
+              <a 
+                href="${targetUrl}" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="btn-launch"
+                onclick="playSound('click')"
+              >
+                <span>ABRIR APLICACIÓN</span>
+                <svg style="width:14px;height:14px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            ` : `
+              <button class="btn-launch" style="opacity:0.5;cursor:not-allowed;" disabled>
+                <span>SIN PUERTO WEB</span>
+              </button>
+            `}
+
+            ${hasUrl ? `
+              <button 
+                class="btn-icon" 
+                title="Copiar URL (${currentEnv})"
+                onclick="copyToClipboard('${targetUrl}')"
+              >
+                <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            ` : ''}
+
+            <button 
+              class="btn-icon" 
+              title="Inspeccionar Diagnóstico & Vista Previa"
+              onclick="inspectService('${service.id}')"
+            >
+              <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      const elResDone = document.getElementById('appsResultCount');
+      if (elResDone) {
+        if (currentCategory !== 'all' || searchQuery) {
+          elResDone.innerHTML = `<strong>${filtered.length}</strong> de ${SERVICES.length} aplicaciones`;
+        } else {
+          const onlineDone = SERVICES.filter(s => s.status !== 'stopped' && s.status !== 'errored').length;
+          elResDone.innerHTML = `<strong>${SERVICES.length}</strong> aplicaciones · ${onlineDone} online`;
+        }
+      }
+    }
+
+    // Clipboard Copy
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        playSound('toast');
+        showToast(`Copiado: ${text}`);
+      });
+    }
+
+    function copySnippet(code) {
+      navigator.clipboard.writeText(code).then(() => {
+        playSound('toast');
+        showToast('Comando copiado al portapapeles');
+      });
+    }
+
+    // Toast Function
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2600);
+    }
+
+    // Service Inspector Modal with Live Preview Frame & Diagnostic
+    function inspectService(id) {
+      const s = SERVICES.find(item => item.id === id);
+      if (!s) return;
+      playSound('click');
+
+      document.getElementById('modalTitle').innerText = `${s.displayName || s.name} // Diagnóstico & Inspector`;
+      const body = document.getElementById('modalBody');
+      const tailscale = s.tailscaleUrl || 'N/A';
+      const local = s.localUrl || 'N/A';
+      const cloudflare = s.cloudflareUrl || 'Sin ruta pública configurada';
+      const effectiveUrl = getServiceUrl(s);
+      const isWeb = effectiveUrl && effectiveUrl !== '#';
+
+      body.innerHTML = `
+        <div>
+          <h4 style="font-family:var(--font-mono);color:var(--neon-cyan);margin-bottom:6px;">Ubicación & Proceso</h4>
+          <p style="font-size:0.85rem;color:var(--text-muted);word-break:break-all;"><strong>Directorio:</strong> <code>${s.path || s.cwd || "N/A"}</code></p>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;"><strong>Proceso PM2:</strong> <code>${s.pm2 || s.pm2_name || "N/A"}</code> | <strong>Tipo:</strong> ${s.type} | <strong>Puerto:</strong> ${s.port || 'N/A'}</p>
+        </div>
+
+        <div>
+          <h4 style="font-family:var(--font-mono);color:var(--neon-emerald);margin-bottom:6px;">Endpoints de Red Disponibles</h4>
+          <ul style="list-style:none;font-size:0.85rem;line-height:1.8;">
+            <li>🌐 <strong>Tailscale VPN (100.100.2.10):</strong> <a href="${tailscale}" target="_blank" style="color:var(--neon-cyan);">${tailscale}</a></li>
+            <li>💻 <strong>Localhost (127.0.0.1):</strong> <a href="${local}" target="_blank" style="color:var(--neon-cyan);">${local}</a></li>
+            <li>☁️ <strong>Cloudflare Edge:</strong> <a href="${cloudflare}" target="_blank" style="color:var(--neon-cyan);">${cloudflare}</a></li>
+          </ul>
+        </div>
+
+        ${isWeb ? `
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <h4 style="font-family:var(--font-mono);color:var(--neon-cyan);">Previsualización en Vivo (${effectiveUrl})</h4>
+              <a href="${effectiveUrl}" target="_blank" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--neon-cyan);text-decoration:none;">Abrir en pestaña completa ↗</a>
+            </div>
+            <div class="preview-frame-container">
+              <div class="preview-frame-topbar">
+                <span>VISTA PREVIA &bull; ${effectiveUrl}</span>
+                <button onclick="document.getElementById('serviceIframe').src = '${effectiveUrl}'" style="background:transparent;border:none;color:var(--text-muted);cursor:pointer;font-family:var(--font-mono);font-size:0.7rem;">Recargar ⟳</button>
+              </div>
+              <iframe id="serviceIframe" class="preview-frame" src="${effectiveUrl}" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+            </div>
+          </div>
+        ` : ''}
+
+        <div>
+          <h4 style="font-family:var(--font-mono);color:var(--neon-purple);margin-bottom:8px;">Comandos CLI Rápidos</h4>
+          <div class="terminal-block">
+            <button class="btn-copy-code" onclick="copySnippet('pm2 logs ${s.pm2 || s.pm2_name || "N/A"} --lines 50')">COPIAR</button>
+            <code>pm2 logs ${s.pm2 || s.pm2_name || "N/A"} --lines 50     # Ver logs en vivo<br>pm2 restart ${s.pm2 || s.pm2_name || "N/A"}              # Reiniciar proceso</code>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('serviceModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('serviceModal').classList.remove('open');
+      const iframe = document.getElementById('serviceIframe');
+      if (iframe) iframe.src = 'about:blank';
+    }
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'serviceModal') closeModal();
+    }
+
+    function openTerminalModal() {
+      playSound('click');
+      document.getElementById('terminalModal').classList.add('open');
+    }
+    function closeTerminalModal() {
+      document.getElementById('terminalModal').classList.remove('open');
+    }
+    function closeTerminalOnBackdrop(e) {
+      if (e.target.id === 'terminalModal') closeTerminalModal();
+    }
+
+    // Global Keybindings (Cmd+K / / to search, Esc to close modals)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key === 'k')) {
+        if (document.activeElement.id !== 'searchInput') {
+          e.preventDefault();
+          document.getElementById('searchInput').focus();
+        }
+      } else if (e.key === 'Escape') {
+        closeModal();
+        closeTerminalModal();
+      }
+    });
+
+    // Quantum Particles & Interactive Net Canvas
+    function initCanvas() {
+      const canvas = document.getElementById('space-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      const particles = [];
+      const count = Math.min(Math.floor(w / 18), 75);
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          radius: Math.random() * 1.6 + 0.8,
+          color: Math.random() > 0.4 ? 'rgba(0, 240, 255,' : 'rgba(168, 85, 247,'
+        });
+      }
+
+      let mouse = { x: -1000, y: -1000 };
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      function loop() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Draw connections
+        for (let i = 0; i < particles.length; i++) {
+          const p1 = particles[i];
+
+          // Move
+          p1.x += p1.vx;
+          p1.y += p1.vy;
+
+          if (p1.x < 0) p1.x = w;
+          if (p1.x > w) p1.x = 0;
+          if (p1.y < 0) p1.y = h;
+          if (p1.y > h) p1.y = 0;
+
+          // Connect with nearby
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 120) {
+              const alpha = (1 - dist / 120) * 0.18;
+              ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+              ctx.lineWidth = 0.7;
+              ctx.beginPath();
+              ctx.moveTo(p1.x, p1.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          }
+
+          // Mouse proximity
+          const mdx = p1.x - mouse.x;
+          const mdy = p1.y - mouse.y;
+          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mdist < 140) {
+            const malpha = (1 - mdist / 140) * 0.4;
+            ctx.strokeStyle = `rgba(0, 240, 255, ${malpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+
+          // Draw particle
+          ctx.fillStyle = p1.color + '0.7)';
+          ctx.beginPath();
+          ctx.arc(p1.x, p1.y, p1.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(loop);
+      }
+
+      loop();
+    }
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      initCanvas();
+      // Auto-switch to web mode if hosted on GitHub Pages or public domain
+      if (window.location.hostname.includes('github.io') || (!['localhost', '127.0.0.1'].includes(window.location.hostname) && !window.location.hostname.startsWith('100.'))) {
+        switchEnv('web');
+      } else {
+        renderServices();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo-icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Traductor PRO — MSBross</title>
+    <style>
+      body, html { background: #050508; margin: 0; padding: 0; overflow-x: hidden; width: 100vw; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@300;400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/assets/index-Dc5kA1Uw.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DZ_wtYSs.css">
+  </head>
+  <body style="background: #050508;">
+    <div id="root"></div>
+    <script>
+      window.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+          e.preventDefault();
+          const token = window.prompt('MSBross Bóveda: Introduce el token maestro para activar el Modo Dios (LLM Proxy):');
+          if (token) {
+            localStorage.setItem('msbross_godmode_token', token);
+            alert('Modo Dios activado. Tus peticiones usarán el proxy seguro.');
+          } else if (token === '') {
+            localStorage.removeItem('msbross_godmode_token');
+            alert('Modo Dios desactivado. Usando claves públicas.');
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

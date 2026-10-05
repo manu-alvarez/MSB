@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manual de Tarot Rider-Waite-Smith</title>
+    <meta name="description" content="Manual interactivo completo del Tarot Rider-Waite-Smith. 78 cartas con significados, simbología, tiradas y práctica. Laboratorio de lectura con tirada aleatoria.">
+    
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/jpeg" href="img/Tarot%20RWS.jpeg">
+    <link rel="shortcut icon" type="image/jpeg" href="img/Tarot%20RWS.jpeg">
+    <link rel="apple-touch-icon" href="img/Tarot%20RWS.jpeg">
+    <link rel="apple-touch-icon-precomposed" href="img/Tarot%20RWS.jpeg">
+    
+    <meta property="og:title" content="Tarot RWS - Manual y Tiradas">
+    <meta property="og:description" content="Manual interactivo completo del Tarot Rider-Waite-Smith. 78 cartas, tiradas y lectura sintética.">
+    <meta property="og:image" content="img/Tarot%20RWS.jpeg">
+    
+    <link rel="manifest" id="manifest-link">
+    <meta name="theme-color" content="#0a0914">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Tarot RWS">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        mystic: {
+                            900: '#0a0914', // Deep space dark
+                            800: '#1a162b', // Dark purple/blue
+                            700: '#2d1b4e', // Purple
+                            gold: '#d4af37', // Classic gold
+                            golddim: '#b5952f',
+                            text: '#e2e8f0',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0914;
+            background-image: url('img/mystic_background.jpg');
+            background-size: 600px;
+            background-repeat: repeat;
+            background-attachment: fixed;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            opacity: 0.85;
+            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+        }
+        @media (min-width: 768px) {
+            .hero-banner { height: 200px; }
+        }
+
+        /* Suit icon styling */
+        .suit-icon {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.15);
+        }
+
+        .card-img { width: 100px; min-width: 100px; height: auto; border: 2px solid rgba(212,175,55,0.3); object-fit: contain; }
+
+        /* Card back for lab */
+        .card-back-preview {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Drawn card expand */
+        .drawn-card { cursor: pointer; transition: all 0.3s ease; }
+        .drawn-card:hover { border-color: rgba(212, 175, 55, 0.8); transform: translateY(-2px); }
+        .drawn-card .card-detail { display: none; }
+        .drawn-card.expanded .card-detail { display: block; animation: fadeIn 0.3s ease; }
+        .drawn-card.expanded { background: linear-gradient(180deg, rgba(45, 27, 78, 0.5) 0%, rgba(10, 9, 20, 0.9) 100%); }
+
+        /* History entry */
+        .history-entry { transition: all 0.3s ease; }
+        .history-entry:hover { border-color: rgba(212, 175, 55, 0.5); }
+
+        /* Study checkbox */
+        .study-check { accent-color: #d4af37; width: 18px; height: 18px; cursor: pointer; }
+        .study-item.completed label { text-decoration: line-through; color: rgba(212, 175, 55, 0.5); }
+        .study-progress-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.1); overflow: hidden; }
+        .study-progress-fill { height: 100%; background: linear-gradient(to right, #d4af37, #f3e5ab); border-radius: 3px; transition: width 0.5s ease; }
+
+        /* Search */
+        .search-input { background: rgba(26, 22, 43, 0.8); border: 1px solid rgba(212, 175, 55, 0.3); color: #e2e8f0; outline: none; transition: border-color 0.3s; }
+        .search-input:focus { border-color: #d4af37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.15); }
+        .search-input::placeholder { color: rgba(255,255,255,0.3); }
+        .consulta-card { transition: all 0.3s ease; cursor: pointer; }
+        .consulta-card:hover { border-color: rgba(212, 175, 55, 0.6); }
+        .consulta-card.selected { border-color: #d4af37; background: linear-gradient(180deg, rgba(45, 27, 78, 0.5) 0%, rgba(10, 9, 20, 0.9) 100%); }
+        .consulta-card .card-full-info { display: none; }
+        .consulta-card.selected .card-full-info { display: block; animation: fadeIn 0.3s ease; }
+        h1, h2, h3, h4, .font-mystic {
+            font-family: 'Cinzel', serif;
+        }
+        
+        /* Smooth tab transitions */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Accordion */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details {
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+        details[open] {
+            border-color: rgba(212, 175, 55, 0.6);
+            background: linear-gradient(180deg, rgba(45, 27, 78, 0.4) 0%, rgba(26, 22, 43, 0) 100%);
+        }
+        .summary-chevron {
+            transition: transform 0.3s ease;
+        }
+        details[open] .summary-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Glassmorphism utilities */
+        .glass-panel {
+            background: rgba(26, 22, 43, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gold-gradient-text {
+            background: linear-gradient(to right, #d4af37, #f3e5ab, #d4af37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Card Draw Animation */
+        .tarot-card-draw {
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+        }
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(40px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        /* Safe area support for iOS */
+        .pb-safe {
+            padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0.5rem));
+        }
+    </style>
+</head>
+<body class="antialiased pb-24">
+
+    <header class="sticky top-0 z-40 glass-panel border-b border-mystic-gold/20 shadow-lg shadow-mystic-900/50">
+        <div class="px-4 py-3 flex items-center justify-center gap-3">
+            <img src="img/Tarot%20RWS.jpeg" alt="Logo Tarot RWS" class="w-8 h-8 rounded-full border border-mystic-gold/40 shadow-[0_0_10px_rgba(212,175,55,0.3)] object-cover">
+            <h1 class="text-2xl font-bold text-center gold-gradient-text tracking-wider">Tarot RWS</h1>
+        </div>
+    </header>
+
+    <!-- Floating Toast Notification -->
+    <div id="toast-msg" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-mystic-900/95 text-mystic-gold border border-mystic-gold/60 px-5 py-2.5 rounded-full shadow-2xl text-xs font-semibold z-50 transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2 backdrop-blur-md"></div>
+
+    <img src="img/hero_banner.jpg" alt="Tarot místico - banner celestial" class="hero-banner" loading="eager">
+
+    <main class="w-full max-w-3xl mx-auto p-4 md:p-6">
+        
+        <section id="tab-manual" class="tab-content active space-y-6">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-mystic text-mystic-gold mb-2">Principios de Lectura</h2>
+                <p class="text-sm text-gray-400">El tarot como lenguaje simbólico, no como destino.</p>
+            </div>
+
+            <div class="bg-mystic-800 rounded-xl p-5 border border-mystic-gold/10 shadow-lg">
+                <ul class="space-y-4 text-sm md:text-base text-gray-300">
+                    <li class="flex items-start">
+                        <span class="text-mystic-gold mr-3 mt-1">✧</span>
+                        <div><strong class="text-white">La imagen primero:</strong> Antes de aplicar un significado, describe la escena: quién actúa, hacia dónde mira, qué sostiene, paisaje y qué está ausente.</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-mystic-gold mr-3 mt-1">✧</span>
+                        <div><strong class="text-white">El contexto manda:</strong> Una misma carta cambia según la pregunta, la posición y las cartas vecinas.</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-mystic-gold mr-3 mt-1">✧</span>
+                        <div><strong class="text-white">No hay destino cerrado:</strong> Una tirada muestra dinámicas, tensiones, recursos y direcciones posibles, no un veredicto.</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-mystic-gold mr-3 mt-1">✧</span>
+                        <div><strong class="text-white">Las cartas difíciles no son "malas":</strong> La Torre, La Muerte, El Diablo señalan crisis, cierres, apegos o revelaciones necesarias.</div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-mystic-gold mr-3 mt-1">✧</span>
+                        <div><strong class="text-white">Invertidas opcionales:</strong> Si las usas, son bloqueo, interiorización, exceso, retraso o resistencia.</div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="text-xl font-mystic text-mystic-gold mt-8 border-b border-mystic-gold/20 pb-2">Ética y Límites</h3>
+            <div class="bg-mystic-900/50 p-4 rounded-lg border border-red-900/30 text-gray-300 text-sm">
+                <p>No usaremos el tarot para predecir muerte, enfermedad, embarazo, resultados judiciales, decisiones financieras o diagnósticos psicológicos. Si la consulta toca esos temas, la lectura se orientará a claridad, apoyo y decisiones responsables.</p>
+            </div>
+
+            <h3 class="text-xl font-mystic text-mystic-gold mt-8 border-b border-mystic-gold/20 pb-2">Gramática Simbólica</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-mystic-800 p-4 rounded-lg">
+                    <h4 class="text-mystic-gold font-bold mb-2">Colores</h4>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li><span class="text-yellow-400 font-bold">Amarillo:</span> Conciencia, claridad, energía.</li>
+                        <li><span class="text-red-400 font-bold">Rojo:</span> Vitalidad, pasión, acción.</li>
+                        <li><span class="text-blue-400 font-bold">Azul:</span> Calma, interioridad, emoción.</li>
+                        <li><span class="text-white font-bold">Blanco:</span> Apertura, pureza, intención.</li>
+                        <li><span class="text-gray-500 font-bold">Negro:</span> Límite, misterio, lo no visible.</li>
+                    </ul>
+                </div>
+                <div class="bg-mystic-800 p-4 rounded-lg">
+                    <h4 class="text-mystic-gold font-bold mb-2">Paisajes & Objetos</h4>
+                    <ul class="text-sm text-gray-400 space-y-1">
+                        <li><strong>Montañas:</strong> Reto, distancia, logro, exigencia.</li>
+                        <li><strong>Agua:</strong> Emoción, inconsciente, fluidez.</li>
+                        <li><strong>Camino:</strong> Opciones, dirección, proceso.</li>
+                        <li><strong>Flores/Jardines:</strong> Crecimiento, belleza.</li>
+                        <li><strong>Manos:</strong> Acción, recepción, intercambio.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-arcanos" class="tab-content space-y-6">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-mystic text-mystic-gold mb-2">Los Arcanos</h2>
+                <p class="text-sm text-gray-400">Explora el viaje de las 78 cartas del RWS.</p>
+            </div>
+
+            <h3 class="text-2xl font-mystic text-white border-b border-mystic-gold/30 pb-2 mb-4">Arcanos Mayores</h3>
+            <div class="space-y-3" id="mayores-container">
+                <!-- Populated via JS for cleaner HTML, but structured here -->
+            </div>
+
+            <h3 class="text-2xl font-mystic text-white border-b border-mystic-gold/30 pb-2 mt-10 mb-4">Arcanos Menores</h3>
+            <p class="text-sm text-gray-400 mb-4">La lectura se vuelve precisa al cruzar: <strong>tema del palo + etapa del número + posición en la tirada</strong>.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <div class="bg-mystic-800 p-4 rounded-lg border-l-2 border-red-500">
+                    <h4 class="font-mystic text-lg text-white mb-1">Bastos (Fuego)</h4>
+                    <p class="text-xs text-gray-400">Acción, iniciativa, pasión, proyectos, deseo, conflicto energético. <em>"¿Qué necesita movimiento?"</em></p>
+                </div>
+                <div class="bg-mystic-800 p-4 rounded-lg border-l-2 border-blue-500">
+                    <h4 class="font-mystic text-lg text-white mb-1">Copas (Agua)</h4>
+                    <p class="text-xs text-gray-400">Emociones, relaciones, intuición, vínculos, sanación. <em>"¿Qué siento o necesito cuidar?"</em></p>
+                </div>
+                <div class="bg-mystic-800 p-4 rounded-lg border-l-2 border-gray-300">
+                    <h4 class="font-mystic text-lg text-white mb-1">Espadas (Aire)</h4>
+                    <p class="text-xs text-gray-400">Pensamiento, verdad, comunicación, decisiones, tensión mental. <em>"¿Qué verdad o conflicto requiere claridad?"</em></p>
+                </div>
+                <div class="bg-mystic-800 p-4 rounded-lg border-l-2 border-amber-600">
+                    <h4 class="font-mystic text-lg text-white mb-1">Oros (Tierra)</h4>
+                    <p class="text-xs text-gray-400">Trabajo, dinero, cuerpo, hábitos, recursos, estabilidad. <em>"¿Qué puede construirse o sostenerse?"</em></p>
+                </div>
+            </div>
+
+            <div class="space-y-8 mt-8 mb-6">
+                <div>
+                    <h4 class="text-xl font-mystic text-red-400 mb-3 flex items-center gap-3">
+                        <img src="img/icon_bastos.jpg" alt="Bastos" class="suit-icon">
+                        Catálogo de Bastos
+                    </h4>
+                    <div class="space-y-3" id="bastos-container"></div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-mystic text-blue-400 mb-3 flex items-center gap-3">
+                        <img src="img/icon_copas.jpg" alt="Copas" class="suit-icon">
+                        Catálogo de Copas
+                    </h4>
+                    <div class="space-y-3" id="copas-container"></div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-mystic text-gray-300 mb-3 flex items-center gap-3">
+                        <img src="img/icon_espadas.jpg" alt="Espadas" class="suit-icon">
+                        Catálogo de Espadas
+                    </h4>
+                    <div class="space-y-3" id="espadas-container"></div>
+                </div>
+                <div>
+                    <h4 class="text-xl font-mystic text-amber-500 mb-3 flex items-center gap-3">
+                        <img src="img/icon_oros.jpg" alt="Oros" class="suit-icon">
+                        Catálogo de Oros
+                    </h4>
+                    <div class="space-y-3" id="oros-container"></div>
+                </div>
+            </div>
+
+            <div class="bg-mystic-800/60 rounded-xl p-4 md:p-5 border border-mystic-gold/20 shadow-md">
+                <div class="flex items-center justify-between mb-3 border-b border-mystic-gold/20 pb-2">
+                    <h4 class="font-mystic text-lg text-mystic-gold">El Viaje Numérico</h4>
+                    <span class="text-[10px] uppercase tracking-wider text-gray-400 bg-mystic-900/60 px-2 py-0.5 rounded border border-white/5">Del As al 10</span>
+                </div>
+                <p class="text-xs text-gray-400 mb-4">
+                    La progresión numérica representa las 10 fases evolutivas de manifestación de cualquier energía elemental en el plano terrenal:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs md:text-sm">
+                    <!-- Fase 1: Del 1 al 5 -->
+                    <div class="space-y-2.5 bg-mystic-900/60 rounded-lg p-3.5 border border-white/5">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-300/90 mb-2 border-b border-amber-500/20 pb-1 flex items-center justify-between">
+                            <span>Fase 1: Origen y Desafío</span>
+                            <span class="text-[10px] text-gray-400 font-normal">Cartas 1 - 5</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">1</span>
+                            <div><strong class="text-white">As:</strong> <span class="text-gray-300">Semilla, chispa inicial y potencial puro.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">2</span>
+                            <div><strong class="text-white">Dos:</strong> <span class="text-gray-300">Dualidad, relación, polaridad y primera elección.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">3</span>
+                            <div><strong class="text-white">Tres:</strong> <span class="text-gray-300">Expansión, germinación y fruto creativo inicial.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">4</span>
+                            <div><strong class="text-white">Cuatro:</strong> <span class="text-gray-300">Estructura, estabilidad, orden o pausa estancada.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">5</span>
+                            <div><strong class="text-white">Cinco:</strong> <span class="text-gray-300">Fricción, pérdida, prueba de fuego o crisis de crecimiento.</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Fase 2: Del 6 al 10 -->
+                    <div class="space-y-2.5 bg-mystic-900/60 rounded-lg p-3.5 border border-white/5">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-purple-300/90 mb-2 border-b border-purple-500/20 pb-1 flex items-center justify-between">
+                            <span>Fase 2: Maduración y Cierre</span>
+                            <span class="text-[10px] text-gray-400 font-normal">Cartas 6 - 10</span>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">6</span>
+                            <div><strong class="text-white">Seis:</strong> <span class="text-gray-300">Tránsito, alivio, apoyo mutuo y armonía recuperada.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">7</span>
+                            <div><strong class="text-white">Siete:</strong> <span class="text-gray-300">Evaluación crítica, paciencia y estrategia reflexiva.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">8</span>
+                            <div><strong class="text-white">Ocho:</strong> <span class="text-gray-300">Movimiento dinámico, disciplina de oficio y maestría.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">9</span>
+                            <div><strong class="text-white">Nueve:</strong> <span class="text-gray-300">Madurez plena, autosuficiencia y culminación inminente.</span></div>
+                        </div>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40 shrink-0 mt-0.5">10</span>
+                            <div><strong class="text-white">Diez:</strong> <span class="text-gray-300">Culminación absoluta, cierre de ciclo y semilla de lo siguiente.</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-mystic-800/50 rounded-xl p-4 border border-mystic-gold/10 mt-4">
+                <h4 class="font-mystic text-mystic-gold mb-3 border-b border-mystic-gold/10 pb-1">Figuras de Corte</h4>
+                <ul class="text-sm text-gray-300 space-y-2">
+                    <li><strong class="text-white">Sota:</strong> Aprendizaje, curiosidad, noticia, inicio, exploración.</li>
+                    <li><strong class="text-white">Caballero:</strong> Movimiento, búsqueda, impulso, misión, energía.</li>
+                    <li><strong class="text-white">Reina:</strong> Dominio interior, cuidado, recepción, madurez emocional/intuitiva.</li>
+                    <li><strong class="text-white">Rey:</strong> Dirección, autoridad, estructura, responsabilidad, dominio externo.</li>
+                </ul>
+                <p class="text-xs text-gray-500 mt-2 italic">Las figuras no deben asignarse automáticamente a género, edad o persona concreta. Son energías o etapas.</p>
+            </div>
+        </section>
+
+        <section id="tab-tiradas" class="tab-content space-y-6">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-mystic text-mystic-gold mb-2">Lectura de Tarot</h2>
+                <p class="text-sm text-gray-400">Estructuras de tiradas, relaciones entre símbolos y el arte de combinar cartas.</p>
+            </div>
+
+            <h3 class="text-xl font-mystic text-white border-b border-mystic-gold/30 pb-2">Estructuras de Tiradas</h3>
+
+            <div class="space-y-4">
+                <!-- 1 Carta -->
+                <div class="bg-mystic-800 rounded-lg p-5 border-l-4 border-mystic-gold shadow-md">
+                    <h3 class="font-mystic text-xl text-white mb-2">Una Carta</h3>
+                    <p class="text-sm text-gray-400 mb-2">Uso: Reflexión diaria, claridad puntual.</p>
+                    <p class="text-sm text-gray-300"><strong>Protocolo:</strong> Pregunta abierta ("¿Qué necesito observar hoy?") → Descripción visual → Núcleo → Aplicación práctica.</p>
+                </div>
+
+                <!-- 3 Cartas -->
+                <div class="bg-mystic-800 rounded-lg p-5 border-l-4 border-mystic-gold shadow-md">
+                    <h3 class="font-mystic text-xl text-white mb-2">Tres Cartas</h3>
+                    <p class="text-sm text-gray-400 mb-3">La tirada base para aprender relaciones entre símbolos.</p>
+                    <div class="flex justify-between items-center bg-mystic-900 rounded p-3 mb-2 text-center text-sm font-semibold">
+                        <div class="flex-1">1. Situación</div>
+                        <div class="text-mystic-gold mx-2">→</div>
+                        <div class="flex-1">2. Desafío</div>
+                        <div class="text-mystic-gold mx-2">→</div>
+                        <div class="flex-1">3. Consejo</div>
+                    </div>
+                    <p class="text-xs text-gray-400">Variantes: (Pasado-Presente-Futuro) / (Mente-Corazón-Acción) / (Yo-Relación-Dinámica)</p>
+                </div>
+
+                <!-- 5 Cartas -->
+                <div class="bg-mystic-800 rounded-lg p-5 border-l-4 border-mystic-gold shadow-md">
+                    <h3 class="font-mystic text-xl text-white mb-2">Cinco Cartas</h3>
+                    <p class="text-sm text-gray-400 mb-2">Útil para decisiones complejas.</p>
+                    <ol class="list-decimal list-inside text-sm text-gray-300 space-y-1 ml-2">
+                        <li>Situación actual</li>
+                        <li>Desafío principal</li>
+                        <li>Recurso interno (lo que tienes)</li>
+                        <li>Factor externo (entorno)</li>
+                        <li>Consejo o próximo paso</li>
+                    </ol>
+                </div>
+
+                <!-- Cruz Celta -->
+                <div class="bg-mystic-800 rounded-lg p-5 border-l-4 border-purple-500 shadow-md">
+                    <h3 class="font-mystic text-xl text-white mb-2">Cruz Celta</h3>
+                    <p class="text-sm text-gray-400 mb-3">Para preguntas profundas cuando ya dominas tiradas breves. La posición 10 muestra la tendencia actual, no un hecho inevitable.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs text-gray-300">
+                        <div class="space-y-2">
+                            <div>1. Situación central</div>
+                            <div>2. Cruce o desafío</div>
+                            <div>3. Base inconsciente</div>
+                            <div>4. Pasado reciente</div>
+                            <div>5. Actitud consciente</div>
+                        </div>
+                        <div class="space-y-2">
+                            <div>6. Futuro cercano</div>
+                            <div>7. Tu enfoque actual</div>
+                            <div>8. Entorno o influencias</div>
+                            <div>9. Esperanzas y miedos</div>
+                            <div class="font-bold text-mystic-gold">10. Dirección probable</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CÓMO COMBINAR CARTAS EN TIRADAS: GUÍA METODOLÓGICA Y PRÁCTICA -->
+            <div class="mt-10 mb-4">
+                <div class="flex items-center justify-between border-b border-mystic-gold/30 pb-2">
+                    <h3 class="text-2xl font-mystic text-white">Cómo Leer Combinaciones</h3>
+                    <span class="text-xs font-sans text-mystic-gold border border-mystic-gold/40 px-2.5 py-0.5 rounded-full bg-mystic-900/60 uppercase tracking-wider">Método Sintético</span>
+                </div>
+                <p class="text-sm text-gray-300 mt-3 leading-relaxed">
+                    Aprender Tarot <strong class="text-white">no consiste en memorizar parejas fijas</strong> ("Carta A + Carta B = Frase"). Las cartas son un lenguaje relacional vivo: <strong class="text-mystic-gold">la posición en la tirada asigna el rol o pregunta</strong>, y la interacción entre cartas crea la narrativa.
+                </p>
+            </div>
+
+            <!-- 4 CLAVES METODOLÓGICAS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+                <!-- Clave 1 -->
+                <div class="bg-mystic-800/90 rounded-xl p-4 border border-mystic-gold/20 shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40">1</span>
+                            <h4 class="font-mystic text-base text-mystic-gold">La Posición Asigna el Rol</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed mb-2">
+                            En una tirada, una carta actúa como <strong class="text-white">Sujeto</strong> (el tema o raíz) y la siguiente como <strong class="text-white">Modificador</strong> (qué la desafía, estimula o resuelve).
+                        </p>
+                    </div>
+                    <div class="bg-mystic-900/70 rounded p-2 text-[11px] text-gray-400 border border-white/5">
+                        <span class="text-amber-300 font-semibold">El orden importa:</span> <em>Torre (Situación) + Estrella (Consejo)</em> es sanar tras la crisis. Pero <em>Estrella (Situación) + Torre (Desafío)</em> es una ilusión ingenua rota abruptamente.
+                    </div>
+                </div>
+
+                <!-- Clave 2 -->
+                <div class="bg-mystic-800/90 rounded-xl p-4 border border-mystic-gold/20 shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40">2</span>
+                            <h4 class="font-mystic text-base text-mystic-gold">Jerarquía Arquetípica</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed mb-2">
+                            Distingue el peso de la lección vital frente a los hechos cotidianos según el tipo de arcano:
+                        </p>
+                    </div>
+                    <div class="space-y-1 text-[11px] text-gray-300 bg-mystic-900/70 rounded p-2 border border-white/5">
+                        <div><strong class="text-purple-300">Mayor + Mayor:</strong> Fuerzas del destino o giros evolutivos cruciales.</div>
+                        <div><strong class="text-sky-300">Mayor + Menor:</strong> El Mayor fija el fondo existencial; el Menor, el cómo práctico del día a día.</div>
+                        <div><strong class="text-emerald-300">Menor + Menor:</strong> Situaciones cotidianas y transitorias.</div>
+                    </div>
+                </div>
+
+                <!-- Clave 3 -->
+                <div class="bg-mystic-800/90 rounded-xl p-4 border border-mystic-gold/20 shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40">3</span>
+                            <h4 class="font-mystic text-base text-mystic-gold">Alquimia de Elementos</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed mb-2">
+                            Observa la compatibilidad entre los palos para entender la fluidez o fricción del mensaje:
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-mystic-900/70 rounded p-2 border border-white/5">
+                        <div class="text-gray-300"><span class="text-red-400">🔥 Bastos</span> + <span class="text-sky-400">💨 Espadas</span>: Impulso e ideas que se avivan.</div>
+                        <div class="text-gray-300"><span class="text-blue-400">💧 Copas</span> + <span class="text-amber-400">🌱 Oros</span>: Afecto que se manifiesta en lo tangible.</div>
+                        <div class="text-gray-300"><span class="text-red-400">🔥 Bastos</span> + <span class="text-blue-400">💧 Copas</span>: Tensión entre prisa y emoción.</div>
+                        <div class="text-gray-300"><span class="text-sky-400">💨 Espadas</span> + <span class="text-amber-400">🌱 Oros</span>: Cálculo pragmático o formal.</div>
+                    </div>
+                </div>
+
+                <!-- Clave 4 -->
+                <div class="bg-mystic-800/90 rounded-xl p-4 border border-mystic-gold/20 shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-6 h-6 rounded-full bg-mystic-gold/20 text-mystic-gold text-xs font-bold flex items-center justify-center border border-mystic-gold/40">4</span>
+                            <h4 class="font-mystic text-base text-mystic-gold">Diálogo Visual y Miradas</h4>
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed mb-2">
+                            En el estilo RWS, la orientación y gestos de los personajes aportan información directa sobre la relación:
+                        </p>
+                    </div>
+                    <div class="space-y-1 text-[11px] text-gray-300 bg-mystic-900/70 rounded p-2 border border-white/5">
+                        <div><strong class="text-amber-300">Miradas encontradas:</strong> Diálogo, sintonía mutua o confrontación cara a cara.</div>
+                        <div><strong class="text-amber-300">Dándose la espalda:</strong> Desconexión, falta de escucha o caminos opuestos.</div>
+                        <div><strong class="text-amber-300">Dirección de objetos:</strong> ¿Hacia dónde apunta la espada, el basto o la copa?</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASOS PRÁCTICOS EN FUNCIÓN DE LA TIRADA -->
+            <div class="bg-gradient-to-b from-mystic-800 to-mystic-900 rounded-xl p-5 border border-mystic-gold/30 shadow-lg my-6">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-lg text-mystic-gold">⚡</span>
+                    <h4 class="font-mystic text-lg text-white">Cómo Interpretar la Combinación Según la Posición</h4>
+                </div>
+                <p class="text-xs text-gray-300 mb-4">
+                    Tres ejemplos reales para aprender a tejer una respuesta coherente en lugar de leer cartas aisladas:
+                </p>
+
+                <div class="space-y-4">
+                    <!-- Ejemplo 1: 3 Cartas -->
+                    <div class="bg-mystic-900/80 rounded-lg p-3.5 border border-mystic-gold/20">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2 pb-1.5 border-b border-white/10">
+                            <span class="text-xs font-bold text-mystic-gold uppercase tracking-wide">Ejemplo 1: En Tirada de 3 Cartas (Situación → Desafío → Consejo)</span>
+                            <span class="text-[11px] text-gray-400">Flujo narrativo continuo</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3 text-center">
+                            <div class="bg-mystic-800/80 rounded p-2 border border-white/5">
+                                <div class="text-[10px] uppercase text-gray-400">1. Situación</div>
+                                <div class="text-xs font-semibold text-amber-200 mt-0.5">Ocho de Oros</div>
+                                <div class="text-[10px] text-gray-400">Trabajo diario y oficio</div>
+                            </div>
+                            <div class="bg-mystic-800/80 rounded p-2 border border-red-500/20">
+                                <div class="text-[10px] uppercase text-red-400">2. Desafío</div>
+                                <div class="text-xs font-semibold text-red-200 mt-0.5">Diez de Bastos</div>
+                                <div class="text-[10px] text-gray-400">Sobrecarga y exceso de peso</div>
+                            </div>
+                            <div class="bg-mystic-800/80 rounded p-2 border border-sky-500/20">
+                                <div class="text-[10px] uppercase text-sky-400">3. Consejo</div>
+                                <div class="text-xs font-semibold text-sky-200 mt-0.5">Cuatro de Espadas</div>
+                                <div class="text-[10px] text-gray-400">Pausa mental y tregua</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-300 bg-mystic-950/60 rounded p-2.5 border-l-2 border-mystic-gold">
+                            <strong class="text-mystic-gold">Cómo leer la combinación:</strong> "Tu dedicación meticulosa al trabajo (8 de Oros) ha traspasado el límite y se ha vuelto una carga inasumible que te desborda (10 de Bastos). La baraja te aconseja que la salida no es insistir ni esforzarte más, sino parar obligatoriamente a descansar y hacer una tregua mental (4 de Espadas) para evitar el colapso."
+                        </div>
+                    </div>
+
+                    <!-- Ejemplo 2: Cruz (Eje 1 y 2) -->
+                    <div class="bg-mystic-900/80 rounded-lg p-3.5 border border-mystic-gold/20">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2 pb-1.5 border-b border-white/10">
+                            <span class="text-xs font-bold text-mystic-gold uppercase tracking-wide">Ejemplo 2: En el Eje Central de una Cruz (Centro + Cruce)</span>
+                            <span class="text-[11px] text-gray-400">Tensión esencial</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3 text-center">
+                            <div class="bg-mystic-800/80 rounded p-2 border border-purple-500/20">
+                                <div class="text-[10px] uppercase text-purple-300">Posición 1: Centro (El Asunto)</div>
+                                <div class="text-xs font-semibold text-white mt-0.5">Los Enamorados</div>
+                                <div class="text-[10px] text-gray-400">Elección de corazón o vínculo honesto</div>
+                            </div>
+                            <div class="bg-mystic-800/80 rounded p-2 border border-amber-500/20">
+                                <div class="text-[10px] uppercase text-amber-300">Posición 2: Cruce (El Obstáculo)</div>
+                                <div class="text-xs font-semibold text-amber-200 mt-0.5">Dos de Espadas</div>
+                                <div class="text-[10px] text-gray-400">Ceguera voluntaria o indecisión</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-300 bg-mystic-950/60 rounded p-2.5 border-l-2 border-purple-400">
+                            <strong class="text-purple-300">Cómo leer la combinación:</strong> "En el centro hay una llamada auténtica a elegir con el corazón o comprometerte con tus valores (Los Enamorados), pero está siendo bloqueada por tu propia negativa a encarar los hechos o el miedo a tomar partido (2 de Espadas). El desafío no es la falta de amor, sino quitarse la venda y atreverse a decidir."
+                        </div>
+                    </div>
+
+                    <!-- Ejemplo 3: Tirada de 5 Cartas -->
+                    <div class="bg-mystic-900/80 rounded-lg p-3.5 border border-mystic-gold/20">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-2 pb-1.5 border-b border-white/10">
+                            <span class="text-xs font-bold text-mystic-gold uppercase tracking-wide">Ejemplo 3: En Tirada de 5 Cartas (Recurso Interno vs. Entorno Externo)</span>
+                            <span class="text-[11px] text-gray-400">Contraste de fuerzas</span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3 text-center">
+                            <div class="bg-mystic-800/80 rounded p-2 border border-emerald-500/20">
+                                <div class="text-[10px] uppercase text-emerald-400">Recurso Interno (Lo que tienes)</div>
+                                <div class="text-xs font-semibold text-emerald-200 mt-0.5">La Fuerza</div>
+                                <div class="text-[10px] text-gray-400">Templanza, paciencia y dominio sutil</div>
+                            </div>
+                            <div class="bg-mystic-800/80 rounded p-2 border border-rose-500/20">
+                                <div class="text-[10px] uppercase text-rose-400">Factor Externo (El entorno)</div>
+                                <div class="text-xs font-semibold text-rose-200 mt-0.5">Cinco de Espadas</div>
+                                <div class="text-[10px] text-gray-400">Ambiente hostil, deslealtad o conflicto</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-300 bg-mystic-950/60 rounded p-2.5 border-l-2 border-emerald-400">
+                            <strong class="text-emerald-300">Cómo leer la combinación:</strong> "Frente a un entorno tóxico donde otros juegan sucio o buscan ganar a costa de los demás (5 de Espadas), tu recurso ganador no es pagar con la misma moneda ni reaccionar con ira, sino responder desde la serenidad, la firmeza ética y la contención compasiva (La Fuerza)."
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPERTORIO DE COMBINACIONES EMBLEMÁTICAS DESGLOSADAS -->
+            <div class="mt-8 mb-4">
+                <h4 class="text-xl font-mystic text-white border-b border-mystic-gold/30 pb-2">Combinaciones Frecuentes y su Lectura en Tirada</h4>
+                <p class="text-xs text-gray-400 mt-1">Explora cómo interactúan arquetipos clave según la temática de la consulta:</p>
+            </div>
+            
+            <div class="space-y-3">
+                <!-- Amor y Vínculos -->
+                <details class="bg-mystic-800 rounded-lg cursor-pointer">
+                    <summary class="p-4 font-mystic text-mystic-gold flex justify-between items-center outline-none">
+                        <span>Amor y Relaciones</span>
+                        <svg class="w-5 h-5 summary-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="p-4 pt-0 text-xs text-gray-300 space-y-3 border-t border-mystic-gold/10">
+                        <!-- Combo 1 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">Los Enamorados + Dos de Copas</strong>
+                                <span class="text-[10px] bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded border border-purple-500/30">Mayor + Menor (Agua)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> La elección moral y de alma (Enamorados) encarna en reciprocidad afectiva e intimidad real (2 Copas).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> En <em>Situación + Consejo:</em> Comprométete sin miedo; la afinidad es mutua. En <em>Desafío:</em> Dificultad para formalizar por temor a perder la autonomía.</p>
+                        </div>
+
+                        <!-- Combo 2 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">La Torre + Tres de Espadas</strong>
+                                <span class="text-[10px] bg-red-900/60 text-red-300 px-2 py-0.5 rounded border border-red-500/30">Mayor + Menor (Aire)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> Colapso de una estructura falsa (Torre) que causa una herida punzante de lucidez y desengaño (3 Espadas).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Ruptura dolorosa pero inevitable que derriba una mentira. La recomendación es no aferrarse a los restos, hacer el duelo y priorizar el autocuidado.</p>
+                        </div>
+
+                        <!-- Combo 3 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">La Estrella + As de Copas</strong>
+                                <span class="text-[10px] bg-sky-900/60 text-sky-300 px-2 py-0.5 rounded border border-sky-500/30">Mayor + Menor (Agua)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> Sanación y fe cósmica (Estrella) que alimentan un manantial puro de amor renovado (As Copas).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Superación de una sequía afectiva; momento idóneo para abrir el corazón a nuevas experiencias o reconciliaciones sinceras.</p>
+                        </div>
+
+                        <!-- Combo 4 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">El Diablo + Nueve de Copas</strong>
+                                <span class="text-[10px] bg-amber-900/60 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">Mayor + Menor (Agua)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> El apego, deseo posesivo o adicción (Diablo) disfrazados de satisfacción complaciente (9 Copas).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Alerta de autoengaño en la relación: placer efímero o vanidad que engancha pero no nutre el alma. Revisa si hay dinámicas de codependencia.</p>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Trabajo y Dinero -->
+                <details class="bg-mystic-800 rounded-lg cursor-pointer">
+                    <summary class="p-4 font-mystic text-mystic-gold flex justify-between items-center outline-none">
+                        <span>Trabajo y Finanzas</span>
+                        <svg class="w-5 h-5 summary-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="p-4 pt-0 text-xs text-gray-300 space-y-3 border-t border-mystic-gold/10">
+                        <!-- Combo 1 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">El Mago + As de Oros</strong>
+                                <span class="text-[10px] bg-emerald-900/60 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">Mayor + Menor (Tierra)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> El talento, iniciativa y herramientas (Mago) encuentran una oportunidad física real para germinar (As Oros).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Oportunidad de oro para emprender o monetizar una habilidad. No te quedes en el plan mental: ejecuta de inmediato en el plano material.</p>
+                        </div>
+
+                        <!-- Combo 2 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">Ocho de Oros + Rey de Oros</strong>
+                                <span class="text-[10px] bg-amber-900/60 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">Menor + Corte (Tierra)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> La práctica constante y el amor al detalle (8 Oros) conducen a la maestría consolidada y la solvencia financiera (Rey Oros).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> El esfuerzo metódico dará frutos duraderos. Señala ascenso, prestigio profesional alcanzado con sudor y excelente gestión patrimonial.</p>
+                        </div>
+
+                        <!-- Combo 3 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">Diez de Bastos + Cuatro de Espadas</strong>
+                                <span class="text-[10px] bg-red-900/60 text-red-300 px-2 py-0.5 rounded border border-red-500/30">Menor (Fuego) + Menor (Aire)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> El exceso de cargas y compromisos (10 Bastos) exige una parada biológica y mental innegociable (4 Espadas).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Síntoma inequívoco de burnout o saturación laboral. Es prioritario delegar, fijar límites estrictos y descansar antes de que la salud te frene.</p>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Decisiones y Encrucijadas -->
+                <details class="bg-mystic-800 rounded-lg cursor-pointer">
+                    <summary class="p-4 font-mystic text-mystic-gold flex justify-between items-center outline-none">
+                        <span>Decisiones y Encrucijadas</span>
+                        <svg class="w-5 h-5 summary-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="p-4 pt-0 text-xs text-gray-300 space-y-3 border-t border-mystic-gold/10">
+                        <!-- Combo 1 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">Dos de Espadas + La Sacerdotisa</strong>
+                                <span class="text-[10px] bg-indigo-900/60 text-indigo-300 px-2 py-0.5 rounded border border-indigo-500/30">Menor (Aire) + Mayor</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> El bloqueo de la mente racional (2 Espadas) se resuelve acudiendo al silencio y la intuición oculta (Sacerdotisa).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Aún no es momento de actuar externamente ni de forzar una respuesta con la lógica. La información clave está madurando en tu interior; espera y medita.</p>
+                        </div>
+
+                        <!-- Combo 2 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">El Carro + Ocho de Bastos</strong>
+                                <span class="text-[10px] bg-red-900/60 text-red-300 px-2 py-0.5 rounded border border-red-500/30">Mayor + Menor (Fuego)</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> Dirección decidida y control (Carro) multiplicados por velocidad fulgurante y sucesos rápidos (8 Bastos).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Señal inequívoca de avance sin titubeos. Los acontecimientos van a acelerarse; mantén el volante firme y confía plenamente en tu trayectoria.</p>
+                        </div>
+
+                        <!-- Combo 3 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">El Colgado + La Muerte</strong>
+                                <span class="text-[10px] bg-purple-900/60 text-purple-300 px-2 py-0.5 rounded border border-purple-500/30">Mayor + Mayor</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> La pausa contemplativa y entrega de perspectiva (Colgado) culmina en la transformación y cierre irreversible de ciclo (Muerte).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> No resistas el estancamiento aparente. Es la gestación necesaria para soltar definitivamente lo que ya no tiene vida y permitir que nazca lo nuevo.</p>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Crecimiento Interior y Transformación -->
+                <details class="bg-mystic-800 rounded-lg cursor-pointer">
+                    <summary class="p-4 font-mystic text-mystic-gold flex justify-between items-center outline-none">
+                        <span>Crecimiento Interior y Despertar</span>
+                        <svg class="w-5 h-5 summary-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="p-4 pt-0 text-xs text-gray-300 space-y-3 border-t border-mystic-gold/10">
+                        <!-- Combo 1 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">El Ermitaño + El Loco</strong>
+                                <span class="text-[10px] bg-amber-900/60 text-amber-300 px-2 py-0.5 rounded border border-amber-500/30">Mayor + Mayor</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> La introspección y sabiduría madurada en soledad (Ermitaño) da paso al salto de fe libre de equipaje hacia una nueva etapa (El Loco).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> El retiro interior ha cumplido su propósito. Ahora estás listo para lanzarte con inocencia y sin miedos a una aventura completamente nueva.</p>
+                        </div>
+
+                        <!-- Combo 2 -->
+                        <div class="bg-mystic-900/60 p-3 rounded-lg border border-white/5 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <strong class="text-sm text-mystic-gold">El Juicio + El Sol</strong>
+                                <span class="text-[10px] bg-yellow-900/60 text-yellow-300 px-2 py-0.5 rounded border border-yellow-500/30">Mayor + Mayor</span>
+                            </div>
+                            <p class="text-gray-300"><strong class="text-white">Dinámica:</strong> La llamada a despertar de conciencia y redención (Juicio) culmina en la máxima claridad, dicha y vitalidad (El Sol).</p>
+                            <p class="text-gray-400 text-[11px]"><strong class="text-amber-300/90">En Tirada:</strong> Liberación rotunda de viejas culpas o cargas kármicas. Apertura a una época de plenitud, éxito compartido y autenticidad transparente.</p>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section id="tab-practica" class="tab-content space-y-6">
+            <div class="text-center mb-4">
+                <h2 class="text-3xl font-mystic text-mystic-gold mb-2">Tirada Online</h2>
+                <p class="text-sm text-gray-400">Realiza una tirada real o practica tu lectura. Elige el tipo de tirada, baraja y consulta el significado de cada carta.</p>
+            </div>
+
+            <!-- MEJORA 3: WIDGET CARTA GUÍA DEL DÍA -->
+            <div id="daily-card-widget" class="bg-gradient-to-br from-mystic-900 via-mystic-800 to-purple-950/70 p-5 rounded-2xl border border-mystic-gold/40 shadow-[0_0_20px_rgba(212,175,55,0.15)] relative overflow-hidden">
+                <div class="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">☀️</span>
+                        <div>
+                            <h3 class="font-mystic text-base sm:text-lg text-white">Carta Guía del Día</h3>
+                            <span class="text-[10px] text-gray-400">Tu ancla de reflexión para la jornada</span>
+                        </div>
+                    </div>
+                    <div id="daily-streak-badge" class="flex items-center gap-1.5 bg-mystic-950/80 px-2.5 py-1 rounded-full border border-amber-500/30 text-xs text-amber-300">
+                        <span>🔥</span> <span id="daily-streak-count" class="font-bold">0</span> <span class="text-[10px] text-gray-400">días de racha</span>
+                    </div>
+                </div>
+
+                <!-- Estado: Sin revelar -->
+                <div id="daily-unrevealed" class="text-center py-4 space-y-3">
+                    <p class="text-xs text-gray-300 max-w-md mx-auto">
+                        Conéctate con el arquetipo que iluminará tu jornada y recibe una pregunta de introspección para tu día.
+                    </p>
+                    <button id="btn-draw-daily" class="bg-gradient-to-r from-amber-600 via-mystic-gold to-amber-500 hover:brightness-110 text-mystic-900 font-bold text-xs uppercase tracking-wider py-2.5 px-6 rounded-full shadow-lg active:scale-95 transition-all">
+                        ✨ Revelar mi Carta de Hoy
+                    </button>
+                </div>
+
+                <!-- Estado: Revelada -->
+                <div id="daily-revealed" class="hidden">
+                    <div class="flex flex-col sm:flex-row items-center gap-4 bg-mystic-950/70 p-4 rounded-xl border border-mystic-gold/20">
+                        <div id="daily-img-container" class="shrink-0 relative">
+                            <!-- Injected by JS -->
+                        </div>
+                        <div class="flex-1 text-center sm:text-left space-y-1.5">
+                            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                <h4 id="daily-card-name" class="font-mystic text-lg font-bold text-mystic-gold"></h4>
+                                <span id="daily-card-badge" class="text-[10px] px-2 py-0.5 rounded border border-mystic-gold/30 bg-mystic-900 text-mystic-gold"></span>
+                            </div>
+                            <p id="daily-card-core" class="text-xs text-gray-300"></p>
+                            <div class="bg-mystic-900/90 rounded-lg p-2.5 border-l-2 border-mystic-gold mt-2 text-left">
+                                <span class="text-[10px] uppercase font-bold text-amber-300 block mb-0.5">💭 Pregunta de Reflexión Diaria:</span>
+                                <p id="daily-card-prompt" class="text-xs text-gray-200 italic"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] text-gray-400 mt-2 px-1">
+                        <span>🔒 Fijada para hoy · Disponible nueva carta cada día</span>
+                        <button id="btn-reset-daily" class="text-mystic-gold/60 hover:text-mystic-gold transition-colors underline" title="Probar sacar otra carta">Cambiar carta (modo prueba)</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spread Type Selector & Table -->
+            <div class="bg-mystic-800 p-6 rounded-2xl border border-mystic-gold/30 shadow-[0_0_15px_rgba(212,175,55,0.15)] relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-mystic-700/20 via-transparent to-transparent pointer-events-none"></div>
+                
+                <h3 class="font-mystic text-xl text-white mb-4 relative z-10 text-center">Mesa de Consulta</h3>
+                
+                <!-- MEJORA 2 (Parte A): Campo de Pregunta o Intención -->
+                <div class="mb-4 relative z-10">
+                    <label for="reading-question" class="block text-xs text-mystic-gold mb-1 font-semibold flex items-center gap-1.5">
+                        <span>💭</span> Pregunta o Intención para la Lectura:
+                    </label>
+                    <input type="text" id="reading-question" placeholder="Ej: ¿Qué aspecto de mi proyecto necesita mayor atención?... (opcional)" 
+                        class="w-full bg-mystic-900/80 border border-mystic-gold/20 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-mystic-gold/60 focus:ring-1 focus:ring-mystic-gold/40 transition-all">
+                </div>
+
+                <!-- MEJORA 1: Toggle Cartas Invertidas -->
+                <div class="flex items-center justify-between bg-mystic-900/70 rounded-xl px-4 py-2.5 mb-5 border border-white/5 relative z-10">
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm text-mystic-gold">↺</span>
+                        <div>
+                            <div class="text-xs font-semibold text-white">Cartas Invertidas (Sombras y Bloqueos)</div>
+                            <div class="text-[10px] text-gray-400">Permite que salgan cartas invertidas con su lectura de energía en sombra (~35% prob.)</div>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggle-reversed" class="sr-only peer">
+                        <div class="w-10 h-5 bg-mystic-950 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 peer-checked:after:bg-mystic-gold after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-purple-900/80 border border-white/10 peer-checked:border-mystic-gold/50"></div>
+                    </label>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6 relative z-10" id="spread-selector">
+                    <button onclick="selectSpread('1card')" data-spread="1card" class="spread-btn active bg-mystic-gold/20 border border-mystic-gold/40 rounded-xl p-3 flex flex-col items-center justify-center transition-all hover:bg-mystic-gold/30">
+                        <span class="text-2xl mb-1">🃏</span>
+                        <span class="font-mystic text-sm text-mystic-gold text-center">1 Carta</span>
+                        <span class="text-[10px] text-gray-400 mt-1 text-center">Consejo</span>
+                    </button>
+                    <button onclick="selectSpread('3card')" data-spread="3card" class="spread-btn border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center transition-all hover:bg-mystic-gold/10">
+                        <span class="text-2xl mb-1">🔮</span>
+                        <span class="font-mystic text-sm text-mystic-gold text-center">3 Cartas</span>
+                        <span class="text-[10px] text-gray-400 mt-1 text-center">Pasado·Presente·Futuro</span>
+                    </button>
+                    <button onclick="selectSpread('5card')" data-spread="5card" class="spread-btn border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center transition-all hover:bg-mystic-gold/10">
+                        <span class="text-2xl mb-1">✦</span>
+                        <span class="font-mystic text-sm text-mystic-gold text-center">Cruz Simple</span>
+                        <span class="text-[10px] text-gray-400 mt-1 text-center">5 Cartas</span>
+                    </button>
+                    <button onclick="selectSpread('celtic')" data-spread="celtic" class="spread-btn border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center transition-all hover:bg-mystic-gold/10">
+                        <span class="text-2xl mb-1">☽</span>
+                        <span class="font-mystic text-sm text-mystic-gold text-center">Cruz Celta</span>
+                        <span class="text-[10px] text-gray-400 mt-1 text-center">10 Cartas</span>
+                    </button>
+                </div>
+
+                <!-- Spread Description -->
+                <div id="spread-description" class="text-sm text-gray-400 bg-mystic-900/60 rounded-lg p-4 mb-5 relative z-10">
+                    <p><strong class="text-mystic-gold">1 Carta — Consejo / Sí-No:</strong> Ideal para una respuesta directa. Formula una pregunta concreta y saca una carta. La carta te da la respuesta y el matiz que necesitas considerar.</p>
+                </div>
+
+                <div class="relative z-10 mb-4">
+                    <img src="img/card_back.jpg" alt="Reverso de carta de tarot" class="card-back-preview mx-auto" id="card-back-img">
+                </div>
+
+                <div class="text-center relative z-10">
+                    <button id="btn-draw" class="bg-gradient-to-r from-mystic-700 to-purple-800 hover:from-mystic-gold/80 hover:to-amber-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-all transform active:scale-95 duration-200">
+                        <span id="btn-draw-text">Sacar 1 Carta</span>
+                    </button>
+                    <p class="text-[10px] text-gray-500 mt-2">Puedes tirar tantas veces como quieras. Cada tirada se guarda en el historial.</p>
+                </div>
+
+                <div id="draw-results" class="mt-8 min-h-[20px] relative z-10">
+                    <!-- Cards will be injected here by JS -->
+                </div>
+
+                <!-- MEJORA 2 (Parte B): Cuaderno de Notas / Journaling & Exportación -->
+                <div id="reading-journal-box" class="mt-6 p-4 rounded-xl bg-mystic-900/95 border border-mystic-gold/30 shadow-lg hidden relative z-10">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-mystic text-sm text-mystic-gold flex items-center gap-1.5">
+                            <span>✍️</span> Diario de esta Lectura
+                        </h4>
+                        <span id="journal-saved-badge" class="text-[10px] text-emerald-400 opacity-0 transition-opacity font-semibold">✓ Guardado en tu Historial</span>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mb-2">Anota tus impresiones, lo que sentiste al ver los símbolos o tu conclusión personal:</p>
+                    <textarea id="reading-notes" rows="3" placeholder="Escribe aquí tu reflexión personal..." class="w-full bg-mystic-950/80 border border-white/10 rounded-lg p-2.5 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-mystic-gold/50 mb-3"></textarea>
+                    
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <button id="btn-save-notes" class="text-xs bg-mystic-gold/20 hover:bg-mystic-gold/30 text-mystic-gold border border-mystic-gold/40 px-3.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                            <span>💾</span> Guardar Notas
+                        </button>
+                        <button id="btn-export-reading" class="text-xs bg-purple-900/40 hover:bg-purple-900/60 text-purple-200 border border-purple-500/30 px-3.5 py-1.5 rounded-lg transition-colors flex items-center gap-1.5">
+                            <span>📋</span> Copiar Resumen de Lectura
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reading History -->
+            <div class="bg-mystic-900/80 p-5 rounded-xl border border-white/5 mt-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="font-mystic text-lg text-mystic-gold flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Historial de Tiradas
+                    </h4>
+                    <button id="btn-clear-history" class="text-xs text-red-400/60 hover:text-red-400 transition-colors" title="Borrar historial">Borrar todo</button>
+                </div>
+                <div id="history-container" class="space-y-3">
+                    <p class="text-sm text-gray-500 italic text-center py-4">Aún no has realizado ninguna tirada. ¡Prueba el Laboratorio!</p>
+                </div>
+            </div>
+
+            <!-- Study Plan Interactive -->
+            <div class="bg-mystic-900/80 p-5 rounded-xl border border-white/5 mt-8">
+                <h4 class="font-mystic text-lg text-mystic-gold mb-2 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Plan de Estudio · 8 Semanas
+                </h4>
+                <p class="text-xs text-gray-400 mb-4">Marca cada tema cuando lo hayas estudiado. Tu progreso se guarda automáticamente.</p>
+                <div class="study-progress-bar mb-4"><div class="study-progress-fill" id="study-progress" style="width: 0%"></div></div>
+                <p class="text-xs text-mystic-gold mb-4" id="study-percent">0% completado</p>
+                <div class="space-y-2" id="study-plan">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Journal Template -->
+            <div class="bg-mystic-900/80 p-5 rounded-xl border border-white/5 mt-6">
+                <h4 class="font-mystic text-lg text-mystic-gold mb-3 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    Cómo usar el Diario
+                </h4>
+                <p class="text-xs text-gray-400 mb-3">Después de cada tirada, anota en tu cuaderno siguiendo esta estructura:</p>
+                <ol class="list-decimal list-inside text-sm text-gray-300 space-y-1">
+                    <li>Fecha y <strong class="text-white">pregunta exacta</strong> que formulaste.</li>
+                    <li>Tipo de tirada y <strong class="text-white">posición de cada carta</strong>.</li>
+                    <li>Descripción visual inicial <em class="text-gray-400">(sin consultar significados)</em>.</li>
+                    <li>Significado consultado <em class="text-gray-400">(Núcleo y Sombra)</em>.</li>
+                    <li>Tu <strong class="text-white">interpretación personal</strong> / síntesis.</li>
+                    <li>Una <strong class="text-white">acción concreta</strong> o reflexión.</li>
+                    <li>Revisión posterior <em class="text-gray-400">(vuelve días después a releer)</em>.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="tab-consulta" class="tab-content space-y-6">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-mystic text-mystic-gold mb-2">Consulta de Cartas</h2>
+                <p class="text-sm text-gray-400">Busca cualquier carta por nombre para ver su significado completo. Ideal para interpretar tiradas físicas.</p>
+            </div>
+
+            <div class="relative">
+                <input type="text" id="card-search" class="search-input w-full rounded-xl px-4 py-3 pl-11 text-sm" placeholder="Buscar carta... (ej: El Mago, Tres de Copas, Rey)">
+                <svg class="w-5 h-5 text-mystic-gold/50 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-2">
+                <button onclick="filterConsulta('todos')" class="filter-btn text-xs px-3 py-1.5 rounded-full border border-mystic-gold/30 text-mystic-gold hover:bg-mystic-gold/10 transition-colors">Todas</button>
+                <button onclick="filterConsulta('mayores')" class="filter-btn text-xs px-3 py-1.5 rounded-full border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 transition-colors">Mayores</button>
+                <button onclick="filterConsulta('bastos')" class="filter-btn text-xs px-3 py-1.5 rounded-full border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors">🔥 Bastos</button>
+                <button onclick="filterConsulta('copas')" class="filter-btn text-xs px-3 py-1.5 rounded-full border border-blue-500/30 text-blue-400 hover:bg-blue-500/10 transition-colors">💧 Copas</button>
+                <button onclick="filterConsulta('espadas')" class="filter-btn text-xs px-3 py-1.5 rounded-full border border-gray-400/30 text-gray-300 hover:bg-gray-500/10 transition-colors">🌪️ Espadas</button>
+                <button onclick="filterConsulta('oros')" class="filter-btn text-xs px-3 py-1.5 rounded-full border border-amber-500/30 text-amber-400 hover:bg-amber-500/10 transition-colors">🌍 Oros</button>
+            </div>
+
+            <p class="text-xs text-gray-500" id="consulta-count">78 cartas disponibles</p>
+
+            <div id="consulta-results" class="space-y-3">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="fixed bottom-0 w-full glass-panel z-50 px-2 pb-safe pt-2">
+        <div class="flex justify-between items-center max-w-md mx-auto">
+            <button onclick="switchTab('manual')" class="nav-btn active flex-1 flex flex-col items-center p-2 text-gray-500 hover:text-mystic-gold transition-colors" data-target="tab-manual">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                <span class="text-[9px] uppercase font-bold tracking-widest">Manual</span>
+            </button>
+            <button onclick="switchTab('arcanos')" class="nav-btn flex-1 flex flex-col items-center p-2 text-gray-500 hover:text-mystic-gold transition-colors" data-target="tab-arcanos">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                <span class="text-[9px] uppercase font-bold tracking-widest">Arcanos</span>
+            </button>
+            <button onclick="switchTab('consulta')" class="nav-btn flex-1 flex flex-col items-center p-2 text-gray-500 hover:text-mystic-gold transition-colors" data-target="tab-consulta">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <span class="text-[9px] uppercase font-bold tracking-widest">Consulta</span>
+            </button>
+            <button onclick="switchTab('tiradas')" class="nav-btn flex-1 flex flex-col items-center p-2 text-gray-500 hover:text-mystic-gold transition-colors" data-target="tab-tiradas">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                <span class="text-[9px] uppercase font-bold tracking-widest">Lectura</span>
+            </button>
+            <button onclick="switchTab('practica')" class="nav-btn flex-1 flex flex-col items-center p-2 text-gray-500 hover:text-mystic-gold transition-colors" data-target="tab-practica">
+                <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                <span class="text-[9px] uppercase font-bold tracking-widest">Tirada</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        const mayores = [
+            { n: "0. El Loco", sym: "Abismo, perro, rosa blanca, bulto, mirada al cielo.", core: "Comienzo, libertad, salto de fe, apertura.", shadow: "Imprudencia, evasión, falta de preparación.", read: "Hay una posibilidad genuina, pero requiere presencia y conciencia del riesgo." },
+            { n: "I. El Mago", sym: "Mano arriba y abajo, infinito, los cuatro palos sobre la mesa.", core: "Voluntad, habilidad, recursos, manifestación.", shadow: "Manipulación, dispersión, promesas vacías.", read: "Tienes herramientas; el desafío es enfocarlas y actuar con integridad." },
+            { n: "II. La Sacerdotisa", sym: "Velo, luna, columnas, pergamino, agua.", core: "Intuición, misterio, conocimiento interior.", shadow: "Aislamiento, secretos, negación de lo evidente.", read: "La respuesta aún no es externa; escucha antes de revelar o decidir." },
+            { n: "III. La Emperatriz", sym: "Trigo, trono, escudo con corazón, naturaleza fértil.", core: "Abundancia, creación, cuidado, naturaleza.", shadow: "Dependencia, sobreprotección, estancamiento.", read: "Nutre lo que quieres que crezca, sin confundir cuidado con control." },
+            { n: "IV. El Emperador", sym: "Trono de piedra, cetro, armadura, montañas.", core: "Estructura, autoridad, límites, orden.", shadow: "Rigidez, control, autoritarismo.", read: "Pon reglas útiles; no conviertas la seguridad en jaula." },
+            { n: "V. El Hierofante", sym: "Llaves, discípulos, bendición, trono religioso.", core: "Tradición, enseñanza, valores, compromiso.", shadow: "Dogmatismo, conformidad, autoridad externa.", read: "Pregunta qué tradiciones te sostienen y cuáles te limitan." },
+            { n: "VI. Los Enamorados", sym: "Dos figuras, ángel, árbol de la vida, montaña.", core: "Elección, alineación, vínculo, valores.", shadow: "Indecisión, conflicto de valores, evasión.", read: "Una decisión sobre quién eres y qué eliges honrar, no solo amor." },
+            { n: "VII. El Carro", sym: "Dos esfinges, estrellas, lunas, ciudad detrás.", core: "Dirección, determinación, avance, control.", shadow: "Impaciencia, fuerza bruta, rumbo perdido.", read: "Avanza, pero mantén el control de la dirección y el ritmo." },
+            { n: "VIII. La Fuerza", sym: "León, lemniscato, guirnalda, calma.", core: "Coraje sereno, paciencia, dominio interior.", shadow: "Impulsividad, miedo, represión.", read: "La fuerza eficaz no es dominación, sino presencia firme y amable." },
+            { n: "IX. El Ermitaño", sym: "Farol, bastón, montaña, manto gris.", core: "Introspección, guía, sabiduría, retiro.", shadow: "Soledad, aislamiento, exceso de análisis.", read: "Busca claridad antes de actuar; no confundas reflexión con huida." },
+            { n: "X. Rueda de la Fortuna", sym: "Rueda, esfinge, serpiente, Anubis.", core: "Ciclos, cambio, punto de giro, oportunidad.", shadow: "Resistencia al cambio, fatalismo.", read: "Algo se mueve; identifica qué depende de ti y qué exige adaptación." },
+            { n: "XI. La Justicia", sym: "Balanza, espada, corona, trono.", core: "Verdad, equilibrio, consecuencia, responsabilidad.", shadow: "Parcialidad, evasión, desequilibrio.", read: "Mira los hechos completos y asume la parte que te corresponde." },
+            { n: "XII. El Colgado", sym: "Figura invertida, árbol, halo.", core: "Pausa, nueva perspectiva, entrega, sacrificio.", shadow: "Estancamiento, martirio, indecisión.", read: "Detente sin rendirte; cambia el ángulo antes de forzar una solución." },
+            { n: "XIII. La Muerte", sym: "Esqueleto, guadaña, rosa blanca, sol naciente.", core: "Transformación, cierre, renacimiento.", shadow: "Aferrarse, miedo al cambio, resistencia.", read: "Algo ha terminado o debe terminar para que pueda comenzar otra cosa." },
+            { n: "XIV. La Templanza", sym: "Dos copas, agua fluyendo, iris, montañas.", core: "Equilibrio, paciencia, integración, moderación.", shadow: "Exceso, desalineación, impaciencia.", read: "Mezcla lo opuesto con cuidado; la solución está en el justo medio." },
+            { n: "XV. El Diablo", sym: "Cadena, llama invertida, figuras encadenadas.", core: "Apegos, deseos, sombra, dinámicas de poder.", shadow: "Adicción, control, victimismo.", read: "Identifica qué te ata y qué placer o miedo mantiene el vínculo." },
+            { n: "XVI. La Torre", sym: "Rayo, corona cayendo, llamas.", core: "Ruptura repentina, revelación, colapso.", shadow: "Caos, evasión, resistencia a la verdad.", read: "Algo inestable se derrumba; prioriza seguridad, verdad y reconstrucción." },
+            { n: "XVII. La Estrella", sym: "Estrella de ocho puntas, agua, jarra, tierra.", core: "Esperanza, sanación, inspiración, fe.", shadow: "Desánimo, desconexión, idealización.", read: "Después de la crisis, recupera confianza y cuida lo esencial." },
+            { n: "XVIII. La Luna", sym: "Luna, perro y lobo, langosta, torres.", core: "Inconsciente, sueños, intuición, incertidumbre.", shadow: "Ilusión, miedo, confusión.", read: "No todo es lo que parece; avanza despacio y verifica." },
+            { n: "XIX. El Sol", sym: "Sol, niño en caballo blanco, girasoles.", core: "Claridad, vitalidad, alegría, éxito.", shadow: "Arrogancia, exceso de optimismo.", read: "Reconoce lo que funciona y permite que la verdad simple te sostenga." },
+            { n: "XX. El Juicio", sym: "Ángel, trompeta, figuras emergiendo, cruz.", core: "Llamado, despertar, evaluación, renacimiento.", shadow: "Autocrítica, culpa, evasión del llamado.", read: "Responde a lo que ya sabes; es momento de rendir cuentas y renacer." },
+            { n: "XXI. El Mundo", sym: "Guirnalda oval, figura danzante, cuatro criaturas.", core: "Culminación, integración, cierre, plenitud.", shadow: "Incompletitud, demora, falta de cierre.", read: "Celebra el ciclo completado y prepara el siguiente." }
+        ];
+
+        const menores = {
+            bastos: [
+                { n: "As de Bastos", sym: "Mano surgiendo de nube, vara con brotes verdes, castillo lejano.", core: "Iniciativa, chispa creativa, nueva energía", shadow: "Impulsividad, falta de dirección", read: "Un inicio con fuerza y potencial real. Canaliza la energía antes de que se disperse.", note: "Elemento Fuego: acción, pasión, voluntad." },
+                { n: "Dos de Bastos", sym: "Hombre con globo terráqueo, dos bastos fijos, mar al fondo.", core: "Planificación, visión, decisión", shadow: "Indecisión, miedo a salir", read: "Tienes el mapa pero aún no has dado el paso. Evalúa y lánzate." },
+                { n: "Tres de Bastos", sym: "Figura de espaldas mirando al mar, barcos partiendo, tres bastos.", core: "Expansión, progreso, espera informada", shadow: "Impaciencia, falta de previsión", read: "Lo que sembraste empieza a moverse. Mantén la visión amplia." },
+                { n: "Cuatro de Bastos", sym: "Guirnaldas, dos figuras celebrando, castillo al fondo, dosel.", core: "Celebración, estabilidad, comunidad", shadow: "Estancamiento, complacencia", read: "Momento de celebrar un logro o hito. Base sólida para construir." },
+                { n: "Cinco de Bastos", sym: "Cinco jóvenes luchando con bastos, caos aparente.", core: "Competencia, fricción, desacuerdo", shadow: "Conflicto innecesario, ego", read: "No todo conflicto es destructivo; puede motivar. Elige tus batallas." },
+                { n: "Seis de Bastos", sym: "Jinete con corona de laurel, multitud que lo aclama.", core: "Triunfo, reconocimiento, avance", shadow: "Arrogancia, dependencia de aprobación", read: "Victoria merecida. Disfrútala sin olvidar que el camino sigue." },
+                { n: "Siete de Bastos", sym: "Hombre en posición elevada defendiéndose con un basto, seis bastos desde abajo.", core: "Defensa, perseverancia, postura firme", shadow: "Desconfianza, resistencia excesiva", read: "Mantén tu posición. Tienes la ventaja si no cedes ante la presión." },
+                { n: "Ocho de Bastos", sym: "Ocho bastos volando por un cielo despejado sobre paisaje verde.", core: "Velocidad, mensajes, movimiento", shadow: "Prisa, dispersión, malentendidos", read: "Las cosas se aceleran. Noticias, viajes o cambios rápidos en camino." },
+                { n: "Nueve de Bastos", sym: "Hombre herido apoyado en un basto, ocho bastos como barrera detrás.", core: "Persistencia, límites, experiencia", shadow: "Agotamiento, hipervigilancia", read: "Casi llegas. El cansancio es real, pero la meta está cerca. No abandones." },
+                { n: "Diez de Bastos", sym: "Figura cargando diez bastos con dificultad, pueblo a lo lejos.", core: "Responsabilidad, carga, cierre", shadow: "Sobrecarga, no delegar, martirio", read: "Estás llevando demasiado. Delega, simplifica o acepta que el ciclo termina." },
+                { n: "Sota de Bastos", sym: "Joven con basto en terreno desértico, mirando la vara con curiosidad.", core: "Entusiasmo, noticia, exploración", shadow: "Inmadurez, impulsividad", read: "Mensaje de acción o nueva oportunidad. Energía joven e inquieta." },
+                { n: "Caballero de Bastos", sym: "Jinete a galope con basto, paisaje desértico, capa ondeando.", core: "Pasión, aventura, avance impulsivo", shadow: "Impaciencia, imprudencia, falta de plan", read: "Acción directa y valiente, pero asegúrate de saber a dónde vas." },
+                { n: "Reina de Bastos", sym: "Mujer en trono con girasoles, gato negro, basto en mano.", core: "Confianza, carisma, determinación", shadow: "Celos, control, intensidad excesiva", read: "Lidera con pasión y generosidad. Tu energía inspira a quienes te rodean." },
+                { n: "Rey de Bastos", sym: "Rey en trono con salamandra, basto floreciente, capa roja.", core: "Liderazgo, visión, emprendimiento", shadow: "Dominancia, arrogancia, impaciencia", read: "Autoridad natural y visión a largo plazo. Dirige sin aplastar." }
+            ],
+            copas: [
+                { n: "As de Copas", sym: "Mano de nube con copa desbordante, paloma con hostia, lirios en agua.", core: "Nuevo sentimiento, amor, apertura emocional", shadow: "Idealización, represión, expectativas irreales", read: "Se abre una puerta emocional. Recíbelo con el corazón abierto pero los ojos claros.", note: "Elemento Agua: emociones, intuición, relaciones." },
+                { n: "Dos de Copas", sym: "Hombre y mujer intercambiando copas, caduceo y león alado arriba.", core: "Conexión mutua, acuerdo, unión", shadow: "Dependencia, desequilibrio en la relación", read: "Vínculo genuino basado en respeto. Sociedad, amistad o amor correspondido." },
+                { n: "Tres de Copas", sym: "Tres mujeres brindando con copas, guirnaldas, frutas en el suelo.", core: "Amistad, celebración, comunidad", shadow: "Chismes, comparación, superficialidad", read: "Celebra con quienes te quieren bien. La alegría compartida sana." },
+                { n: "Cuatro de Copas", sym: "Joven bajo un árbol, brazos cruzados, tres copas delante, una ofrecida desde nube.", core: "Contemplación, apatía, oportunidad perdida", shadow: "Desconexión, indiferencia, autoabsorción", read: "Hay algo disponible que no estás viendo. Sal de tu cabeza un momento." },
+                { n: "Cinco de Copas", sym: "Figura de negro, tres copas derramadas, dos en pie detrás, puente y río.", core: "Pérdida, duelo, arrepentimiento", shadow: "Fijarse en lo perdido, autocompasión", read: "El dolor es válido, pero mira atrás: dos copas siguen en pie. No todo se perdió." },
+                { n: "Seis de Copas", sym: "Niño dando flor a otro niño, jardín con seis copas floridas, pueblo.", core: "Nostalgia, inocencia, apoyo, raíces", shadow: "Anclaje al pasado, inmadurez", read: "Algo del pasado regresa o influye. Puede ser sanador si no te ancla." },
+                { n: "Siete de Copas", sym: "Silueta ante siete copas flotantes con visiones: castillo, joyas, dragón, serpiente, rostro, corona, figura luminosa.", core: "Opciones, fantasía, ilusiones, búsqueda", shadow: "Dispersión, autoengaño, parálisis por opciones", read: "Muchas posibilidades, pero no todas son reales. Filtra antes de elegir." },
+                { n: "Ocho de Copas", sym: "Hombre alejándose de ocho copas apiladas, luna en eclipse, montañas.", core: "Retirada, búsqueda de sentido, dejar ir", shadow: "Huida, abandono, evitar confrontación", read: "A veces la valentia es irse. Busca lo que falta, aunque duela dejar lo conocido." },
+                { n: "Nueve de Copas", sym: "Hombre satisfecho sentado, brazos cruzados, nueve copas en arco detrás.", core: "Satisfacción, deseo cumplido, plenitud", shadow: "Complacencia, exceso, materialismo emocional", read: "Disfruta lo conseguido. Pero pregúntate si la satisfacción es profunda o superficial." },
+                { n: "Diez de Copas", sym: "Pareja con brazos abiertos, arcoíris de copas, niños jugando, casa.", core: "Armonía familiar, felicidad compartida, hogar", shadow: "Idealización familiar, presión por la perfección", read: "La felicidad plena es posible. No la sabotees buscando lo que falta." },
+                { n: "Sota de Copas", sym: "Joven con copa y pez asomando, terreno plano, mar al fondo.", core: "Mensaje emocional, sensibilidad, imaginación", shadow: "Susceptibilidad, inmadurez emocional", read: "Noticia o propuesta emocional. Persona joven, soñadora y creativa.", note: "Waite: Joven estudioso, servicio, reflexión." },
+                { n: "Caballero de Copas", sym: "Jinete sereno con copa, caballo blanco avanzando despacio, río.", core: "Romanticismo, idealismo, invitación", shadow: "Fantasía, inconsistencia, seducción vacía", read: "Llega una propuesta con encanto. Verifica si hay sustancia detrás de la belleza." },
+                { n: "Reina de Copas", sym: "Reina en trono sobre agua, copa cerrada ornamentada, querubines.", core: "Empatía, intuición profunda, cuidado", shadow: "Límites difusos, absorción emocional", read: "Confía en tu intuición. Cuida sin perderte en las emociones ajenas." },
+                { n: "Rey de Copas", sym: "Rey en trono flotando en mar, copa en una mano, cetro en otra, pez y barco.", core: "Equilibrio emocional, diplomacia, madurez", shadow: "Represión emocional, frialdad calculada", read: "Dominio de las emociones sin negarlas. Líder empático pero firme." }
+            ],
+            espadas: [
+                { n: "As de Espadas", sym: "Mano de nube con espada coronada, ramas de olivo y palma.", core: "Claridad mental, verdad, corte, nueva idea", shadow: "Crueldad, juicio excesivo, frialdad", read: "Un momento de claridad que corta la confusión. Úsalo con justicia.", note: "Elemento Aire: mente, comunicación, verdad." },
+                { n: "Dos de Espadas", sym: "Mujer vendada con dos espadas cruzadas, mar y luna detrás.", core: "Encrucijada, decisión bloqueada, equilibrio tenso", shadow: "Evasión, ceguera voluntaria, parálisis", read: "Estás evitando ver algo. Quita la venda y decide, aunque duela." },
+                { n: "Tres de Espadas", sym: "Corazón atravesado por tres espadas, lluvia y nubes grises.", core: "Dolor, verdad dolorosa, separación, duelo", shadow: "Rumiación, autoataque, dramatización", read: "El dolor es real y necesario para sanar. Atraviesa la tormenta, no la esquives." },
+                { n: "Cuatro de Espadas", sym: "Caballero yacente en tumba, manos en oración, vidriera, tres espadas en muro.", core: "Descanso necesario, recuperación, pausa", shadow: "Aislamiento, apatía, evitar la vida", read: "Tu mente necesita silencio. Descansa para poder pensar con claridad después." },
+                { n: "Cinco de Espadas", sym: "Hombre recogiendo espadas, dos figuras derrotadas alejándose, cielo tormentoso.", core: "Conflicto, pérdida, victoria pírrica", shadow: "Venganza, humillación, culpa", read: "Ganar a este precio no vale la pena. Evalúa si el conflicto merece continuar.", note: "Waite: Degradación, destrucción, deshonor." },
+                { n: "Seis de Espadas", sym: "Barquero llevando a mujer y niño entre aguas turbulentas y calmadas.", core: "Tránsito, alejamiento, viaje hacia la calma", shadow: "Huida, evasión, resistencia a moverse", read: "Te alejas de lo doloroso. El viaje es difícil pero necesario. Mejor horizonte espera." },
+                { n: "Siete de Espadas", sym: "Hombre llevándose cinco espadas, dejando dos, campamento atrás.", core: "Estrategia, astucia, información parcial", shadow: "Engaño, autoengaño, deshonestidad", read: "¿Es estrategia legítima o estás tomando atajos? Revisa tus métodos." },
+                { n: "Ocho de Espadas", sym: "Mujer vendada, atada, rodeada de ocho espadas, agua a sus pies.", core: "Autolimitación, trampa mental, miedo", shadow: "Victimismo, impotencia aprendida", read: "Las ataduras son más mentales que reales. Puedes liberarte si eliges verlo." },
+                { n: "Nueve de Espadas", sym: "Persona sentada en cama, manos cubriendo rostro, nueve espadas en muro oscuro.", core: "Ansiedad, insomnio, preocupación nocturna", shadow: "Rumia, miedo anticipatorio, catastrofismo", read: "El sufrimiento es real pero amplificado por la mente. ¿Qué es hecho y qué es miedo?" },
+                { n: "Diez de Espadas", sym: "Figura boca abajo con diez espadas clavadas, cielo negro, amanecer al fondo.", core: "Final doloroso, colapso, punto más bajo", shadow: "Dramatización, resistencia al cierre", read: "Lo peor ya pasó. Mira el amanecer al fondo: después del fondo, solo se sube." },
+                { n: "Sota de Espadas", sym: "Joven con espada en alto, terreno accidentado, nubes y viento.", core: "Curiosidad, vigilancia, noticia mental", shadow: "Chismes, juicio apresurado, espionaje", read: "Mente aguda y observadora. Puede traer noticias que requieren análisis." },
+                { n: "Caballero de Espadas", sym: "Jinete a galope con espada en alto, nubes tormentosas, pájaros.", core: "Decisión rápida, confrontación directa, audacia", shadow: "Impaciencia, agresividad, falta de tacto", read: "Actúa con determinación pero no atropelles a nadie en el camino." },
+                { n: "Reina de Espadas", sym: "Reina en trono con espada, mariposa en corona, nubes, perfil severo.", core: "Percepción, independencia, límites claros", shadow: "Frialdad, crítica destructiva, aislamiento", read: "Ve la verdad con claridad. Establece límites sin perder la compasión." },
+                { n: "Rey de Espadas", sym: "Rey en trono con espada recta, mariposas, árboles y nubes.", core: "Autoridad intelectual, juicio, ética", shadow: "Rigidez, autoritarismo, desconexión emocional", read: "Juzga con imparcialidad y conocimiento. La justicia requiere cabeza y corazón." }
+            ],
+            oros: [
+                { n: "As de Oros", sym: "Mano de nube con moneda de pentáculo, jardín debajo, arco de flores.", core: "Oportunidad material, semilla, nuevo recurso", shadow: "Avaricia, inseguridad material", read: "Se presenta una oportunidad concreta. Planta bien la semilla y cuídala.", note: "Elemento Tierra: materia, cuerpo, recursos, trabajo." },
+                { n: "Dos de Oros", sym: "Joven haciendo malabares con dos pentáculos en lemniscato, barcos en mar agitado.", core: "Equilibrio, adaptación, gestión de recursos", shadow: "Inestabilidad, sobrecarga, indecisión", read: "Muchas cosas en el aire. Prioriza y fluye sin perder el centro." },
+                { n: "Tres de Oros", sym: "Artesano trabajando en catedral, dos figuras con planos, arco gótico.", core: "Trabajo en equipo, maestría, aprendizaje", shadow: "Descoordinación, falta de reconocimiento", read: "Colaboración productiva. El buen trabajo se construye con otros y con paciencia." },
+                { n: "Cuatro de Oros", sym: "Hombre aferrado a moneda, dos bajo los pies, una en la cabeza, ciudad detrás.", core: "Seguridad, ahorro, control de recursos", shadow: "Aferramiento, avaricia, miedo a perder", read: "Proteger lo tuyo es sabio; aferrarte por miedo te aísla y te empobrece." },
+                { n: "Cinco de Oros", sym: "Dos figuras en la nieve ante vidriera iluminada, harapos, muletas.", core: "Escasez, exclusión, dificultad material", shadow: "Aislamiento, vergüenza, no pedir ayuda", read: "La ayuda está más cerca de lo que crees. Mira la puerta iluminada." },
+                { n: "Seis de Oros", sym: "Mercader con balanza repartiendo monedas a mendigos.", core: "Generosidad, equilibrio en dar y recibir", shadow: "Dependencia, desequilibrio de poder, caridad interesada", read: "Da y recibe con equilibrio. Pregúntate en qué lado de la balanza estás." },
+                { n: "Siete de Oros", sym: "Campesino apoyado en azada mirando siete pentáculos en planta.", core: "Paciencia, evaluación, inversión a largo plazo", shadow: "Impaciencia, duda, rendimiento insuficiente", read: "Los frutos están creciendo. No arranques la planta por impaciencia; evalúa y ajusta." },
+                { n: "Ocho de Oros", sym: "Artesano tallando pentáculos con detalle, seis terminados, pueblo lejano.", core: "Diligencia, aprendizaje, perfeccionamiento del oficio", shadow: "Perfeccionismo, monotonía, obsesión con detalles", read: "El dominio se logra con repetición consciente. Sigue perfeccionando tu arte." },
+                { n: "Nueve de Oros", sym: "Mujer elegante en jardín abundante, halcón en mano, caracol, uvas.", core: "Autonomía, disfrute, logro personal", shadow: "Complacencia, materialismo, soledad elegida", read: "Has construido algo valioso por ti mismo. Disfruta el fruto de tu esfuerzo." },
+                { n: "Diez de Oros", sym: "Familia ante arco, anciano con perros, diez pentáculos en árbol genealógico.", core: "Legado, estabilidad familiar, éxito duradero", shadow: "Rigidez, carga familiar, conflictos de herencia", read: "Culminación material. Piensa en qué legado dejas y cómo cuidas lo construido." },
+                { n: "Sota de Oros", sym: "Joven sosteniendo pentáculo con admiración, paisaje verde y fértil.", core: "Estudio, noticia práctica, nuevo aprendizaje", shadow: "Falta de enfoque, soñar sin ejecutar", read: "Oportunidad de aprender algo práctico y valioso. Pon atención y compromiso." },
+                { n: "Caballero de Oros", sym: "Jinete inmóvil sobre caballo oscuro, pentáculo en mano, campo arado.", core: "Constancia, método, fiabilidad, paciencia", shadow: "Rutina, lentitud, resistencia al cambio", read: "Avanza despacio pero seguro. La constancia vence al talento sin disciplina." },
+                { n: "Reina de Oros", sym: "Reina en trono florido con pentáculo, conejo, jardín exuberante.", core: "Práctica, generosidad, abundancia, cuidado terrenal", shadow: "Sobreprotección, control material, posesividad", read: "Nutre lo tangible: hogar, salud, recursos. Tu generosidad crea abundancia.", note: "Waite: Opulencia, seguridad, libertad." },
+                { n: "Rey de Oros", sym: "Rey en trono con toros, pentáculo, armadura bajo manto, castillo y jardines.", core: "Éxito, prosperidad, estabilidad, visión práctica", shadow: "Materialismo, terquedad, obsesión con el control", read: "Maestro del mundo material. Usa tu éxito para construir algo que perdure." }
+            ]
+        };
+
+        // === CARD IMAGE MAP (Wikimedia Commons, public domain) ===
+        const cardImgMap = {
+            '0. El Loco':'RWS_Tarot_00_Fool.jpg','I. El Mago':'RWS_Tarot_01_Magician.jpg',
+            'II. La Sacerdotisa':'RWS_Tarot_02_High_Priestess.jpg','III. La Emperatriz':'RWS_Tarot_03_Empress.jpg',
+            'IV. El Emperador':'RWS_Tarot_04_Emperor.jpg','V. El Hierofante':'RWS_Tarot_05_Hierophant.jpg',
+            'VI. Los Enamorados':'RWS_Tarot_06_Lovers.jpg','VII. El Carro':'RWS_Tarot_07_Chariot.jpg',
+            'VIII. La Fuerza':'RWS_Tarot_08_Strength.jpg','IX. El Ermitaño':'RWS_Tarot_09_Hermit.jpg',
+            'X. Rueda de la Fortuna':'RWS_Tarot_10_Wheel_of_Fortune.jpg','XI. La Justicia':'RWS_Tarot_11_Justice.jpg',
+            'XII. El Colgado':'RWS_Tarot_12_Hanged_Man.jpg','XIII. La Muerte':'RWS_Tarot_13_Death.jpg',
+            'XIV. La Templanza':'RWS_Tarot_14_Temperance.jpg','XV. El Diablo':'RWS_Tarot_15_Devil.jpg',
+            'XVI. La Torre':'RWS_Tarot_16_Tower.jpg','XVII. La Estrella':'RWS_Tarot_17_Star.jpg',
+            'XVIII. La Luna':'RWS_Tarot_18_Moon.jpg','XIX. El Sol':'RWS_Tarot_19_Sun.jpg',
+            'XX. El Juicio':'RWS_Tarot_20_Judgement.jpg','XXI. El Mundo':'RWS_Tarot_21_World.jpg'
+        };
+        function getMinorImg(suit, idx) {
+            const suitMap = {bastos:'Wands',copas:'Cups',espadas:'Swords',oros:'Pents'};
+            return (suitMap[suit]||'') + String(idx).padStart(2,'0') + '.jpg';
+        }
+        function cardImgUrl(name, suit, idx) {
+            const file = cardImgMap[name] || (suit ? getMinorImg(suit, idx) : '');
+            return file ? `https://commons.wikimedia.org/wiki/Special:FilePath/${file}?width=200` : '';
+        }
+
+        // Assign images to minors
+        ['bastos','copas','espadas','oros'].forEach(suit => {
+            menores[suit].forEach((c, i) => { c._suit = suit; c._idx = i + 1; });
+        });
+
+        function createCardHTML(card, isMajor = false) {
+            const imgUrl = cardImgUrl(card.n, card._suit, card._idx);
+            return `
+                <details class="bg-mystic-800 rounded-lg cursor-pointer">
+                    <summary class="p-4 font-mystic text-mystic-gold flex justify-between items-center outline-none">
+                        ${card.n}
+                        <svg class="w-5 h-5 summary-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="p-4 pt-0 text-sm border-t border-mystic-gold/10">
+                        <div class="flex gap-4">
+                            ${imgUrl ? `<img src="${imgUrl}" alt="${card.n}" loading="lazy" class="card-img rounded-lg shadow-lg" onerror="this.style.display='none'">` : ''}
+                            <div class="flex-1">
+                                ${card.sym ? `<p class="mb-2 text-xs text-gray-400 italic">${card.sym}</p>` : ''}
+                                <p class="mb-2"><strong class="text-white">Núcleo:</strong> <span class="text-gray-300">${card.core}</span></p>
+                                <p class="mb-2"><strong class="text-red-400">Sombra:</strong> <span class="text-gray-400">${card.shadow}</span></p>
+                            </div>
+                        </div>
+                        ${card.read ? `<p class="mt-2 text-blue-200 border-t border-mystic-700 pt-2">${card.read}</p>` : ''}
+                        ${card.note ? `<p class="mt-2 text-xs text-mystic-golddim italic border-t border-mystic-700 pt-2">${card.note}</p>` : ''}
+                    </div>
+                </details>
+            `;
+        }
+
+        document.getElementById('mayores-container').innerHTML = mayores.map(c => createCardHTML(c, true)).join('');
+        document.getElementById('bastos-container').innerHTML = menores.bastos.map(c => createCardHTML(c)).join('');
+        document.getElementById('copas-container').innerHTML = menores.copas.map(c => createCardHTML(c)).join('');
+        document.getElementById('espadas-container').innerHTML = menores.espadas.map(c => createCardHTML(c)).join('');
+        document.getElementById('oros-container').innerHTML = menores.oros.map(c => createCardHTML(c)).join('');
+
+        // === CONSULTA / CARD SEARCH ===
+        const allCards = [
+            ...mayores.map(c => ({...c, suit: 'mayores', isMajor: true})),
+            ...menores.bastos.map(c => ({...c, suit: 'bastos'})),
+            ...menores.copas.map(c => ({...c, suit: 'copas'})),
+            ...menores.espadas.map(c => ({...c, suit: 'espadas'})),
+            ...menores.oros.map(c => ({...c, suit: 'oros'}))
+        ];
+
+        let currentFilter = 'todos';
+
+        function renderConsulta(searchTerm = '') {
+            const container = document.getElementById('consulta-results');
+            const term = searchTerm.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            
+            let filtered = allCards;
+            if (currentFilter !== 'todos') {
+                filtered = filtered.filter(c => c.suit === currentFilter);
+            }
+            if (term) {
+                filtered = filtered.filter(c => {
+                    const name = c.n.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    return name.includes(term);
+                });
+            }
+
+            document.getElementById('consulta-count').textContent = `${filtered.length} carta${filtered.length !== 1 ? 's' : ''} encontrada${filtered.length !== 1 ? 's' : ''}`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500 italic text-center py-8">No se encontraron cartas con ese nombre.</p>';
+                return;
+            }
+
+            container.innerHTML = filtered.map(card => `
+                <div class="consulta-card bg-mystic-800 border border-mystic-gold/20 rounded-xl p-4" onclick="this.classList.toggle('selected')">
+                    <div class="flex justify-between items-center">
+                        <span class="font-mystic text-mystic-gold text-sm">${card.n}</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full ${card.suit === 'mayores' ? 'bg-purple-900/50 text-purple-300' : card.suit === 'bastos' ? 'bg-red-900/30 text-red-400' : card.suit === 'copas' ? 'bg-blue-900/30 text-blue-400' : card.suit === 'espadas' ? 'bg-gray-700/50 text-gray-300' : 'bg-amber-900/30 text-amber-400'}">${card.suit === 'mayores' ? 'Mayor' : card.suit.charAt(0).toUpperCase() + card.suit.slice(1)}</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">${card.core}</p>
+                    <span class="text-[9px] text-mystic-gold/40 mt-1 block">▼ toca para ver detalle completo</span>
+                    <div class="card-full-info mt-3 space-y-2 text-sm border-t border-mystic-gold/10 pt-3">
+                        ${card.sym ? `<p class="text-xs text-gray-400 italic">${card.sym}</p>` : ''}
+                        <p><strong class="text-white">Núcleo:</strong> <span class="text-gray-300">${card.core}</span></p>
+                        <p><strong class="text-red-400">Sombra:</strong> <span class="text-gray-400">${card.shadow}</span></p>
+                        ${card.read ? `<p class="text-blue-200 border-t border-mystic-700 pt-2 mt-2">${card.read}</p>` : ''}
+                        ${card.note ? `<p class="text-xs text-mystic-golddim italic border-t border-mystic-700 pt-2">${card.note}</p>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.filterConsulta = function(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('bg-mystic-gold/20'));
+            event.target.classList.add('bg-mystic-gold/20');
+            renderConsulta(document.getElementById('card-search').value);
+        };
+
+        document.getElementById('card-search').addEventListener('input', (e) => {
+            renderConsulta(e.target.value);
+        });
+
+        renderConsulta();
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('text-mystic-gold');
+                el.classList.add('text-gray-500');
+            });
+            
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            const btn = document.querySelector(`[data-target="tab-${tabId}"]`);
+            if(btn) {
+                btn.classList.remove('text-gray-500');
+                btn.classList.add('text-mystic-gold');
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelector(`[data-target="tab-manual"]`).classList.replace('text-gray-500', 'text-mystic-gold');
+
+        // === BUILD FULL DECK WITH ALL DATA ===
+        const fullDeck = [];
+        mayores.forEach(m => fullDeck.push({ name: m.n, core: m.core, shadow: m.shadow, sym: m.sym || '', read: m.read || '', note: '', isMajor: true }));
+        ['bastos', 'copas', 'espadas', 'oros'].forEach(suit => {
+            menores[suit].forEach((c, i) => fullDeck.push({ name: c.n, core: c.core, shadow: c.shadow, note: c.note || '', sym: c.sym || '', read: c.read || '', isMajor: false, _suit: suit, _idx: i+1 }));
+        });
+
+        // === SPREAD DEFINITIONS ===
+        const spreads = {
+            '1card': {
+                count: 1,
+                positions: ['Respuesta / Consejo'],
+                description: `
+                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <div class="flex-1">
+                            <strong class="text-mystic-gold block mb-1">1 Carta — Consejo / Sí-No</strong>
+                            Ideal para una respuesta directa. Formula una pregunta concreta y saca una carta. La carta te da la respuesta y el matiz que necesitas considerar.
+                        </div>
+                        <div class="flex justify-center items-center p-2 bg-mystic-900 rounded-lg shrink-0">
+                            <div class="w-8 h-12 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-xs">1</div>
+                        </div>
+                    </div>`,
+                btnText: 'Sacar 1 Carta',
+                gridClass: 'grid grid-cols-1 max-w-sm mx-auto gap-4'
+            },
+            '3card': {
+                count: 3,
+                positions: ['1. Pasado', '2. Presente', '3. Futuro'],
+                description: `
+                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <div class="flex-1">
+                            <strong class="text-mystic-gold block mb-1">3 Cartas — Evolución</strong>
+                            La tirada más usada. La primera carta refleja lo que pasó, la segunda lo que ocurre ahora, y la tercera hacia dónde se dirige.
+                        </div>
+                        <div class="flex gap-2 p-2 bg-mystic-900 rounded-lg shrink-0">
+                            <div class="w-8 h-12 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-xs">1</div>
+                            <div class="w-8 h-12 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-xs">2</div>
+                            <div class="w-8 h-12 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-xs">3</div>
+                        </div>
+                    </div>`,
+                btnText: 'Sacar 3 Cartas',
+                gridClass: 'grid grid-cols-1 sm:grid-cols-3 gap-4'
+            },
+            '5card': {
+                count: 5,
+                positions: ['1. Presente', '2. Obstáculo', '3. Pasado', '4. Futuro cercano', '5. Resultado'],
+                description: `
+                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <div class="flex-1">
+                            <strong class="text-mystic-gold block mb-1">Cruz Simple — 5 Cartas</strong>
+                            Más profunda que las 3 cartas. Centro: presente. Arriba: obstáculo. Izquierda: pasado. Derecha: futuro cercano. Abajo: resultado.
+                        </div>
+                        <div class="grid grid-cols-3 grid-rows-3 gap-1 p-2 bg-mystic-900 rounded-lg shrink-0 place-items-center">
+                            <div></div><div class="w-6 h-9 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[10px]">2</div><div></div>
+                            <div class="w-6 h-9 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[10px]">3</div>
+                            <div class="w-6 h-9 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[10px]">1</div>
+                            <div class="w-6 h-9 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[10px]">4</div>
+                            <div></div><div class="w-6 h-9 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[10px]">5</div><div></div>
+                        </div>
+                    </div>`,
+                btnText: 'Sacar 5 Cartas',
+                gridClass: 'grid grid-cols-1 sm:grid-cols-3 gap-4'
+            },
+            'celtic': {
+                count: 10,
+                positions: [
+                    '1. Situación actual',
+                    '2. Desafío / cruce',
+                    '3. Base inconsciente',
+                    '4. Pasado reciente',
+                    '5. Actitud consciente',
+                    '6. Futuro cercano',
+                    '7. Tu postura',
+                    '8. Entorno / influencias',
+                    '9. Esperanzas y miedos',
+                    '10. Resultado final'
+                ],
+                description: `
+                    <div class="flex flex-col lg:flex-row items-center gap-4">
+                        <div class="flex-1">
+                            <strong class="text-mystic-gold block mb-1">Cruz Celta — 10 Cartas</strong>
+                            La tirada tradicional. El bloque izquierdo forma una cruz (situación, desafío, base, pasado, actitud, futuro) y la columna derecha forma el desarrollo (postura, entorno, miedos, resultado).
+                        </div>
+                        <div class="flex gap-4 p-2 bg-mystic-900 rounded-lg shrink-0">
+                            <!-- Left Cross -->
+                            <div class="grid grid-cols-3 gap-1 place-items-center" style="grid-template-rows: repeat(4, 1.75rem);">
+                                <div class="col-start-2 row-start-1"><div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">5</div></div>
+                                <div class="col-start-1 row-start-2 row-span-2 flex items-center"><div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">4</div></div>
+                                <div class="col-start-2 row-start-2 row-span-2 relative w-5 h-7 flex items-center justify-center"><div class="absolute w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">1</div><div class="absolute w-7 h-5 border border-mystic-gold/80 bg-mystic-900/90 rounded flex items-center justify-center text-mystic-gold text-[9px]">2</div></div>
+                                <div class="col-start-3 row-start-2 row-span-2 flex items-center"><div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">6</div></div>
+                                <div class="col-start-2 row-start-4"><div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">3</div></div>
+                            </div>
+                            <!-- Right Staff -->
+                            <div class="flex flex-col gap-1 justify-end">
+                                <div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">10</div>
+                                <div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">9</div>
+                                <div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">8</div>
+                                <div class="w-5 h-7 border border-mystic-gold/50 rounded flex items-center justify-center text-mystic-gold text-[9px]">7</div>
+                            </div>
+                        </div>
+                    </div>`,
+                btnText: 'Sacar 10 Cartas',
+                gridClass: 'grid grid-cols-1 sm:grid-cols-2 gap-4'
+            }
+        };
+
+        let currentSpread = '1card';
+
+        window.selectSpread = function(type) {
+            currentSpread = type;
+            const spread = spreads[type];
+            
+            // Update selector styles
+            document.querySelectorAll('.spread-btn').forEach(b => {
+                b.classList.remove('active', 'bg-mystic-gold/20', 'border-mystic-gold/40');
+                b.classList.add('border-white/10');
+            });
+            const active = document.querySelector(`[data-spread="${type}"]`);
+            if (active) {
+                active.classList.add('active', 'bg-mystic-gold/20', 'border-mystic-gold/40');
+                active.classList.remove('border-white/10');
+            }
+            
+            // Update description and button
+            document.getElementById('spread-description').innerHTML = `<p>${spread.description}</p>`;
+            document.getElementById('btn-draw-text').textContent = spread.btnText;
+            
+            // Clear previous results & hide journal box
+            document.getElementById('draw-results').innerHTML = '';
+            const journalBox = document.getElementById('reading-journal-box');
+            if (journalBox) journalBox.classList.add('hidden');
+            const cardBackImg = document.getElementById('card-back-img');
+            if (cardBackImg) cardBackImg.style.display = '';
+        };
+
+        // Toast utility
+        function showToast(msg) {
+            const toast = document.getElementById('toast-msg');
+            if (!toast) return;
+            toast.innerHTML = `<span>✨</span> <span>${msg}</span>`;
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 3200);
+        }
+
+        // === MEJORA 1: PREFERENCIA CARTAS INVERTIDAS ===
+        const toggleReversedEl = document.getElementById('toggle-reversed');
+        if (toggleReversedEl) {
+            toggleReversedEl.checked = localStorage.getItem('tarot-allow-reversed') === 'true';
+            toggleReversedEl.addEventListener('change', (e) => {
+                localStorage.setItem('tarot-allow-reversed', e.target.checked);
+                showToast(e.target.checked ? '↺ Cartas Invertidas ACTIVADAS' : 'Cartas Invertidas DESACTIVADAS');
+            });
+        }
+
+        // === MEJORA 3: CARTA GUÍA DEL DÍA & RACHA ===
+        const dailyPrompts = {
+            "0. El Loco": "¿En qué área de tu vida se te pide dar hoy un salto de fe libre de viejos condicionamientos?",
+            "I. El Mago": "¿Qué herramientas y habilidades tienes hoy a tu favor para manifestar lo que te propones?",
+            "II. La Sacerdotisa": "¿Qué verdad íntima o corazonada estás postergando que hoy pide silencio y escucha?",
+            "III. La Emperatriz": "¿Cómo puedes hoy nutrir tu creatividad, tus sentidos o dar vida a algo fértil?",
+            "IV. El Emperador": "¿Dónde necesitas hoy establecer límites firmes, orden y estructura responsable?",
+            "V. El Hierofante": "¿Qué principios o sabidurías esenciales te sirven de brújula hoy frente a las dudas?",
+            "VI. Los Enamorados": "¿Qué elección importante desde tus valores más sinceros debes encarar hoy?",
+            "VII. El Carro": "¿Hacia dónde debes dirigir hoy tu determinación sin permitir que nada te disperse?",
+            "VIII. La Fuerza": "¿En qué situación de hoy necesitas paciencia, autocontrol y comprensión en lugar de ira?",
+            "IX. El Ermitaño": "¿Qué respuesta necesitas buscar dentro de ti en lugar de esperar la aprobación externa?",
+            "X. La Rueda de la Fortuna": "¿Qué cambio o circunstancia imprevista te toca aceptar hoy con flexibilidad?",
+            "XI. La Justicia": "¿Qué decisión de hoy exige máxima honestidad, claridad mental e imparcialidad?",
+            "XII. El Colgado": "¿Qué perspectiva o expectativa necesitas soltar hoy para desbloquear el camino?",
+            "XIII. La Muerte": "¿Qué actitud o ciclo obsoleto necesita terminar hoy definitivamente para renacer?",
+            "XIV. La Templanza": "¿Dónde necesitas hoy buscar el término medio, la serenidad y la reconciliación?",
+            "XV. El Diablo": "¿A qué apego, tentación o dinámica tóxica estás cediendo hoy por inercia o miedo?",
+            "XVI. La Torre": "¿Qué ilusión o creencia rígida es liberador que se desmorone hoy para ver la verdad?",
+            "XVII. La Estrella": "¿Qué motivo tienes hoy para renovar tu fe, tu ilusión y sanar tus heridas?",
+            "XVIII. La Luna": "¿Qué miedos inconscientes o confusiones ilusorias necesitas observar sin dejarte llevar?",
+            "XIX. El Sol": "¿Qué motivo de gratitud, alegría pura y autenticidad puedes celebrar y proyectar hoy?",
+            "XX. El Juicio": "¿A qué llamada de tu conciencia profunda estás invitado a despertar y responder hoy?",
+            "XXI. El Mundo": "¿Qué logro o etapa vital puedes hoy honrar como un cierre exitoso y completo?",
+            "bastos": "¿Qué iniciativa, proyecto o pasión requiere hoy de tu energía, fuego y proactividad?",
+            "copas": "¿Qué emoción, afecto o vínculo íntimo necesita hoy tu atención y cuidado honesto?",
+            "espadas": "¿Dónde se necesita hoy lucidez, comunicación transparente y cortar con pensamientos que restan?",
+            "oros": "¿Qué asunto concreto, financiero o de bienestar corporal exige hoy tu sentido práctico y constancia?"
+        };
+
+        function getDailyPrompt(card) {
+            if (dailyPrompts[card.name]) return dailyPrompts[card.name];
+            if (card._suit && dailyPrompts[card._suit]) return dailyPrompts[card._suit];
+            return "¿Cómo resuena el núcleo de este arcano con los retos que tienes por delante hoy?";
+        }
+
+        function getDailyData() {
+            try { return JSON.parse(localStorage.getItem('tarot-daily-card') || '{}'); }
+            catch { return {}; }
+        }
+
+        function saveDailyData(data) {
+            localStorage.setItem('tarot-daily-card', JSON.stringify(data));
+        }
+
+        function initDailyCard() {
+            const data = getDailyData();
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const streakCountEl = document.getElementById('daily-streak-count');
+            
+            let streak = data.streak || 0;
+            if (data.lastDate) {
+                const last = new Date(data.lastDate);
+                const current = new Date(todayStr);
+                const diffDays = Math.round((current - last) / (1000 * 60 * 60 * 24));
+                if (diffDays > 1) {
+                    streak = 0;
+                }
+            }
+            if (streakCountEl) streakCountEl.textContent = streak;
+
+            if (data.card && data.date === todayStr) {
+                renderDailyCardRevealed(data.card, data.isReversed, streak);
+            } else {
+                renderDailyCardUnrevealed(streak);
+            }
+        }
+
+        function renderDailyCardUnrevealed(streak) {
+            document.getElementById('daily-unrevealed').classList.remove('hidden');
+            document.getElementById('daily-revealed').classList.add('hidden');
+            const streakCountEl = document.getElementById('daily-streak-count');
+            if (streakCountEl) streakCountEl.textContent = streak;
+        }
+
+        function renderDailyCardRevealed(card, isReversed, streak) {
+            document.getElementById('daily-unrevealed').classList.add('hidden');
+            document.getElementById('daily-revealed').classList.remove('hidden');
+            
+            const streakCountEl = document.getElementById('daily-streak-count');
+            if (streakCountEl) streakCountEl.textContent = streak;
+
+            const imgUrl = cardImgUrl(card.name, card._suit, card._idx);
+            const imgContainer = document.getElementById('daily-img-container');
+            if (imgContainer) {
+                imgContainer.innerHTML = imgUrl ? `
+                    <div class="relative inline-block">
+                        <img src="${imgUrl}" alt="${card.name}" class="card-img rounded-lg shadow-lg ${isReversed ? 'rotate-180 transform' : ''}" style="width:75px;">
+                        ${isReversed ? '<span class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[9px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded border border-red-500/40 shadow">Invertida</span>' : ''}
+                    </div>
+                ` : '';
+            }
+
+            document.getElementById('daily-card-name').textContent = card.name;
+            const badgeEl = document.getElementById('daily-card-badge');
+            if (isReversed) {
+                badgeEl.textContent = '↺ Invertida (Sombra)';
+                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded border border-red-500/40 bg-red-950/70 text-red-300';
+            } else {
+                badgeEl.textContent = 'Al Derecho (Luz)';
+                badgeEl.className = 'text-[10px] px-2 py-0.5 rounded border border-mystic-gold/40 bg-mystic-900 text-mystic-gold';
+            }
+
+            document.getElementById('daily-card-core').innerHTML = isReversed ? 
+                `<span class="text-red-300"><strong>Energía en sombra:</strong> ${card.shadow}</span>` : 
+                `<span><strong>Núcleo:</strong> ${card.core}</span>`;
+
+            document.getElementById('daily-card-prompt').textContent = `"${getDailyPrompt(card)}"`;
+        }
+
+        document.getElementById('btn-draw-daily').addEventListener('click', () => {
+            if (navigator.vibrate) navigator.vibrate(60);
+            const todayStr = new Date().toISOString().slice(0, 10);
+            const data = getDailyData();
+            
+            let streak = data.streak || 0;
+            if (data.lastDate) {
+                const last = new Date(data.lastDate);
+                const current = new Date(todayStr);
+                const diffDays = Math.round((current - last) / (1000 * 60 * 60 * 24));
+                if (diffDays === 1) {
+                    streak += 1;
+                } else if (diffDays > 1) {
+                    streak = 1;
+                }
+            } else {
+                streak = 1;
+            }
+
+            const allowReversed = document.getElementById('toggle-reversed')?.checked || false;
+            const randomIndex = Math.floor(Math.random() * fullDeck.length);
+            const card = fullDeck[randomIndex];
+            const isReversed = allowReversed && Math.random() < 0.35;
+
+            const newData = {
+                date: todayStr,
+                lastDate: todayStr,
+                card: card,
+                isReversed: isReversed,
+                streak: streak
+            };
+            saveDailyData(newData);
+            renderDailyCardRevealed(card, isReversed, streak);
+            showToast('✨ ¡Tu Carta del Día ha sido revelada!');
+        });
+
+        document.getElementById('btn-reset-daily').addEventListener('click', () => {
+            const data = getDailyData();
+            const allowReversed = document.getElementById('toggle-reversed')?.checked || false;
+            const randomIndex = Math.floor(Math.random() * fullDeck.length);
+            const card = fullDeck[randomIndex];
+            const isReversed = allowReversed && Math.random() < 0.35;
+            data.card = card;
+            data.isReversed = isReversed;
+            saveDailyData(data);
+            renderDailyCardRevealed(card, isReversed, data.streak || 1);
+            showToast('Carta diaria actualizada (modo prueba)');
+        });
+
+        initDailyCard();
+
+        // === DRAW & JOURNALING LOGIC ===
+        let currentReadingId = null;
+        let lastReadingData = null;
+
+        const drawBtn = document.getElementById('btn-draw');
+        const drawResults = document.getElementById('draw-results');
+
+        drawBtn.addEventListener('click', () => {
+            if (navigator.vibrate) navigator.vibrate(50);
+            const spread = spreads[currentSpread];
+            drawResults.innerHTML = '';
+            const cardBackImg = document.getElementById('card-back-img');
+            if (cardBackImg) cardBackImg.style.display = 'none';
+
+            const allowReversed = document.getElementById('toggle-reversed')?.checked || false;
+            const question = document.getElementById('reading-question')?.value.trim() || '';
+            
+            const shuffled = [...fullDeck].sort(() => 0.5 - Math.random());
+            const drawn = shuffled.slice(0, spread.count).map(c => ({
+                ...c,
+                isReversed: allowReversed && Math.random() < 0.38
+            }));
+
+            // Set grid layout
+            drawResults.className = `mt-8 ${spread.gridClass} min-h-[20px] relative z-10`;
+
+            drawn.forEach((card, index) => {
+                const imgUrl = cardImgUrl(card.name, card._suit, card._idx);
+                const cardDiv = document.createElement('div');
+                cardDiv.className = "drawn-card bg-mystic-900 border border-mystic-gold/40 rounded-xl p-4 flex flex-col items-center justify-center min-h-[140px] tarot-card-draw shadow-[0_4px_10px_rgba(0,0,0,0.5)]";
+                cardDiv.style.animationDelay = `${index * 150}ms`;
+                
+                cardDiv.innerHTML = `
+                    <span class="text-xs text-mystic-gold mb-2 uppercase tracking-wider text-center">${spread.positions[index]}</span>
+                    ${imgUrl ? `
+                        <div class="relative mb-2">
+                            <img src="${imgUrl}" alt="${card.name}" loading="lazy" class="card-img rounded-lg shadow-lg ${card.isReversed ? 'rotate-180 transform' : ''}" onerror="this.style.display='none'" style="width:80px;">
+                            ${card.isReversed ? '<span class="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[9px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded border border-red-500/50 shadow">Invertida</span>' : ''}
+                        </div>
+                    ` : ''}
+                    <span class="font-mystic text-lg font-bold text-white text-center leading-tight mb-1">${card.name}</span>
+                    ${card.isReversed ? '<span class="text-[10px] text-red-300 bg-red-950/60 px-2 py-0.5 rounded border border-red-500/30 mb-2">↺ Energía en Sombra / Bloqueo</span>' : ''}
+                    <span class="text-[10px] text-gray-400 text-center border-t border-mystic-700 pt-2 w-full mb-1">${card.isReversed ? card.shadow : card.core}</span>
+                    <span class="text-[9px] text-mystic-gold/50 mt-1">▼ toca para ver detalles</span>
+                    <div class="card-detail w-full mt-3 text-left text-xs space-y-2">
+                        ${card.isReversed ? `
+                            <div class="bg-red-950/50 border-l-2 border-red-400 p-2.5 rounded text-xs">
+                                <strong class="text-red-300 block mb-0.5">Lectura Invertida (Sombra / Desafío):</strong>
+                                <p class="text-gray-200">${card.shadow}</p>
+                                <p class="text-[10px] text-gray-400 mt-1 italic">La energía se encuentra contenida, con resistencia interna o requiere prestar atención a la sombra.</p>
+                            </div>
+                        ` : ''}
+                        ${card.sym ? `<p class="text-gray-400 italic">${card.sym}</p>` : ''}
+                        <p><strong class="text-white">Núcleo (al derecho):</strong> <span class="text-gray-300">${card.core}</span></p>
+                        ${!card.isReversed ? `<p><strong class="text-red-400">Sombra:</strong> <span class="text-gray-400">${card.shadow}</span></p>` : ''}
+                        ${card.read ? `<p class="text-blue-200 border-t border-mystic-700 pt-2 mt-2">${card.read}</p>` : ''}
+                        ${card.note ? `<p class="text-mystic-golddim italic border-t border-mystic-700 pt-2">${card.note}</p>` : ''}
+                    </div>
+                `;
+                cardDiv.addEventListener('click', () => cardDiv.classList.toggle('expanded'));
+                drawResults.appendChild(cardDiv);
+            });
+
+            // Show Journaling Box
+            const journalBox = document.getElementById('reading-journal-box');
+            if (journalBox) {
+                journalBox.classList.remove('hidden');
+                document.getElementById('reading-notes').value = '';
+                const savedBadge = document.getElementById('journal-saved-badge');
+                if (savedBadge) savedBadge.classList.add('opacity-0');
+            }
+
+            // Save to history & track ID
+            currentReadingId = Date.now();
+            lastReadingData = {
+                id: currentReadingId,
+                drawn: drawn,
+                positions: spread.positions,
+                spreadType: currentSpread,
+                question: question,
+                notes: ''
+            };
+            saveReading(drawn, spread.positions, currentSpread, question, currentReadingId);
+        });
+
+        // Save Notes Button
+        const btnSaveNotes = document.getElementById('btn-save-notes');
+        if (btnSaveNotes) {
+            btnSaveNotes.addEventListener('click', () => {
+                const notes = document.getElementById('reading-notes')?.value.trim() || '';
+                if (!currentReadingId) return;
+                
+                const hist = getHistory();
+                const item = hist.find(h => h.id === currentReadingId);
+                if (item) {
+                    item.notes = notes;
+                    saveHistory(hist);
+                    renderHistory();
+                    if (lastReadingData) lastReadingData.notes = notes;
+                    
+                    const savedBadge = document.getElementById('journal-saved-badge');
+                    if (savedBadge) {
+                        savedBadge.classList.remove('opacity-0');
+                        setTimeout(() => savedBadge.classList.add('opacity-0'), 3000);
+                    }
+                    showToast('💾 Notas guardadas en tu Historial');
+                }
+            });
+        }
+
+        // Export Reading Button
+        const btnExportReading = document.getElementById('btn-export-reading');
+        if (btnExportReading) {
+            btnExportReading.addEventListener('click', () => {
+                if (!lastReadingData) return;
+                const notes = document.getElementById('reading-notes')?.value.trim() || lastReadingData.notes || '';
+                lastReadingData.notes = notes;
+                const text = generateReadingText(lastReadingData);
+                copyTextToClipboard(text, '📋 Resumen de lectura copiado al portapapeles');
+            });
+        }
+
+        function generateReadingText(data) {
+            const spreadNames = {'1card':'1 Carta','3card':'3 Cartas','5card':'Cruz Simple','celtic':'Cruz Celta'};
+            const typeName = spreadNames[data.spreadType] || data.spreadType || data.type || 'Tirada';
+            let t = `✨ LECTURA DE TAROT RWS ✨\n`;
+            t += `📅 Fecha: ${data.date || new Date().toLocaleString('es-ES')}\n`;
+            t += `🔮 Tirada: ${typeName}\n`;
+            if (data.question) {
+                t += `💭 Pregunta: "${data.question}"\n`;
+            }
+            t += `\nCARTAS:\n`;
+            const cards = data.cards || data.drawn || [];
+            cards.forEach((c, idx) => {
+                const pos = c.position || (data.positions && data.positions[idx]) || `Posición ${idx + 1}`;
+                const state = c.isReversed ? '↺ Invertida' : 'Al Derecho';
+                t += `${idx + 1}. [${pos}] ${c.name} (${state})\n`;
+                if (c.isReversed) {
+                    t += `   - Sombra / Bloqueo: ${c.shadow}\n`;
+                } else {
+                    t += `   - Núcleo: ${c.core}\n`;
+                }
+            });
+            if (data.notes) {
+                t += `\n✍️ MIS NOTAS / REFLEXIÓN:\n${data.notes}\n`;
+            }
+            t += `\n---\nManual Interactivo Tarot RWS`;
+            return t;
+        }
+
+        function copyTextToClipboard(text, successMsg) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(successMsg);
+                }).catch(() => fallbackCopy(text, successMsg));
+            } else {
+                fallbackCopy(text, successMsg);
+            }
+        }
+
+        function fallbackCopy(text, successMsg) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast(successMsg);
+        }
+
+        window.exportSingleReading = function(id) {
+            const hist = getHistory();
+            const entry = hist.find(h => h.id === id);
+            if (entry) {
+                const text = generateReadingText(entry);
+                copyTextToClipboard(text, '📋 Tirada histórica copiada al portapapeles');
+            }
+        };
+
+        // === READING HISTORY ===
+        function getHistory() {
+            try { return JSON.parse(localStorage.getItem('tarot-rws-history') || '[]'); }
+            catch { return []; }
+        }
+        function saveHistory(hist) {
+            localStorage.setItem('tarot-rws-history', JSON.stringify(hist));
+        }
+        function saveReading(drawn, positions, spreadType, question, customId) {
+            const spreadNames = {'1card':'1 Carta','3card':'3 Cartas','5card':'Cruz Simple','celtic':'Cruz Celta'};
+            const hist = getHistory();
+            const entry = {
+                id: customId || Date.now(),
+                date: new Date().toLocaleString('es-ES', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                type: spreadNames[spreadType] || spreadType,
+                question: question || '',
+                notes: '',
+                cards: drawn.map((c, i) => ({ 
+                    position: positions[i], 
+                    name: c.name, 
+                    core: c.core, 
+                    shadow: c.shadow,
+                    isReversed: !!c.isReversed 
+                }))
+            };
+            hist.unshift(entry);
+            if (hist.length > 25) hist.pop();
+            saveHistory(hist);
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history-container');
+            const hist = getHistory();
+            if (hist.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500 italic text-center py-4">Aún no has realizado ninguna tirada. ¡Prueba el Laboratorio!</p>';
+                return;
+            }
+            container.innerHTML = hist.map(entry => `
+                <details class="history-entry bg-mystic-800/50 rounded-lg border border-mystic-gold/10">
+                    <summary class="p-3 flex justify-between items-center cursor-pointer text-sm outline-none">
+                        <div class="space-y-0.5 text-left pr-2">
+                            <span class="text-gray-300">
+                                <span class="text-mystic-gold font-semibold">${entry.date}</span> 
+                                <span class="text-[10px] px-1.5 py-0.5 rounded bg-mystic-700/50 text-purple-300 ml-1">${entry.type || 'Tirada'}</span>
+                            </span>
+                            ${entry.question ? `<p class="text-xs text-amber-200/90 italic truncate max-w-xs sm:max-w-md">💭 "${entry.question}"</p>` : ''}
+                            <p class="text-[11px] text-gray-400 truncate max-w-xs sm:max-w-md">${entry.cards.map(c => `${c.name.split('. ').pop()}${c.isReversed ? ' ↺' : ''}`).join(' · ')}</p>
+                        </div>
+                        <svg class="w-4 h-4 summary-chevron text-mystic-gold/50 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="p-3 pt-0 border-t border-mystic-gold/10 space-y-2">
+                        ${entry.question ? `
+                            <div class="bg-mystic-900/80 p-2.5 rounded border-l-2 border-mystic-gold text-xs">
+                                <span class="text-[10px] uppercase font-bold text-mystic-gold block">Pregunta formulada:</span>
+                                <p class="text-white italic mt-0.5">"${entry.question}"</p>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="space-y-1.5 pt-1">
+                            ${entry.cards.map(c => `
+                                <div class="bg-mystic-900/50 rounded p-2 text-xs">
+                                    <div class="flex justify-between items-center mb-0.5">
+                                        <span class="text-mystic-gold uppercase tracking-wider font-semibold text-[10px]">${c.position}</span>
+                                        ${c.isReversed ? '<span class="text-[9px] bg-red-950/80 text-red-300 px-1.5 py-0.2 rounded border border-red-500/30">↺ Invertida</span>' : '<span class="text-[9px] text-gray-500">Al Derecho</span>'}
+                                    </div>
+                                    <p class="font-mystic text-sm text-white font-bold">${c.name}</p>
+                                    ${c.isReversed ? 
+                                        `<p class="text-gray-300 mt-1"><strong class="text-red-300">Sombra / Bloqueo:</strong> ${c.shadow}</p>` : 
+                                        `<p class="text-gray-300 mt-1"><strong>Núcleo:</strong> ${c.core}</p>`
+                                    }
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        ${entry.notes ? `
+                            <div class="bg-purple-950/30 p-2.5 rounded border border-purple-500/20 text-xs mt-2">
+                                <strong class="text-purple-300 block text-[10px] uppercase mb-0.5">✍️ Mis Notas / Conclusión:</strong>
+                                <p class="text-gray-200 whitespace-pre-wrap">${entry.notes}</p>
+                            </div>
+                        ` : ''}
+
+                        <div class="pt-2 flex justify-end">
+                            <button onclick="exportSingleReading(${entry.id})" class="text-[11px] bg-mystic-900 hover:bg-mystic-800 text-mystic-gold border border-mystic-gold/30 px-3 py-1 rounded transition-colors flex items-center gap-1">
+                                <span>📋</span> Copiar lectura al portapapeles
+                            </button>
+                        </div>
+                    </div>
+                </details>
+            `).join('');
+        }
+        renderHistory();
+
+        document.getElementById('btn-clear-history').addEventListener('click', () => {
+            if (confirm('¿Borrar todo el historial de tiradas?')) {
+                localStorage.removeItem('tarot-rws-history');
+                renderHistory();
+                showToast('Historial borrado');
+            }
+        });
+
+        // === INTERACTIVE STUDY PLAN ===
+        const studyItems = [
+            { id: 's1', label: 'Sem 1-2: Estudiar Mayores (El Loco → La Rueda)', tip: 'Abre la pestaña Arcanos y lee cada Arcano Mayor del 0 al X. Anota las 3 que más te resuenen.' },
+            { id: 's2', label: 'Sem 3-4: Estudiar Mayores (La Fuerza → El Mundo)', tip: 'Continúa del XI al XXI. Busca patrones y parejas entre cartas.' },
+            { id: 's3', label: 'Sem 5: Palo de Bastos completo (14 cartas)', tip: 'Estudia As-10 + Sota, Caballero, Reina, Rey de Bastos. Tema: acción y fuego.' },
+            { id: 's4', label: 'Sem 6: Palo de Copas completo (14 cartas)', tip: 'Estudia las 14 cartas de Copas. Tema: emociones y relaciones.' },
+            { id: 's5', label: 'Sem 7: Espadas + Oros + Figuras de Corte', tip: 'Completa los últimos dos palos. Compara las figuras de cada palo entre sí.' },
+            { id: 's6', label: 'Sem 8: Practicar tirada de 1 carta diaria', tip: 'Cada mañana saca 1 carta y anota tu primera impresión antes de consultar significados.' },
+            { id: 's7', label: 'Sem 8: Practicar tirada de 3 cartas', tip: 'Haz al menos 3 tiradas de 3 cartas durante la semana usando el Laboratorio.' },
+            { id: 's8', label: 'Sem 8: Iniciar tu Diario de Tarot', tip: 'Usa la estructura del diario que aparece abajo para registrar tus lecturas.' }
+        ];
+
+        function getStudyProgress() {
+            try { return JSON.parse(localStorage.getItem('tarot-rws-study') || '{}'); }
+            catch { return {}; }
+        }
+        function saveStudyProgress(progress) {
+            localStorage.setItem('tarot-rws-study', JSON.stringify(progress));
+        }
+        function renderStudyPlan() {
+            const container = document.getElementById('study-plan');
+            const progress = getStudyProgress();
+            container.innerHTML = studyItems.map(item => {
+                const checked = progress[item.id] || false;
+                return `
+                    <div class="study-item ${checked ? 'completed' : ''} flex items-start gap-3 bg-mystic-800/40 rounded-lg p-3 border border-mystic-gold/5">
+                        <input type="checkbox" class="study-check mt-0.5" id="${item.id}" ${checked ? 'checked' : ''} onchange="toggleStudy('${item.id}')">
+                        <div class="flex-1">
+                            <label for="${item.id}" class="text-sm text-gray-300 cursor-pointer block">${item.label}</label>
+                            <p class="text-[10px] text-gray-500 mt-1">💡 ${item.tip}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            updateStudyProgress();
+        }
+        window.toggleStudy = function(id) {
+            const progress = getStudyProgress();
+            progress[id] = !progress[id];
+            saveStudyProgress(progress);
+            renderStudyPlan();
+        };
+        function updateStudyProgress() {
+            const progress = getStudyProgress();
+            const done = studyItems.filter(i => progress[i.id]).length;
+            const pct = Math.round((done / studyItems.length) * 100);
+            document.getElementById('study-progress').style.width = pct + '%';
+            document.getElementById('study-percent').textContent = pct + '% completado (' + done + '/' + studyItems.length + ')';
+        }
+        renderStudyPlan();
+
+        // === MANIFEST ===
+        const manifest = {
+            "name": "Manual Tarot RWS",
+            "short_name": "Tarot RWS",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#0a0914",
+            "theme_color": "#0a0914",
+            "description": "Manual interactivo del Tarot Rider-Waite-Smith",
+            "icons": [
+                { "src": "img/Tarot%20RWS.jpeg", "sizes": "192x192", "type": "image/jpeg", "purpose": "any maskable" },
+                { "src": "img/Tarot%20RWS.jpeg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any maskable" },
+                { "src": "img/app_icon.jpeg", "sizes": "192x192", "type": "image/jpeg" },
+                { "src": "img/app_icon.jpeg", "sizes": "512x512", "type": "image/jpeg" }
+            ]
+        };
+        document.getElementById('manifest-link').setAttribute('href', 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest)));
+        console.log('Tarot RWS inicializado correctamente.');
+    </script>
+</body>
+</html>
