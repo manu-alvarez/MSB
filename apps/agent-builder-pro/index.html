@@ -1,0 +1,2824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent Builder PRO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --bg-card: #1e1e2a;
+            --bg-input: #15151f;
+            --border-color: #2a2a3a;
+            --border-hover: #3a3a4a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+            --accent-primary: #6366f1;
+            --accent-secondary: #818cf8;
+            --accent-glow: rgba(99, 102, 241, 0.3);
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.3);
+            --warning: #f59e0b;
+            --warning-glow: rgba(245, 158, 11, 0.3);
+            --error: #ef4444;
+            --error-glow: rgba(239, 68, 68, 0.3);
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            --gradient-2: linear-gradient(135deg, #1e1e2a 0%, #12121a 100%);
+            --gradient-3: linear-gradient(135deg, #0a0a0f 0%, #12121a 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, transparent 100%);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Botones */
+        .btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 2px 10px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-tertiary);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 0.5rem;
+        }
+
+        .btn-ghost:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Layout principal */
+        .main-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+
+        /* Panel izquierdo */
+        .builder-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.25rem;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .tab.active {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 2px 10px var(--accent-glow);
+        }
+
+        .tab-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.125rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+        }
+
+        .tab.active .tab-badge {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .form-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.375rem;
+        }
+
+        /* Contador de caracteres */
+        .char-count {
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Slider */
+        .slider-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .slider-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .slider-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.1);
+            padding: 0.125rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--bg-input);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px var(--accent-glow);
+            transition: transform 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .slider-description {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.375rem;
+        }
+
+        /* Presets */
+        .presets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .preset-btn {
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .preset-btn.active {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent-secondary);
+        }
+
+        /* Tags input */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            animation: tagIn 0.2s ease;
+        }
+
+        @keyframes tagIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .tag-remove {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .tag-remove:hover {
+            background: var(--error);
+            color: white;
+        }
+
+        .tag-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tag-input {
+            flex: 1;
+        }
+
+        /* Lista de herramientas */
+        .tools-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .tool-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .tool-item:hover {
+            border-color: var(--border-hover);
+        }
+
+        .tool-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.25rem;
+        }
+
+        .tool-content {
+            flex: 1;
+        }
+
+        .tool-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-params {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--bg-input);
+            padding: 0.375rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .tool-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        /* Panel derecho - Preview y Config */
+        .config-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: sticky;
+            top: 100px;
+            max-height: calc(100vh - 130px);
+            overflow-y: auto;
+        }
+
+        /* Preview del Prompt */
+        .preview-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .preview-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--bg-tertiary);
+        }
+
+        .preview-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-body {
+            padding: 1.25rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .prompt-preview {
+            background: var(--bg-input);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        .preview-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Conexión LLM */
+        .llm-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .llm-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .llm-body {
+            padding: 1.25rem;
+        }
+
+        .provider-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .provider-btn {
+            padding: 0.625rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .provider-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .provider-btn.active {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-secondary);
+        }
+
+        .provider-btn .free-badge {
+            font-size: 0.6rem;
+            padding: 0.125rem 0.375rem;
+            background: var(--success);
+            color: white;
+            border-radius: 4px;
+        }
+
+        .provider-btn .local-badge {
+            font-size: 0.6rem;
+            padding: 0.125rem 0.375rem;
+            background: var(--warning);
+            color: white;
+            border-radius: 4px;
+        }
+
+        .model-select {
+            margin-bottom: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.87506070'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        .api-key-container {
+            position: relative;
+        }
+
+        .api-key-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .api-key-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+        }
+
+        .status-dot.connected {
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success-glow);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.error {
+            background: var(--error);
+            box-shadow: 0 0 8px var(--error-glow);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* AI Actions */
+        .ai-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .ai-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .ai-btn:hover:not(:disabled) {
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .ai-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .ai-btn.loading {
+            pointer-events: none;
+        }
+
+        /* Contadores */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 1000;
+        }
+
+        .toast {
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: toastIn 0.3s ease;
+            max-width: 350px;
+        }
+
+        @keyframes toastIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .toast.toast-out {
+            animation: toastOut 0.3s ease forwards;
+        }
+
+        @keyframes toastOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toast-success .toast-icon { background: var(--success); }
+        .toast-error .toast-icon { background: var(--error); }
+        .toast-warning .toast-icon { background: var(--warning); }
+        .toast-info .toast-icon { background: var(--accent-primary); }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.125rem;
+        }
+
+        .toast-message {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            opacity: 0.5;
+        }
+
+        .empty-state-text {
+            font-size: 0.875rem;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.375rem 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 8px);
+        }
+
+        /* Animaciones de entrada */
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .config-panel {
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .header-actions {
+                justify-content: center;
+            }
+            
+            .tabs-container {
+                overflow-x: auto;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Toggle switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+        }
+
+        .toggle-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .toggle {
+            width: 44px;
+            height: 24px;
+            background: var(--bg-input);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle.active {
+            background: var(--accent-primary);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.2s ease;
+        }
+
+        .toggle.active::after {
+            left: 23px;
+        }
+
+        /* Color picker */
+        .color-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .color-option {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: white;
+            box-shadow: 0 0 0 2px var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">🤖</div>
+                <div class="logo-text">
+                    <h1>AI Agent Builder PRO</h1>
+                    <span>Constructor Visual de Agentes IA</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="importConfig()">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                    </svg>
+                    Importar
+                </button>
+                <button class="btn btn-secondary" onclick="exportConfig('json')">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                    </svg>
+                    Export JSON
+                </button>
+                <button class="btn btn-primary" onclick="exportConfig('markdown')">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                    </svg>
+                    Export MD
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Builder Panel -->
+        <div class="builder-panel">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="toolCount">0</div>
+                    <div class="stat-label">Herramientas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="memoryCount">0</div>
+                    <div class="stat-label">Memorias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="ragCount">0</div>
+                    <div class="stat-label">Fuentes RAG</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="charCount">0</div>
+                    <div class="stat-label">Caracteres</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <button class="tab active" data-tab="role">
+                    <span>🎭</span> Rol
+                    <span class="tab-badge" id="roleBadge">0</span>
+                </button>
+                <button class="tab" data-tab="tools">
+                    <span>🛠️</span> Herramientas
+                    <span class="tab-badge" id="toolsBadge">0</span>
+                </button>
+                <button class="tab" data-tab="memory">
+                    <span>🧠</span> Memoria
+                    <span class="tab-badge" id="memoryBadge">0</span>
+                </button>
+                <button class="tab" data-tab="rag">
+                    <span>📚</span> RAG
+                    <span class="tab-badge" id="ragBadge">0</span>
+                </button>
+                <button class="tab" data-tab="personality">
+                    <span>💫</span> Personalidad
+                </button>
+            </div>
+
+            <!-- Tab Content: Role -->
+            <div class="tab-content" id="tab-role">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>👤</span> Configuración del Rol
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="form-label">Nombre del Agente</label>
+                            <input type="text" class="form-input" id="agentName" placeholder="Ej: Asistente de Código Python" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Descripción breve</label>
+                            <input type="text" class="form-input" id="agentDescription" placeholder="Ej: Experto en Python y ciencia de datos" oninput="updatePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Prompt del Sistema (System Prompt)</label>
+                            <textarea class="form-input" id="systemPrompt" rows="8" placeholder="Eres un asistente especializado en...
+
+Tu rol principal es...
+
+Debes siempre..." oninput="updatePreview(); updateCharCount()"></textarea>
+                            <div class="char-count"><span id="promptCharCount">0</span> caracteres</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Instrucciones Especiales</label>
+                            <textarea class="form-input" id="instructions" rows="4" placeholder="- Responde siempre en español&#10;- Usa ejemplos prácticos&#10;- Verifica dos veces los cálculos" oninput="updatePreview()"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Tools -->
+            <div class="tab-content" id="tab-tools" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>🛠️</span> Herramientas del Agente
+                        </h3>
+                        <button class="btn btn-secondary" onclick="openAddToolModal()">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                            Añadir
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="tools-list" id="toolsList">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🛠️</div>
+                                <div class="empty-state-text">No hay herramientas configuradas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presets de Herramientas -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>⚡</span> Presets Rápidos
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="presets-grid">
+                            <button class="preset-btn" onclick="addToolPreset('webSearch')">🔍 Búsqueda Web</button>
+                            <button class="preset-btn" onclick="addToolPreset('calculator')">🧮 Calculadora</button>
+                            <button class="preset-btn" onclick="addToolPreset('codeInterpreter')">💻 Código</button>
+                            <button class="preset-btn" onclick="addToolPreset('fileManager')">📁 Archivos</button>
+                            <button class="preset-btn" onclick="addToolPreset('apiCaller')">🌐 API REST</button>
+                            <button class="preset-btn" onclick="addToolPreset('imageGen')">🎨 Imágenes</button>
+                            <button class="preset-btn" onclick="addToolPreset('database')">🗄️ Base Datos</button>
+                            <button class="preset-btn" onclick="addToolPreset('email')">📧 Email</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Memory -->
+            <div class="tab-content" id="tab-memory" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>🧠</span> Configuración de Memoria
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="toggle-container">
+                            <span class="toggle-label">Memoria a largo plazo</span>
+                            <div class="toggle" id="longTermMemory" onclick="toggleMemory(this, 'longTerm')"></div>
+                        </div>
+                        <div class="toggle-container">
+                            <span class="toggle-label">Memoria conversacional</span>
+                            <div class="toggle active" id="conversationMemory" onclick="toggleMemory(this, 'conversation')"></div>
+                        </div>
+                        <div class="toggle-container">
+                            <span class="toggle-label">Memoria de sesión</span>
+                            <div class="toggle active" id="sessionMemory" onclick="toggleMemory(this, 'session')"></div>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 1.5rem;">
+                            <label class="form-label">Tipo de Memoria</label>
+                            <select class="form-select" id="memoryType" onchange="updatePreview()">
+                                <option value="none">Sin memoria específica</option>
+                                <option value="vector">Vector Store (Embeddings)</option>
+                                <option value="keyvalue">Clave-Valor (JSON)</option>
+                                <option value="graph">Base de Conocimiento (Grafo)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Etiquetas de Memoria (Tags)</label>
+                            <div class="tags-container" id="memoryTags">
+                                <!-- Tags se insertan aquí -->
+                            </div>
+                            <div class="tag-input-container">
+                                <input type="text" class="form-input tag-input" id="memoryTagInput" placeholder="Añadir etiqueta..." onkeypress="handleTagInput(event, 'memory')">
+                                <button class="btn btn-secondary" onclick="addTag('memory')">+</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Contexto Inicial de Memoria</label>
+                            <textarea class="form-input" id="memoryContext" rows="4" placeholder="Información que el agente debe recordar siempre..." oninput="updatePreview()"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: RAG -->
+            <div class="tab-content" id="tab-rag" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>📚</span> Fuentes de Conocimiento RAG
+                        </h3>
+                        <button class="btn btn-secondary" onclick="openAddRagModal()">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M12 5v14M5 12h14"/>
+                            </svg>
+                            Añadir
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="tools-list" id="ragList">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📚</div>
+                                <div class="empty-state-text">No hay fuentes RAG configuradas</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presets RAG -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>⚡</span> Presets de Fuentes
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="presets-grid">
+                            <button class="preset-btn" onclick="addRagPreset('docs')">📄 Documentación</button>
+                            <button class="preset-btn" onclick="addRagPreset('faq')">❓ FAQ</button>
+                            <button class="preset-btn" onclick="addRagPreset('api')">🔌 API Docs</button>
+                            <button class="preset-btn" onclick="addRagPreset('kb')">📖 Knowledge Base</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content: Personality -->
+            <div class="tab-content" id="tab-personality" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <span>💫</span> Personalidad del Agente
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Sliders -->
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="slider-label">🎯 Formalidad</span>
+                                <span class="slider-value" id="formalityValue">50%</span>
+                            </div>
+                            <input type="range" class="slider" id="formality" min="0" max="100" value="50" oninput="updateSlider('formality')">
+                            <div class="slider-description">0% = Casual y cercano | 100% = Profesional y formal</div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="slider-label">🎨 Creatividad</span>
+                                <span class="slider-value" id="creativityValue">50%</span>
+                            </div>
+                            <input type="range" class="slider" id="creativity" min="0" max="100" value="50" oninput="updateSlider('creativity')">
+                            <div class="slider-description">0% = Preciso y literal | 100% = Creativo y expresivo</div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="slider-label">💗 Empatía</span>
+                                <span class="slider-value" id="empathyValue">50%</span>
+                            </div>
+                            <input type="range" class="slider" id="empathy" min="0" max="100" value="50" oninput="updateSlider('empathy')">
+                            <div class="slider-description">0% = Objetivo y directo | 100% = Cálido y comprensivo</div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="slider-label">📋 Nivel de Detalle</span>
+                                <span class="slider-value" id="detailValue">50%</span>
+                            </div>
+                            <input type="range" class="slider" id="detail" min="0" max="100" value="50" oninput="updateSlider('detail')">
+                            <div class="slider-description">0% = Conciso y resumido | 100% = Exhaustivo y completo</div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span class="slider-label">🚀 Proactividad</span>
+                                <span class="slider-value" id="proactivityValue">50%</span>
+                            </div>
+                            <input type="range" class="slider" id="proactivity" min="0" max="100" value="50" oninput="updateSlider('proactivity')">
+                            <div class="slider-description">0% = Reactivo (responde solo) | 100% = Proactivo (anticipa necesidades)</div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 1.5rem;">
+                            <label class="form-label">Tono de Voz</label>
+                            <select class="form-select" id="voiceTone" onchange="updatePreview()">
+                                <option value="neutral">Neutral</option>
+                                <option value="friendly">Amigable</option>
+                                <option value="professional">Profesional</option>
+                                <option value="casual">Casual</option>
+                                <option value="authoritative">Autoritativo</option>
+                                <option value="supportive">Apoyador</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Idioma de Respuesta</label>
+                            <select class="form-select" id="language" onchange="updatePreview()">
+                                <option value="auto">Detectar automáticamente</option>
+                                <option value="es">Español</option>
+                                <option value="en">English</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                                <option value="pt">Português</option>
+                                <option value="zh">中文</option>
+                                <option value="ja">日本語</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Config Panel -->
+        <div class="config-panel">
+            <!-- Preview -->
+            <div class="preview-container">
+                <div class="preview-header">
+                    <h3 class="preview-title">
+                        <span>👁️</span> Preview del Prompt
+                    </h3>
+                    <button class="btn btn-ghost btn-icon tooltip" data-tooltip="Copiar" onclick="copyPrompt()">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="preview-body">
+                    <pre class="prompt-preview" id="promptPreview">Configura tu agente para ver el preview del prompt...</pre>
+                </div>
+                <div class="preview-footer">
+                    <button class="btn btn-secondary" onclick="copyPrompt()">Copiar</button>
+                    <button class="btn btn-primary" onclick="testAgent()">Probar Agente</button>
+                </div>
+            </div>
+
+            <!-- LLM Connection -->
+            <div class="llm-section">
+                <div class="llm-header">
+                    <h3 class="preview-title">
+                        <span>🔗</span> Conexión LLM
+                    </h3>
+                    <span class="status-dot" id="connectionDot"></span>
+                </div>
+                <div class="llm-body">
+                    <div class="provider-grid">
+                        <button class="provider-btn active" data-provider="openrouter" onclick="selectProvider('openrouter')">
+                            OpenRouter
+                            <span class="free-badge">FREE</span>
+                        </button>
+                        <button class="provider-btn" data-provider="groq" onclick="selectProvider('groq')">
+                            Groq
+                            <span class="free-badge">FREE</span>
+                        </button>
+                        <button class="provider-btn" data-provider="together" onclick="selectProvider('together')">
+                            Together AI
+                            <span class="free-badge">FREE</span>
+                        </button>
+                        <button class="provider-btn" data-provider="ollama" onclick="selectProvider('ollama')">
+                            Ollama
+                            <span class="local-badge">LOCAL</span>
+                        </button>
+                        <button class="provider-btn" data-provider="openai" onclick="selectProvider('openai')">
+                            OpenAI
+                        </button>
+                        <button class="provider-btn" data-provider="anthropic" onclick="selectProvider('anthropic')">
+                            Anthropic
+                        </button>
+                    </div>
+
+                    <div class="model-select">
+                        <label class="form-label">Modelo</label>
+                        <select class="form-select" id="modelSelect" onchange="updateModel()">
+                            <option value="">Selecciona un proveedor primero</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">API Key</label>
+                        <div class="api-key-container">
+                            <input type="password" class="form-input" id="apiKey" placeholder="sk-..." oninput="updateApiKey()">
+                            <button class="api-key-toggle" onclick="toggleApiKeyVisibility()">
+                                <svg id="eyeIcon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                    <circle cx="12" cy="12" r="3"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%;" onclick="testConnection()" id="testConnectionBtn">
+                        <span>🔄</span> Probar Conexión
+                    </button>
+
+                    <div class="connection-status" id="connectionStatus" style="display: none;">
+                        <div class="status-dot" id="statusDot"></div>
+                        <span class="status-text" id="statusText">Verificando...</span>
+                    </div>
+
+                    <!-- AI Actions -->
+                    <div class="ai-actions">
+                        <button class="ai-btn" onclick="improvePrompt()" id="improvePromptBtn" disabled>
+                            <span>✨</span> Mejorar Prompt con IA
+                        </button>
+                        <button class="ai-btn" onclick="describeAgent()" id="describeAgentBtn" disabled>
+                            <span>📝</span> Describir Agente
+                        </button>
+                        <button class="ai-btn" onclick="suggestTools()" id="suggestToolsBtn" disabled>
+                            <span>💡</span> Sugerir Herramientas
+                        </button>
+                        <button class="ai-btn" onclick="validatePrompt()" id="validatePromptBtn" disabled>
+                            <span>✓</span> Validar Prompt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Add Tool Modal -->
+    <div class="modal-overlay" id="addToolModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Añadir Herramienta</h3>
+                <button class="modal-close" onclick="closeModal('addToolModal')">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre de la Herramienta</label>
+                    <input type="text" class="form-input" id="toolName" placeholder="Ej: BuscadorWeb">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <textarea class="form-input" id="toolDescription" rows="2" placeholder="Describe qué hace esta herramienta..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Parámetros (JSON)</label>
+                    <textarea class="form-input" id="toolParams" rows="3" placeholder='{"query": "string", "limit": "number"}'></textarea>
+                    <div class="form-hint">Define los parámetros que acepta la herramienta en formato JSON</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tipo de Herramienta</label>
+                    <select class="form-select" id="toolType">
+                        <option value="function">Función</option>
+                        <option value="api">API REST</option>
+                        <option value="script">Script</option>
+                        <option value="assistant">Asistente Externo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addToolModal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="addTool()">Añadir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add RAG Modal -->
+    <div class="modal-overlay" id="addRagModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Añadir Fuente RAG</h3>
+                <button class="modal-close" onclick="closeModal('addRagModal')">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M18 6L6 18M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Nombre de la Fuente</label>
+                    <input type="text" class="form-input" id="ragName" placeholder="Ej: Documentación API">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tipo de Fuente</label>
+                    <select class="form-select" id="ragType" onchange="toggleRagUrl()">
+                        <option value="url">URL</option>
+                        <option value="file">Archivo</option>
+                        <option value="text">Texto</option>
+                        <option value="api">API</option>
+                    </select>
+                </div>
+                <div class="form-group" id="ragUrlGroup">
+                    <label class="form-label">URL</label>
+                    <input type="text" class="form-input" id="ragUrl" placeholder="https://...">
+                </div>
+                <div class="form-group" id="ragTextGroup" style="display: none;">
+                    <label class="form-label">Contenido</label>
+                    <textarea class="form-input" id="ragText" rows="4" placeholder="Pega aquí el contenido..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Descripción</label>
+                    <input type="text" class="form-input" id="ragDescription" placeholder="Describe esta fuente...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('addRagModal')">Cancelar</button>
+                <button class="btn btn-primary" onclick="addRagSource()">Añadir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden File Input -->
+    <input type="file" id="fileInput" accept=".json,.md" style="display: none;" onchange="handleFileImport(event)">
+
+    <script>
+        // ============================================
+        // ESTADO DE LA APLICACIÓN
+        // ============================================
+        const state = {
+            agent: {
+                name: '',
+                description: '',
+                systemPrompt: '',
+                instructions: '',
+                personality: {
+                    formality: 50,
+                    creativity: 50,
+                    empathy: 50,
+                    detail: 50,
+                    proactivity: 50,
+                    voiceTone: 'neutral',
+                    language: 'auto'
+                }
+            },
+            tools: [],
+            memories: {
+                longTerm: false,
+                conversation: true,
+                session: true,
+                type: 'none',
+                tags: [],
+                context: ''
+            },
+            ragSources: [],
+            llm: {
+                provider: 'openrouter',
+                model: '',
+                apiKey: '',
+                connected: false
+            }
+        };
+
+        // ============================================
+        // CONFIGURACIÓN DE PROVEEDORES LLM
+        // ============================================
+        const providerConfigs = {
+            openrouter: {
+                name: 'OpenRouter',
+                endpoint: 'https://openrouter.ai/api/v1/chat/completions',
+                requiresApiKey: true,
+                models: [
+                    { id: 'openai/gpt-3.5-turbo', name: 'GPT-3.5 Turbo', free: true },
+                    { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', free: true },
+                    { id: 'anthropic/claude-3-haiku', name: 'Claude 3 Haiku', free: true },
+                    { id: 'google/gemini-pro-1.5', name: 'Gemini Pro 1.5', free: true },
+                    { id: 'mistralai/mistral-7b-instruct', name: 'Mistral 7B', free: true },
+                    { id: 'meta-llama/llama-3-8b-instruct', name: 'Llama 3 8B', free: true },
+                    { id: 'openai/gpt-4o', name: 'GPT-4o', free: false },
+                    { id: 'anthropic/claude-3-opus', name: 'Claude 3 Opus', free: false }
+                ],
+                defaultModel: 'openai/gpt-3.5-turbo',
+                header: { 'HTTP-Referer': 'https://ai-agent-builder.local', 'X-Title': 'AI Agent Builder' }
+            },
+            groq: {
+                name: 'Groq',
+                endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+                requiresApiKey: true,
+                models: [
+                    { id: 'llama-3.1-8b-instant', name: 'Llama 3.1 8B', free: true },
+                    { id: 'llama-3.2-11b-text-preview', name: 'Llama 3.2 11B', free: true },
+                    { id: 'mixtral-8x7b-32768', name: 'Mixtral 8x7B', free: true },
+                    { id: 'gemma2-9b-it', name: 'Gemma 2 9B', free: true }
+                ],
+                defaultModel: 'llama-3.1-8b-instant',
+                header: {}
+            },
+            together: {
+                name: 'Together AI',
+                endpoint: 'https://api.together.ai/v1/chat/completions',
+                requiresApiKey: true,
+                models: [
+                    { id: 'meta-llama/Llama-3-8b-chat-hf', name: 'Llama 3 8B', free: true },
+                    { id: 'mistralai/Mistral-7B-Instruct-v0.2', name: 'Mistral 7B', free: true },
+                    { id: 'Qwen/Qwen2-7B-Instruct', name: 'Qwen 2 7B', free: true },
+                    { id: 'google/gemma-2-9b-it', name: 'Gemma 2 9B', free: true }
+                ],
+                defaultModel: 'meta-llama/Llama-3-8b-chat-hf',
+                header: {}
+            },
+            ollama: {
+                name: 'Ollama (Local)',
+                endpoint: 'http://localhost:11434/api/chat',
+                requiresApiKey: false,
+                models: [
+                    { id: 'llama3.2', name: 'Llama 3.2', free: true },
+                    { id: 'mistral', name: 'Mistral', free: true },
+                    { id: 'codellama', name: 'Code Llama', free: true },
+                    { id: 'phi3', name: 'Phi-3', free: true },
+                    { id: 'qwen2.5', name: 'Qwen 2.5', free: true }
+                ],
+                defaultModel: 'llama3.2',
+                header: {},
+                local: true
+            },
+            openai: {
+                name: 'OpenAI',
+                endpoint: 'https://api.openai.com/v1/chat/completions',
+                requiresApiKey: true,
+                models: [
+                    { id: 'gpt-4o-mini', name: 'GPT-4o Mini' },
+                    { id: 'gpt-4o', name: 'GPT-4o' },
+                    { id: 'gpt-4-turbo', name: 'GPT-4 Turbo' },
+                    { id: 'gpt-3.5-turbo', name: 'GPT-3.5 Turbo' }
+                ],
+                defaultModel: 'gpt-4o-mini',
+                header: {}
+            },
+            anthropic: {
+                name: 'Anthropic',
+                endpoint: 'https://api.anthropic.com/v1/messages',
+                requiresApiKey: true,
+                models: [
+                    { id: 'claude-3-5-haiku-latest', name: 'Claude 3.5 Haiku' },
+                    { id: 'claude-3-5-sonnet-latest', name: 'Claude 3.5 Sonnet' },
+                    { id: 'claude-3-opus-latest', name: 'Claude 3 Opus' }
+                ],
+                defaultModel: 'claude-3-5-haiku-latest',
+                header: { 'x-api-key': '', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' }
+            }
+        };
+
+        // ============================================
+        // HERRAMIENTAS PREDEFINIDAS
+        // ============================================
+        const toolPresets = {
+            webSearch: {
+                name: 'WebSearch',
+                description: 'Busca información en la web',
+                params: '{"query": "string", "num_results": "number"}',
+                icon: '🔍'
+            },
+            calculator: {
+                name: 'Calculator',
+                description: 'Realiza cálculos matemáticos',
+                params: '{"expression": "string"}',
+                icon: '🧮'
+            },
+            codeInterpreter: {
+                name: 'CodeInterpreter',
+                description: 'Ejecuta código en diferentes lenguajes',
+                params: '{"language": "string", "code": "string"}',
+                icon: '💻'
+            },
+            fileManager: {
+                name: 'FileManager',
+                description: 'Gestiona archivos y carpetas',
+                params: '{"operation": "string", "path": "string", "content": "string?"}',
+                icon: '📁'
+            },
+            apiCaller: {
+                name: 'APICaller',
+                description: 'Realiza llamadas a APIs REST',
+                params: '{"method": "string", "url": "string", "headers": "object?", "body": "object?"}',
+                icon: '🌐'
+            },
+            imageGen: {
+                name: 'ImageGenerator',
+                description: 'Genera imágenes con IA',
+                params: '{"prompt": "string", "size": "string?", "style": "string?"}',
+                icon: '🎨'
+            },
+            database: {
+                name: 'DatabaseQuery',
+                description: 'Ejecuta consultas en base de datos',
+                params: '{"query": "string", "connection": "string?"}',
+                icon: '🗄️'
+            },
+            email: {
+                name: 'EmailSender',
+                description: 'Envía correos electrónicos',
+                params: '{"to": "string", "subject": "string", "body": "string", "cc": "string?"}',
+                icon: '📧'
+            }
+        };
+
+        // ============================================
+        // FUNCIONES DE UI
+        // ============================================
+        
+        // Tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+                
+                tab.classList.add('active');
+                const tabId = `tab-${tab.dataset.tab}`;
+                document.getElementById(tabId).style.display = 'block';
+                document.getElementById(tabId).classList.add('fade-in');
+            });
+        });
+
+        // Toast Notifications
+        function showToast(title, message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
+            
+            toast.innerHTML = `
+                <div class="toast-icon">${icons[type]}</div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('toast-out');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Modals
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // ============================================
+        // FUNCIONES DE HERRAMIENTAS
+        // ============================================
+        
+        function openAddToolModal() {
+            document.getElementById('toolName').value = '';
+            document.getElementById('toolDescription').value = '';
+            document.getElementById('toolParams').value = '';
+            document.getElementById('toolType').value = 'function';
+            openModal('addToolModal');
+        }
+
+        function addTool() {
+            const name = document.getElementById('toolName').value.trim();
+            const description = document.getElementById('toolDescription').value.trim();
+            const params = document.getElementById('toolParams').value.trim();
+            const type = document.getElementById('toolType').value;
+            
+            if (!name) {
+                showToast('Error', 'El nombre es obligatorio', 'error');
+                return;
+            }
+            
+            const tool = { id: Date.now(), name, description, params, type, icon: '⚙️' };
+            state.tools.push(tool);
+            
+            renderTools();
+            updatePreview();
+            updateStats();
+            closeModal('addToolModal');
+            showToast('Herramienta añadida', `${name} ha sido añadida`, 'success');
+        }
+
+        function removeTool(id) {
+            state.tools = state.tools.filter(t => t.id !== id);
+            renderTools();
+            updatePreview();
+            updateStats();
+            showToast('Herramienta eliminada', 'La herramienta ha sido eliminada', 'info');
+        }
+
+        function renderTools() {
+            const container = document.getElementById('toolsList');
+            
+            if (state.tools.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🛠️</div>
+                        <div class="empty-state-text">No hay herramientas configuradas</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = state.tools.map(tool => `
+                <div class="tool-item fade-in">
+                    <div class="tool-icon">${tool.icon}</div>
+                    <div class="tool-content">
+                        <div class="tool-name">${tool.name}</div>
+                        <div class="tool-desc">${tool.description || 'Sin descripción'}</div>
+                        ${tool.params ? `<div class="tool-params">${tool.params}</div>` : ''}
+                    </div>
+                    <div class="tool-actions">
+                        <button class="btn btn-ghost btn-icon" onclick="removeTool(${tool.id})" title="Eliminar">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('toolsBadge').textContent = state.tools.length;
+        }
+
+        function addToolPreset(preset) {
+            const presetData = toolPresets[preset];
+            if (!presetData) return;
+            
+            if (state.tools.some(t => t.name === presetData.name)) {
+                showToast('Ya existe', 'Esta herramienta ya está configurada', 'warning');
+                return;
+            }
+            
+            const tool = { 
+                id: Date.now(), 
+                ...presetData,
+                type: preset === 'apiCaller' ? 'api' : 'function'
+            };
+            state.tools.push(tool);
+            
+            renderTools();
+            updatePreview();
+            updateStats();
+            showToast('Preset añadido', `${presetData.name} ha sido añadida`, 'success');
+        }
+
+        // ============================================
+        // FUNCIONES DE RAG
+        // ============================================
+        
+        function openAddRagModal() {
+            document.getElementById('ragName').value = '';
+            document.getElementById('ragUrl').value = '';
+            document.getElementById('ragText').value = '';
+            document.getElementById('ragDescription').value = '';
+            document.getElementById('ragType').value = 'url';
+            toggleRagUrl();
+            openModal('addRagModal');
+        }
+
+        function toggleRagUrl() {
+            const type = document.getElementById('ragType').value;
+            document.getElementById('ragUrlGroup').style.display = type === 'url' ? 'block' : 'none';
+            document.getElementById('ragTextGroup').style.display = type === 'text' ? 'block' : 'none';
+        }
+
+        function addRagSource() {
+            const name = document.getElementById('ragName').value.trim();
+            const type = document.getElementById('ragType').value;
+            const url = document.getElementById('ragUrl').value.trim();
+            const text = document.getElementById('ragText').value.trim();
+            const description = document.getElementById('ragDescription').value.trim();
+            
+            if (!name) {
+                showToast('Error', 'El nombre es obligatorio', 'error');
+                return;
+            }
+            
+            const source = { 
+                id: Date.now(), 
+                name, 
+                type, 
+                url: type === 'url' ? url : null,
+                text: type === 'text' ? text : null,
+                description,
+                icon: getRagIcon(type)
+            };
+            state.ragSources.push(source);
+            
+            renderRagSources();
+            updatePreview();
+            updateStats();
+            closeModal('addRagModal');
+            showToast('Fuente RAG añadida', `${name} ha sido añadida`, 'success');
+        }
+
+        function getRagIcon(type) {
+            const icons = { url: '🔗', file: '📄', text: '📝', api: '🔌' };
+            return icons[type] || '📚';
+        }
+
+        function removeRagSource(id) {
+            state.ragSources = state.ragSources.filter(r => r.id !== id);
+            renderRagSources();
+            updatePreview();
+            updateStats();
+            showToast('Fuente eliminada', 'La fuente RAG ha sido eliminada', 'info');
+        }
+
+        function renderRagSources() {
+            const container = document.getElementById('ragList');
+            
+            if (state.ragSources.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📚</div>
+                        <div class="empty-state-text">No hay fuentes RAG configuradas</div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = state.ragSources.map(source => `
+                <div class="tool-item fade-in">
+                    <div class="tool-icon">${source.icon}</div>
+                    <div class="tool-content">
+                        <div class="tool-name">${source.name}</div>
+                        <div class="tool-desc">${source.description || `Tipo: ${source.type.toUpperCase()}`}</div>
+                        ${source.url ? `<div class="tool-params">${source.url.substring(0, 50)}...</div>` : ''}
+                    </div>
+                    <div class="tool-actions">
+                        <button class="btn btn-ghost btn-icon" onclick="removeRagSource(${source.id})" title="Eliminar">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('ragBadge').textContent = state.ragSources.length;
+        }
+
+        function addRagPreset(preset) {
+            const presets = {
+                docs: { name: 'Documentación', type: 'url', url: '', description: 'Base de conocimiento general' },
+                faq: { name: 'Preguntas Frecuentes', type: 'text', text: 'FAQs sobre el producto...', description: 'Preguntas frecuentes' },
+                api: { name: 'API Reference', type: 'url', url: '', description: 'Referencia de API' },
+                kb: { name: 'Knowledge Base', type: 'text', text: 'Conocimiento base...', description: 'Base de conocimiento' }
+            };
+            
+            const presetData = presets[preset];
+            if (!presetData) return;
+            
+            const source = { id: Date.now(), ...presetData, icon: getRagIcon(presetData.type) };
+            state.ragSources.push(source);
+            
+            renderRagSources();
+            updatePreview();
+            updateStats();
+            showToast('Preset añadido', `${presetData.name} ha sido añadida`, 'success');
+        }
+
+        // ============================================
+        // FUNCIONES DE MEMORIA
+        // ============================================
+        
+        function toggleMemory(el, type) {
+            el.classList.toggle('active');
+            state.memories[type] = el.classList.contains('active');
+            updatePreview();
+        }
+
+        function handleTagInput(event, type) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                addTag(type);
+            }
+        }
+
+        function addTag(type) {
+            const input = document.getElementById(`${type}TagInput`);
+            const value = input.value.trim();
+            
+            if (!value) return;
+            
+            if (!state.memories.tags.includes(value)) {
+                state.memories.tags.push(value);
+                renderMemoryTags();
+                updatePreview();
+            }
+            
+            input.value = '';
+        }
+
+        function removeTag(tag) {
+            state.memories.tags = state.memories.tags.filter(t => t !== tag);
+            renderMemoryTags();
+            updatePreview();
+        }
+
+        function renderMemoryTags() {
+            const container = document.getElementById('memoryTags');
+            container.innerHTML = state.memories.tags.map(tag => `
+                <span class="tag">
+                    ${tag}
+                    <button class="tag-remove" onclick="removeTag('${tag}')">✕</button>
+                </span>
+            `).join('');
+            
+            document.getElementById('memoryBadge').textContent = state.memories.tags.length;
+        }
+
+        // ============================================
+        // FUNCIONES DE PERSONALIDAD
+        // ============================================
+        
+        function updateSlider(name) {
+            const slider = document.getElementById(name);
+            const value = slider.value;
+            document.getElementById(`${name}Value`).textContent = `${value}%`;
+            state.agent.personality[name] = parseInt(value);
+            updatePreview();
+        }
+
+        // ============================================
+        // ACTUALIZACIÓN DE PREVIEW Y STATS
+        // ============================================
+        
+        function updatePreview() {
+            const preview = document.getElementById('promptPreview');
+            
+            // Recoger datos del formulario
+            state.agent.name = document.getElementById('agentName').value;
+            state.agent.description = document.getElementById('agentDescription').value;
+            state.agent.systemPrompt = document.getElementById('systemPrompt').value;
+            state.agent.instructions = document.getElementById('instructions').value;
+            state.agent.personality.voiceTone = document.getElementById('voiceTone').value;
+            state.agent.personality.language = document.getElementById('language').value;
+            state.memories.type = document.getElementById('memoryType').value;
+            state.memories.context = document.getElementById('memoryContext').value;
+            
+            // Generar prompt
+            let prompt = '';
+            
+            if (state.agent.name) {
+                prompt += `# ${state.agent.name}\n\n`;
+            }
+            
+            if (state.agent.description) {
+                prompt += `**Descripción:** ${state.agent.description}\n\n`;
+            }
+            
+            if (state.agent.systemPrompt) {
+                prompt += `## Prompt del Sistema\n\n${state.agent.systemPrompt}\n\n`;
+            }
+            
+            // Personalidad
+            const p = state.agent.personality;
+            prompt += `## Configuración de Personalidad\n`;
+            prompt += `- Formalidad: ${p.formality}%\n`;
+            prompt += `- Creatividad: ${p.creativity}%\n`;
+            prompt += `- Empatía: ${p.empathy}%\n`;
+            prompt += `- Detalle: ${p.detail}%\n`;
+            prompt += `- Proactividad: ${p.proactivity}%\n`;
+            prompt += `- Tono: ${p.voiceTone}\n`;
+            prompt += `- Idioma: ${p.language === 'auto' ? 'Automático' : p.language.toUpperCase()}\n\n`;
+            
+            // Herramientas
+            if (state.tools.length > 0) {
+                prompt += `## Herramientas Disponibles\n`;
+                state.tools.forEach(tool => {
+                    prompt += `- **${tool.name}**: ${tool.description || 'Sin descripción'}`;
+                    if (tool.params) {
+                        prompt += `\n  \`\`\`json\n  ${tool.params}\n  \`\`\``;
+                    }
+                    prompt += '\n';
+                });
+                prompt += '\n';
+            }
+            
+            // Memoria
+            if (state.memories.longTerm || state.memories.conversation || state.memories.session) {
+                prompt += `## Configuración de Memoria\n`;
+                const memTypes = [];
+                if (state.memories.longTerm) memTypes.push('Largo plazo');
+                if (state.memories.conversation) memTypes.push('Conversacional');
+                if (state.memories.session) memTypes.push('Sesión');
+                prompt += `- Tipos activos: ${memTypes.join(', ')}\n`;
+                if (state.memories.type !== 'none') {
+                    prompt += `- Almacenamiento: ${state.memories.type}\n`;
+                }
+                if (state.memories.tags.length > 0) {
+                    prompt += `- Tags: ${state.memories.tags.join(', ')}\n`;
+                }
+                if (state.memories.context) {
+                    prompt += `\n### Contexto Inicial\n${state.memories.context}\n`;
+                }
+                prompt += '\n';
+            }
+            
+            // RAG
+            if (state.ragSources.length > 0) {
+                prompt += `## Fuentes de Conocimiento (RAG)\n`;
+                state.ragSources.forEach(source => {
+                    prompt += `- **${source.name}** (${source.type})`;
+                    if (source.description) prompt += `: ${source.description}`;
+                    prompt += '\n';
+                });
+                prompt += '\n';
+            }
+            
+            // Instrucciones
+            if (state.agent.instructions) {
+                prompt += `## Instrucciones Adicionales\n\n${state.agent.instructions}\n`;
+            }
+            
+            preview.textContent = prompt || 'Configura tu agente para ver el preview del prompt...';
+            document.getElementById('roleBadge').textContent = state.agent.systemPrompt.split(' ').length;
+        }
+
+        function updateCharCount() {
+            const prompt = document.getElementById('systemPrompt').value;
+            document.getElementById('promptCharCount').textContent = prompt.length;
+            document.getElementById('charCount').textContent = prompt.length;
+        }
+
+        function updateStats() {
+            document.getElementById('toolCount').textContent = state.tools.length;
+            document.getElementById('memoryCount').textContent = state.memories.tags.length;
+            document.getElementById('ragCount').textContent = state.ragSources.length;
+        }
+
+        // ============================================
+        // FUNCIONES DE EXPORT/IMPORT
+        // ============================================
+        
+        function exportConfig(format) {
+            const config = generateConfig();
+            let content, filename, type;
+            
+            if (format === 'json') {
+                content = JSON.stringify(config, null, 2);
+                filename = `${state.agent.name || 'agent'}-config.json`;
+                type = 'application/json';
+            } else {
+                content = generateMarkdown(config);
+                filename = `${state.agent.name || 'agent'}-README.md`;
+                type = 'text/markdown';
+            }
+            
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Exportado', `Configuración exportada como ${format.toUpperCase()}`, 'success');
+        }
+
+        function importConfig() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const content = e.target.result;
+                    
+                    if (file.name.endsWith('.json')) {
+                        const config = JSON.parse(content);
+                        loadConfig(config);
+                        showToast('Importado', 'Configuración importada correctamente', 'success');
+                    } else if (file.name.endsWith('.md')) {
+                        showToast('Info', 'Para importar Markdown, copia el contenido del prompt manualmente', 'info');
+                    }
+                } catch (err) {
+                    showToast('Error', 'No se pudo leer el archivo', 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function generateConfig() {
+            return {
+                agent: state.agent,
+                tools: state.tools,
+                memories: state.memories,
+                ragSources: state.ragSources,
+                llm: {
+                    provider: state.llm.provider,
+                    model: state.llm.model
+                },
+                exportedAt: new Date().toISOString()
+            };
+        }
+
+        function loadConfig(config) {
+            if (config.agent) {
+                state.agent = { ...state.agent, ...config.agent };
+                document.getElementById('agentName').value = state.agent.name;
+                document.getElementById('agentDescription').value = state.agent.description;
+                document.getElementById('systemPrompt').value = state.agent.systemPrompt;
+                document.getElementById('instructions').value = state.agent.instructions;
+                document.getElementById('voiceTone').value = state.agent.personality.voiceTone;
+                document.getElementById('language').value = state.agent.personality.language;
+                
+                // Cargar sliders
+                Object.keys(state.agent.personality).forEach(key => {
+                    if (typeof state.agent.personality[key] === 'number') {
+                        document.getElementById(key).value = state.agent.personality[key];
+                        updateSlider(key);
+                    }
+                });
+            }
+            
+            if (config.tools) {
+                state.tools = config.tools;
+                renderTools();
+            }
+            
+            if (config.memories) {
+                state.memories = { ...state.memories, ...config.memories };
+                document.getElementById('memoryType').value = state.memories.type;
+                document.getElementById('memoryContext').value = state.memories.context;
+                renderMemoryTags();
+            }
+            
+            if (config.ragSources) {
+                state.ragSources = config.ragSources;
+                renderRagSources();
+            }
+            
+            updatePreview();
+            updateStats();
+            updateCharCount();
+        }
+
+        function generateMarkdown(config) {
+            return `# ${config.agent.name || 'AI Agent'}
+
+${config.agent.description || ''}
+
+## Prompt del Sistema
+
+\`\`\`
+${config.agent.systemPrompt || 'No definido'}
+\`\`\`
+
+## Personalidad
+
+| Parámetro | Valor |
+|-----------|-------|
+| Formalidad | ${config.agent.personality.formality}% |
+| Creatividad | ${config.agent.personality.creativity}% |
+| Empatía | ${config.agent.personality.empathy}% |
+| Detalle | ${config.agent.personality.detail}% |
+| Proactividad | ${config.agent.personality.proactivity}% |
+| Tono | ${config.agent.personality.voiceTone} |
+
+## Herramientas
+
+${config.tools?.map(t => `- **${t.name}**: ${t.description}`).join('\n') || 'Ninguna'}
+
+## Configuración de Memoria
+
+- Tipo: ${config.memories.type || 'Ninguno'}
+- Tags: ${config.memories.tags?.join(', ') || 'Ninguno'}
+
+## Fuentes RAG
+
+${config.ragSources?.map(s => `- ${s.name} (${s.type})`).join('\n') || 'Ninguna'}
+
+---
+
+*Generado con AI Agent Builder PRO*
+`;
+        }
+
+        function copyPrompt() {
+            const prompt = document.getElementById('promptPreview').textContent;
+            navigator.clipboard.writeText(prompt).then(() => {
+                showToast('Copiado', 'Prompt copiado al portapapeles', 'success');
+            });
+        }
+
+        // ============================================
+        // FUNCIONES DE CONEXIÓN LLM
+        // ============================================
+        
+        function selectProvider(provider) {
+            state.llm.provider = provider;
+            
+            document.querySelectorAll('.provider-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.provider === provider);
+            });
+            
+            // Actualizar selector de modelos
+            const config = providerConfigs[provider];
+            const select = document.getElementById('modelSelect');
+            select.innerHTML = config.models.map(m => 
+                `<option value="${m.id}">${m.name}${m.free ? ' (Free)' : ''}</option>`
+            ).join('');
+            
+            state.llm.model = config.defaultModel;
+            select.value = config.defaultModel;
+            
+            // Mostrar/ocultar campo de API key
+            document.getElementById('apiKey').parentElement.parentElement.style.display = 
+                config.requiresApiKey ? 'block' : 'none';
+            
+            // Resetear estado de conexión
+            state.llm.connected = false;
+            updateConnectionStatus();
+        }
+
+        function updateModel() {
+            state.llm.model = document.getElementById('modelSelect').value;
+        }
+
+        function updateApiKey() {
+            state.llm.apiKey = document.getElementById('apiKey').value;
+        }
+
+        function toggleApiKeyVisibility() {
+            const input = document.getElementById('apiKey');
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function updateConnectionStatus() {
+            const dot = document.getElementById('connectionDot');
+            const statusDiv = document.getElementById('connectionStatus');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            if (!state.llm.apiKey && providerConfigs[state.llm.provider].requiresApiKey) {
+                dot.className = 'status-dot';
+                statusDiv.style.display = 'flex';
+                statusDot.className = 'status-dot';
+                statusText.textContent = 'API Key requerida';
+            } else if (state.llm.connected) {
+                dot.className = 'status-dot connected';
+                statusDiv.style.display = 'none';
+                enableAiButtons(true);
+            } else {
+                dot.className = 'status-dot';
+                statusDiv.style.display = 'none';
+                enableAiButtons(false);
+            }
+        }
+
+        function enableAiButtons(enabled) {
+            const buttons = ['improvePromptBtn', 'describeAgentBtn', 'suggestToolsBtn', 'validatePromptBtn'];
+            buttons.forEach(id => {
+                document.getElementById(id).disabled = !enabled;
+            });
+        }
+
+        async function testConnection() {
+            const btn = document.getElementById('testConnectionBtn');
+            const statusDiv = document.getElementById('connectionStatus');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Verificando...';
+            statusDiv.style.display = 'flex';
+            statusDot.className = 'status-dot';
+            statusText.textContent = 'Verificando conexión...';
+            
+            try {
+                const config = providerConfigs[state.llm.provider];
+                const response = await fetch(config.endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(state.llm.apiKey ? { 'Authorization': `Bearer ${state.llm.apiKey}` } : {}),
+                        ...config.header
+                    },
+                    body: JSON.stringify({
+                        model: state.llm.model,
+                        messages: [{ role: 'user', content: 'Hello' }],
+                        max_tokens: 5
+                    })
+                });
+                
+                if (response.ok) {
+                    state.llm.connected = true;
+                    statusDot.className = 'status-dot connected';
+                    statusText.textContent = `Conectado a ${config.name}`;
+                    document.getElementById('connectionDot').className = 'status-dot connected';
+                    enableAiButtons(true);
+                    showToast('Conexión exitosa', `Conectado a ${config.name}`, 'success');
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (err) {
+                state.llm.connected = false;
+                statusDot.className = 'status-dot error';
+                statusText.textContent = `Error: ${err.message}`;
+                document.getElementById('connectionDot').className = 'status-dot';
+                enableAiButtons(false);
+                showToast('Error de conexión', err.message, 'error');
+            }
+            
+            btn.disabled = false;
+            btn.innerHTML = '<span>🔄</span> Probar Conexión';
+        }
+
+        // ============================================
+        // FUNCIONES DE IA
+        // ============================================
+        
+        async function callLlm(messages, systemPrompt = '') {
+            if (!state.llm.connected) {
+                showToast('Error', 'Conecta con un proveedor LLM primero', 'error');
+                return null;
+            }
+            
+            const config = providerConfigs[state.llm.provider];
+            
+            try {
+                const body = {
+                    model: state.llm.model,
+                    messages: [
+                        ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
+                        ...messages
+                    ]
+                };
+                
+                // Añadir max_tokens para evitar respuestas muy largas
+                if (state.llm.provider !== 'anthropic') {
+                    body.max_tokens = 2000;
+                }
+                
+                const response = await fetch(config.endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(state.llm.apiKey ? { 'Authorization': `Bearer ${state.llm.apiKey}` } : {}),
+                        ...config.header
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (state.llm.provider === 'anthropic') {
+                    return data.content[0].text;
+                }
+                
+                return data.choices[0].message.content;
+            } catch (err) {
+                showToast('Error', `Error en llamada LLM: ${err.message}`, 'error');
+                return null;
+            }
+        }
+
+        async function improvePrompt() {
+            const btn = document.getElementById('improvePromptBtn');
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btn.innerHTML = '<span class="spinner"></span> Mejorando...';
+            
+            const currentPrompt = document.getElementById('systemPrompt').value;
+            if (!currentPrompt) {
+                showToast('Info', 'Escribe un prompt primero', 'warning');
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btn.innerHTML = '<span>✨</span> Mejorar Prompt con IA';
+                return;
+            }
+            
+            const messages = [{
+                role: 'user',
+                content: `Mejora el siguiente prompt para un agente IA. Hazlo más claro, efectivo y completo:
+
+"${currentPrompt}"
+
+Devuelve SOLO el prompt mejorado, sin explicaciones.`
+            }];
+            
+            const result = await callLlm(messages, 'Eres un experto en escribir prompts efectivos para agentes IA.');
+            
+            if (result) {
+                document.getElementById('systemPrompt').value = result;
+                updatePreview();
+                updateCharCount();
+                showToast('Prompt mejorado', 'El prompt ha sido mejorado con IA', 'success');
+            }
+            
+            btn.disabled = false;
+            btn.classList.remove('loading');
+            btn.innerHTML = '<span>✨</span> Mejorar Prompt con IA';
+        }
+
+        async function describeAgent() {
+            const btn = document.getElementById('describeAgentBtn');
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btn.innerHTML = '<span class="spinner"></span> Generando...';
+            
+            const config = generateConfig();
+            const messages = [{
+                role: 'user',
+                content: `Basándote en esta configuración de agente, genera una descripción breve y atractiva (2-3 frases):
+
+Nombre: ${config.agent.name || 'Sin nombre'}
+Prompt: ${config.agent.systemPrompt || 'No definido'}
+Herramientas: ${config.tools.map(t => t.name).join(', ') || 'Ninguna'}
+
+Devuelve SOLO la descripción, sin format markdown ni explicaciones.`
+            }];
+            
+            const result = await callLlm(messages);
+            
+            if (result) {
+                document.getElementById('agentDescription').value = result.trim();
+                updatePreview();
+                showToast('Descripción generada', 'La descripción ha sido generada', 'success');
+            }
+            
+            btn.disabled = false;
+            btn.classList.remove('loading');
+            btn.innerHTML = '<span>📝</span> Describir Agente';
+        }
+
+        async function suggestTools() {
+            const btn = document.getElementById('suggestToolsBtn');
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btn.innerHTML = '<span class="spinner"></span> Analizando...';
+            
+            const messages = [{
+                role: 'user',
+                content: `Para este agente IA, sugiere exactamente 3 herramientas útiles de esta lista:
+
+1. WebSearch - Búsqueda en la web
+2. Calculator - Cálculos matemáticos
+3. CodeInterpreter - Ejecutar código
+4. FileManager - Gestionar archivos
+5. APICaller - Llamadas a APIs REST
+6. ImageGenerator - Generar imágenes
+7. DatabaseQuery - Consultar bases de datos
+8. EmailSender - Enviar emails
+
+Prompt del agente: "${state.agent.systemPrompt || state.agent.description || 'No definido'}"
+
+Devuelve SOLO una lista de exactamente 3 nombres de herramientas separados por comas (ejemplo: WebSearch, Calculator, CodeInterpreter). Sin explicaciones.`
+            }];
+            
+            const result = await callLlm(messages);
+            
+            if (result) {
+                const toolNames = result.trim().split(',').map(t => t.trim());
+                let addedCount = 0;
+                
+                toolNames.forEach(name => {
+                    const presetKey = Object.keys(toolPresets).find(key => 
+                        toolPresets[key].name.toLowerCase() === name.toLowerCase()
+                    );
+                    
+                    if (presetKey && !state.tools.some(t => t.name.toLowerCase() === name.toLowerCase())) {
+                        addToolPreset(presetKey);
+                        addedCount++;
+                    }
+                });
+                
+                showToast('Herramientas sugeridas', `${addedCount} herramientas añadidas`, 'success');
+            }
+            
+            btn.disabled = false;
+            btn.classList.remove('loading');
+            btn.innerHTML = '<span>💡</span> Sugerir Herramientas';
+        }
+
+        async function validatePrompt() {
+            const btn = document.getElementById('validatePromptBtn');
+            btn.disabled = true;
+            btn.classList.add('loading');
+            btn.innerHTML = '<span class="spinner"></span> Validando...';
+            
+            const prompt = document.getElementById('systemPrompt').value;
+            if (!prompt) {
+                showToast('Info', 'Escribe un prompt primero', 'warning');
+                btn.disabled = false;
+                btn.classList.remove('loading');
+                btn.innerHTML = '<span>✓</span> Validar Prompt';
+                return;
+            }
+            
+            const messages = [{
+                role: 'user',
+                content: `Valida el siguiente prompt de agente IA y responde con:
+1. Una puntuación del 1 al 10
+2. Una lista de mejoras (máximo 3)
+
+Prompt a validar:
+"${prompt}"
+
+Responde en este formato exacto (sin markdown):
+PUNTUACIÓN: [número]
+MEJORAS:
+- [mejora 1]
+- [mejora 2]
+- [mejora 3]`
+            }];
+            
+            const result = await callLlm(messages);
+            
+            if (result) {
+                showToast('Validación completada', result.substring(0, 50) + '...', 'info');
+            }
+            
+            btn.disabled = false;
+            btn.classList.remove('loading');
+            btn.innerHTML = '<span>✓</span> Validar Prompt';
+        }
+
+        function testAgent() {
+            showToast('Próximamente', 'La prueba de agente estará disponible pronto', 'info');
+        }
+
+        // ============================================
+        // INICIALIZACIÓN
+        // ============================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            selectProvider('openrouter');
+            updatePreview();
+            updateStats();
+        });
+    </script>
+</body>
+</html>

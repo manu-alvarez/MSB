@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="es" data-direction="forward">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>AGENT FORGE — Generador de Agentes IA</title>
+<style>
+/* ============================================================
+   AGENT FORGE v1.0 — Design tokens (OKLCH + color-mix)
+   ============================================================ */
+:root{
+  --bg-0: oklch(0.14 0.02 268);
+  --bg-1: oklch(0.18 0.024 268);
+  --surface: oklch(0.22 0.026 268);
+  --surface-hi: oklch(0.27 0.03 268);
+  --glass: color-mix(in oklch, var(--surface) 72%, transparent);
+  --border: color-mix(in oklch, oklch(0.75 0.04 268) 18%, transparent);
+  --border-strong: color-mix(in oklch, oklch(0.8 0.05 268) 34%, transparent);
+  --text-hi: oklch(0.96 0.012 85);
+  --text: oklch(0.9 0.015 85);
+  --text-dim: oklch(0.76 0.02 85);
+  --accent: oklch(0.82 0.155 75);
+  --accent-hi: oklch(0.88 0.16 80);
+  --accent-deep: oklch(0.68 0.15 65);
+  --accent-ink: oklch(0.19 0.05 70);
+  --accent-soft: color-mix(in oklch, var(--accent) 14%, transparent);
+  --accent-line: color-mix(in oklch, var(--accent) 42%, transparent);
+  --glow: color-mix(in oklch, var(--accent) 30%, transparent);
+  --danger: oklch(0.74 0.19 25);
+  --danger-soft: color-mix(in oklch, var(--danger) 16%, transparent);
+  --ok: oklch(0.8 0.15 150);
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px;
+  --shadow-1: 0 2px 10px oklch(0 0 0 / 0.35);
+  --shadow-2: 0 14px 36px oklch(0 0 0 / 0.45);
+}
+
+/* ============ Base ============ */
+*, *::before, *::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0; font-family:var(--font); color:var(--text); line-height:1.55; min-height:100vh;
+  background:
+    radial-gradient(1100px 760px at 85% -10%, color-mix(in oklch, var(--accent) 8%, transparent), transparent 60%),
+    radial-gradient(900px 700px at -10% 30%, oklch(0.32 0.09 292 / 0.16), transparent 55%),
+    var(--bg-0);
+  -webkit-font-smoothing:antialiased;
+}
+/* Resplandor ambiental: solo opacidad (60fps) */
+body::before{
+  content:""; position:fixed; inset:-20%; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(520px 420px at 78% 18%, color-mix(in oklch, var(--accent) 10%, transparent), transparent 65%),
+    radial-gradient(460px 400px at 14% 78%, oklch(0.35 0.1 292 / 0.1), transparent 65%);
+  animation:breathe 9s ease-in-out infinite alternate;
+}
+@keyframes breathe{ from{ opacity:.55; } to{ opacity:1; } }
+::selection{ background:color-mix(in oklch, var(--accent) 32%, transparent); color:var(--text-hi); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+
+.sr-only{
+  position:absolute; width:1px; height:1px; margin:-1px; padding:0; border:0;
+  clip:rect(0 0 0 0); clip-path:inset(50%); overflow:hidden; white-space:nowrap;
+}
+.skip-link{
+  position:absolute; left:1rem; top:-3.5rem; z-index:200; padding:.6rem 1rem;
+  background:var(--accent); color:var(--accent-ink); font-weight:700; border-radius:var(--r-sm);
+  text-decoration:none; transition:top .25s var(--ease);
+}
+.skip-link:focus{ top:1rem; }
+
+/* ============ Topbar ============ */
+.topbar{
+  position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:.75rem;
+  padding:.8rem clamp(1rem, 4vw, 2rem);
+  background:var(--glass); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.brand{ display:flex; align-items:center; gap:.65rem; font-weight:800; letter-spacing:.08em; }
+.brand-mark{
+  display:grid; place-items:center; width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(135deg, var(--accent-hi), var(--accent-deep));
+  color:var(--accent-ink); font-size:1.05rem; box-shadow:0 0 18px var(--glow);
+}
+.brand-name{
+  font-size:1.02rem;
+  background:linear-gradient(90deg, var(--text-hi) 20%, var(--accent));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.badge{
+  font-family:var(--mono); font-size:.72rem; font-weight:700; letter-spacing:.06em;
+  padding:.22rem .6rem; border:1px solid var(--accent-line); border-radius:999px;
+  color:var(--accent); background:var(--accent-soft);
+}
+
+/* ============ Stepper ============ */
+.stepper{ max-width:1060px; margin:1.4rem auto 0; padding:0 1rem; }
+.stepper ol{ display:flex; align-items:center; list-style:none; margin:0; padding:0; }
+.step{ flex:0 0 auto; }
+.step-btn{
+  display:flex; flex-direction:column; align-items:center; gap:.4rem;
+  background:none; border:0; padding:.35rem .9rem; border-radius:var(--r-md);
+  color:var(--text-dim); cursor:pointer; font:inherit;
+  transition:transform .25s var(--ease), color .25s var(--ease);
+}
+.step-btn:not(:disabled):hover{ color:var(--text-hi); transform:translateY(-2px); }
+.step-btn:disabled{ cursor:not-allowed; opacity:.5; }
+.step-dot{
+  display:grid; place-items:center; width:38px; height:38px; border-radius:50%;
+  border:2px solid var(--border-strong); background:var(--surface);
+  font-family:var(--mono); font-weight:700; color:var(--text-dim);
+  transition:transform .35s var(--ease), border-color .35s var(--ease),
+             background .35s var(--ease), box-shadow .35s var(--ease), color .35s var(--ease);
+}
+.step.is-active .step-dot{
+  border-color:var(--accent); color:var(--accent-ink); background:var(--accent);
+  box-shadow:0 0 0 5px var(--accent-soft), 0 0 24px var(--glow); transform:scale(1.08);
+}
+.step.is-done .step-dot{ border-color:var(--accent-line); color:var(--accent); background:var(--accent-soft); }
+.step-label{ font-size:.78rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; }
+.step.is-active .step-label{ color:var(--accent); }
+.connector{
+  flex:1 1 auto; min-width:20px; height:2px; margin:0 .4rem; border-radius:2px;
+  background:var(--border); position:relative; overflow:hidden; align-self:center; margin-top:-1.4rem;
+}
+.connector::after{
+  content:""; position:absolute; inset:0; border-radius:inherit;
+  background:linear-gradient(90deg, var(--accent-deep), var(--accent));
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .6s var(--ease);
+}
+.connector.is-done::after{ transform:scaleX(1); }
+
+/* ============ Fases ============ */
+main{ max-width:1060px; margin:0 auto; padding:1.5rem 1rem 4rem; }
+.phase[hidden]{ display:none; }
+.phase-card{
+  background:var(--glass); border:1px solid var(--border); border-radius:var(--r-lg);
+  padding:clamp(1.2rem, 3vw, 2rem); box-shadow:var(--shadow-1);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+.phase h2{ margin:.1em 0 .2em; font-size:clamp(1.3rem, 2.6vw, 1.7rem); color:var(--text-hi); }
+.phase h2:focus{ outline:none; }
+.phase-sub{ color:var(--text-dim); margin:0 0 1.4rem; max-width:62ch; }
+
+/* Transición de fases (fallback sin View Transitions) */
+@keyframes phase-in-fwd{ from{ opacity:0; transform:translateX(26px); } to{ opacity:1; transform:translateX(0); } }
+@keyframes phase-in-back{ from{ opacity:0; transform:translateX(-26px); } to{ opacity:1; transform:translateX(0); } }
+.phase.anim-fwd{ animation:phase-in-fwd .42s var(--ease) both; }
+.phase.anim-back{ animation:phase-in-back .42s var(--ease) both; }
+
+/* View Transitions API — progressive enhancement */
+@supports (view-transition-name: none){
+  @keyframes vt-out-fwd{ to{ opacity:0; transform:translateX(-22px); } }
+  @keyframes vt-in-fwd{ from{ opacity:0; transform:translateX(26px); } }
+  @keyframes vt-out-back{ to{ opacity:0; transform:translateX(22px); } }
+  @keyframes vt-in-back{ from{ opacity:0; transform:translateX(-26px); } }
+  html[data-direction="forward"]::view-transition-old(root){ animation:vt-out-fwd .26s var(--ease) both; }
+  html[data-direction="forward"]::view-transition-new(root){ animation:vt-in-fwd .4s var(--ease) both; }
+  html[data-direction="back"]::view-transition-old(root){ animation:vt-out-back .26s var(--ease) both; }
+  html[data-direction="back"]::view-transition-new(root){ animation:vt-in-back .4s var(--ease) both; }
+}
+
+/* ============ Formulario ============ */
+.form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1rem 1.25rem; }
+.field{ display:flex; flex-direction:column; gap:.35rem; min-width:0; }
+.field.span-2{ grid-column:1 / -1; }
+label{ font-weight:600; font-size:.9rem; color:var(--text-hi); }
+.req{ color:var(--accent); }
+.hint{ font-size:.78rem; font-weight:400; color:var(--text-dim); }
+input[type="text"], textarea, select{
+  width:100%; font:inherit; color:var(--text-hi);
+  background:color-mix(in oklch, var(--bg-1) 82%, transparent);
+  border:1px solid var(--border); border-radius:var(--r-sm); padding:.6rem .75rem;
+  transition:border-color .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+}
+textarea{ resize:vertical; min-height:88px; }
+select{ cursor:pointer; }
+:is(input, textarea, select):hover{ border-color:var(--border-strong); }
+:is(input, textarea, select):focus-visible{
+  outline:none; border-color:var(--accent);
+  box-shadow:0 0 0 3px var(--accent-soft), 0 0 14px var(--glow);
+}
+[aria-invalid="true"]{ border-color:var(--danger); box-shadow:0 0 0 3px var(--danger-soft); }
+.field-error{ color:var(--danger); font-size:.8rem; font-weight:600; margin:0; }
+
+/* Emoji picker */
+.emoji-row{ display:flex; flex-wrap:wrap; gap:.45rem; align-items:center; }
+.emoji-opt{
+  width:42px; height:42px; display:grid; place-items:center; font-size:1.25rem;
+  background:var(--bg-1); border:1px solid var(--border); border-radius:var(--r-sm); cursor:pointer;
+  transition:transform .2s var(--ease), border-color .2s var(--ease), box-shadow .2s var(--ease), background .2s var(--ease);
+}
+.emoji-opt:hover{ transform:translateY(-2px) scale(1.06); border-color:var(--accent-line); }
+.emoji-opt[aria-pressed="true"]{
+  border-color:var(--accent); background:var(--accent-soft);
+  box-shadow:0 0 12px var(--glow); transform:scale(1.08);
+}
+.emoji-custom{ width:86px; text-align:center; font-size:1.1rem; }
+
+/* Autonomía */
+.range-row{ display:flex; align-items:center; gap:1rem; }
+input[type="range"]{ flex:1; accent-color:var(--accent); height:1.5rem; cursor:pointer; }
+.range-val{ font-family:var(--mono); font-weight:700; font-size:1.15rem; color:var(--accent); min-width:2ch; text-align:center; }
+.autonomy-policy{
+  margin:.4rem 0 0; font-size:.85rem; color:var(--text-dim);
+  border-left:2px solid var(--accent-line); padding-left:.7rem;
+}
+
+/* Chips de tono */
+.chips{ display:flex; flex-wrap:wrap; gap:.5rem; }
+.chip{
+  font:inherit; font-size:.85rem; font-weight:600; padding:.42rem .95rem; border-radius:999px;
+  border:1px solid var(--border); background:var(--bg-1); color:var(--text-dim); cursor:pointer;
+  transition:color .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease),
+             box-shadow .25s var(--ease), transform .2s var(--ease);
+}
+.chip:hover{ color:var(--text-hi); border-color:var(--accent-line); transform:translateY(-1px); }
+.chip:active{ transform:scale(.97); }
+.chip[aria-checked="true"]{
+  color:var(--accent-ink); background:var(--accent); border-color:var(--accent);
+  box-shadow:0 0 16px var(--glow); transform:scale(1.03);
+}
+
+/* ============ Botones ============ */
+.actions{ display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.6rem; align-items:center; }
+.actions .spacer{ flex:1 1 auto; }
+.btn{
+  font:inherit; font-weight:700; display:inline-flex; align-items:center; gap:.5rem;
+  padding:.68rem 1.35rem; border-radius:var(--r-md); border:1px solid var(--border-strong);
+  background:var(--surface); color:var(--text-hi); cursor:pointer;
+  position:relative; overflow:hidden;
+  transition:transform .2s var(--ease), box-shadow .25s var(--ease),
+             border-color .25s var(--ease), background .25s var(--ease);
+}
+.btn::before{
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(120deg, transparent 30%, color-mix(in oklch, white 14%, transparent) 50%, transparent 70%);
+  transform:translateX(-110%); transition:transform .6s var(--ease);
+}
+.btn:hover{ transform:translateY(-2px); border-color:var(--accent-line); box-shadow:var(--shadow-2); }
+.btn:hover::before{ transform:translateX(110%); }
+.btn:active{ transform:translateY(0) scale(.98); }
+.btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.btn[disabled]{ opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
+.btn[disabled]::before{ display:none; }
+.btn-primary{
+  background:linear-gradient(135deg, var(--accent-hi), var(--accent-deep));
+  border-color:transparent; color:var(--accent-ink); box-shadow:0 4px 20px var(--glow);
+}
+.btn-ghost{ background:transparent; }
+
+/* ============ Pilares ============ */
+.pillars-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:1rem; }
+.pillar{
+  display:flex; flex-direction:column; gap:.6rem; padding:1.1rem;
+  border:1px solid var(--border); border-radius:var(--r-lg);
+  background:color-mix(in oklch, var(--surface) 70%, transparent);
+  transition:transform .25s var(--ease), border-color .25s var(--ease), box-shadow .25s var(--ease), opacity .25s var(--ease);
+}
+.pillar:hover{ transform:translateY(-3px); border-color:var(--accent-line); box-shadow:0 10px 30px oklch(0 0 0 / .35), 0 0 22px var(--glow); }
+.pillar.is-off{ opacity:.6; }
+.pillar-head{ display:flex; align-items:center; gap:.6rem; }
+.pillar-icon{ font-size:1.4rem; }
+.pillar-name{ font-size:1rem; font-weight:700; color:var(--text-hi); flex:1; margin:0; }
+.badge-core{
+  font-size:.66rem; font-weight:800; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--accent-ink); background:var(--accent); border-radius:999px; padding:.16rem .55rem;
+}
+.pillar-desc{ margin:0; font-size:.85rem; color:var(--text-dim); }
+.pillar ul{ margin:.2rem 0 0; padding-left:1.1rem; font-size:.82rem; color:var(--text-dim); display:grid; gap:.15rem; }
+.pillar-foot{ margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:.5rem; padding-top:.4rem; }
+
+/* Switch */
+.switch{ --w:46px; --h:26px; background:none; border:0; padding:2px; border-radius:999px; cursor:pointer; }
+.switch-track{
+  display:block; width:var(--w); height:var(--h); border-radius:999px; position:relative;
+  background:var(--surface-hi); border:1px solid var(--border-strong);
+  transition:background .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.switch-thumb{
+  position:absolute; top:50%; left:2px; width:20px; height:20px; border-radius:50%;
+  background:var(--text-dim); transform:translateY(-50%);
+  transition:transform .3s var(--ease), background .3s var(--ease);
+}
+.switch[aria-checked="true"] .switch-track{ background:var(--accent); border-color:var(--accent); box-shadow:0 0 14px var(--glow); }
+.switch[aria-checked="true"] .switch-thumb{ transform:translate(20px, -50%); background:var(--accent-ink); }
+.switch:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.switch:disabled{ cursor:not-allowed; }
+.switch-state{ font-family:var(--mono); font-size:.75rem; color:var(--text-dim); }
+
+/* ============ Emisión ============ */
+[role="tablist"]{
+  display:flex; gap:.4rem; overflow-x:auto; padding:.35rem; scrollbar-width:thin;
+  background:color-mix(in oklch, var(--bg-1) 85%, transparent);
+  border:1px solid var(--border); border-radius:var(--r-md);
+}
+[role="tab"]{
+  flex:0 0 auto; font:inherit; font-size:.88rem; font-weight:600; white-space:nowrap;
+  padding:.5rem .9rem; border-radius:var(--r-sm); border:1px solid transparent;
+  background:transparent; color:var(--text-dim); cursor:pointer;
+  transition:color .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+}
+[role="tab"]:hover{ color:var(--text-hi); background:var(--surface); }
+[role="tab"][aria-selected="true"]{ color:var(--accent-ink); background:var(--accent); box-shadow:0 0 14px var(--glow); }
+[role="tab"]:focus-visible{ outline:2px solid var(--accent); outline-offset:-2px; }
+.tabpanel:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:var(--r-md); }
+pre.output{
+  margin:0; padding:1.2rem 1.3rem; overflow:auto; max-height:60vh;
+  background:oklch(0.11 0.015 268); border:1px solid var(--border); border-radius:var(--r-md);
+  font-family:var(--mono); font-size:.83rem; line-height:1.65; color:var(--text);
+}
+pre.output code{ white-space:pre-wrap; word-break:break-word; }
+code.is-typing::after{ content:"▌"; color:var(--accent); animation:caret 1s steps(2) infinite; }
+@keyframes caret{ 50%{ opacity:0; } }
+.emit-stats{
+  display:flex; flex-wrap:wrap; gap:.4rem 1.6rem; margin:1rem 0 0; padding:0;
+  font-family:var(--mono); font-size:.78rem; color:var(--text-dim);
+}
+.emit-stats div{ display:flex; gap:.45rem; margin:0; }
+.emit-stats dt{ opacity:.75; }
+.emit-stats dd{ margin:0; font-weight:700; color:var(--accent); }
+
+/* ============ Toasts ============ */
+.toast-region{
+  position:fixed; bottom:1.2rem; right:1.2rem; z-index:100;
+  display:flex; flex-direction:column; gap:.6rem; max-width:min(92vw, 380px);
+}
+.toast{
+  display:flex; align-items:center; gap:.6rem; padding:.75rem 1rem;
+  border-radius:var(--r-md); border:1px solid var(--accent-line);
+  background:color-mix(in oklch, var(--bg-1) 88%, transparent);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  color:var(--text-hi); font-size:.9rem; box-shadow:var(--shadow-2);
+  animation:toast-in .4s var(--ease) both;
+}
+.toast--err{ border-color:color-mix(in oklch, var(--danger) 55%, transparent); }
+.toast.is-leaving{ animation:toast-out .3s var(--ease) both; }
+@keyframes toast-in{ from{ opacity:0; transform:translateY(14px) scale(.96); } }
+@keyframes toast-out{ to{ opacity:0; transform:translateY(10px) scale(.96); } }
+
+/* ============ Responsive ============ */
+@media (max-width:720px){
+  .form-grid{ grid-template-columns:1fr; }
+  .actions .btn{ flex:1 1 auto; justify-content:center; }
+  .toast-region{ left:1rem; right:1rem; bottom:1rem; }
+}
+@media (max-width:420px){
+  .step-btn{ padding:.3rem .35rem; }
+  .step-dot{ width:32px; height:32px; font-size:.85rem; }
+  .step-label{ font-size:.66rem; }
+  .connector{ min-width:10px; margin:0 .15rem; }
+}
+
+/* ============ Reduced motion: todo estático ============ */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *, *::before, *::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+  }
+  .connector::after, code.is-typing::after{ transition:none; animation:none; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">⟡</span>
+    <span class="brand-name">AGENT FORGE</span>
+  </div>
+  <div style="display:flex; gap: 1rem; align-items:center;">
+    <span class="badge">v1.0</span>
+    <button type="button" id="btn-guide" class="btn btn--sm btn--ghost" style="padding:0.4rem 0.8rem; font-size:0.8rem;">🚀 Guía de Producción</button>
+  </div>
+</header>
+
+<nav class="stepper" aria-label="Fases del generador">
+  <ol>
+    <li class="step is-active" data-phase="1">
+      <button type="button" class="step-btn" data-goto="1" aria-current="step">
+        <span class="step-dot" aria-hidden="true">1</span>
+        <span class="step-label">ADN</span>
+        <span class="sr-only" data-step-status> — Fase 1 de 3: ADN, activa</span>
+      </button>
+    </li>
+    <li class="connector" aria-hidden="true"></li>
+    <li class="step" data-phase="2">
+      <button type="button" class="step-btn" data-goto="2" disabled>
+        <span class="step-dot" aria-hidden="true">2</span>
+        <span class="step-label">Pilares</span>
+        <span class="sr-only" data-step-status> — Fase 2 de 3: Pilares, pendiente</span>
+      </button>
+    </li>
+    <li class="connector" aria-hidden="true"></li>
+    <li class="step" data-phase="3">
+      <button type="button" class="step-btn" data-goto="3" disabled>
+        <span class="step-dot" aria-hidden="true">3</span>
+        <span class="step-label">Emisión</span>
+        <span class="sr-only" data-step-status> — Fase 3 de 3: Emisión, pendiente</span>
+      </button>
+    </li>
+  </ol>
+</nav>
+
+<main id="main">
+
+  <!-- ==================== FASE 1 · ADN ==================== -->
+  <section id="phase-1" class="phase" aria-labelledby="ph1-h">
+    <div class="phase-card">
+      <h2 id="ph1-h" tabindex="-1">1 · ADN del agente</h2>
+      <p class="phase-sub">Define la identidad esencial. Nombre y misión son obligatorios; el resto afina el carácter del agente.</p>
+
+      <form id="form-dna" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="dna-nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
+            <input type="text" id="dna-nombre" required autocomplete="off" placeholder="Ej. Nexo" aria-describedby="err-nombre">
+            <p class="field-error" id="err-nombre" hidden>⚠ El nombre es obligatorio.</p>
+          </div>
+
+          <div class="field">
+            <label for="dna-rol">Rol / dominio</label>
+            <input type="text" id="dna-rol" autocomplete="off" placeholder="Ej. Analista de Inteligencia de Mercado">
+          </div>
+
+          <div class="field span-2">
+            <label for="dna-emoji">Símbolo / avatar</label>
+            <div class="emoji-row" role="group" aria-label="Elegir símbolo del agente">
+              <button type="button" class="emoji-opt" data-emoji="🤖" aria-pressed="true">🤖</button>
+              <button type="button" class="emoji-opt" data-emoji="🧭" aria-pressed="false">🧭</button>
+              <button type="button" class="emoji-opt" data-emoji="⚡" aria-pressed="false">⚡</button>
+              <button type="button" class="emoji-opt" data-emoji="🎨" aria-pressed="false">🎨</button>
+              <button type="button" class="emoji-opt" data-emoji="🧠" aria-pressed="false">🧠</button>
+              <button type="button" class="emoji-opt" data-emoji="🛡️" aria-pressed="false">🛡️</button>
+              <button type="button" class="emoji-opt" data-emoji="📈" aria-pressed="false">📈</button>
+              <button type="button" class="emoji-opt" data-emoji="✨" aria-pressed="false">✨</button>
+              <input type="text" id="dna-emoji" class="emoji-custom" maxlength="4" placeholder="✍️" aria-label="Emoji personalizado (máximo 4 caracteres)">
+            </div>
+          </div>
+
+          <div class="field span-2">
+            <label for="dna-mision">Misión <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="dna-mision" required aria-describedby="err-mision" placeholder="¿Para qué existe este agente? Una frase con verbo y resultado esperado."></textarea>
+            <p class="field-error" id="err-mision" hidden>⚠ La misión es obligatoria.</p>
+          </div>
+
+          <div class="field">
+            <label for="dna-usuario">Usuario objetivo</label>
+            <input type="text" id="dna-usuario" autocomplete="off" placeholder="Ej. Equipos de estrategia y producto">
+          </div>
+
+          <div class="field">
+            <label for="dna-idioma">Idioma</label>
+            <select id="dna-idioma">
+              <option selected>Español</option>
+              <option>Inglés</option>
+              <option>Bilingüe</option>
+            </select>
+          </div>
+
+          <div class="field span-2">
+            <label id="tono-label">Tono</label>
+            <div class="chips" id="tono-chips" role="radiogroup" aria-labelledby="tono-label">
+              <button type="button" class="chip" role="radio" aria-checked="true"  data-tono="Profesional">Profesional</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-tono="Cercano">Cercano</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-tono="Técnico">Técnico</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-tono="Didáctico">Didáctico</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-tono="Ejecutivo">Ejecutivo</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-tono="Creativo">Creativo</button>
+            </div>
+          </div>
+
+          <div class="field span-2">
+            <label for="dna-autonomia">Autonomía · <output id="autonomia-out" for="dna-autonomia">3 · Autónomo + aprobación</output></label>
+            <div class="range-row">
+              <input type="range" id="dna-autonomia" min="1" max="5" step="1" value="3" aria-describedby="autonomia-policy">
+              <span class="range-val" aria-hidden="true">3</span>
+            </div>
+            <p class="autonomy-policy" id="autonomia-policy">Actúa de forma autónoma en lo reversible; solicita aprobación humana para operaciones destructivas, de producción o irreversibles.</p>
+          </div>
+
+          <div class="field span-2">
+            <label for="dna-restricciones">Restricciones <span class="hint">(una por línea)</span></label>
+            <textarea id="dna-restricciones" placeholder="Citar fuentes siempre&#10;Sin datos personales"></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <input type="file" id="file-import" accept=".json" style="display:none;">
+          <button type="button" id="btn-import" class="btn btn-ghost">📂 Importar JSON</button>
+          <button type="button" id="btn-example" class="btn btn-ghost">✨ Cargar ejemplo</button>
+          <span class="spacer" aria-hidden="true"></span>
+          <button type="button" id="btn-prev-1" class="btn" disabled>← Atrás</button>
+          <button type="submit" class="btn btn-primary">Siguiente: Pilares →</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ==================== FASE 2 · PILARES ==================== -->
+  <section id="phase-2" class="phase" hidden aria-labelledby="ph2-h">
+    <div class="phase-card">
+      <h2 id="ph2-h" tabindex="-1">2 · Arquitectura · 9 pilares</h2>
+      <p class="phase-sub">Activa o desactiva capacidades. El System Prompt es el núcleo y permanece siempre activo; los pilares desactivados desaparecen del prompt compilado.</p>
+      <div class="pillars-grid" id="pillars-grid" role="group" aria-label="Pilares de la arquitectura"></div>
+      <div class="actions">
+        <button type="button" id="btn-prev-2" class="btn">← Atrás: ADN</button>
+        <span class="spacer" aria-hidden="true"></span>
+        <button type="button" id="btn-next-2" class="btn btn-primary">Siguiente: Emisión →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FASE 3 · EMISIÓN ==================== -->
+  <section id="phase-3" class="phase" hidden aria-labelledby="ph3-h">
+    <div class="phase-card">
+      <h2 id="ph3-h" tabindex="-1">3 · Emisión</h2>
+      <p class="phase-sub">Artefactos compilados. Copia, descarga o regenera; los cambios en ADN y pilares se aplican al regenerar.</p>
+
+      <div role="tablist" aria-label="Artefactos generados" id="tablist"></div>
+      <div id="tabpanels" style="margin-top:1rem;"></div>
+
+      <dl class="emit-stats" id="emit-stats">
+        <div><dt>Palabras</dt><dd id="stat-words">—</dd></div>
+        <div><dt>Líneas</dt><dd id="stat-lines">—</dd></div>
+        <div><dt>Caracteres</dt><dd id="stat-chars">—</dd></div>
+        <div><dt>Pilares activos</dt><dd id="stat-pillars">—</dd></div>
+      </dl>
+
+      <div class="actions">
+        <button type="button" id="btn-copy" class="btn">📋 Copiar prompt</button>
+        <button type="button" id="btn-dl-md" class="btn" title="Descargar System Prompt">⬇️ Prompt</button>
+        <button type="button" id="btn-dl-json" class="btn" title="Descargar spec.json">⬇️ Spec</button>
+        <button type="button" id="btn-dl-rubric" class="btn" title="Descargar Rúbrica">⬇️ Rúbrica</button>
+        <button type="button" id="btn-dl-checklist" class="btn" title="Descargar Checklist">⬇️ Checklist</button>
+        <button type="button" id="btn-dl-manifest" class="btn" title="Descargar Manifesto">⬇️ Tools</button>
+        <span class="spacer" aria-hidden="true"></span>
+        <button type="button" id="btn-regen" class="btn btn-primary">♻️ Regenerar</button>
+      </div>
+      <div class="actions" style="margin-top:.9rem;">
+        <button type="button" id="btn-back-1" class="btn btn-ghost">← Volver a ADN</button>
+        <button type="button" id="btn-back-2" class="btn btn-ghost">← Volver a Pilares</button>
+      </div>
+    </div>
+  </section>
+
+
+<!-- ==================== MODAL GUÍA ==================== -->
+<dialog id="modal-guide" class="modal">
+  <div class="modal-content">
+    <h2>🚀 Guía para 100% Producción</h2>
+    <div class="markdown-viewer">
+      <h3>¿Cómo desplegar este agente en un entorno real?</h3>
+      <p>Este frontend genera la <strong>especificación (spec.json)</strong> y los artefactos base. Para ejecutar el agente de verdad y que no sea solo un prompt, necesitas un <strong>Backend de Ejecución (AURORA, LangChain o LlamaIndex)</strong>.</p>
+      
+      <h4>1. Variables de Entorno (APIs)</h4>
+      <p>No usamos APIs directamente en este frontend para proteger tus claves. En tu servidor (Node.js/Python), debes configurar:</p>
+      <pre><code>OPENAI_API_KEY=sk-...
+GEMINI_API_KEY=AIza...</code></pre>
+      
+      <h4>2. Ingesta del <code>spec.json</code></h4>
+      <p>El backend debe leer el archivo <code>spec.json</code> exportado. Ejemplo en Node.js:</p>
+      <pre><code>const spec = JSON.parse(fs.readFileSync('agente-spec.json'));
+const agent = new AuroraEngine({
+  systemPrompt: spec.outputs.systemPrompt,
+  tools: parseManifest(spec.outputs.toolManifest),
+  model: 'gemini-2.5-pro'
+});</code></pre>
+
+      <h4>3. Implementación de Herramientas (Tool Manifesto)</h4>
+      <p>Si activaste los pilares de RAG o Herramientas, el motor exportará un <strong>Tool Manifesto</strong>. Debes implementar el código real de esas herramientas en tu backend (ej. conexión a una base de datos vectorial para RAG).</p>
+
+      <h4>4. Frontend de Usuario Final</h4>
+      <p>Este UI (Agent Forge) es para <em>construir</em> el agente. El usuario final necesitará una interfaz de chat conectada a tu backend vía WebSockets o API REST.</p>
+    </div>
+    <div class="actions" style="margin-top: 2rem; justify-content: flex-end;">
+      <button type="button" id="btn-close-guide" class="btn btn-primary">Entendido</button>
+    </div>
+  </div>
+</dialog>
+<style>
+.modal {
+  border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--bg-1);
+  color: var(--text); max-width: 700px; width: 90%; padding: 0; box-shadow: var(--shadow-2);
+}
+.modal::backdrop { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(4px); }
+.modal-content { padding: 2rem; max-height: 85vh; overflow-y: auto; }
+.markdown-viewer h3 { color: var(--accent); margin-top: 1.5rem; margin-bottom: 0.5rem; }
+.markdown-viewer h4 { color: var(--text-hi); margin-top: 1.2rem; }
+.markdown-viewer pre { background: var(--surface); padding: 1rem; border-radius: var(--r-sm); border: 1px solid var(--border); overflow-x: auto; }
+.markdown-viewer code { font-family: var(--mono); color: var(--accent-hi); font-size: 0.85em;}
+</style>
+
+</main>
+
+<div class="toast-region" id="toast-region" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= Datos ================= */
+const AUTONOMY = {
+  1: { label:'Asistido', policy:'Pide confirmación antes de cualquier acción con efectos externos.' },
+  2: { label:'Supervisado', policy:'Informa antes de actuar y espera visto bueno en acciones con efectos externos.' },
+  3: { label:'Autónomo + aprobación', policy:'Actúa de forma autónoma en lo reversible; solicita aprobación humana para operaciones destructivas, de producción o irreversibles.' },
+  4: { label:'Autónomo', policy:'Opera de extremo a extremo de forma autónoma; escala solo bloqueos reales.' },
+  5: { label:'Total', policy:'Ejecuta sin fricción y decide por defecto; escala únicamente riesgos irreversibles o sensibles.' }
+};
+
+const PILLARS = [
+  { id:'prompt',         icon:'🧬', name:'System Prompt',       desc:'Identidad, misión, alcance y reglas de oro',            bullets:['Identidad y misión','Alcance y anti-alcance','Contrato de salida'], core:true },
+  { id:'rag',            icon:'📚', name:'RAG',                 desc:'Conocimiento anclado a evidencia citable',              bullets:['Fuentes autorizadas','Citación obligatoria','Fallback "no lo sé"'] },
+  { id:'memoria',        icon:'🧠', name:'Memoria',             desc:'Continuidad entre sesiones sin violar privacidad',      bullets:['Cuatro capas','Política de persistencia','Protección de datos'] },
+  { id:'herramientas',   icon:'🛠️', name:'Herramientas',        desc:'Uso seguro de mínimo privilegio',                       bullets:['Protocolo de uso','Validación de salidas','Recuperación de fallos'] },
+  { id:'evaluacion',     icon:'🎯', name:'Evaluación',          desc:'Gate de calidad antes de entregar',                     bullets:['Checklist medible','Criterios de aceptación','Escalado si falla'] },
+  { id:'autocorreccion', icon:'🔄', name:'Autocorrección',      desc:'Bucle de recuperación sin fingir éxitos',               bullets:['Detectar→corregir→verificar','Límite de 2 ciclos','Escalado honesto'] },
+  { id:'cot',            icon:'⛓️', name:'Chain of Thought',    desc:'Razonamiento estructurado con incertidumbre marcada',   bullets:['Descomponer→verificar','Etiquetas de incertidumbre','Conclusión primero'] },
+  { id:'planificacion',  icon:'🗺️', name:'Planificación',       desc:'Planes y todos con criterios verificables',             bullets:['Umbral >3 pasos','Hitos con aceptación','Replanificación'] },
+  { id:'subagentes',     icon:'👥', name:'Agentes Secundarios', desc:'Delegación con contrato y permisos restringidos',       bullets:['Cuándo delegar','Contrato mínimo','Topologías'] }
+];
+
+const defaultState = {
+  phase: 1,
+  maxVisited: 1,
+  emitted: false,
+  typing: false,
+  skipType: null,
+  dna: { nombre:'', emoji:'🤖', rol:'', mision:'', usuario:'', idioma:'Español', tono:'Profesional', autonomia:3, restricciones:[] },
+  pillars: { prompt:true, rag:true, memoria:true, herramientas:true, evaluacion:true, autocorreccion:true, cot:true, planificacion:true, subagentes:true },
+  compiled: null
+};
+let state = JSON.parse(localStorage.getItem('agentForgeState')) || defaultState;
+// Reset UI-only state that shouldn't be persisted across sessions
+state.phase = 1; state.maxVisited = 1; state.emitted = false; state.typing = false; state.skipType = null; state.compiled = null;
+
+function saveState() {
+  localStorage.setItem('agentForgeState', JSON.stringify({ dna: state.dna, pillars: state.pillars }));
+}
+
+/* ================= Motor de compilación ================= */
+function readDNA(){
+  const d = state.dna;
+  d.nombre = $('#dna-nombre').value.trim();
+  const custom = $('#dna-emoji').value.trim();
+  if (custom) { d.emoji = custom; }
+  else {
+    const preset = $$('.emoji-opt').find(x => x.getAttribute('aria-pressed') === 'true');
+    d.emoji = preset ? preset.dataset.emoji : '🤖';
+  }
+  d.rol = $('#dna-rol').value.trim();
+  d.mision = $('#dna-mision').value.trim();
+  d.usuario = $('#dna-usuario').value.trim();
+  d.idioma = $('#dna-idioma').value;
+  d.autonomia = Number($('#dna-autonomia').value);
+  d.restricciones = $('#dna-restricciones').value.split('\n').map(s => s.trim()).filter(Boolean);
+  return d;
+}
+
+function buildSections(d){
+  const a = AUTONOMY[d.autonomia];
+  const restr = d.restricciones;
+  const S = {};
+
+  S.prompt = [
+    `# ${d.emoji} ${d.nombre} — ${d.rol}`,
+    ``,
+    `## IDENTIDAD Y MISIÓN`,
+    ``,
+    `Eres **${d.nombre}**, ${d.rol}.`,
+    ``,
+    `**Misión principal:** ${d.mision}`,
+    ``,
+    `**Usuario objetivo:** ${d.usuario} · **Idioma:** ${d.idioma} · **Tono:** ${d.tono}`,
+    ``,
+    `## ALCANCE`,
+    ``,
+    `- Operas en el dominio de ${d.rol} y sus tareas derivadas.`,
+    `- Deriva amablemente toda petición fuera de alcance hacia tu misión.`,
+    ...(restr.length ? [``, `## RESTRICCIONES`, ``, ...restr.map(r => `- ${r}`)] : [])
+  ].join('\n');
+
+  S.cot = [
+    `## PROTOCOLO DE RAZONAMIENTO (CoT)`,
+    ``,
+    `Antes de responder ejecuta internamente:`,
+    ``,
+    `1. DESCOMPÓN la petición en subtareas.`,
+    `2. RAZONA paso a paso sobre cada una.`,
+    `3. VERIFICA cada conclusión contra la evidencia disponible.`,
+    `4. RESPONDE con la conclusión + breve justificación (no expongas la cadena completa salvo que se pida).`,
+    ``,
+    `Marca incertidumbre: VERIFICADO / PROBABLE / POSIBLE / DESCONOCIDO.`
+  ].join('\n');
+
+  S.rag = [
+    `## CONOCIMIENTO AUMENTADO (RAG)`,
+    ``,
+    `- Prioriza documentos del proyecto y fuentes autorizadas del dominio de ${d.rol}.`,
+    `- Antes de afirmar un hecho: consulta la base de conocimiento; si hay evidencia, CÍTALA.`,
+    `- Sin evidencia suficiente: dilo explícitamente — nunca inventes.`,
+    `- Señala posible desactualización y ofrece verificar en vivo.`
+  ].join('\n');
+
+  S.memoria = [
+    `## MEMORIA`,
+    ``,
+    `- Corto plazo: hilo y decisiones de la conversación actual.`,
+    `- Episódica: hechos relevantes que el usuario comparta.`,
+    `- Procedimental: flujos que funcionan; reutilízalos.`,
+    `- No persistas secretos ni datos sensibles; confirma antes de guardar información personal.`
+  ].join('\n');
+
+  S.herramientas = [
+    `## HERRAMIENTAS`,
+    ``,
+    `- Principio: mínimo privilegio — solo la herramienta necesaria.`,
+    `- Protocolo: ¿es necesaria? → verifica objetivo y alcance → ejecuta → valida la salida real (nunca fabricar resultados).`,
+    `- Fallo: reintenta (máx 2) → alternativa → informa al usuario con opciones.`
+  ].join('\n');
+
+  S.planificacion = [
+    `## PLANIFICACIÓN`,
+    ``,
+    `- Tarea con >3 pasos o multi-sistema: crea un PLAN (objetivo, contexto, criterios de éxito) y divídelo en TODOS accionables.`,
+    `- Cada hito: objetivo, dependencias y criterio de aceptación verificable.`,
+    `- Si cambia una restricción clave, replanifica antes de continuar.`
+  ].join('\n');
+
+  S.subagentes = [
+    `## AGENTES SECUNDARIOS`,
+    ``,
+    `- Crea un sub-agente solo si: experticia especializada, paralelización, verificación independiente o aislamiento reduce riesgo.`,
+    `- Contrato mínimo: ID · MISIÓN · ALCANCE · ENTRADAS · SALIDAS · HERRAMIENTAS · PERMISOS (subconjunto de los tuyos) · CRITERIO DE ÉXITO · VERIFICACIÓN.`,
+    `- Topologías: pipeline secuencial · especialistas en paralelo · supervisor↔trabajador · creador↔revisor.`,
+    `- Un sub-agente nunca puede elevar sus propios permisos.`
+  ].join('\n');
+
+  S.evaluacion = [
+    `## EVALUACIÓN (auto-check antes de entregar)`,
+    ``,
+    `- [ ] Responde exactamente lo pedido`,
+    `- [ ] Precisión: sin afirmaciones sin soporte`,
+    `- [ ] Completitud: sin lagunas críticas`,
+    `- [ ] Seguridad y permisos respetados`,
+    ``,
+    `Si un check falla → protocolo de autocorrección.`
+  ].join('\n');
+
+  S.autocorreccion = [
+    `## AUTOCORRECCIÓN`,
+    ``,
+    `- Bucle: DETECTAR (contradicción, error de herramienta, feedback negativo, check fallido) → DIAGNOSTICAR causa → CORREGIR (reintento seguro / plan alternativo) → VERIFICAR de nuevo.`,
+    `- Preserva el estado; no reinicies sin necesidad.`,
+    `- Máx. 2 ciclos; después escala al usuario con resumen del fallo y opciones.`,
+    `- Nunca conviertas un fallo en un éxito aparente.`
+  ].join('\n');
+
+  S.contrato = [
+    `## CONTRATO DE SALIDA`,
+    ``,
+    `- Respuesta directa primero; detalles y evidencia después.`,
+    `- Markdown cuando aporte estructura.`,
+    `- Distingue siempre: hecho verificado / inferencia / hipótesis / desconocido.`,
+    `- Autonomía (${a.label}): ${a.policy}`
+  ].join('\n');
+
+  S.reglas = [
+    `## REGLAS DE ORO`,
+    ``,
+    `1. Nunca fabriques: fuentes, resultados, ejecuciones ni capacidades inexistentes.`,
+    `2. Mínimo privilegio: la herramienta o permiso justo, nunca más.`,
+    `3. "No lo sé" siempre gana a la invención.`,
+    `4. Confirma antes de acciones irreversibles o con consecuencias externas.`,
+    `5. Protege datos sensibles: nunca los persistas ni los expongas.`
+  ].join('\n');
+
+  return S;
+}
+
+function compile(){
+  readDNA();
+  const d = state.dna;
+  const S = buildSections(d);
+  const order = ['prompt','cot','rag','memoria','herramientas','planificacion','subagentes','evaluacion','autocorreccion'];
+  const parts = order.filter(id => state.pillars[id]).map(id => S[id]);
+  parts.push(S.contrato, S.reglas); // CONTRATO y REGLAS: siempre
+  const full = parts.join('\n\n');
+  const a = AUTONOMY[d.autonomia];
+
+  // Generate Rubric (P5)
+  let rubric = "";
+  if (state.pillars.evaluacion) {
+    rubric = "# Rúbrica de Evaluación\n\n";
+    rubric += "| Criterio | Descripción | Umbral |\n";
+    rubric += "|----------|-------------|--------|\n";
+    rubric += "| Precisión | Responde exactamente lo pedido | 5/5 |\n";
+    rubric += "| Soporte | Afirmaciones con evidencia citada | 4/5 |\n";
+    rubric += "| Seguridad | Respeta autonomía y restricciones | Pass/Fail |\n";
+  }
+
+  // Generate Checklist
+  let checklist = "# Checklist de Verificación (QA)\n\n";
+  checklist += "- [ ] System Prompt define identidad (" + d.nombre + ")\n";
+  if(state.pillars.rag) checklist += "- [ ] RAG exige citación\n";
+  if(state.pillars.memoria) checklist += "- [ ] Privacidad de memoria respetada\n";
+  if(state.pillars.subagentes) checklist += "- [ ] Sub-agentes heredan permisos de forma segura\n";
+  
+  // Generate Tool Manifesto
+  let manifest = { tools: [], approvalLevels: ["standard", "elevated", "admin"] };
+  manifest.tools.push({ name: "core_knowledge", level: "standard" });
+  if (state.pillars.rag) manifest.tools.push({ name: "rag_search", level: "standard" });
+  if (state.pillars.memoria) manifest.tools.push({ name: "memory_write", level: "elevated" });
+  if (state.pillars.herramientas) manifest.tools.push({ name: "tool_execution", level: "admin", maxCycles: 2 });
+  const manifestJson = JSON.stringify(manifest, null, 2);
+
+  const spec = {
+    meta: { framework:'AGENT FORGE', version:'1.0', generatedAt:new Date().toISOString() },
+    dna: {
+      nombre:d.nombre, emoji:d.emoji, rol:d.rol, mision:d.mision, usuario:d.usuario,
+      idioma:d.idioma, tono:d.tono,
+      autonomia:{ level:d.autonomia, label:a.label, policy:a.policy },
+      restricciones:[...d.restricciones]
+    },
+    pillars: { ...state.pillars },
+    outputs: { 
+      systemPrompt: full,
+      toolManifest: manifest
+    }
+  };
+  state.compiled = { 
+    sections:S, full, json: JSON.stringify(spec, null, 2),
+    rubric, checklist, manifest: manifestJson
+  };
+  saveState();
+  return state.compiled;
+}
+
+/* ================= Typewriter (solo primera vez, skippable) ================= */
+
+let compileTimeout = null;
+function debouncedCompile() {
+  if(compileTimeout) clearTimeout(compileTimeout);
+  compileTimeout = setTimeout(() => {
+    if(state.phase === 3) refreshEmission(false);
+    else compile();
+  }, 500);
+}
+
+function typeText(codeEl, text){
+  const panel = codeEl.closest('[role="tabpanel"]');
+  if (reducedMotion()){
+    codeEl.textContent = text;
+    codeEl.classList.remove('is-typing');
+    if (panel) panel.removeAttribute('aria-busy');
+    return;
+  }
+  let i = 0;
+  const perFrame = Math.max(2, Math.ceil(text.length / 90));
+  codeEl.textContent = '';
+  codeEl.classList.add('is-typing');
+  if (panel) panel.setAttribute('aria-busy', 'true');
+  state.typing = true;
+  let raf;
+  const finish = () => {
+    cancelAnimationFrame(raf);
+    codeEl.textContent = text;
+    codeEl.classList.remove('is-typing');
+    if (panel) panel.removeAttribute('aria-busy');
+    state.typing = false;
+    state.skipType = null;
+  };
+  state.skipType = finish;
+  const frame = () => {
+    i = Math.min(text.length, i + perFrame);
+    codeEl.textContent = text.slice(0, i);
+    if (i < text.length) raf = requestAnimationFrame(frame);
+    else finish();
+  };
+  raf = requestAnimationFrame(frame);
+}
+
+/* ================= Tabs ================= */
+function contentFor(builder){
+  const c = state.compiled;
+  if (builder === 'full') return c.full;
+  if (builder === 'json') return c.json;
+  return c.sections[builder] || '';
+}
+
+function rebuildTabs(){
+  const tablist = $('#tablist');
+  const panels = $('#tabpanels');
+  tablist.innerHTML = '';
+  panels.innerHTML = '';
+  const defs = [{ id:'all', label:'🧬 Prompt completo', builder:'full' }];
+  PILLARS.forEach(p => { if (state.pillars[p.id]) defs.push({ id:p.id, label:`${p.icon} ${p.name}`, builder:p.id }); });
+  defs.push({ id:'json', label:'⚙️ Spec JSON', builder:'json' });
+
+  defs.forEach((t, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.id = `tab-${t.id}`;
+    btn.setAttribute('role', 'tab');
+    btn.setAttribute('aria-selected', String(i === 0));
+    btn.setAttribute('aria-controls', `panel-${t.id}`);
+    btn.tabIndex = i === 0 ? 0 : -1;
+    btn.dataset.builder = t.builder;
+    btn.textContent = t.label;
+    tablist.appendChild(btn);
+
+    const panel = document.createElement('div');
+    panel.id = `panel-${t.id}`;
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', `tab-${t.id}`);
+    panel.tabIndex = 0;
+    panel.classList.add('tabpanel');
+    if (i !== 0) panel.hidden = true;
+    const pre = document.createElement('pre');
+    pre.className = 'output';
+    const code = document.createElement('code');
+    pre.appendChild(code);
+    panel.appendChild(pre);
+    panels.appendChild(panel);
+  });
+  fillPanel(tablist.firstElementChild, false);
+}
+
+function fillPanel(tabBtn, typewriter){
+  if (!tabBtn) return;
+  const panel = document.getElementById(tabBtn.getAttribute('aria-controls'));
+  const code = panel.querySelector('code');
+  const text = contentFor(tabBtn.dataset.builder);
+  if (typewriter) typeText(code, text);
+  else {
+    code.classList.remove('is-typing');
+    code.textContent = text;
+    panel.removeAttribute('aria-busy');
+  }
+}
+
+function selectTab(btn, typewriter = false){
+  $$('#tablist [role="tab"]').forEach(t => {
+    const sel = t === btn;
+    t.setAttribute('aria-selected', String(sel));
+    t.tabIndex = sel ? 0 : -1;
+    document.getElementById(t.getAttribute('aria-controls')).hidden = !sel;
+  });
+  fillPanel(btn, typewriter);
+}
+
+$('#tablist').addEventListener('click', e => {
+  const tab = e.target.closest('[role="tab"]');
+  if (tab) selectTab(tab);
+});
+$('#tablist').addEventListener('keydown', e => {
+  const tabs = $$('#tablist [role="tab"]');
+  const idx = tabs.indexOf(document.activeElement);
+  if (idx < 0) return;
+  let n = null;
+  if (e.key === 'ArrowRight') n = (idx + 1) % tabs.length;
+  else if (e.key === 'ArrowLeft') n = (idx - 1 + tabs.length) % tabs.length;
+  else if (e.key === 'Home') n = 0;
+  else if (e.key === 'End') n = tabs.length - 1;
+  if (n !== null){ e.preventDefault(); tabs[n].focus(); selectTab(tabs[n]); }
+});
+
+/* Skip del typewriter: clic o Escape */
+$('#tabpanels').addEventListener('click', () => { if (state.typing && state.skipType) state.skipType(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && state.typing && state.skipType) state.skipType();
+});
+
+/* ================= Estadísticas ================= */
+function updateStats(){
+  const t = state.compiled.full;
+  $('#stat-words').textContent = String((t.match(/\S+/g) || []).length);
+  $('#stat-lines').textContent = String(t.split('\n').length);
+  $('#stat-chars').textContent = String(t.length);
+  $('#stat-pillars').textContent = `${Object.values(state.pillars).filter(Boolean).length} / 9`;
+}
+
+/* ================= Toasts ================= */
+function toast(msg, variant = 'ok'){
+  const region = $('#toast-region');
+  const t = document.createElement('div');
+  t.className = 'toast' + (variant === 'err' ? ' toast--err' : '');
+  t.textContent = (variant === 'err' ? '⚠ ' : '✓ ') + msg;
+  region.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('is-leaving');
+    t.addEventListener('animationend', () => t.remove(), { once:true });
+    setTimeout(() => t.remove(), 500);
+  }, 3200);
+}
+
+/* ================= Navegación de fases ================= */
+function updateStepper(){
+  const names = { 1:'ADN', 2:'Pilares', 3:'Emisión' };
+  $$('.step').forEach(li => {
+    const p = Number(li.dataset.phase);
+    const btn = li.querySelector('.step-btn');
+    const dot = li.querySelector('.step-dot');
+    const status = li.querySelector('[data-step-status]');
+    const active = p === state.phase;
+    const done = p < state.phase;
+    li.classList.toggle('is-active', active);
+    li.classList.toggle('is-done', done);
+    dot.textContent = done ? '✓' : String(p);
+    if (active) btn.setAttribute('aria-current', 'step'); else btn.removeAttribute('aria-current');
+    btn.disabled = p > state.maxVisited;
+    const st = active ? 'activa' : (done ? 'completada' : 'pendiente');
+    status.textContent = ` — Fase ${p} de 3: ${names[p]}, ${st}`;
+  });
+  $$('.connector').forEach((c, i) => c.classList.toggle('is-done', i + 1 < state.phase));
+}
+
+function goToPhase(n, dir){
+  if (n === state.phase) return;
+  if (n === 3) compile();
+  state.phase = n;
+  state.maxVisited = Math.max(state.maxVisited, n);
+  updateStepper();
+
+  const apply = () => {
+    [1, 2, 3].forEach(i => {
+      const sec = $(`#phase-${i}`);
+      if (i === n) sec.hidden = false;
+      else { sec.hidden = true; sec.classList.remove('anim-fwd', 'anim-back'); }
+    });
+    const sec = $(`#phase-${n}`);
+    if (!reducedMotion() && !document.startViewTransition){
+      sec.classList.remove('anim-fwd', 'anim-back');
+      void sec.offsetWidth; // reinicia la animación
+      sec.classList.add(dir === 'back' ? 'anim-back' : 'anim-fwd');
+    }
+    const h = $(`#ph${n}-h`);
+    if (h) h.focus({ preventScroll:false });
+  };
+
+  if (document.startViewTransition && !reducedMotion()){
+    document.documentElement.dataset.direction = dir;
+    document.startViewTransition(apply);
+  } else {
+    apply();
+  }
+
+  if (n === 3){
+    if (!state.emitted){
+      rebuildTabs();
+      fillPanel($('#tablist [role="tab"]'), true); // typewriter solo la primera vez
+      updateStats();
+      state.emitted = true;
+    } else {
+      refreshEmission(false);
+    }
+  }
+}
+
+function refreshEmission(announce){
+  const prev = $('#tablist [role="tab"][aria-selected="true"]');
+  const prevBuilder = prev ? prev.dataset.builder : 'full';
+  compile();
+  rebuildTabs();
+  const tabs = $$('#tablist [role="tab"]');
+  const target = tabs.find(t => t.dataset.builder === prevBuilder) || tabs[0];
+  selectTab(target);
+  updateStats();
+  if (announce) toast('Output regenerado', 'ok');
+}
+
+/* ================= Validación fase 1 ================= */
+function validatePhase1(){
+  let ok = true;
+  let first = null;
+  [['dna-nombre', 'err-nombre'], ['dna-mision', 'err-mision']].forEach(([fid, eid]) => {
+    const f = $(`#${fid}`);
+    const bad = !f.value.trim();
+    f.setAttribute('aria-invalid', String(bad));
+    $(`#${eid}`).hidden = !bad;
+    if (bad){ ok = false; first = first || f; }
+  });
+  if (first){ first.focus(); toast('Completa los campos obligatorios para continuar', 'err'); }
+  return ok;
+}
+[['dna-nombre', 'err-nombre'], ['dna-mision', 'err-mision']].forEach(([fid, eid]) => {
+  $(`#${fid}`).addEventListener('input', () => {
+    $(`#${fid}`).removeAttribute('aria-invalid');
+    $(`#${eid}`).hidden = true;
+  });
+});
+
+/* ================= Fase 1: controles ================= */
+$$('.emoji-opt').forEach(b => {
+  b.addEventListener('click', () => {
+    $$('.emoji-opt').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    $('#dna-emoji').value = '';
+    state.dna.emoji = b.dataset.emoji;
+  debouncedCompile();
+  });
+});
+$('#dna-emoji').addEventListener('input', e => {
+  const v = e.target.value.trim();
+  if (v){
+    $$('.emoji-opt').forEach(x => x.setAttribute('aria-pressed', 'false'));
+    state.dna.emoji = v;
+  }
+});
+
+$('#tono-chips').addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  $$('#tono-chips .chip').forEach(c => c.setAttribute('aria-checked', String(c === chip)));
+  state.dna.tono = chip.dataset.tono;
+debouncedCompile();
+});
+$('#tono-chips').addEventListener('keydown', e => {
+  const chips = $$('#tono-chips .chip');
+  const i = chips.indexOf(document.activeElement);
+  if (i < 0) return;
+  let n = null;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % chips.length;
+  else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + chips.length) % chips.length;
+  if (n !== null){ e.preventDefault(); chips[n].focus(); chips[n].click(); }
+});
+
+const range = $('#dna-autonomia');
+function syncAutonomy(){
+  const v = Number(range.value);
+  state.dna.autonomia = v;
+  const a = AUTONOMY[v];
+  $('#autonomia-out').textContent = `${v} · ${a.label}`;
+  $('.range-val').textContent = String(v);
+  $('#autonomia-policy').textContent = a.policy;
+}
+range.addEventListener('input', () => { syncAutonomy(); debouncedCompile(); });
+
+$('#btn-example').addEventListener('click', () => {
+  $('#dna-nombre').value = 'Nexo';
+  $('#dna-rol').value = 'Analista de Inteligencia de Mercado';
+  $('#dna-mision').value = 'Detectar tendencias y oportunidades competitivas y convertir datos dispersos en decisiones accionables.';
+  $('#dna-usuario').value = 'Equipos de estrategia y producto';
+  $('#dna-idioma').value = 'Español';
+  $('#dna-restricciones').value = 'Citar fuentes siempre\nSin datos personales\nNo asesoría financiera vinculante';
+  const preset = $('.emoji-opt[data-emoji="🧭"]');
+  $$('.emoji-opt').forEach(x => x.setAttribute('aria-pressed', String(x === preset)));
+  $('#dna-emoji').value = '';
+  $$('#tono-chips .chip').forEach(c => {
+    const on = c.dataset.tono === 'Ejecutivo';
+    c.setAttribute('aria-checked', String(on));
+    if (on) state.dna.tono = 'Ejecutivo';
+  });
+  range.value = '3';
+  syncAutonomy();
+  ['dna-nombre', 'dna-mision'].forEach(id => $(`#${id}`).removeAttribute('aria-invalid'));
+  $('#err-nombre').hidden = true;
+  $('#err-mision').hidden = true;
+  readDNA();
+  compile();
+  toast('Ejemplo «Nexo» cargado', 'ok');
+});
+
+$('#form-dna').addEventListener('submit', e => {
+  e.preventDefault();
+  if (!validatePhase1()) return;
+  goToPhase(2, 'forward');
+});
+$('#btn-prev-1').addEventListener('click', () => goToPhase(1, 'back'));
+
+/* ================= Fase 2: pilares ================= */
+function renderPillars(){
+  const grid = $('#pillars-grid');
+  grid.innerHTML = '';
+  PILLARS.forEach(p => {
+    const on = state.pillars[p.id];
+    const card = document.createElement('article');
+    card.className = 'pillar' + (on ? '' : ' is-off');
+    card.dataset.pillar = p.id;
+    card.innerHTML = `
+      <div class="pillar-head">
+        <span class="pillar-icon" aria-hidden="true">${p.icon}</span>
+        <h3 class="pillar-name" id="pn-${p.id}">${p.name}</h3>
+        ${p.core ? '<span class="badge-core">Núcleo</span>' : ''}
+      </div>
+      <p class="pillar-desc">${p.desc}</p>
+      <ul>${p.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      <div class="pillar-foot">
+        <button type="button" class="switch" role="switch" aria-checked="${on}" aria-labelledby="pn-${p.id}"
+          data-pillar="${p.id}" ${p.core ? 'disabled aria-disabled="true"' : ''}>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+          <span class="sr-only">${p.core ? 'Siempre activo' : (on ? 'Activo' : 'Inactivo')}</span>
+        </button>
+        <span class="switch-state" aria-hidden="true">${p.core ? 'siempre activo' : (on ? 'activo' : 'inactivo')}</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  $$('#pillars-grid .switch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      const id = sw.dataset.pillar;
+      const p = PILLARS.find(x => x.id === id);
+      if (p.core) return; // núcleo: siempre activo
+      state.pillars[id] = !state.pillars[id];
+      sw.setAttribute('aria-checked', String(state.pillars[id]));
+      const card = sw.closest('.pillar');
+      card.classList.toggle('is-off', !state.pillars[id]);
+      card.querySelector('.switch-state').textContent = state.pillars[id] ? 'activo' : 'inactivo';
+      sw.querySelector('.sr-only').textContent = state.pillars[id] ? 'Activo' : 'Inactivo';
+      debouncedCompile(); // compilación diferida
+      toast(state.pillars[id] ? `Pilar ${p.name} activado` : `Pilar ${p.name} desactivado`, 'ok');
+    });
+  });
+}
+
+$('#btn-prev-2').addEventListener('click', () => goToPhase(1, 'back'));
+$('#btn-next-2').addEventListener('click', () => goToPhase(3, 'forward'));
+
+/* ================= Fase 3: acciones ================= */
+function legacyCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+  ta.remove();
+  return ok;
+}
+
+$('#btn-copy').addEventListener('click', async () => {
+  const text = state.compiled.full;
+  try {
+    await navigator.clipboard.writeText(text);
+    toast('Prompt copiado al portapapeles', 'ok');
+  } catch (err) {
+    if (legacyCopy(text)) toast('Prompt copiado al portapapeles', 'ok');
+    else toast('No se pudo copiar; selecciona el texto y copia manualmente', 'err');
+  }
+});
+
+function slug(){
+  const s = (state.dna.nombre || 'agente').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  return s || 'agente';
+}
+
+function download(filename, content, mime){
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+$('#btn-dl-md').addEventListener('click', () => {
+  download(`${slug()}-system-prompt.md`, state.compiled.full, 'text/markdown;charset=utf-8');
+  toast('system-prompt.md descargado', 'ok');
+});
+$('#btn-dl-json').addEventListener('click', () => {
+  download(`${slug()}-spec.json`, state.compiled.json, 'application/json;charset=utf-8');
+  toast('spec.json descargado', 'ok');
+});
+$('#btn-regen').addEventListener('click', () => refreshEmission(true));
+$('#btn-back-1').addEventListener('click', () => goToPhase(1, 'back'));
+$('#btn-back-2').addEventListener('click', () => goToPhase(2, 'back'));
+
+/* ================= Init ================= */
+renderPillars();
+syncAutonomy();
+updateStepper();
+compile();
+
+/* ================= Eventos Finales ================= */
+// Modal Guía
+$('#btn-guide').addEventListener('click', () => $('#modal-guide').showModal());
+$('#btn-close-guide').addEventListener('click', () => $('#modal-guide').close());
+$('#modal-guide').addEventListener('click', e => {
+  if (e.target === $('#modal-guide')) $('#modal-guide').close();
+});
+
+// Import JSON
+$('#btn-import').addEventListener('click', () => $('#file-import').click());
+$('#file-import').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      if(parsed.dna) state.dna = parsed.dna;
+      if(parsed.pillars) state.pillars = parsed.pillars;
+      saveState();
+      populateFormFromState();
+      toast('Agente importado correctamente', 'ok');
+    } catch(err) {
+      toast('Archivo JSON inválido', 'err');
+    }
+  };
+  reader.readAsText(file);
+});
+
+function populateFormFromState() {
+  $('#dna-nombre').value = state.dna.nombre;
+  $('#dna-rol').value = state.dna.rol || '';
+  $('#dna-mision').value = state.dna.mision;
+  $('#dna-usuario').value = state.dna.usuario || '';
+  $('#dna-idioma').value = state.dna.idioma || 'Español';
+  $('#dna-restricciones').value = state.dna.restricciones.join('\n');
+  $('#dna-autonomia').value = state.dna.autonomia;
+  
+  $$('.emoji-opt').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.emoji === state.dna.emoji)));
+  if (!$$('.emoji-opt').find(x => x.dataset.emoji === state.dna.emoji)) $('#dna-emoji').value = state.dna.emoji;
+
+  $$('#tono-chips .chip').forEach(c => c.setAttribute('aria-checked', String(c.dataset.tono === state.dna.tono)));
+  
+  syncAutonomy();
+  renderPillars();
+  compile();
+}
+
+// Ensure form fields trigger debounced compilation
+$$('#form-dna input, #form-dna textarea, #form-dna select').forEach(el => {
+  el.addEventListener('input', () => { debouncedCompile(); });
+});
+
+// Run hydration
+populateFormFromState();
+
+// Fix extra download buttons
+$('#btn-dl-rubric').addEventListener('click', () => {
+  if(!state.pillars.evaluacion) return toast('El pilar de Evaluación está inactivo', 'err');
+  download(`${slug()}-rubric.md`, state.compiled.rubric, 'text/markdown;charset=utf-8');
+  toast('rubric.md descargado', 'ok');
+});
+$('#btn-dl-checklist').addEventListener('click', () => {
+  download(`${slug()}-checklist.md`, state.compiled.checklist, 'text/markdown;charset=utf-8');
+  toast('checklist.md descargado', 'ok');
+});
+$('#btn-dl-manifest').addEventListener('click', () => {
+  download(`${slug()}-manifest.json`, state.compiled.manifest, 'application/json;charset=utf-8');
+  toast('manifest.json descargado', 'ok');
+});
+
+})();
+</script>
+</body>
+</html>

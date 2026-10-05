@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- PWA iOS Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Horarios">
+    
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzFmNGU3OCIgcng9IjExMCIvPjxwYXRoIGQ9Ik0yNTYgODBDMTU4LjkgODAgODAgMTU4LjkgODAgMjU2czc4LjkgMTc2IDE3NiAxNzYgMTc2LTc4LjkgMTc2LTE3NlMzNTMuMSA4MCAyNTYgODB6bTAgMzIwYy03OS40IDAtMTQ0LTY0LjYtMTQ0LTE0NFMxNzYuNiAxMTIgMjU2IDExMnMxNDQgNjQuNiAxNDQgMTQ0LTY0LjYgMTQ0LTE0NCAxNDR6bTE2LTE5MmgtMTZ2OTYuMWwwIC4xbDcyLjUgNDguMSAxNS4zLTI0LjktNjMuOC00Mi4zVjIwOHoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=">
+
+    <title>Cuadrante de horarios</title>
+    
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --surface-color: #ffffff;
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --accent-blue: #007aff;
+            --accent-green: #34c759;
+            --accent-red: #ff3b30;
+            --accent-purple: #af52de;
+            --border-color: #d2d2d7;
+            --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --input-bg: #f5f5f7;
+            --glass-blur: 16px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #000000;
+                --surface-color: #1c1c1e;
+                --text-main: #f5f5f7;
+                --text-muted: #98989d;
+                --accent-blue: #0a84ff;
+                --accent-green: #30d158;
+                --accent-red: #ff453a;
+                --accent-purple: #bf5af2;
+                --border-color: #38383a;
+                --card-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                --header-bg: rgba(28, 28, 30, 0.85);
+                --input-bg: #2c2c2e;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 40px;
+            padding-top: env(safe-area-inset-top);
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--header-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            z-index: 100;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            margin: 0 0 12px 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .top-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .filters-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .custom-select {
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            flex: 1;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2386868b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px top 50%;
+            background-size: 10px auto;
+            padding-right: 32px;
+            transition: all 0.2s;
+        }
+        
+        .custom-select:focus { border-color: var(--accent-blue); }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        button:active { transform: scale(0.96); }
+
+        .btn-add { background: var(--accent-blue); color: #fff; }
+        .btn-export-xls { background: var(--surface-color); color: var(--accent-green); border: 1px solid var(--accent-green); }
+        .btn-export-pdf { background: var(--surface-color); color: var(--accent-red); border: 1px solid var(--accent-red); }
+        .btn-reset { background: var(--surface-color); color: var(--text-muted); border: 1px solid var(--border-color); flex: 0 0 auto; padding: 10px; }
+
+        .summary-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 0 20px;
+            margin-top: 16px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 10px;
+        }
+
+        .summary-card {
+            background: var(--surface-color);
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            flex: 1;
+            min-width: 125px;
+            scroll-snap-align: start;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .summary-card.blue .value { color: var(--accent-blue); }
+        .summary-card.green .value { color: var(--accent-green); }
+        .summary-card.red .value { color: var(--accent-red); }
+        .summary-card.purple .value { color: var(--accent-purple); }
+
+        .summary-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .summary-value { font-size: 20px; font-weight: 700; }
+
+        .records-list { padding: 0 20px; display: flex; flex-direction: column; gap: 16px; }
+
+        .record-card {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .record-card.hidden { display: none; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); }
+        .card-date-group { display: flex; flex-direction: column; }
+        
+        .date-input { background: transparent; border: none; color: var(--text-main); font-size: 16px; font-weight: 700; padding: 0; width: 140px; font-family: inherit; }
+        .date-input::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+        @media (prefers-color-scheme: dark) { .date-input::-webkit-calendar-picker-indicator { filter: invert(1); } }
+
+        .day-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+        .btn-delete { background: rgba(255, 59, 48, 0.1); color: var(--accent-red); border-radius: 50%; width: 32px; height: 32px; padding: 0; display: flex; align-items: center; justify-content: center; flex: none; font-size: 20px; line-height: 1; }
+
+        /* Ajuste de espaciado para entrada y salida */
+        .card-body { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 12px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        .input-group.full-width { grid-column: 1 / -1; }
+        .input-group label { font-size: 12px; color: var(--text-muted); font-weight: 600; padding-left: 4px; }
+
+        .custom-input { background: var(--input-bg); border: 1px solid transparent; border-radius: 10px; padding: 12px 14px; color: var(--text-main); font-size: 16px; width: 100%; font-family: inherit; transition: all 0.2s; }
+        .custom-input:focus { outline: none; border-color: var(--accent-blue); background: var(--surface-color); }
+        .custom-input::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+        @media (prefers-color-scheme: dark) { .custom-input::-webkit-calendar-picker-indicator { filter: invert(1); } }
+
+        .stats-row { grid-column: 1 / -1; display: flex; justify-content: space-between; background: var(--input-bg); border-radius: 10px; padding: 12px 16px; margin-top: 4px; }
+        .stat-item { display: flex; flex-direction: column; align-items: center; }
+        .stat-item .lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+        .stat-item .val { font-size: 16px; font-weight: 700; color: var(--text-main); margin-top: 2px; }
+        .stat-item .val.extra-val { color: var(--accent-red); }
+        .stat-item .val.norm-val { color: var(--accent-green); }
+
+        .note-footer { margin-top: 30px; padding: 20px; font-size: 13px; color: var(--text-muted); text-align: center; line-height: 1.5; }
+
+        @media (min-width: 768px) {
+            body { max-width: 900px; margin: 0 auto; padding-top: 20px; }
+            header { border-radius: 20px; margin-bottom: 20px; top: 20px; }
+            .top-bar { flex-direction: row; flex-wrap: nowrap; align-items: center; }
+            .filters-row { flex: 2; }
+            .action-buttons { flex: 1; }
+            .summary-container { padding: 0; }
+            .records-list { padding: 0; }
+        }
+
+        /* ESTILOS DE IMPRESIÓN (PDF) */
+        #printArea { display: none; }
+        @media print {
+            body { background: white; color: black; padding: 0; margin: 0; }
+            header, .summary-container, .records-list, .note-footer { display: none !important; }
+            #printArea { 
+                display: block !important; 
+                width: 100%; 
+                font-family: Arial, sans-serif;
+            }
+            .print-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                font-size: 11px;
+            }
+            .print-table th, .print-table td {
+                border: 1px solid #000;
+                padding: 6px;
+                text-align: center;
+                word-wrap: break-word;
+            }
+            .print-table th {
+                background-color: #f2f2f2 !important;
+                -webkit-print-color-adjust: exact;
+                font-weight: bold;
+            }
+            .print-title {
+                text-align: center;
+                font-size: 20px;
+                font-weight: bold;
+                margin-bottom: 20px;
+            }
+            .print-summary {
+                margin-top: 30px;
+                width: 50%;
+                margin-left: auto;
+                border-collapse: collapse;
+                font-size: 12px;
+            }
+            .print-summary td {
+                border: 1px solid #000;
+                padding: 6px;
+                text-align: right;
+            }
+            .print-summary .lbl { font-weight: bold; background-color: #f2f2f2 !important; -webkit-print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cuadrante de Horarios</h1>
+        <div class="top-bar">
+            <div class="filters-row">
+                <select id="monthFilter" class="custom-select">
+                    <option value="">Todos los meses</option>
+                </select>
+                <select id="typeFilter" class="custom-select">
+                    <option value="all">Cualquier turno</option>
+                    <option value="extra">Solo Horas Extra</option>
+                    <option value="normal">Solo Normales</option>
+                    <option value="obs">Con Observaciones</option>
+                </select>
+            </div>
+            <div class="action-buttons">
+                <button class="btn-add" id="add">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Añadir
+                </button>
+                <button class="btn-export-xls" id="exportXls">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Excel
+                </button>
+                <button class="btn-export-pdf" id="exportPdf">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    PDF
+                </button>
+                <button class="btn-reset" id="restore" title="Restaurar datos originales">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="summary-container">
+        <div class="summary-card purple">
+            <span class="summary-label">Salario Bruto Est.</span>
+            <span class="summary-value value" id="cMoney">0.00 €</span>
+        </div>
+        <div class="summary-card blue">
+            <span class="summary-label">Total Horas</span>
+            <span class="summary-value value" id="ct">0.0 h</span>
+        </div>
+        <div class="summary-card green">
+            <span class="summary-label">Normales</span>
+            <span class="summary-value value" id="cn">0.0 h</span>
+        </div>
+        <div class="summary-card red">
+            <span class="summary-label">Extras</span>
+            <span class="summary-value value" id="ce">0.0 h</span>
+        </div>
+    </div>
+
+    <div class="records-list" id="body">
+        <!-- Cards will be injected here via JS -->
+    </div>
+
+    <div class="note-footer">
+        El salario estimado se calcula sumando el salario base mensual (1529.86€) y las horas extra (14.30€/h). <br>El cálculo es proporcional al total de días trabajados en el periodo filtrado.<br><br>
+        Añade esta página a tu pantalla de inicio en iOS para usarla como app sin conexión.
+    </div>
+
+    <!-- Contenedor oculto que solo se muestra al imprimir/exportar a PDF -->
+    <div id="printArea"></div>
+
+    <script>
+        const BASE = [
+            ['2026-08-03','13:00','21:00',null,''],
+            ['2026-08-04','13:00','21:00',null,''],
+            ['2026-08-05','13:00','21:00',null,''],
+            ['2026-08-06','13:00','21:00',null,''],
+            ['2026-08-07','08:00','16:00',null,''],
+            ['2026-08-10','13:00','21:00',null,''],
+            ['2026-08-11','13:00','21:00',null,''],
+            ['2026-08-12','13:00','21:00',null,''],
+            ['2026-08-13','13:00','21:00',null,''],
+            ['2026-08-14','13:00','21:00',null,''],
+            ['2026-08-17','13:00','21:00',null,''],
+            ['2026-08-18','12:00','21:00',1,'1 hora extra'],
+            ['2026-08-19','13:00','21:00',null,''],
+            ['2026-08-20','13:00','22:00',1,'1 hora extra'],
+            ['2026-08-21','16:00','21:00',0,'Visita médica; justificante entregado'],
+            ['2026-08-22','08:00','14:30',6.5,'Horas extra']
+        ];
+        
+        const K = 'cuadrante_horarios_app_data';
+        const D = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+        const M_NAMES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        
+        // Condiciones Salariales
+        const SALARY_MONTHLY_BASE = 1529.86;
+        const EXTRA_HOUR_RATE = 14.30;
+        // Estimación de horas normales en un mes de L-V (aprox 21 días * 8h = 168h)
+        const NORMAL_HOURS_PER_MONTH = 168; 
+        
+        const b = document.getElementById('body');
+        const monthFilter = document.getElementById('monthFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const printArea = document.getElementById('printArea');
+        
+        function day(x) {
+            if(!x) return '';
+            let p = x.split('-');
+            return D[new Date(+p[0], +p[1]-1, +p[2]).getDay()];
+        }
+        
+        function hrs(a, z) {
+            if(!a || !z) return 0;
+            let x = a.split(':').map(Number),
+                y = z.split(':').map(Number),
+                n = y[0]*60+y[1] - (x[0]*60+x[1]);
+            return (n < 0 ? n + 1440 : n) / 60;
+        }
+        
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function createCard(v) {
+            let card = document.createElement('div');
+            card.className = 'record-card';
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="card-date-group">
+                        <input class="f date-input" type="date" value="${esc(v[0])}">
+                        <span class="d day-label"></span>
+                    </div>
+                    <button class="btn-delete" title="Eliminar día">×</button>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label>Hora de Entrada</label>
+                        <input class="i custom-input" type="time" value="${esc(v[1])}">
+                    </div>
+                    <div class="input-group">
+                        <label>Hora de Salida</label>
+                        <input class="o custom-input" type="time" value="${esc(v[2])}">
+                    </div>
+                    
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <span class="lbl">Horas</span>
+                            <span class="val h-val">0.0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="lbl">Normales</span>
+                            <span class="val norm-val">0.0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="lbl">Extra</span>
+                            <span class="val extra-val">0.0</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label>Horas Extra (Manual)</label>
+                        <input class="e custom-input" type="number" min="0" step="0.5" placeholder="Cálculo automático (sobre 8h)" value="${v[3] ?? ''}">
+                    </div>
+                    <div class="input-group full-width">
+                        <label>Observaciones</label>
+                        <input class="q custom-input" type="text" placeholder="Añadir notas o justificaciones..." value="${esc(v[4])}">
+                    </div>
+                </div>
+            `;
+            
+            b.insertBefore(card, b.firstChild);
+            
+            card.querySelectorAll('input').forEach(x => x.addEventListener('input', () => {
+                if(x.classList.contains('f')) updateMonthsList();
+                filterCards();
+            }));
+            card.querySelector('.btn-delete').onclick = () => { 
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    card.remove(); 
+                    updateMonthsList();
+                    filterCards();
+                }, 300);
+            };
+        }
+        
+        function updateMonthsList() {
+            let months = new Set();
+            document.querySelectorAll('.record-card').forEach(c => {
+                let dVal = c.querySelector('.f').value;
+                if(dVal) months.add(dVal.slice(0, 7));
+            });
+            
+            let sortedMonths = Array.from(months).sort((a,b) => b.localeCompare(a));
+            let currentVal = monthFilter.value;
+            
+            monthFilter.innerHTML = '<option value="">Todos los meses</option>';
+            sortedMonths.forEach(m => {
+                let parts = m.split('-');
+                let label = M_NAMES[parseInt(parts[1])-1] + ' ' + parts[0];
+                let opt = document.createElement('option');
+                opt.value = m;
+                opt.textContent = label;
+                monthFilter.appendChild(opt);
+            });
+            
+            if(sortedMonths.includes(currentVal)) {
+                monthFilter.value = currentVal;
+            } else if(sortedMonths.length > 0 && currentVal !== '') {
+                monthFilter.value = sortedMonths[0]; 
+            }
+        }
+        
+        function calc() {
+            let H = 0, E = 0, N = 0;
+            b.querySelectorAll('.record-card').forEach(c => {
+                let f = c.querySelector('.f'),
+                    a = c.querySelector('.i').value,
+                    z = c.querySelector('.o').value,
+                    h = hrs(a, z),
+                    eInput = c.querySelector('.e').value;
+                
+                let e = eInput === '' ? Math.max(0, h - 8) : (+eInput || 0);
+                let norm = Math.max(0, h - e);
+
+                c.querySelector('.d').textContent = day(f.value);
+                c.querySelector('.h-val').textContent = h.toFixed(1);
+                c.querySelector('.norm-val').textContent = norm.toFixed(1);
+                c.querySelector('.extra-val').textContent = e.toFixed(1);
+                
+                if(!c.classList.contains('hidden')) {
+                    H += h;
+                    E += e;
+                    N += norm;
+                }
+            });
+            
+            document.getElementById('ct').textContent = H.toFixed(1) + ' h';
+            document.getElementById('ce').textContent = E.toFixed(1) + ' h';
+            document.getElementById('cn').textContent = N.toFixed(1) + ' h';
+            
+            // Calculo de Salario Estimado
+            // Base proporcional a las horas normales trabajadas vs el mes completo
+            let baseSalaryProportional = (N / NORMAL_HOURS_PER_MONTH) * SALARY_MONTHLY_BASE;
+            let extrasSalary = E * EXTRA_HOUR_RATE;
+            let totalSalary = baseSalaryProportional + extrasSalary;
+            
+            document.getElementById('cMoney').textContent = totalSalary.toFixed(2) + ' €';
+            
+            save();
+        }
+        
+        function data() {
+            let rows = [...b.querySelectorAll('.record-card')].map(c => [
+                c.querySelector('.f').value,
+                c.querySelector('.i').value,
+                c.querySelector('.o').value,
+                c.querySelector('.e').value === '' ? null : +c.querySelector('.e').value,
+                c.querySelector('.q').value
+            ]);
+            return rows.reverse();
+        }
+        
+        function save() {
+            localStorage.setItem(K, JSON.stringify(data()));
+        }
+        
+        function load(x) {
+            b.innerHTML = '';
+            let toRender = [...x]; 
+            toRender.forEach(createCard);
+            updateMonthsList();
+            
+            if(monthFilter.options.length > 1) {
+                monthFilter.selectedIndex = 1; 
+            }
+            
+            filterCards();
+        }
+
+        function filterCards() {
+            const monthTerm = monthFilter.value; 
+            const typeTerm = typeFilter.value;
+            
+            document.querySelectorAll('.record-card').forEach(card => {
+                const date = card.querySelector('.f').value;
+                const obs = card.querySelector('.q').value.trim();
+                const extraVal = +card.querySelector('.extra-val').textContent;
+                
+                let matchMonth = monthTerm === '' || date.startsWith(monthTerm);
+                
+                let matchType = true;
+                if(typeTerm === 'extra') matchType = extraVal > 0;
+                if(typeTerm === 'normal') matchType = extraVal === 0;
+                if(typeTerm === 'obs') matchType = obs !== '';
+                
+                if (matchMonth && matchType) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            calc(); 
+        }
+        
+        let saved;
+        try { saved = JSON.parse(localStorage.getItem(K)); } catch(e) {}
+        load(Array.isArray(saved) && saved.length ? saved : BASE);
+        
+        document.getElementById('add').onclick = () => {
+            let x = new Date().toISOString().slice(0, 10);
+            createCard([x, '13:00', '21:00', null, '']);
+            
+            let currMonth = x.slice(0, 7);
+            if(monthFilter.value !== '' && monthFilter.value !== currMonth) {
+                monthFilter.value = currMonth;
+            }
+            typeFilter.value = 'all'; // reset filter
+            
+            updateMonthsList();
+            filterCards();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+        
+        document.getElementById('restore').onclick = () => {
+            if(confirm('¿Restaurar los registros originales? Perderás los cambios actuales.')) load(BASE);
+        };
+        
+        function generateTableHTML(isPdf = false) {
+            let mName = monthFilter.value ? monthFilter.options[monthFilter.selectedIndex].text : 'Historial Completo';
+            
+            let html = `
+                <div class="print-title">Cuadrante de Horarios - ${mName}</div>
+                <table class="print-table" border="${isPdf ? 0 : 1}">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Día</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>H. Trabajadas</th>
+                            <th>H. Extra</th>
+                            <th>H. Normales</th>
+                            <th>Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            let cards = [...b.querySelectorAll('.record-card:not(.hidden)')].reverse();
+            cards.forEach(c => {
+                let date = c.querySelector('.f').value;
+                let dayTxt = c.querySelector('.d').textContent;
+                let ent = c.querySelector('.i').value;
+                let sal = c.querySelector('.o').value;
+                let h = c.querySelector('.h-val').textContent;
+                let ext = c.querySelector('.extra-val').textContent;
+                let norm = c.querySelector('.norm-val').textContent;
+                let obs = c.querySelector('.q').value;
+
+                html += `
+                    <tr>
+                        <td>${date}</td>
+                        <td>${dayTxt}</td>
+                        <td>${ent}</td>
+                        <td>${sal}</td>
+                        <td>${h}</td>
+                        <td>${ext}</td>
+                        <td>${norm}</td>
+                        <td>${esc(obs)}</td>
+                    </tr>
+                `;
+            });
+            
+            let totalH = document.getElementById('ct').textContent;
+            let totalN = document.getElementById('cn').textContent;
+            let totalE = document.getElementById('ce').textContent;
+            let totalM = document.getElementById('cMoney').textContent;
+
+            html += `
+                    </tbody>
+                </table>
+                <table class="print-totals" border="${isPdf ? 0 : 1}">
+                    <tr><td class="lbl">Total H. Trabajadas</td><td>${totalH}</td></tr>
+                    <tr><td class="lbl">Total H. Normales</td><td>${totalN}</td></tr>
+                    <tr><td class="lbl">Total H. Extra</td><td>${totalE}</td></tr>
+                    <tr><td class="lbl">Salario Bruto Estimado</td><td>${totalM}</td></tr>
+                </table>
+            `;
+            return html;
+        }
+
+        document.getElementById('exportXls').onclick = () => {
+            let html = generateTableHTML(false);
+            // Prepend utf-8 BOM for Excel
+            let blob = new Blob(['\uFEFF<html><head><meta charset="utf-8"></head><body>' + html + '</body></html>'], {type:'application/vnd.ms-excel'});
+            let u = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            
+            let mName = monthFilter.value ? '_' + monthFilter.value : '_completo';
+            a.href = u;
+            a.download = `cuadrante_horarios${mName}.xls`;
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(u), 1000);
+        };
+
+        document.getElementById('exportPdf').onclick = () => {
+            // Rellenar el contenedor de impresión con la tabla generada
+            printArea.innerHTML = generateTableHTML(true);
+            // Lanzar el diálogo de impresión nativo (Safari lo convierte a PDF perfecto)
+            window.print();
+        };
+
+        monthFilter.addEventListener('change', filterCards);
+        typeFilter.addEventListener('change', filterCards);
+    </script>
+</body>
+</html>

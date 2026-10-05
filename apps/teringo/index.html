@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TERINGO NEURAL COCKPIT — Frontier Enterprise V.2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Fondo con Red Neuronal de Partículas (Canvas WebGL / 2D) -->
+  <canvas id="neuralCanvas"></canvas>
+
+  <!-- Capa de Luz Especular Perimetral que sigue el Cursor -->
+  <div id="ambientCursorLight"></div>
+
+  <div class="cockpit-container">
+    <!-- Header de Mando Espacial -->
+    <header class="cockpit-header">
+      <div class="brand-zone">
+        <div class="brand-gem">💎</div>
+        <div>
+          <h1 class="brand-title">TERINGO <span>S.L.U.</span></h1>
+          <p class="brand-sub">Trading Internacional de Perfumería y Cosmética · Cognitive Engine v2.1</p>
+        </div>
+      </div>
+
+      <div class="header-telemetry">
+        <div class="telemetry-pill" id="ollamaStatusPill">
+          <span class="status-dot pulsing"></span>
+          <span id="ollamaStatusText">Ollama: qwen3.5:4b</span>
+        </div>
+        <div class="telemetry-pill" id="memoryPill">
+          <span class="pill-icon">🧠</span>
+          <span id="memoryCountText">0 Patrones Aprendidos</span>
+        </div>
+        <div class="telemetry-pill" id="audioToggleBtn" title="Activar/Desactivar Audio Espacial Háptico">
+          <span class="pill-icon">🔊</span>
+          <span id="audioStatusText">Audio: ON</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Métricas Clave de Operaciones -->
+    <section class="metrics-grid">
+      <div class="metric-card glass-card">
+        <div class="metric-label">Tiempo Ahorrado</div>
+        <div class="metric-value" id="valSavedHours">14.2 <span class="metric-unit">hrs</span></div>
+        <div class="metric-trend positive">↑ 98% Automatizado</div>
+      </div>
+      <div class="metric-card glass-card">
+        <div class="metric-label">Triage de Emergencias</div>
+        <div class="metric-value text-crimson" id="valCriticalCount">3 <span class="metric-unit">críticos</span></div>
+        <div class="metric-trend text-crimson">Respuesta < 2 min</div>
+      </div>
+      <div class="metric-card glass-card">
+        <div class="metric-label">Pedidos B2B Procesados</div>
+        <div class="metric-value text-amber" id="valB2bOrders">28 <span class="metric-unit">lotes</span></div>
+        <div class="metric-trend positive">Grasse · París · Dubai</div>
+      </div>
+      <div class="metric-card glass-card">
+        <div class="metric-label">Precisión Cognitiva</div>
+        <div class="metric-value text-emerald" id="valAccuracy">99.4%</div>
+        <div class="metric-trend positive">Few-Shot In-Context</div>
+      </div>
+    </section>
+
+    <!-- Área de Trabajo Principal: Triage y Terminal de Acción -->
+    <main class="cockpit-workspace">
+      <!-- Columna Izquierda: Entrada y Clasificación en Tiempo Real -->
+      <section class="workspace-column left-col">
+        <div class="glass-card panel-card interactive-tilt" id="inputCard">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="title-icon">📨</span>
+              <h2>Flujo de Correo Entrante</h2>
+            </div>
+            <div class="preset-pills">
+              <button class="chip-btn active" data-preset="urgent">📦 Pedido Dior/Chanel</button>
+              <button class="chip-btn" data-preset="invoice">📑 DUA & Proforma</button>
+              <button class="chip-btn" data-preset="spam">🛑 Alerta Imitación</button>
+            </div>
+          </div>
+
+          <div class="email-input-grid">
+            <div class="input-row">
+              <label for="inputSender">Remitente VIP / Distribuidor:</label>
+              <input type="text" id="inputSender" class="glass-input" value="logistics@dubai-luxury-retail.com" spellcheck="false">
+            </div>
+            <div class="input-row">
+              <label for="inputSubject">Asunto Comercial:</label>
+              <input type="text" id="inputSubject" class="glass-input" value="URGENT: PO-2026/880 Creed & Tom Ford allocation" spellcheck="false">
+            </div>
+            <div class="input-row full-grow">
+              <label for="inputBody">Cuerpo del Comunicado B2B:</label>
+              <textarea id="inputBody" class="glass-textarea" rows="7" spellcheck="false"></textarea>
+            </div>
+          </div>
+
+          <div class="action-footer">
+            <button class="btn-frontier" id="btnExecuteTriage">
+              <span class="btn-sparkle">⚡</span>
+              <span>Ejecutar Triage Cognitivo</span>
+              <span class="btn-shortcut">⌘+Enter</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna Derecha: Diagnóstico, Razonamiento y Borrador Ejecutivo -->
+      <section class="workspace-column right-col">
+        <div class="glass-card panel-card interactive-tilt" id="outputCard">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="title-icon">🎯</span>
+              <h2>Diagnóstico & Salida Ejecutiva</h2>
+            </div>
+            <div class="status-badge-container">
+              <span class="frontier-badge badge-class" id="badgeClassification">📌 Acciones / Tareas</span>
+              <span class="frontier-badge badge-priority" id="badgePriority">🚨 CRÍTICO / IMPORTANTE</span>
+            </div>
+          </div>
+
+          <!-- Próxima Acción Inmediata -->
+          <div class="action-banner glass-subcard">
+            <div class="banner-title">⚡ PRÓXIMA ACCIÓN DICTADA:</div>
+            <div class="banner-text" id="textNextAction">Verificar disponibilidad de lotes en almacén y despachar antes de las 14:00.</div>
+          </div>
+
+          <!-- Pestañas de Vista: Borrador Oficial vs Monólogo Deductivo (<think>) -->
+          <div class="tab-switcher">
+            <button class="view-tab active" data-view="draft">✉️ Borrador de Respuesta</button>
+            <button class="view-tab" data-view="thought">🧠 Razonamiento Deductivo (<span id="thoughtTime">0.8s</span>)</button>
+            <button class="view-tab" data-view="memory">🧬 Memoria Few-Shot (<span id="memoryMatches">1 match</span>)</button>
+          </div>
+
+          <!-- Contenido: Borrador -->
+          <div class="view-pane active" id="paneDraft">
+            <div class="draft-wrapper">
+              <div class="draft-subject-bar">
+                <span class="label">Asunto:</span>
+                <input type="text" id="draftSubject" class="glass-inline-input" value="Re: URGENT: PO-2026/880 Creed & Tom Ford allocation">
+              </div>
+              <textarea id="draftBody" class="glass-textarea draft-area" rows="8" spellcheck="false"></textarea>
+            </div>
+          </div>
+
+          <!-- Contenido: Razonamiento CoT (<think>) -->
+          <div class="view-pane" id="paneThought">
+            <div class="thought-wrapper">
+              <div class="thought-header">
+                <span class="dot green"></span>
+                <span>Inferencia en Cadena de Pensamiento (Chain-of-Thought)</span>
+              </div>
+              <pre class="thought-terminal" id="thoughtTerminal">Iniciando deducción formal...</pre>
+            </div>
+          </div>
+
+          <!-- Contenido: Memoria Few-Shot -->
+          <div class="view-pane" id="paneMemory">
+            <div class="memory-wrapper" id="memoryDisplay">
+              <p class="memory-hint">Los patrones aprobados previamente son recuperados semánticamente para guiar la respuesta.</p>
+              <div class="memory-card-list" id="memoryCardsList"></div>
+            </div>
+          </div>
+
+          <!-- Barra de Acciones Finales (Human-in-the-loop) -->
+          <div class="output-action-bar">
+            <button class="btn-ghost" id="btnCopyDraft">📋 Copiar Borrador</button>
+            <button class="btn-accent" id="btnApproveAndLearn">🧠 Aprobar y Memorizar (Autoaprendizaje)</button>
+            <button class="btn-success" id="btnSendReply">🚀 Despachar Correo</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Historial y Auditoría en Vivo -->
+    <section class="history-section glass-card">
+      <div class="history-header">
+        <div class="card-title">
+          <span class="title-icon">📜</span>
+          <h2>Registro de Auditoría & Flujo Continuo</h2>
+        </div>
+        <div class="history-tools">
+          <input type="text" id="historyFilter" class="glass-input small" placeholder="Filtrar por cliente o asunto...">
+          <button class="btn-small" id="btnExportExcel">📊 Exportar a Excel (.xlsx)</button>
+          <button class="btn-small ghost" id="btnRefreshHistory">🔄 Refrescar</button>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="frontier-table" id="historyTable">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Remitente</th>
+              <th>Asunto</th>
+              <th>Clasificación</th>
+              <th>Prioridad</th>
+              <th>Próxima Acción</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Filas inyectadas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast Notificaciones Flotantes -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="100%" style="stop-color:#1a1a3e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="100" fill="url(#g)"/>
+  <circle cx="256" cy="200" r="80" fill="none" stroke="#e94560" stroke-width="6" opacity="0.3"/>
+  <circle cx="256" cy="200" r="40" fill="#e94560" opacity="0.8"/>
+  <line x1="285" y1="230" x2="340" y2="320" stroke="#e94560" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+  <text x="256" y="440" font-family="Helvetica, sans-serif" font-size="44" font-weight="700" fill="#8899aa" text-anchor="middle" letter-spacing="6">MSBrOSs</text>
+  <text x="256" y="475" font-family="Helvetica, sans-serif" font-size="16" font-weight="400" fill="#556677" text-anchor="middle" letter-spacing="3">AI</text>
+</svg>

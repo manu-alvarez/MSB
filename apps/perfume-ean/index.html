@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscador de Perfumes EAN</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 2rem; padding: 1.5rem 0; }
+    h1 {
+      font-size: 2.5rem;
+      color: #8a2be2;
+      text-shadow: 0 2px 10px rgba(138,43,226,0.3);
+    }
+    .subtitle { font-size: 1.2rem; color: #b0b0b0; margin-top: 0.5rem; }
+    .search-container {
+      background-color: #1a1a1a;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      margin-bottom: 2rem;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    .search-input:focus { background-color: #1a1a1a; border: 1px solid #8a2be2; }
+    .search-options { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    .search-option {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .search-option:hover { background-color: #1a1a1a; border-color: #8a2be2; }
+    .search-option.selected { background-color: #8a2be2; color: white; }
+    .api-selector {
+      margin-top: 1rem;
+      padding: 1rem;
+      background-color: #0d0d0d;
+      border-radius: 0.5rem;
+      border: 1px solid #333;
+    }
+    .api-selector label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #b0b0b0;
+    }
+    .api-selector input[type="radio"] {
+      accent-color: #8a2be2;
+    }
+    .results-container {
+      background-color: #1a1a1a;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      min-height: 400px;
+    }
+    .product-card {
+      background-color: #0d0d0d;
+      border-radius: 0.8rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+    .product-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem; }
+    .product-name { font-size: 1.2rem; color: #8a2be2; }
+    .product-category {
+      display: inline-block;
+      background-color: #f59e0b;
+      color: #333;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.3rem;
+      font-size: 0.85rem;
+    }
+    .product-source {
+      display: inline-block;
+      background-color: #10b981;
+      color: #333;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+    .product-details { color: #b0b0b0; margin-bottom: 1rem; }
+    .product-details p { margin-bottom: 0.4rem; }
+    .product-details a { color: #8a2be2; text-decoration: none; }
+    .product-details a:hover { text-decoration: underline; }
+    .product-images { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .product-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 0.5rem;
+      border: 1px solid #333;
+    }
+    .pagination { display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem; }
+    .pagination button {
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      border: 1px solid #8a2be2;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .pagination button:hover { background-color: #1a1a1a; }
+    .pagination button.active { background-color: #8a2be2; color: white; }
+    .pagination button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .loading { text-align: center; padding: 2rem; color: #b0b0b0; }
+    .error { text-align: center; padding: 2rem; color: #ef4444; }
+    .warning { 
+      background-color: #1a1a1a; 
+      border: 1px solid #f59e0b; 
+      border-radius: 0.5rem; 
+      padding: 1rem; 
+      margin-bottom: 1rem;
+      color: #f59e0b;
+    }
+    .warning strong { color: #f59e0b; }
+    .code-block {
+      background-color: #0d0d0d;
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      padding: 0.8rem;
+      font-family: monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 0.5rem 0;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up { animation: fadeUp 0.6s ease-out; }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #b0b0b0;
+      border-top: 3px solid #8a2be2;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      body { padding: 1rem; }
+      h1 { font-size: 2rem; }
+      .search-container { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Buscador de Perfumes EAN</h1>
+      <p class="subtitle">Búsqueda avanzada por código EAN o nombre de producto</p>
+    </header>
+
+    <div id="local-file-warning" class="warning" style="display: none;">
+      <strong>⚠️ Archivo local detectado</strong>
+      <p>Este archivo se está abriendo como <code>file://</code>. Las búsquedas a la API fallarán por restricciones CORS.</p>
+      <p>Para que funcione, sírvelo con un servidor HTTP local:</p>
+      <div class="code-block">python3 -m http.server 8080</div>
+      <p>Luego abre <code>http://localhost:8080/ean-perfume-search.html</code> en tu navegador.</p>
+    </div>
+
+    <div class="search-container">
+      <input type="text" id="search-input" class="search-input" placeholder="Ingrese EAN de 13 dígitos o nombre de perfume..." autocomplete="off">
+      
+      <div class="search-options">
+        <label class="search-option selected" data-mode="ean">
+          <input type="radio" name="search-mode" value="ean" checked style="margin-right: 0.5rem;"> Búsqueda por EAN
+        </label>
+        <label class="search-option" data-mode="name">
+          <input type="radio" name="search-mode" value="name" style="margin-right: 0.5rem;"> Búsqueda por nombre
+        </label>
+      </div>
+
+      <div class="api-selector">
+        <label>
+          <input type="radio" name="api-source" value="openbeauty" checked> Open Beauty Facts (gratis, sin clave)
+        </label>
+        <label style="margin-left: 1.5rem;">
+          <input type="radio" name="api-source" value="barcodelookup"> BarcodeLookup.com (clave incluida)
+        </label>
+      </div>
+    </div>
+
+    <div class="results-container" id="results-container">
+      <div class="loading" id="loading-indicator" style="display: none;">
+        <div class="spinner"></div>
+        <p style="margin-top: 1rem;">Cargando...</p>
+      </div>
+    </div>
+
+    <div class="pagination" id="pagination-controls" style="display: none;">
+      <button id="prev-page" disabled>Anterior</button>
+      <span id="page-info">Página 1</span>
+      <button id="next-page" disabled>Siguiente</button>
+    </div>
+  </div>
+
+  <script>
+    // ==================== CONFIGURACIÓN DE APIs ====================
+    const API_CONFIG = {
+      openbeauty: {
+        name: 'Open Beauty Facts',
+        eanUrl: 'https://world.openbeautyfacts.org/api/v3/product/',
+        searchUrl: 'https://world.openbeautyfacts.org/cgi/search.pl',
+        key: null,
+        free: true
+      },
+      barcodelookup: {
+        name: 'BarcodeLookup.com',
+        eanUrl: 'https://api.barcodelookup.com/v3/products',
+        searchUrl: 'https://api.barcodelookup.com/v3/products',
+        key: '2mum2jrkzoezy9nu2r11tyj0hpwhro',
+        free: true
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Detectar si se ejecuta como file:// (CORS bloqueará las peticiones)
+      if (window.location.protocol === 'file:') {
+        document.getElementById('local-file-warning').style.display = 'block';
+      }
+
+      const searchInput = document.getElementById('search-input');
+      const resultsContainer = document.getElementById('results-container');
+      const loadingIndicator = document.getElementById('loading-indicator');
+      const paginationControls = document.getElementById('pagination-controls');
+      const prevPageBtn = document.getElementById('prev-page');
+      const nextPageBtn = document.getElementById('next-page');
+      const pageInfo = document.getElementById('page-info');
+      
+      let currentPage = 1;
+      let totalPages = 1;
+      let searchMode = 'ean';
+      let searchQuery = '';
+      let apiSource = 'openbeauty';
+      let pageSize = 24;
+      let totalResults = 0;
+
+      // Set mode (EAN / nombre)
+      document.querySelectorAll('.search-option').forEach(option => {
+        option.addEventListener('click', () => {
+          const mode = option.dataset.mode;
+          searchMode = mode;
+          document.querySelectorAll('.search-option').forEach(o => o.classList.remove('selected'));
+          option.classList.add('selected');
+          searchInput.value = '';
+          resultsContainer.innerHTML = '';
+          paginationControls.style.display = 'none';
+          currentPage = 1;
+        });
+      });
+
+      // Set API source
+      document.querySelectorAll('input[name="api-source"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          apiSource = e.target.value;
+          searchInput.value = '';
+          resultsContainer.innerHTML = '';
+          paginationControls.style.display = 'none';
+          currentPage = 1;
+        });
+      });
+
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+      });
+
+      searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && searchQuery) {
+          performSearch();
+        }
+      });
+
+      prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          performSearch();
+        }
+      });
+
+      nextPageBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          performSearch();
+        }
+      });
+
+      async function performSearch() {
+        if (!searchQuery) return;
+        
+        loadingIndicator.style.display = 'block';
+        resultsContainer.innerHTML = '';
+        resultsContainer.appendChild(loadingIndicator);
+        paginationControls.style.display = 'none';
+
+        try {
+          const api = API_CONFIG[apiSource];
+          let data;
+          
+          if (searchMode === 'ean') {
+            if (!/^\d{13}$/.test(searchQuery)) {
+              showError('Por favor, ingrese un EAN válido de 13 dígitos');
+              return;
+            }
+            
+            let url;
+            if (apiSource === 'openbeauty') {
+              url = api.eanUrl + encodeURIComponent(searchQuery) + '.json';
+            } else {
+              url = api.eanUrl + '?barcode=' + encodeURIComponent(searchQuery) + '&formatted=y&key=' + api.key;
+            }
+            
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+              if (response.status === 0 || response.type === 'opaque') {
+                showError('Error de CORS: El archivo se abrió como <code>file://</code>. Sirva el HTML con un servidor HTTP local (ej: <code>python3 -m http.server 8080</code>)');
+              } else {
+                showError('Error de red: ' + response.status);
+              }
+              return;
+            }
+            
+            data = await response.json();
+            
+            // Normalizar respuesta según API
+            let product = null;
+            if (apiSource === 'openbeauty') {
+              if (data.product && !data.errors?.includes('product_not_found')) {
+                product = data.product;
+              }
+            } else {
+              // BarcodeLookup: data.products es un array
+              if (data.products && data.products.length > 0) {
+                product = normalizeBarcodeLookupProduct(data.products[0]);
+              }
+            }
+            
+            if (!product) {
+              showError('EAN no encontrado. Verifique el código e intente de nuevo.');
+              return;
+            }
+            
+            renderProductCard(product, true, apiSource);
+            paginationControls.style.display = 'none';
+          } else {
+            // Búsqueda por nombre
+            let url;
+            if (apiSource === 'openbeauty') {
+              url = api.searchUrl + '?search_terms=' + encodeURIComponent(searchQuery) + '&page=' + currentPage + '&page_size=' + pageSize + '&json=1';
+            } else {
+              url = api.searchUrl + '?search=' + encodeURIComponent(searchQuery) + '&formatted=y&page=' + currentPage + '&key=' + api.key;
+            }
+            
+            const response = await fetch(url);
+            
+            if (!response.ok) {
+              if (response.status === 0 || response.type === 'opaque') {
+                showError('Error de CORS: El archivo se abrió como <code>file://</code>. Sirva el HTML con un servidor HTTP local (ej: <code>python3 -m http.server 8080</code>)');
+              } else {
+                showError('Error de red: ' + response.status);
+              }
+              return;
+            }
+            
+            data = await response.json();
+            
+            // Normalizar resultados según API
+            let products = [];
+            if (apiSource === 'openbeauty') {
+              products = (data.products || []).map(p => ({ ...p, _source: 'openbeauty' }));
+              totalResults = data.count || products.length;
+              totalPages = data.page_count || Math.ceil(totalResults / pageSize);
+            } else {
+              products = (data.products || []).map(p => normalizeBarcodeLookupProduct(p));
+              totalResults = data.total_results || products.length;
+              totalPages = data.total_pages || Math.ceil(totalResults / pageSize);
+            }
+            
+            if (products.length === 0) {
+              showError('No se encontraron resultados para "' + searchQuery + '".');
+              return;
+            }
+            
+            resultsContainer.innerHTML = '';
+            products.forEach((product, index) => {
+              const card = createProductCard(product, index === 0);
+              resultsContainer.appendChild(card);
+            });
+            
+            pageInfo.textContent = 'Página ' + currentPage + ' de ' + totalPages + ' (' + totalResults + ' resultados)';
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage >= totalPages;
+            paginationControls.style.display = 'flex';
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            showError('Error de red/CORS: ¿Abrió el archivo como <code>file://</code>? Sirva con <code>python3 -m http.server 8080</code> y abra <code>http://localhost:8080/ean-perfume-search.html</code>');
+          } else {
+            showError('Error al cargar los resultados. Por favor, intente más tarde.');
+          }
+        } finally {
+          loadingIndicator.style.display = 'none';
+        }
+      }
+
+      function showError(message) {
+        resultsContainer.innerHTML = '<div class="error"><p>' + message + '</p></div>';
+        paginationControls.style.display = 'none';
+      }
+
+      // Normalizar producto de BarcodeLookup al formato interno
+      function normalizeBarcodeLookupProduct(p) {
+        return {
+          product_name: p.product_name || p.title || 'Sin nombre',
+          brands: p.brand || '',
+          categories: p.category || '',
+          countries: p.country_of_origin || '',
+          quantity: p.weight || p.volume || '',
+          product_type: p.product_type || '',
+          ingredients_text: p.description || '',
+          code: p.barcode_number || p.barcode || '',
+          url: p.product_url || '',
+          image_url: p.images?.[0] || p.image_url || '',
+          image_front_url: p.images?.[0] || p.image_url || '',
+          _source: 'barcodelookup'
+        };
+      }
+
+      function createProductCard(product, isFirst) {
+        const card = document.createElement('div');
+        card.className = 'product-card animate-fade-up';
+        if (isFirst && searchMode === 'name') {
+          card.style.animationDelay = '0.1s';
+        }
+
+        // Mapeo de categorías para nombres legibles
+        const catMap = {
+          'perfume': 'Perfume',
+          'parfums': 'Perfume',
+          'eau-de-parfum': 'Eau de Parfum',
+          'eau-de-toilette': 'Eau de Toilette',
+          'fragrance': 'Fragancia',
+          'perfume-makeup': 'Perfume-Makeup',
+          'hair-care': 'Cuidado de Pelo',
+          'skin-care': 'Cuidado de Piel',
+          'bath': 'Baño',
+          'body-care': 'Cuidado Corporal',
+          'makeup': 'Maquillaje',
+          'perfumes': 'Perfume'
+        };
+
+        // Categorías
+        let categoryLabel = '';
+        const rawCats = product.categories;
+        if (rawCats) {
+          if (Array.isArray(rawCats)) {
+            categoryLabel = rawCats.map(c => catMap[c.toLowerCase()] || c.replace(/-/g, ' ')).join(', ');
+          } else {
+            const catStr = rawCats.toLowerCase();
+            categoryLabel = catMap[catStr] || rawCats.replace(/-/g, ' ').replace(/,/g, ', ');
+          }
+        } else if (product.categories_tags && Array.isArray(product.categories_tags)) {
+          categoryLabel = product.categories_tags.map(cat => {
+            const key = cat.replace('en:', '').replace('fr:', '').toLowerCase();
+            return catMap[key] || cat.replace('en:', '').replace('fr:', '').replace(/-/g, ' ');
+          }).join(', ');
+        }
+
+        // Marcas
+        const brands = product.brands || '';
+
+        // Países
+        let countries = '';
+        if (product.countries) {
+          if (Array.isArray(product.countries)) {
+            countries = product.countries.join(', ');
+          } else {
+            countries = product.countries;
+          }
+        }
+
+        // Imágenes
+        let images = [];
+        const directFields = ['image_front_url', 'image_url', 'image_front_small_url', 'image_front_thumb_url'];
+        for (const field of directFields) {
+          if (product[field] && typeof product[field] === 'string' && product[field].startsWith('http')) {
+            images.push(product[field]);
+          }
+        }
+        images = [...new Set(images)];
+
+        // EAN
+        const ean = product.code || '';
+
+        // Etiqueta de fuente
+        const sourceLabel = product._source === 'barcodelookup' ? 'BarcodeLookup' : 'OpenBeautyFacts';
+
+        card.innerHTML = `
+          <div class="product-header">
+            <div class="product-name">${product.product_name || 'Sin nombre'}</div>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <div class="product-category">${categoryLabel || 'Sin categoría'}</div>
+              <div class="product-source">${sourceLabel}</div>
+            </div>
+          </div>
+          <div class="product-details">
+            ${ean ? '<p><strong>Código EAN:</strong> ' + ean + '</p>' : ''}
+            ${brands ? '<p><strong>Marca:</strong> ' + brands + '</p>' : ''}
+            ${categoryLabel ? '<p><strong>Categorías:</strong> ' + categoryLabel + '</p>' : ''}
+            ${countries ? '<p><strong>Países:</strong> ' + countries + '</p>' : ''}
+            ${product.quantity ? '<p><strong>Cantidad:</strong> ' + product.quantity + '</p>' : ''}
+            ${product.product_type ? '<p><strong>Tipo:</strong> ' + product.product_type + '</p>' : ''}
+            ${product.ingredients_text ? '<p><strong>Ingredientes/Descripción:</strong> ' + product.ingredients_text.substring(0, 200) + (product.ingredients_text.length > 200 ? '...' : '') + '</p>' : ''}
+            ${product.url ? '<p><strong>Enlace:</strong> <a href="' + product.url + '" target="_blank" style="color: #8a2be2;">Ver producto</a></p>' : ''}
+          </div>
+          <div class="product-images">
+            ${images.length ? images.map(imgUrl => '<img src="' + imgUrl + '" alt="' + (product.product_name || 'Producto') + '" class="product-image" loading="lazy">').join('') : '<p>Sin imágenes disponibles</p>'}
+          </div>
+        `;
+        
+        return card;
+      }
+
+      function renderProductCard(product, isDetail, source) {
+        product._source = source;
+        const card = createProductCard(product, isDetail);
+        resultsContainer.innerHTML = '';
+        resultsContainer.appendChild(card);
+      }
+    });
+  </script>
+</body>
+</html>

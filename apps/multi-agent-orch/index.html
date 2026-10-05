@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a237e" />
+  <meta name="color-scheme" content="dark light" />
+  <!-- CSP: en producción real se usa via HTTP headers (vercel.json/netlify.toml).
+    Este meta tag es permisivo para desarrollo local. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img
+  <meta name="description" content="Orquestador multi-agente con persistencia, Human-in-the-Loop y Time Travel. PWA offline-first." />
+  <meta name="keywords" content="multi-agent, orchestrator, AI, workflow, PWA, LangGraph, HITL, time-travel" />
+  <meta name="author" content="Manu" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Multi-Agent Orchestrator" />
+  <meta property="og:description" content="Orquestador multi-agente con persistencia, Human-in-the-Loop y Time Travel" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="./icons/icon-512.png" />
+  <meta property="og:locale" content="es_ES" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Multi-Agent Orchestrator" />
+  <meta name="twitter:description" content="Orquestador multi-agente offline-first" />
+  <meta name="twitter:image" content="./icons/icon-512.png" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png" />
+
+  <!-- iOS PWA -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Orchestrator" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Windows -->
+  <meta name="msapplication-TileImage" content="./icons/icon-144.png" />
+  <meta name="msapplication-TileColor" content="#1a237e" />
+
+  <!-- Preconnect para fonts si los hubiera -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+
+  <!-- Security: Content Security Policy se aplica via meta tag arriba.
+    Para producción real, mover a headers server-side (Vercel headers en vercel.json). -->
+
+  <link rel="stylesheet" href="./css/styles.css" />
+
+  <title>Multi-Agent Orchestrator · PWA</title>
+</head>
+<body>
+  <!-- Skip to main content (a11y) -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- App Shell -->
+  <div id="app" class="app-shell" data-theme="dark">
+    <header class="app-header" role="banner">
+      <div class="header-brand">
+        <span class="brand-icon" aria-hidden="true">🤖</span>
+        <h1 class="brand-title">Multi-Agent Orchestrator</h1>
+        <span class="brand-badge" id="versionBadge">v1.0.0</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="btnThemeToggle" aria-label="Cambiar tema" title="Cambiar tema">
+          <span aria-hidden="true">🌙</span>
+        </button>
+        <button class="btn-icon" id="btnInstall" aria-label="Instalar PWA" title="Instalar aplicación" hidden>
+          <span aria-hidden="true">⬇️</span>
+        </button>
+        <span class="connection-status" id="connectionStatus" aria-live="polite" title="Estado de conexión">
+          <span class="status-dot online" aria-hidden="true"></span>
+          <span class="status-text">Online</span>
+        </span>
+      </div>
+    </header>
+
+    <nav class="app-nav" role="navigation" aria-label="Navegación principal">
+      <button class="nav-item active" data-view="dashboard" aria-current="page">
+        <span class="nav-icon" aria-hidden="true">📊</span>
+        <span class="nav-label">Dashboard</span>
+      </button>
+      <button class="nav-item" data-view="workflows">
+        <span class="nav-icon" aria-hidden="true">📋</span>
+        <span class="nav-label">Workflows</span>
+      </button>
+      <button class="nav-item" data-view="approvals">
+        <span class="nav-icon" aria-hidden="true">✋</span>
+        <span class="nav-label">Approvals</span>
+        <span class="nav-badge" id="approvalsBadge" hidden>0</span>
+      </button>
+      <button class="nav-item" data-view="history">
+        <span class="nav-icon" aria-hidden="true">📜</span>
+        <span class="nav-label">History</span>
+      </button>
+      <button class="nav-item" data-view="checkpoints">
+        <span class="nav-icon" aria-hidden="true">💾</span>
+        <span class="nav-label">Checkpoints</span>
+      </button>
+      <button class="nav-item" data-view="agents">
+        <span class="nav-icon" aria-hidden="true">🤖</span>
+        <span class="nav-label">Agents</span>
+      </button>
+    </nav>
+
+    <main id="main-content" class="app-main" role="main">
+      <!-- Dashboard View -->
+      <section class="view active" id="view-dashboard" aria-labelledby="dashboard-title">
+        <h2 id="dashboard-title" class="view-title">Dashboard</h2>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-value" id="statWorkflows">0</div>
+            <div class="stat-label">Workflows Activos</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-value" id="statCompleted">0</div>
+            <div class="stat-label">Completados</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-value" id="statApprovals">0</div>
+            <div class="stat-label">Approvals Pendientes</div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-value" id="statCheckpoints">0</div>
+            <div class="stat-label">Checkpoints</div>
+          </article>
+        </div>
+
+        <h3 class="section-title">DAG del Workflow Activo</h3>
+        <div class="dag-container" id="dagContainer" role="region" aria-label="Visualización del grafo de agentes">
+          <div class="dag-flow" id="dagFlow">
+            <div class="dag-node" data-node="research">
+              <div class="dag-icon" aria-hidden="true">🔍</div>
+              <div class="dag-name">Research</div>
+              <div class="dag-status">idle</div>
+            </div>
+            <div class="dag-arrow bidirectional" aria-hidden="true">↔️</div>
+            <div class="dag-node" data-node="supervisor">
+              <div class="dag-icon" aria-hidden="true">🎯</div>
+              <div class="dag-name">Supervisor</div>
+              <div class="dag-status">idle</div>
+            </div>
+            <div class="dag-arrow" aria-hidden="true">→</div>
+            <div class="dag-node" data-node="drafting">
+              <div class="dag-icon" aria-hidden="true">✍️</div>
+              <div class="dag-name">Drafting</div>
+              <div class="dag-status">idle</div>
+            </div>
+            <div class="dag-arrow" aria-hidden="true">→</div>
+            <div class="dag-node" data-node="executor">
+              <div class="dag-icon" aria-hidden="true">⚡</div>
+              <div class="dag-name">Executor</div>
+              <div class="dag-status">idle</div>
+            </div>
+            <div class="dag-arrow" aria-hidden="true">→</div>
+            <div class="dag-node" data-node="__end__">
+              <div class="dag-icon" aria-hidden="true">🏁</div>
+              <div class="dag-name">END</div>
+              <div class="dag-status">idle</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-title">Logs en Tiempo Real</h3>
+        <div class="logs-container" id="logsContainer" role="log" aria-live="polite" aria-label="Logs de eventos del sistema">
+          <div class="logs" id="logs" tabindex="0"></div>
+        </div>
+      </section>
+
+      <!-- Workflows View -->
+      <section class="view" id="view-workflows" aria-labelledby="workflows-title" hidden>
+        <div class="view-header">
+          <h2 id="workflows-title" class="view-title">Workflows</h2>
+          <button class="btn btn-primary" id="btnNewWorkflow" aria-label="Crear nuevo workflow">
+            <span aria-hidden="true">+</span> Nuevo Workflow
+          </button>
+        </div>
+        <div class="workflow-list" id="workflowList" role="list" aria-label="Lista de workflows">
+          <p class="empty-state">No hay workflows aún. Crea uno para empezar.</p>
+        </div>
+      </section>
+
+      <!-- Approvals View -->
+      <section class="view" id="view-approvals" aria-labelledby="approvals-title" hidden>
+        <h2 id="approvals-title" class="view-title">Approvals Pendientes</h2>
+        <div class="approval-list" id="approvalList" role="list" aria-label="Lista de approvals">
+          <p class="empty-state">No hay approvals pendientes.</p>
+        </div>
+      </section>
+
+      <!-- History View -->
+      <section class="view" id="view-history" aria-labelledby="history-title" hidden>
+        <h2 id="history-title" class="view-title">Historial</h2>
+        <div class="history-list" id="historyList" role="list" aria-label="Historial de eventos">
+          <p class="empty-state">Sin eventos aún.</p>
+        </div>
+      </section>
+
+      <!-- Checkpoints View -->
+      <section class="view" id="view-checkpoints" aria-labelledby="checkpoints-title" hidden>
+        <h2 id="checkpoints-title" class="view-title">Checkpoints (Time Travel)</h2>
+        <p class="view-description">Haz clic en un checkpoint para restaurar el estado del workflow a ese punto.</p>
+        <div class="checkpoint-list" id="checkpointList" role="list" aria-label="Lista de checkpoints">
+          <p class="empty-state">Sin checkpoints aún.</p>
+        </div>
+      </section>
+
+      <!-- Agents View -->
+      <section class="view" id="view-agents" aria-labelledby="agents-title" hidden>
+        <h2 id="agents-title" class="view-title">Agentes</h2>
+        <div class="agents-grid" id="agentsGrid" role="list" aria-label="Grid de agentes"></div>
+      </section>
+    </main>
+
+    <!-- Modal: New Workflow -->
+    <div class="modal" id="newWorkflowModal" role="dialog" aria-modal="true" aria-labelledby="modal-new-title" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-content" role="document">
+        <header class="modal-header">
+          <h3 id="modal-new-title">Nuevo Workflow</h3>
+          <button class="btn-icon" data-close-modal aria-label="Cerrar modal">✕</button>
+        </header>
+        <form id="newWorkflowForm" class="modal-body">
+          <div class="form-group">
+            <label for="workflowType">Tipo de Workflow</label>
+            <select id="workflowType" required>
+              <option value="audit">🔍 Auditoría</option>
+              <option value="prospect">🎯 Prospección</option>
+              <option value="support">💬 Soporte</option>
+              <option value="custom">🛠️ Personalizado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="workflowQuery">Query / Objetivo</label>
+            <textarea id="workflowQuery" required minlength="10" placeholder="Describe el objetivo del workflow..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="workflowMaxIter">Máx. iteraciones</label>
+            <input type="number" id="workflowMaxIter" min="1" max="20" value="5" />
+          </div>
+          <footer class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal>Cancelar</button>
+            <button type="submit" class="btn btn-primary">Crear y Ejecutar</button>
+          </footer>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Approval -->
+    <div class="modal" id="approvalModal" role="alertdialog" aria-modal="true" aria-labelledby="modal-approval-title" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-content" role="document">
+        <header class="modal-header">
+          <h3 id="modal-approval-title">✋ Aprobación Requerida</h3>
+          <button class="btn-icon" data-close-modal aria-label="Cerrar modal">✕</button>
+        </header>
+        <div class="modal-body">
+          <p>El agente <strong id="modalApprovalAgent">Drafting</strong> ha completado una propuesta.</p>
+          <div class="proposal-preview" id="modalProposal"></div>
+          <div class="form-group">
+            <label for="approvalReason">Comentario (opcional)</label>
+            <textarea id="approvalReason" placeholder="Justifica tu decisión..."></textarea>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button type="button" class="btn btn-danger" id="btnReject">❌ Rechazar</button>
+          <button type="button" class="btn btn-primary" id="btnApprove">✅ Aprobar</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer" role="region" aria-live="assertive" aria-label="Notificaciones"></div>
+  </div>
+
+  <!-- Scripts (orden importa: dependencies first) -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPO: Meta-Prompt Orchestrator (Sistema Operativo Híbrido)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e293b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f4f7fb;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --border-radius: 8px;
+        }
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 25px; line-height: 1.6; }
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; max-width: 1400px; margin: 0 auto; }
+        .full-width { grid-column: 1 / -1; }
+        .card { background: var(--card-bg); padding: 25px; border-radius: var(--border-radius); box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .card-header { border-bottom: 2px solid #e2e8f0; margin-bottom: 15px; padding-bottom: 10px; }
+        h1, h2, h3 { color: var(--secondary-color); margin-top: 0; }
+        h1 { color: var(--primary-color); border-bottom: 3px solid var(--primary-color); padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9em; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-family: inherit; }
+        button { background-color: var(--primary-color); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1em; transition: background-color 0.2s ease; width: 100%; }
+        button:hover { background-color: #1d4ed8; }
+        .terminal { background-color: #0f172a; color: #10b981; padding: 15px; border-radius: 6px; font-family: 'Courier New', Courier, monospace; height: 300px; overflow-y: auto; font-size: 0.85em; }
+        .terminal-line { margin: 5px 0; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
+        .agent-status-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; margin-bottom: 8px; background-color: #f8fafc; border-radius: 6px; border-left: 5px solid var(--secondary-color); }
+        .badge { font-size: 0.75em; padding: 4px 10px; border-radius: 12px; font-weight: bold; text-transform: uppercase; }
+        .badge.pending { background-color: #e2e8f0; color: #64748b; }
+        .badge.running { background-color: var(--warning-color); color: white; }
+        .badge.completed { background-color: var(--success-color); color: white; }
+        .badge.failed { background-color: var(--danger-color); color: white; }
+        .mermaid-container { background-color: #ffffff; padding: 15px; border-radius: 6px; border: 1px dashed #cbd5e1; display: flex; justify-content: center; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-grid">
+    
+    <div class="card full-width">
+        <h1>🏛️ MPO: Meta-Prompt Orchestrator</h1>
+        <p><strong>Capa de Control Unificada:</strong> Orquestación Meta-Cognitiva, Despliegue en <i>DeepSeek Harness</i> (Ejecución Efímera), e Invocación Analítica en <i>OpenCodeReview</i> (Auditoría SARIF). Diseñado para operar bajo directrices <strong>AESIA e INCIBE</strong>.</p>
+    </div>
+
+    <!-- Panel de Configuración -->
+    <div class="card">
+        <div class="card-header">
+            <h2>⚙️ Configuración del Flujo de Trabajo</h2>
+        </div>
+        <div class="form-group">
+            <label>Nombre de Instancia de Sistema:</label>
+            <input type="text" id="sysName" value="DSH-Deployment-Alpha">
+        </div>
+        <div class="form-group">
+            <label>Entorno de Ejecución (Harness Mode):</label>
+            <select id="harnessMode">
+                <option value="standard">Standard Mode (Full-Shell / Subagentes)</option>
+                <option value="code">Code Mode (Orquestación TypeScript)</option>
+                <option value="minimal">Minimal Mode (Solo Bash persistente)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Intención Semántica / Requisitos:</label>
+            <textarea id="taskGoal" rows="4">Desarrollar middleware de cifrado, instanciar tests unitarios, enviar commit al repositorio remoto y solicitar revisión estricta de código.</textarea>
+        </div>
+        <button onclick="iniciarOrquestacion()">🚀 Inicializar Secuencia Multi-Agente</button>
+    </div>
+
+    <!-- Monitor de Integración -->
+    <div class="card">
+        <div class="card-header">
+            <h2>🤖 Monitor de Módulos (Cores & Plugins)</h2>
+        </div>
+        <div id="agent-list">
+            <div class="agent-status-row" id="core-meta">
+                <span>🧠 Meta-Cognitive Core (Orquestación)</span>
+                <span class="badge pending">Standby</span>
+            </div>
+            <div class="agent-status-row" id="core-mcp">
+                <span>🔌 Enrutador MCP (Protocolo JSON-RPC)</span>
+                <span class="badge pending">Standby</span>
+            </div>
+            <div class="agent-status-row" id="core-dsh">
+                <span>🛠️ DeepSeek Harness (Sandboxing Firecracker)</span>
+                <span class="badge pending">Standby</span>
+            </div>
+            <div class="agent-status-row" id="core-ocr">
+                <span>🔍 OpenCodeReview (Validación SARIF)</span>
+                <span class="badge pending">Standby</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Representación de Arquitectura Dinámica -->
+    <div class="card full-width">
+        <div class="card-header">
+            <h2>📊 Representación Topológica del Sistema Generado</h2>
+        </div>
+        <div class="mermaid-container" id="mermaid-render-target">
+            <!-- Gráfico renderizado dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Filtro de Salida y Consola -->
+    <div class="card full-width">
+        <div class="card-header">
+            <h2>📝 Terminal de Logs / Filtro de Salida (Defensa IPI)</h2>
+        </div>
+        <div class="terminal" id="terminal-logs">
+            <div class="terminal-line">[SYSTEM] Listo para recibir configuración de usuario...</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });
+
+    const log = (msg) => {
+        const term = document.getElementById('terminal-logs');
+        const time = new Date().toLocaleTimeString();
+        term.innerHTML += `<div class="terminal-line">[${time}] ${msg}</div>`;
+        term.scrollTop = term.scrollHeight;
+    };
+
+    const updateStatus = (id, statusClass, statusText) => {
+        const el = document.querySelector(`#${id} .badge`);
+        el.className = `badge ${statusClass}`;
+        el.textContent = statusText;
+    };
+
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    async function iniciarOrquestacion() {
+        const sysName = document.getElementById('sysName').value;
+        const mode = document.getElementById('harnessMode').value;
+        
+        document.getElementById('terminal-logs').innerHTML = ''; 
+        log(`Iniciando secuencia de despliegue para el sistema: ${sysName}`);
+        log(`Activando directivas de cumplimiento normativo (Marco AESIA - IA Act)...`);
+
+        // Etapa 1: Orquestación
+        updateStatus('core-meta', 'running', 'Procesando');
+        log(`[Meta-Cognitive Core] Descomponiendo intención en Grafos Acíclicos Dirigidos...`);
+        await sleep(1500);
+        updateStatus('core-meta', 'completed', 'Estructurado');
+        
+        // Etapa 2: Red y Protocolo
+        updateStatus('core-mcp', 'running', 'Negociando');
+        log(`[MCP Router] Estableciendo conexión stateful JSON-RPC 2.0 con servidores host...`);
+        await sleep(1200);
+        log(`[MCP Router] Negociación de herramientas y recursos exitosa. Permisos verificados.`);
+        updateStatus('core-mcp', 'completed', 'Conectado');
+
+        // Etapa 3: Ejecución de Arnés
+        updateStatus('core-dsh', 'running', 'Desplegando');
+        log(`[DeepSeek Harness] Arranque en frío de microVM (<200ms) en modo: ${mode}`);
+        await sleep(1000);
+        log(`[DeepSeek Harness] Política de red aplicada (Prevención vector CVE-2026-82533).`);
+        await sleep(1500);
+        log(`[DeepSeek Harness] Compilación local exitosa. Emitiendo commit a repositorio destino...`);
+        updateStatus('core-dsh', 'completed', 'Código Desplegado');
+
+        // Etapa 4: Auditoría de Calidad
+        updateStatus('core-ocr', 'running', 'Auditando');
+        log(`[OpenCodeReview] Extrayendo 'git merge-base' y blobs modificados...`);
+        await sleep(1500);
+        log(`[OpenCodeReview] Análisis LLM / Determinista completado. Filtrando Inyecciones IPI...`);
+        await sleep(1200);
+        log(`[OpenCodeReview] Reporte JSON SARIF generado: [0] Vulnerabilidades Críticas detectadas.`);
+        updateStatus('core-ocr', 'completed', 'Validado');
+
+        log(`[SYSTEM] Operación Multi-Agente completada con éxito.`);
+        
+        renderizarMermaid();
+    }
+
+    function renderizarMermaid() {
+        const graphDefinition = `
+        graph TD
+            MC[Meta-Cognitive Core] -->|Intención| MCP[Model Context Protocol Router]
+            MCP -->|Solicitud JSON-RPC| DSH[DeepSeek Harness Workspace]
+            DSH -->|Commit de Código| GIT[(Repositorio Git)]
+            GIT -->|Llamada CI/CD| OCR[OpenCodeReview Agent]
+            
+            subgraph Verificación de Calidad
+                OCR -->|Análisis| SARIF[Archivo SARIF JSON]
+                SARIF -->|Feedback Determinista| OutputFilter[Output Filter]
+            end
+            
+            OutputFilter -.->|Reinyección de Errores| MC
+        `;
+        
+        const target = document.getElementById('mermaid-render-target');
+        target.innerHTML = '';
+        mermaid.render('generated-graph', graphDefinition).then(result => {
+            target.innerHTML = result.svg;
+        }).catch(err => {
+            target.innerHTML = '<p style="color:red">Error en el renderizado de topología.</p>';
+        });
+    }
+</script>
+</body>
+</html>

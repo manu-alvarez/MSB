@@ -17,7 +17,8 @@
     ],
     "status": "online",
     "accentColor": "#0ea5e9",
-    "accentRgb": "14, 165, 233"
+    "accentRgb": "14, 165, 233",
+    "staticPath": "apps/agent-builder-pro/"
   },
   {
     "id": "agent-forge",
@@ -37,7 +38,8 @@
     ],
     "status": "online",
     "accentColor": "#06b6d4",
-    "accentRgb": "6, 182, 212"
+    "accentRgb": "6, 182, 212",
+    "staticPath": "apps/agent-forge/"
   },
   {
     "id": "cuentos-magicos",
@@ -120,7 +122,8 @@
     ],
     "status": "online",
     "accentColor": "#00f0ff",
-    "accentRgb": "0, 240, 255"
+    "accentRgb": "0, 240, 255",
+    "staticPath": "apps/msbross/"
   },
   {
     "id": "multi-agent-orch",
@@ -140,7 +143,8 @@
     ],
     "status": "online",
     "accentColor": "#38bdf8",
-    "accentRgb": "56, 189, 248"
+    "accentRgb": "56, 189, 248",
+    "staticPath": "apps/multi-agent-orch/"
   },
   {
     "id": "nikolina",
@@ -181,7 +185,8 @@
     ],
     "status": "online",
     "accentColor": "#22d3ee",
-    "accentRgb": "34, 211, 238"
+    "accentRgb": "34, 211, 238",
+    "staticPath": "apps/prompt-generator/"
   },
   {
     "id": "traductor-pro",
@@ -243,7 +248,8 @@
     ],
     "status": "online",
     "accentColor": "#f97316",
-    "accentRgb": "249, 115, 22"
+    "accentRgb": "249, 115, 22",
+    "staticPath": "apps/cuadrante-horarios/"
   },
   {
     "id": "edelweiss",
@@ -326,7 +332,8 @@
     ],
     "status": "online",
     "accentColor": "#dc2626",
-    "accentRgb": "220, 38, 38"
+    "accentRgb": "220, 38, 38",
+    "staticPath": "apps/mapfre/"
   },
   {
     "id": "perfume-ean",
@@ -346,7 +353,8 @@
     ],
     "status": "online",
     "accentColor": "#f59e0b",
-    "accentRgb": "245, 158, 11"
+    "accentRgb": "245, 158, 11",
+    "staticPath": "apps/perfume-ean/"
   },
   {
     "id": "perfume-trading",
@@ -366,7 +374,8 @@
     ],
     "status": "online",
     "accentColor": "#d97706",
-    "accentRgb": "217, 119, 6"
+    "accentRgb": "217, 119, 6",
+    "staticPath": "apps/perfume-trading/"
   },
   {
     "id": "teringo-inbox",
@@ -386,7 +395,8 @@
     ],
     "status": "online",
     "accentColor": "#fb923c",
-    "accentRgb": "251, 146, 60"
+    "accentRgb": "251, 146, 60",
+    "staticPath": "apps/teringo/"
   },
   {
     "id": "beca-laud",
@@ -406,7 +416,8 @@
     ],
     "status": "online",
     "accentColor": "#e879f9",
-    "accentRgb": "232, 121, 249"
+    "accentRgb": "232, 121, 249",
+    "staticPath": "apps/beca-laud/"
   },
   {
     "id": "beca-laud-band",
@@ -426,7 +437,8 @@
     ],
     "status": "online",
     "accentColor": "#f472b6",
-    "accentRgb": "244, 114, 182"
+    "accentRgb": "244, 114, 182",
+    "staticPath": "apps/beca-laud-band/"
   },
   {
     "id": "beca-laud-crm",
@@ -446,7 +458,8 @@
     ],
     "status": "online",
     "accentColor": "#fb7185",
-    "accentRgb": "251, 113, 133"
+    "accentRgb": "251, 113, 133",
+    "staticPath": "apps/beca-laud-crm/"
   },
   {
     "id": "cv-portfolio",
@@ -508,7 +521,8 @@
     ],
     "status": "online",
     "accentColor": "#f43f5e",
-    "accentRgb": "244, 63, 94"
+    "accentRgb": "244, 63, 94",
+    "staticPath": "apps/tarot-maya/"
   },
   {
     "id": "tarot-rws",
@@ -550,7 +564,8 @@
     ],
     "status": "online",
     "accentColor": "#eab308",
-    "accentRgb": "234, 179, 8"
+    "accentRgb": "234, 179, 8",
+    "staticPath": "apps/tu-energia-maya/"
   },
   {
     "id": "app-generator",
@@ -633,7 +648,8 @@
     ],
     "status": "online",
     "accentColor": "#059669",
-    "accentRgb": "5, 150, 105"
+    "accentRgb": "5, 150, 105",
+    "staticPath": "apps/intercompiler/"
   },
   {
     "id": "moko-tools",
@@ -674,7 +690,8 @@
     ],
     "status": "online",
     "accentColor": "#0d9488",
-    "accentRgb": "13, 148, 136"
+    "accentRgb": "13, 148, 136",
+    "staticPath": "apps/omnidev-os/"
   },
   {
     "id": "taskflow",
@@ -715,6 +732,7 @@
     ],
     "status": "online",
     "accentColor": "#16a34a",
-    "accentRgb": "22, 163, 74"
+    "accentRgb": "22, 163, 74",
+    "staticPath": "apps/uiep/"
   }
 ]

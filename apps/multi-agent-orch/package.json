@@ -1,0 +1,58 @@
+{
+  "name": "multi-agent-orchestrator",
+  "version": "0.1.0",
+  "description": "PWA que orquesta 4 agentes (Research, Drafting, Supervisor, Executor) con persistencia, Human-in-the-Loop, Time Travel y modo offline.",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "start": "python3 -m http.server 8000",
+    "serve": "vite preview --port 8000",
+    "lint": "eslint . --ext .js",
+    "lint:fix": "eslint . --ext .js --fix",
+    "format": "prettier --write \"**/*.{js,json,md,css,html}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md,css,html}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "lighthouse": "lhci autorun",
+    "build": "node scripts/build.js",
+    "build:serve": "node scripts/build.js && node scripts/serve.js",
+    "preview": "vite preview",
+    "clean": "rm -rf dist node_modules coverage playwright-report test-results"
+  },
+  "keywords": [
+    "pwa",
+    "multi-agent",
+    "orchestrator",
+    "dag",
+    "hitl",
+    "time-travel",
+    "offline-first",
+    "indexeddb",
+    "service-worker"
+  ],
+  "author": "Manu",
+  "license": "MIT",
+  "devDependencies": {
+    "@lhci/cli": "^0.14.0",
+    "@playwright/test": "^1.47.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "eslint": "^9.10.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsdoc": "^50.2.2",
+    "fake-indexeddb": "^6.2.5",
+    "jsdom": "^25.0.0",
+    "prettier": "^3.3.3",
+    "sharp": "^0.35.4",
+    "vite": "^5.4.0",
+    "vitest": "^2.1.0"
+  }
+}

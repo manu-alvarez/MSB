@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MSBrOSs">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#080B10">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <title>MSBrOSs Chat UI</title>
+  <link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+  <div class="bg-overlay"></div>
+
+  <!-- Navigation -->
+  <header class="topbar">
+    <span class="logo">MSBrOSs</span>
+    <span class="mi" id="sidebar-toggle">☰</span>
+    <span class="mi" id="new-chat-btn">+ Nuevo</span>
+    <div style="flex:1"></div>
+    <span class="sb" id="status-badge">En línea</span>
+  </header>
+
+  <div class="main">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sh">
+        <button class="btn-n" id="new-chat-btn-side">
+          <span>+</span> Nueva conversación
+        </button>
+      </div>
+      <div class="cl" id="chat-list"></div>
+      <div class="sf">MSBrOSs</div>
+    </aside>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Welcome Hero -->
+      <div class="wc" id="wc">
+        <h1>MSBrOSs</h1>
+        <p class="wc-sub">¿En qué puedo ayudarte?</p>
+      </div>
+
+      <!-- Chat Messages -->
+      <div class="cm" id="cm"></div>
+
+      <!-- Input Area -->
+      <div class="ia">
+        <div class="ia-inner">
+          <div class="ir">
+            <button class="ib" id="voice-btn" title="Voz">🎙</button>
+            <textarea id="ci" placeholder="Escribe tu mensaje…" rows="1"></textarea>
+            <button class="ib" id="file-btn" title="Adjuntar">📎</button>
+            <button class="ib stitch-btn" id="stitch-btn" title="Generar UI con Stitch">⚡</button>
+            <button id="sb" title="Enviar">➤</button>
+            <input type="file" id="file-input" multiple style="display:none">
+          </div>
+          <div class="it">
+            <div class="model-picker" id="model-picker">
+              <div class="mp-current" id="mp-current">
+                <span class="mp-icon">⬡</span>
+                <span id="mp-label">Seleccionar modelo</span>
+                <span class="mp-arrow">▾</span>
+              </div>
+              <div class="mp-dropdown" id="mp-dropdown"></div>
+            </div>
+            <select id="ms" style="display:none"></select>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end .content -->
+  </div><!-- end .main -->
+
+  <div class="ov" id="ov"></div>
+  <div class="tst" id="tst"></div>
+
+  <!-- Stitch Viewer -->
+  <div class="stitch-viewer" id="stitch-viewer">
+    <div class="stitch-header">
+      <div class="stitch-title">⚡ Stitch Prototyper</div>
+      <button class="stitch-close" id="stitch-close">✕</button>
+    </div>
+    <iframe class="stitch-frame" id="stitch-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+
+  <!-- Background particles -->
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+    for (let i = 0; i < 60; i++) particles.push({ x: Math.random()*9999, y: Math.random()*9999, vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25, r: Math.random()*1.5+.5 });
+    function animate() {
+      ctx.clearRect(0,0,W,H);
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle='rgba(79,195,247,0.5)'; ctx.fill();
+      }
+      for(let i=0;i<particles.length;i++) for(let j=i+1;j<particles.length;j++) {
+        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<130){ ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(79,195,247,${(1-d/130)*.15})`; ctx.stroke(); }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+
+  <script>
+    window.MODELS_CONFIG = [
+      { id: 'qwen3.5:4b',                name: 'Qwen 3.5 4B',          provider: 'Ollama', free: true },
+      { id: 'gemma4:latest',              name: 'Gemma 4 8B',           provider: 'Ollama', free: true },
+      { id: 'deepseek-r1:8b',             name: 'DeepSeek R1 8B',       provider: 'Ollama', free: true },
+      { id: 'phi4-mini-reasoning:latest', name: 'Phi-4 Mini Reasoning', provider: 'Ollama', free: true },
+      { id: 'deepseek-v4-pro:cloud',      name: 'DeepSeek V4 Pro',      provider: 'Ollama', free: true },
+      { id: 'gemma4:cloud',               name: 'Gemma 4 32B',          provider: 'Ollama', free: true },
+      { id: 'glm-5.3:cloud',              name: 'GLM 5.3',              provider: 'Ollama', free: true },
+      { id: 'minimax-m3:cloud',           name: 'MiniMax M3',           provider: 'Ollama', free: true },
+    ];
+  </script>
+  <script src="app.js?v=12"></script>
+</body>
+</html>
