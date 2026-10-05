@@ -5,7 +5,9 @@
 - **Purpose:** Plataforma centralizada de mando, catálogo interactivo y telemetría de 18 aplicaciones web frontend y agentes de IA en macOS / Tailscale.
 - **Users:** Manuel Álvarez Diánez (Operador del Sistema / Administrador)
 - **Status:** PRODUCTION
-- **Architecture:** Mission Control Dashboard (HTML5 / Vanilla CSS / ES6 / Canvas 2D / Web Audio API) servido por Python HTTP Server en el puerto 9999, supervisado por PM2 (`MSB`).
+- **Architecture:** Mission Control Dashboard (HTML5 / Vanilla CSS / ES6 / Canvas 2D / Web Audio API) servido por Python HTTP Server en el puerto 9999, supervisado por PM2 (`MSB`), y desplegado en GitHub Pages.
+- **Repository:** https://github.com/manu-alvarez/MSB (Público)
+- **Production URL (GitHub Pages):** https://manu-alvarez.github.io/MSB/
 - **Network Mesh:** Tailscale Mesh VPN (`100.100.2.10`), Localhost (`127.0.0.1`), Cloudflare Zero Trust.
 
 ---
