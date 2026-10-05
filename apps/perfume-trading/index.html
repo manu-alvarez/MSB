@@ -3,170 +3,746 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perfume Trading — Luxury ERP — MSB Web Edition</title>
+  <title>Perfume Trading · Luxury ERP & B2B Wholesale Hub</title>
+  
+  <link rel="icon" type="image/svg+xml" href="../../icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #07090e;
-      --card-bg: rgba(13, 17, 26, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #d4af37;
-      --accent-glow: rgba(212, 175, 55, 0.4);
-      --text: #f1f5f9;
-      --muted: #94a3b8;
+      --bg-dark: #07080c;
+      --bg-card: rgba(14, 17, 26, 0.78);
+      --border-subtle: rgba(212, 175, 55, 0.15);
+      --border-gold: rgba(212, 175, 55, 0.4);
+
+      --gold-primary: #d4af37;
+      --gold-bright: #f5d77f;
+      --gold-glow: rgba(212, 175, 55, 0.35);
+
+      --neon-emerald: #10b981;
+      --neon-cyan: #00f0ff;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --font-luxury: 'Cinzel', serif;
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', sans-serif;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: radial-gradient(circle at 50% 0%, #111827 0%, var(--bg) 75%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+
+    /* TOP LUXURY HEADER */
+    header.erp-header {
+      background: rgba(10, 12, 18, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold-bright);
+      border-color: var(--gold-primary);
+    }
+    .brand-title-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .crown-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(245, 215, 127, 0.1));
+      border: 1px solid var(--gold-primary);
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      box-shadow: 0 0 20px var(--gold-glow);
+      color: var(--gold-primary);
     }
-    .container {
-      max-width: 840px;
+    .brand-title-box h1 {
+      font-family: var(--font-luxury);
+      font-size: 1.18rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      background: linear-gradient(90deg, #fff, var(--gold-bright));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-title-box span {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .currency-selector {
+      display: flex;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .curr-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .curr-btn.active {
+      background: var(--gold-primary);
+      color: #000;
+      box-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    /* MAIN WORKSPACE */
+    .erp-container {
+      flex: 1;
+      max-width: 1680px;
       width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 40px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px var(--accent-glow);
+      margin: 0 auto;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* FINANCIAL KPI CARDS */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       position: relative;
       overflow: hidden;
     }
-    .container::before {
+    .kpi-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
     }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 6px 14px;
-      border-radius: 100px;
-      font-size: 0.75rem;
+    .kpi-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .kpi-value {
+      font-family: var(--font-luxury);
+      font-size: 1.7rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 20px;
-    }
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
-    }
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
       color: #fff;
     }
-    p.description {
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
-      margin-bottom: 32px;
+    .kpi-sub {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--neon-emerald);
+      font-weight: 600;
     }
-    .features {
+
+    /* MAIN DUAL GRID */
+    .dual-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 36px;
+      grid-template-columns: 1fr 440px;
+      gap: 24px;
+      align-items: start;
     }
-    .feature-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
+
+    /* CATALOG & LOTS TABLE */
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      overflow: hidden;
     }
-    .feature-card h4 {
-      color: var(--accent);
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-    }
-    .feature-card p {
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.45;
-    }
-    .actions {
+    .panel-top {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
       display: flex;
       flex-wrap: wrap;
-      gap: 14px;
       align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      box-shadow: 0 4px 14px var(--accent-glow);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px var(--accent-glow);
-      filter: brightness(1.1);
-    }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-    .footer-note {
-      margin-top: 24px;
-      font-size: 0.8rem;
-      color: #64748b;
+    .panel-heading {
+      font-family: var(--font-luxury);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold-bright);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
     }
+    .search-input {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      color: #fff;
+      outline: none;
+      width: 240px;
+    }
+    .search-input:focus { border-color: var(--gold-primary); }
+
+    .lots-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .lots-table th {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 12px 18px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .lots-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: #cbd5e1;
+    }
+    .lots-table tr:hover {
+      background: rgba(212, 175, 55, 0.04);
+    }
+    .lot-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+    }
+    .lot-badge-bond {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+
+    .btn-add {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-bright);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-add:hover {
+      background: var(--gold-primary);
+      color: #000;
+      box-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    /* PROFORMA INVOICE / DEAL BUILDER */
+    .proforma-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .deal-summary {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .deal-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+    .deal-item-remove {
+      color: #f87171;
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-left: 8px;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .calc-row.total {
+      border-top: 1px solid var(--border-gold);
+      padding-top: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+    }
+
+    .btn-luxury {
+      width: 100%;
+      background: linear-gradient(135deg, #d4af37, #b89327);
+      border: none;
+      color: #000;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      padding: 13px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 16px var(--gold-glow);
+      transition: all 0.2s ease;
+    }
+    .btn-luxury:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+      box-shadow: 0 6px 22px var(--gold-glow);
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(15, 20, 35, 0.95);
+      border: 1px solid var(--gold-primary);
+      box-shadow: 0 0 20px var(--gold-glow);
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="badge"><span class="badge-dot"></span>LUXURY COMMERCE & ARBITRAGE</div>
-    <h1>Perfume Trading — Luxury ERP</h1>
-    <p class="description">ERP corporativo integral para comercialización, trazabilidad EAN y arbitraje mayorista de perfumería nicho de lujo con márgenes en tiempo real.</p>
 
-    <div class="features">
-      <div class="feature-card"><h4>Control de Inventario EAN</h4><p>Trazabilidad unitaria de lotes, batch codes de fragancias nicho y almacén sincronizado.</p></div><div class="feature-card"><h4>Motor de Arbitraje de Precios</h4><p>Comparación automática de catálogos mayoristas en Europa para detección de márgenes óptimos.</p></div><div class="feature-card"><h4>Pasarela B2B Segura</h4><p>Gestión de pedidos de clientes selectos, albaranes automáticos y facturación multidivisa.</p></div>
+  <!-- HEADER -->
+  <header class="erp-header">
+    <div class="brand-group">
+      <a href="../../index.html" class="back-btn" id="btn-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>MSB CONTROL</span>
+      </a>
+      <div class="brand-title-box">
+        <div class="crown-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14v2H5v-2z"></path></svg>
+        </div>
+        <div>
+          <h1>PERFUME TRADING</h1>
+          <span>LUXURY COMMODITIES ERP & WHOLESALE HUB</span>
+        </div>
+      </div>
     </div>
 
-    <div class="actions">
-      <a href="../../index.html" class="btn btn-secondary">← Volver a MSB Control</a>
-      <span class="btn btn-primary" style="opacity:0.7;cursor:default;">🖥️ Aplicación de Servidor Local</span>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div class="currency-selector">
+        <button class="curr-btn active" onclick="setCurrency('EUR')">EUR €</button>
+        <button class="curr-btn" onclick="setCurrency('USD')">USD $</button>
+        <button class="curr-btn" onclick="setCurrency('GBP')">GBP £</button>
+        <button class="curr-btn" onclick="setCurrency('AED')">AED د.إ</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="erp-container">
+
+    <!-- FINANCIAL KPIS -->
+    <section class="kpi-row">
+      <div class="kpi-card">
+        <span class="kpi-label">Volumen Operativo (Q4)</span>
+        <span class="kpi-value" id="kpiVol">€1.840.500</span>
+        <span class="kpi-sub">+14.2% vs mes ant.</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Lotes en Depósito Franco</span>
+        <span class="kpi-value">3.420 Uds</span>
+        <span class="kpi-sub" style="color:var(--neon-cyan);">Le Havre / Dubai Bonded</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Margen Bruto B2B</span>
+        <span class="kpi-value">32.8%</span>
+        <span class="kpi-sub">+3.4 pts arbitraje</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Partners Internacionales</span>
+        <span class="kpi-value">48 Casas</span>
+        <span class="kpi-sub">Francia, Italia, EAU, UK</span>
+      </div>
+    </section>
+
+    <!-- DUAL WORKSPACE -->
+    <div class="dual-grid">
+
+      <!-- LEFT: WHOLESALE LOTS -->
+      <section class="panel-card">
+        <div class="panel-top">
+          <div class="panel-heading">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            <span>Catálogo Mayorista de Alta Gama & Lotes Exclusivos</span>
+          </div>
+          <input type="text" class="search-input" id="lotSearch" placeholder="Buscar fragancia, lote o marca..." oninput="filterLots(this.value)">
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="lots-table">
+            <thead>
+              <tr>
+                <th>Lote / Ref</th>
+                <th>Casa / Fragancia</th>
+                <th>Formato</th>
+                <th>Incoterm / Origen</th>
+                <th>Stock</th>
+                <th>Precio Mayorista</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="lotsTbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RIGHT: PROFORMA INVOICE BUILDER -->
+      <aside class="panel-card" style="padding:22px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <h3 style="font-family:var(--font-luxury);font-size:1.15rem;color:var(--gold-bright);">
+            Cotizador B2B & Proforma
+          </h3>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="proformaNum">PRF-2026-904</span>
+        </div>
+
+        <!-- Deal Lots Items -->
+        <div class="deal-summary" id="dealList">
+          <p style="font-size:0.78rem;color:var(--text-dim);text-align:center;">No hay lotes añadidos al albarán</p>
+        </div>
+
+        <!-- Calculations -->
+        <div style="display:flex;flex-direction:column;gap:8px;margin:18px 0;">
+          <div class="calc-row"><span>Subtotal Lotes:</span><span id="subTotal">€0,00</span></div>
+          <div class="calc-row"><span>Descuento por Volumen (10%):</span><span id="discountVal" style="color:var(--neon-emerald);">-€0,00</span></div>
+          <div class="calc-row"><span>Seguro & Transporte CIF:</span><span id="shippingVal">€180,00</span></div>
+          <div class="calc-row"><span>Aranceles e IVA UE (21%):</span><span id="taxVal">€0,00</span></div>
+          <div class="calc-row total"><span>Total Operación Proforma:</span><span id="finalTotal">€0,00</span></div>
+        </div>
+
+        <button class="btn-luxury" onclick="generateProformaPDF()">
+          <span>📜 Emitir Factura Proforma B2B</span>
+        </button>
+      </aside>
+
     </div>
 
-    <div class="footer-note">
-      <span>ℹ️ Esta aplicación requiere ejecución en servidor local (macOS). Página de demostración / portfolio.</span>
-    </div>
+  </main>
+
+  <div class="toast" id="toast">
+    <span>✨</span>
+    <span id="toastMsg">Operación completada</span>
   </div>
+
+  <script>
+    // Audio feedback
+    let audioCtx = null;
+    function playBeep(freq = 600, duration = 0.08) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function showToast(msg) {
+      playBeep(880, 0.12);
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // MULTI-CURRENCY
+    let currentCurrency = 'EUR';
+    const CURRENCY_RATES = {
+      EUR: { symbol: '€', rate: 1.0 },
+      USD: { symbol: '$', rate: 1.09 },
+      GBP: { symbol: '£', rate: 0.86 },
+      AED: { symbol: 'د.إ', rate: 4.01 }
+    };
+
+    function setCurrency(curr) {
+      currentCurrency = curr;
+      playBeep(700, 0.05);
+      document.querySelectorAll('.curr-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.includes(curr));
+      });
+      renderLots();
+      renderDeal();
+      showToast(`Divisa cambiada a ${curr}`);
+    }
+
+    function formatMoney(amountEUR) {
+      const c = CURRENCY_RATES[currentCurrency];
+      const val = amountEUR * c.rate;
+      return `${c.symbol}${val.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    // INVENTORY LOTS
+    const LOTS = [
+      { id: "LOT-CRD-882", brand: "Creed", name: "Aventus 10th Anniversary", format: "100 ml EDP", origin: "FOB Paris", stock: 140, priceEUR: 165.00, bonded: true },
+      { id: "LOT-MFK-540", brand: "Maison Francis Kurkdjian", name: "Baccarat Rouge 540 Extrait", format: "70 ml Extrait", origin: "EXW Geneve", stock: 85, priceEUR: 215.00, bonded: true },
+      { id: "LOT-TF-LC01", brand: "Tom Ford", name: "Lost Cherry Private Blend", format: "100 ml EDP", origin: "CIF Madrid", stock: 120, priceEUR: 185.00, bonded: false },
+      { id: "LOT-PDM-LAY", brand: "Parfums de Marly", name: "Layton Royal Essence", format: "125 ml EDP", origin: "FOB Dubai", stock: 210, priceEUR: 135.00, bonded: true },
+      { id: "LOT-KLN-ASH", brand: "Kilian Paris", name: "Angels' Share Cognac Accord", format: "50 ml EDP", origin: "CIF Barcelona", stock: 95, priceEUR: 142.00, bonded: false },
+      { id: "LOT-XRF-NAX", brand: "Xerjoff", name: "1861 Naxos Honey & Tobacco", format: "100 ml EDP", origin: "EXW Milano", stock: 110, priceEUR: 138.00, bonded: true },
+      { id: "LOT-CHR-SLV", brand: "Dior", name: "Sauvage Elixir Concentrated", format: "100 ml Parfum", origin: "CIF Valencia", stock: 260, priceEUR: 112.00, bonded: false },
+      { id: "LOT-CHL-BLE", brand: "Chanel", name: "Bleu de Chanel Parfum", format: "100 ml Parfum", origin: "FOB Le Havre", stock: 320, priceEUR: 98.00, bonded: true }
+    ];
+
+    let dealItems = [
+      { lotId: "LOT-CRD-882", qty: 20 },
+      { lotId: "LOT-MFK-540", qty: 15 }
+    ];
+
+    function renderLots(filter = '') {
+      const tbody = document.getElementById('lotsTbody');
+      tbody.innerHTML = '';
+
+      const filtered = LOTS.filter(l => {
+        if (!filter) return true;
+        const q = filter.toLowerCase();
+        return l.brand.toLowerCase().includes(q) || l.name.toLowerCase().includes(q) || l.id.toLowerCase().includes(q);
+      });
+
+      filtered.forEach(l => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="lot-badge ${l.bonded ? 'lot-badge-bond' : ''}">${l.id}</span></td>
+          <td><strong>${l.brand}</strong><br><span style="font-size:0.75rem;color:var(--text-muted);">${l.name}</span></td>
+          <td>${l.format}</td>
+          <td>${l.origin}</td>
+          <td style="font-family:var(--font-mono);font-weight:700;">${l.stock} uds</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:var(--gold-bright);">${formatMoney(l.priceEUR)}</td>
+          <td>
+            <button class="btn-add" onclick="addToDeal('${l.id}')">+ Cotizar</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterLots(val) {
+      renderLots(val);
+    }
+
+    function addToDeal(lotId) {
+      const existing = dealItems.find(item => item.lotId === lotId);
+      if (existing) {
+        existing.qty += 10;
+      } else {
+        dealItems.push({ lotId, qty: 10 });
+      }
+      playBeep(750, 0.06);
+      renderDeal();
+      showToast("Lote agregado al cotizador B2B");
+    }
+
+    function removeFromDeal(lotId) {
+      dealItems = dealItems.filter(item => item.lotId !== lotId);
+      playBeep(450, 0.05);
+      renderDeal();
+    }
+
+    function renderDeal() {
+      const container = document.getElementById('dealList');
+      if (dealItems.length === 0) {
+        container.innerHTML = `<p style="font-size:0.78rem;color:var(--text-dim);text-align:center;">No hay lotes añadidos al albarán</p>`;
+        updateTotals(0);
+        return;
+      }
+
+      container.innerHTML = '';
+      let subtotalEUR = 0;
+
+      dealItems.forEach(item => {
+        const lot = LOTS.find(l => l.id === item.lotId);
+        if (!lot) return;
+
+        const lineTotalEUR = lot.priceEUR * item.qty;
+        subtotalEUR += lineTotalEUR;
+
+        const div = document.createElement('div');
+        div.className = 'deal-item';
+        div.innerHTML = `
+          <div>
+            <strong>${lot.brand} ${lot.name}</strong><br>
+            <span style="font-size:0.7rem;color:var(--text-dim);">${item.qty} uds × ${formatMoney(lot.priceEUR)}</span>
+          </div>
+          <div style="display:flex;align-items:center;">
+            <span style="font-weight:700;color:var(--gold-bright);">${formatMoney(lineTotalEUR)}</span>
+            <span class="deal-item-remove" onclick="removeFromDeal('${lot.id}')" title="Eliminar">✕</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      updateTotals(subtotalEUR);
+    }
+
+    function updateTotals(subtotalEUR) {
+      const discountEUR = subtotalEUR * 0.10; // 10% volume discount
+      const shippingEUR = subtotalEUR > 0 ? 180 : 0;
+      const taxableEUR = subtotalEUR - discountEUR + shippingEUR;
+      const taxEUR = taxableEUR * 0.21;
+      const totalEUR = taxableEUR + taxEUR;
+
+      document.getElementById('subTotal').innerText = formatMoney(subtotalEUR);
+      document.getElementById('discountVal').innerText = `-${formatMoney(discountEUR)}`;
+      document.getElementById('shippingVal').innerText = formatMoney(shippingEUR);
+      document.getElementById('taxVal').innerText = formatMoney(taxEUR);
+      document.getElementById('finalTotal').innerText = formatMoney(totalEUR);
+    }
+
+    function generateProformaPDF() {
+      if (dealItems.length === 0) {
+        showToast("Por favor añade al menos un lote al cotizador");
+        return;
+      }
+
+      let itemsText = "";
+      dealItems.forEach(item => {
+        const lot = LOTS.find(l => l.id === item.lotId);
+        itemsText += `- ${lot.brand} - ${lot.name} (${item.qty} Uds): ${formatMoney(lot.priceEUR * item.qty)}\n`;
+      });
+
+      const proformaDoc = `========================================================
+PERFUME TRADING LUXURY B2B — PROFORMA INVOICE
+========================================================
+Número Proforma:   PRF-2026-904
+Fecha de Emisión:  ${new Date().toLocaleDateString('es-ES')}
+Compañía Emisora:  PERFUME TRADING GLOBAL SL (NIF: ES-B88421092)
+Depósito Aduanero: Le Havre Bonded Warehouse Terminal 4
+Divisa Operación:  ${currentCurrency}
+--------------------------------------------------------
+LOTES FACTURADOS:
+${itemsText}
+--------------------------------------------------------
+Subtotal:              ${document.getElementById('subTotal').innerText}
+Descuento Volumen:     ${document.getElementById('discountVal').innerText}
+Flete & Seguro CIF:    ${document.getElementById('shippingVal').innerText}
+Aranceles / IVA:       ${document.getElementById('taxVal').innerText}
+--------------------------------------------------------
+TOTAL PROFORMA:        ${document.getElementById('finalTotal').innerText}
+--------------------------------------------------------
+Términos de Pago:      Carta de Crédito Irrevocable / SEPA B2B Escrow
+Plazo de Entrega:      48 horas desde confirmación de fondos
+========================================================
+Firma Comercial: [PERFUME-TRADING-SWIFT-AUTHORIZED]
+`;
+      const blob = new Blob([proformaDoc], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Proforma-PRF-2026-904-${currentCurrency}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("Factura Proforma oficial descargada");
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderLots();
+      renderDeal();
+    });
+  </script>
 </body>
 </html>

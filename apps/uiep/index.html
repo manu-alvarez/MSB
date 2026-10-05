@@ -3,170 +3,658 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UIEP — Universal Intelligence Engine — MSB Web Edition</title>
+  <title>UIEP · Universal Intelligence Engine Platform</title>
+  
+  <link rel="icon" type="image/svg+xml" href="../../icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #07090e;
-      --card-bg: rgba(13, 17, 26, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #10b981;
-      --accent-glow: rgba(16, 185, 129, 0.4);
-      --text: #f1f5f9;
-      --muted: #94a3b8;
+      --bg-dark: #060911;
+      --bg-card: rgba(13, 18, 30, 0.8);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-green: rgba(34, 197, 94, 0.4);
+
+      --neon-green: #22c55e;
+      --neon-cyan: #00f0ff;
+      --neon-purple: #a855f7;
+      --neon-emerald: #10b981;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', sans-serif;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: radial-gradient(circle at 50% 0%, #111827 0%, var(--bg) 75%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
     }
-    .container {
-      max-width: 840px;
-      width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 40px;
+
+    /* TOP HEADER */
+    header.uiep-header {
+      background: rgba(10, 15, 26, 0.95);
       backdrop-filter: blur(20px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px var(--accent-glow);
-      position: relative;
-      overflow: hidden;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
-    .container::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
-    .badge {
-      display: inline-flex;
+    .back-btn {
+      display: flex;
       align-items: center;
       gap: 6px;
+      padding: 6px 12px;
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 6px 14px;
-      border-radius: 100px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
       font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 20px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      transition: all 0.2s ease;
     }
-    .badge-dot {
+    .back-btn:hover {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--neon-green);
+      border-color: var(--neon-green);
+    }
+    .brand-title-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .uiep-symbol {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(0, 240, 255, 0.2));
+      border: 1px solid var(--neon-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.35);
+      color: var(--neon-green);
+    }
+    .brand-title-box h1 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      background: linear-gradient(90deg, #fff, var(--neon-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-title-box span {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .badge-pipeline {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--neon-green);
+      font-weight: 700;
+    }
+    .pulse-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
+      background: var(--neon-green);
+      box-shadow: 0 0 8px var(--neon-green);
+      animation: pulse 1.6s infinite;
     }
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
-      color: #fff;
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
     }
-    p.description {
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 36px;
-    }
-    .feature-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-    }
-    .feature-card h4 {
-      color: var(--accent);
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-    }
-    .feature-card p {
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.45;
-    }
-    .actions {
+
+    /* MAIN CONTAINER */
+    .uiep-workspace {
+      flex: 1;
+      max-width: 1680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
+      flex-direction: column;
+      gap: 24px;
     }
-    .btn {
-      display: inline-flex;
+
+    /* TOP ARCHITECTURE DIAGRAM CANVAS */
+    .arch-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .arch-card-header {
+      display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .arch-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* PIPELINE FLOW NODES */
+    .pipeline-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      padding: 10px 0;
+      overflow-x: auto;
+    }
+    .flow-node {
+      background: rgba(18, 24, 40, 0.9);
+      border: 1px solid var(--border-subtle);
       border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
+      padding: 16px;
+      min-width: 170px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
       transition: all 0.2s ease;
       cursor: pointer;
     }
-    .btn-primary {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      box-shadow: 0 4px 14px var(--accent-glow);
-    }
-    .btn-primary:hover {
+    .flow-node:hover, .flow-node.active {
+      border-color: var(--neon-green);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px var(--accent-glow);
-      filter: brightness(1.1);
     }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      border: 1px solid var(--border);
+    .flow-node-step {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-weight: 700;
     }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+    .flow-node-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
     }
-    .footer-note {
-      margin-top: 24px;
-      font-size: 0.8rem;
-      color: #64748b;
+    .flow-node-meta {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--neon-cyan);
+    }
+    .flow-arrow {
+      color: var(--text-dim);
+      font-size: 1.2rem;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      animation: pulseArrow 1.5s infinite alternate;
     }
+    @keyframes pulseArrow {
+      0% { opacity: 0.3; transform: translateX(-2px); }
+      100% { opacity: 1; transform: translateX(2px); color: var(--neon-green); }
+    }
+
+    /* LOWER DUAL WORKSPACE */
+    .lower-grid {
+      display: grid;
+      grid-template-columns: 1fr 450px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ENTITY REGISTRY TABLE */
+    .table-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+    .table-panel-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .entity-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .entity-table th {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 12px 20px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .entity-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: #cbd5e1;
+    }
+    .entity-table tr:hover {
+      background: rgba(34, 197, 94, 0.04);
+      cursor: pointer;
+    }
+    .entity-table tr.selected {
+      background: rgba(34, 197, 94, 0.1);
+      border-left: 3px solid var(--neon-green);
+    }
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+    .badge-active { background: rgba(34, 197, 94, 0.15); color: var(--neon-green); }
+    .badge-ready { background: rgba(0, 240, 255, 0.15); color: var(--neon-cyan); }
+
+    /* INFERENCE SIMULATOR & TESTING */
+    .sim-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .sim-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sim-textarea {
+      width: 100%;
+      height: 90px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #fff;
+      outline: none;
+      resize: none;
+    }
+    .sim-textarea:focus { border-color: var(--neon-green); }
+
+    .btn-sim {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(0, 240, 255, 0.25));
+      border: 1px solid var(--neon-green);
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.25);
+      transition: all 0.2s ease;
+    }
+    .btn-sim:hover {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.4), rgba(0, 240, 255, 0.4));
+      transform: translateY(-1px);
+    }
+
+    .output-console {
+      background: #04060a;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      line-height: 1.5;
+      color: #a7f3d0;
+      min-height: 140px;
+      max-height: 200px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(15, 20, 35, 0.95);
+      border: 1px solid var(--neon-green);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.35);
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="badge"><span class="badge-dot"></span>DISTRIBUTED NEURAL PLATFORM</div>
-    <h1>UIEP — Universal Intelligence Engine</h1>
-    <p class="description">Plataforma de orquestación distribuida de modelos neuronales locales (Ollama), federación de agentes y procesamiento de inferencia de alta eficiencia.</p>
 
-    <div class="features">
-      <div class="feature-card"><h4>Orquestación Multimodelo</h4><p>Enrutamiento dinámico entre DeepSeek-R1, Qwen 3.5, Phi-4 y Gemma según complejidad del prompt.</p></div><div class="feature-card"><h4>Malla de Agentes Cooperativos</h4><p>Ejecución paralela de tareas de código, análisis de datos y redacción técnica.</p></div><div class="feature-card"><h4>Telemetría de Cómputo</h4><p>Monitorización de VRAM, latencia de tokens y tasa de respuesta en nodo macOS.</p></div>
+  <!-- HEADER -->
+  <header class="uiep-header">
+    <div class="brand-group">
+      <a href="../../index.html" class="back-btn" id="btn-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>MSB CONTROL</span>
+      </a>
+      <div class="brand-title-box">
+        <div class="uiep-symbol">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        </div>
+        <div>
+          <h1>UIEP PLATFORM</h1>
+          <span>UNIVERSAL INTELLIGENCE ENGINE & ARCHITECTURE CONSTRUCTOR</span>
+        </div>
+      </div>
     </div>
 
-    <div class="actions">
-      <a href="../../index.html" class="btn btn-secondary">← Volver a MSB Control</a>
-      <span class="btn btn-primary" style="opacity:0.7;cursor:default;">🖥️ Aplicación de Servidor Local</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="badge-pipeline">
+        <span class="pulse-dot"></span>
+        <span>DESIGN ENGINE: ACTIVE</span>
+      </div>
+      <button class="back-btn" onclick="exportBlueprint()" style="color:#fff;border-color:var(--neon-green);">
+        <span>💾 Exportar Blueprint JSON</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="uiep-workspace">
+
+    <!-- TOP PIPELINE ARCHITECTURE FLOW -->
+    <section class="arch-card">
+      <div class="arch-card-header">
+        <div class="arch-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          <span>Canal de Inferencia & Topología Neuronal Reactiva</span>
+        </div>
+        <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">Tasa de Flujo: 240 req/s · Latencia p99: 18ms</span>
+      </div>
+
+      <div class="pipeline-flow">
+        <div class="flow-node active" onclick="inspectNode('gateway')">
+          <span class="flow-node-step">Paso 01</span>
+          <span class="flow-node-title">API Gateway</span>
+          <span class="flow-node-meta">Fastify HTTP & WS</span>
+        </div>
+        <div class="flow-arrow">➔</div>
+
+        <div class="flow-node" onclick="inspectNode('normalizer')">
+          <span class="flow-node-step">Paso 02</span>
+          <span class="flow-node-title">Normalizador Semántico</span>
+          <span class="flow-node-meta">Token Sanitizer & AST</span>
+        </div>
+        <div class="flow-arrow">➔</div>
+
+        <div class="flow-node" onclick="inspectNode('reasoner')">
+          <span class="flow-node-step">Paso 03</span>
+          <span class="flow-node-title">Núcleo LLM / RAG</span>
+          <span class="flow-node-meta">Ollama / DeepSeek-R1</span>
+        </div>
+        <div class="flow-arrow">➔</div>
+
+        <div class="flow-node" onclick="inspectNode('memory')">
+          <span class="flow-node-step">Paso 04</span>
+          <span class="flow-node-title">Memoria HNSW</span>
+          <span class="flow-node-meta">Embeddings Vector Store</span>
+        </div>
+        <div class="flow-arrow">➔</div>
+
+        <div class="flow-node" onclick="inspectNode('dispatcher')">
+          <span class="flow-node-step">Paso 05</span>
+          <span class="flow-node-title">MCP Dispatcher</span>
+          <span class="flow-node-meta">Tool Execution Hub</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOWER WORKSPACE: REGISTRY & SIMULATOR -->
+    <div class="lower-grid">
+
+      <!-- LEFT: ENTITY REGISTRY -->
+      <section class="table-panel">
+        <div class="table-panel-header">
+          <h3 style="font-family:var(--font-display);font-size:1.05rem;color:#fff;">
+            Registro Canónico de Entidades Cognitivas
+          </h3>
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--neon-green);" id="entityCount">5 Entidades</span>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="entity-table">
+            <thead>
+              <tr>
+                <th>ID Entidad</th>
+                <th>Nombre / Tipo</th>
+                <th>Protocolo</th>
+                <th>Latencia</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="entitiesTbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RIGHT: LIVE INFERENCE SIMULATOR -->
+      <aside class="sim-panel">
+        <div class="sim-title">
+          <span>⚡ Simulador de Inferencia</span>
+          <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--neon-cyan);">Mock Engine</span>
+        </div>
+
+        <p style="font-size:0.78rem;color:var(--text-muted);">
+          Envía una instrucción cognitiva al pipeline para observar el flujo de ejecución:
+        </p>
+
+        <textarea class="sim-textarea" id="simPrompt">"Clasificar y orquestar tarea multi-agente con extracción de entidades semánticas"</textarea>
+
+        <button class="btn-sim" onclick="runInferenceTest()">
+          <span>▶ Disparar Inferencia en Vivo</span>
+        </button>
+
+        <div class="output-console" id="consoleOut">> Esperando disparo de inferencia...</div>
+      </aside>
+
     </div>
 
-    <div class="footer-note">
-      <span>ℹ️ Esta aplicación requiere ejecución en servidor local (macOS). Página de demostración / portfolio.</span>
-    </div>
+  </main>
+
+  <div class="toast" id="toast">
+    <span>✨</span>
+    <span id="toastMsg">Operación completada</span>
   </div>
+
+  <script>
+    // Audio synthesizer
+    let audioCtx = null;
+    function playBeep(freq = 600, duration = 0.08) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function showToast(msg) {
+      playBeep(880, 0.12);
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // ENTITIES DATABASE
+    const ENTITIES = [
+      { id: "ENT-01", name: "Cognitive Intent Router", type: "Neural Classifier", proto: "gRPC / HTTP2", latency: "14ms", status: "active" },
+      { id: "ENT-02", name: "Swarm Consensus Hub", type: "Multi-Agent Coordinator", proto: "WebSocket SSE", latency: "28ms", status: "active" },
+      { id: "ENT-03", name: "HNSW Semantic Memory", type: "Vector Indexer (1536d)", proto: "Memory Cache", latency: "8ms", status: "active" },
+      { id: "ENT-04", name: "MCP Dynamic Dispatcher", type: "Tool Protocol Broker", proto: "JSON-RPC 2.0", latency: "22ms", status: "ready" },
+      { id: "ENT-05", name: "Telemetry Event Bus", type: "Audit & Streamer", proto: "ZeroMQ / Redis", latency: "5ms", status: "active" }
+    ];
+
+    let selectedEntityId = ENTITIES[0].id;
+
+    function renderEntities() {
+      const tbody = document.getElementById('entitiesTbody');
+      tbody.innerHTML = '';
+
+      ENTITIES.forEach(e => {
+        const tr = document.createElement('tr');
+        if (e.id === selectedEntityId) tr.className = 'selected';
+        tr.onclick = () => selectEntity(e.id);
+
+        tr.innerHTML = `
+          <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">${e.id}</td>
+          <td><strong>${e.name}</strong><br><span style="font-size:0.72rem;color:var(--text-dim);">${e.type}</span></td>
+          <td style="font-family:var(--font-mono);">${e.proto}</td>
+          <td style="font-family:var(--font-mono);color:var(--neon-green);">${e.latency}</td>
+          <td><span class="badge-status ${e.status === 'active' ? 'badge-active' : 'badge-ready'}">${e.status.toUpperCase()}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function selectEntity(id) {
+      selectedEntityId = id;
+      playBeep(720, 0.05);
+      renderEntities();
+      const entity = ENTITIES.find(e => e.id === id);
+      if (entity) {
+        showToast(`Entidad seleccionada: ${entity.name}`);
+      }
+    }
+
+    function inspectNode(nodeKey) {
+      playBeep(650, 0.05);
+      document.querySelectorAll('.flow-node').forEach(n => n.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      showToast(`Inspeccionando nodo de topología: ${nodeKey.toUpperCase()}`);
+    }
+
+    function runInferenceTest() {
+      const prompt = document.getElementById('simPrompt').value;
+      const consoleOut = document.getElementById('consoleOut');
+      playBeep(520, 0.1);
+
+      consoleOut.innerText = `> Inyectando payload a Gateway...
+> Tokenizando: "${prompt.slice(0, 40)}..."`;
+
+      setTimeout(() => {
+        playBeep(640, 0.08);
+        consoleOut.innerText += `\n> RAG: Vector search OK (score 0.942)
+> Inferencia LLM ejecutada en 38ms`;
+      }, 400);
+
+      setTimeout(() => {
+        playBeep(880, 0.12);
+        consoleOut.innerText += `\n> MCP Dispatcher: 2 herramientas asignadas
+> RESPUESTA FINAL: { status: "COMPLETED", routingScore: 0.998, consensus: true }
+> Pipeline finalizado con éxito (Total: 64ms)`;
+        showToast("Inferencia completada en 64ms");
+      }, 900);
+    }
+
+    function exportBlueprint() {
+      const blueprint = {
+        name: "UIEP Universal Architecture Blueprint",
+        version: "2026.4",
+        entities: ENTITIES,
+        pipeline: ["gateway", "normalizer", "reasoner", "memory", "dispatcher"],
+        generatedAt: new Date().toISOString()
+      };
+      const blob = new Blob([JSON.stringify(blueprint, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "uiep-architecture-blueprint.json";
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast("Blueprint de arquitectura descargado");
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderEntities();
+    });
+  </script>
 </body>
 </html>

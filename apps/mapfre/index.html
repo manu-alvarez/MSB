@@ -3,170 +3,820 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAPFRE Infocol — Peritación Inteligente — MSB Web Edition</title>
+  <title>MAPFRE Infocol · Peritación Inteligente & OCR Siniestros</title>
+  
+  <link rel="icon" type="image/svg+xml" href="../../icons/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #07090e;
-      --card-bg: rgba(13, 17, 26, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --accent: #ef4444;
-      --accent-glow: rgba(239, 68, 68, 0.4);
-      --text: #f1f5f9;
-      --muted: #94a3b8;
+      --bg-dark: #080a10;
+      --bg-card: rgba(15, 20, 32, 0.75);
+      --bg-card-hover: rgba(22, 30, 48, 0.9);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      
+      --mapfre-red: #d81e05;
+      --mapfre-red-glow: rgba(216, 30, 5, 0.35);
+      --accent-cyan: #00f0ff;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Inter', sans-serif;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: radial-gradient(circle at 50% 0%, #111827 0%, var(--bg) 75%);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+
+    /* TOP HEADER */
+    header.mapfre-header {
+      background: rgba(12, 16, 26, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-color: var(--mapfre-red);
+    }
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mapfre-logo-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #d81e05, #991b1b);
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.1rem;
+      box-shadow: 0 0 20px var(--mapfre-red-glow);
     }
-    .container {
-      max-width: 840px;
-      width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+    .logo-text h1 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      color: #fff;
+    }
+    .logo-text span {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .header-pills {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
       border-radius: 20px;
-      padding: 40px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px var(--accent-glow);
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pill-green {
+      color: var(--accent-emerald);
+      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    /* MAIN CONTAINER */
+    .main-content {
+      flex: 1;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* STATS BANNER */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(216, 30, 5, 0.4);
+    }
+    .stat-info span {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .stat-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-top: 4px;
+      color: #fff;
+    }
+    .stat-trend {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+    }
+    .trend-up { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+    .trend-down { background: rgba(216, 30, 5, 0.15); color: #f87171; }
+
+    /* WORKSPACE GRID */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* TABLE SECTION */
+    .card-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      overflow: hidden;
+    }
+    .panel-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .filter-group {
+      display: flex;
+      gap: 8px;
+    }
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: rgba(216, 30, 5, 0.2);
+      border-color: var(--mapfre-red);
+      color: #fff;
+    }
+
+    /* TABLE */
+    .claims-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .claims-table th {
+      padding: 14px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .claims-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+    }
+    .claims-table tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+    }
+    .claims-table tr.selected {
+      background: rgba(216, 30, 5, 0.12);
+      border-left: 3px solid var(--mapfre-red);
+    }
+    .badge-claim {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .badge-approved { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+    .badge-review { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+    .badge-pending { background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); }
+
+    /* OCR SCANNER PANEL */
+    .ocr-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .ocr-dropzone {
+      border: 2px dashed rgba(216, 30, 5, 0.4);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      background: rgba(216, 30, 5, 0.03);
+      cursor: pointer;
+      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
     }
-    .container::before {
-      content: '';
+    .ocr-dropzone:hover {
+      border-color: var(--mapfre-red);
+      background: rgba(216, 30, 5, 0.07);
+    }
+    .dropzone-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      border-radius: 12px;
+      background: rgba(216, 30, 5, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--mapfre-red);
+    }
+    .laser-scan-line {
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--mapfre-red), var(--accent-cyan), transparent);
+      box-shadow: 0 0 12px var(--mapfre-red);
+      display: none;
+      animation: laser 1.4s ease-in-out infinite alternate;
     }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 6px 14px;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 20px;
+    @keyframes laser {
+      0% { top: 0%; }
+      100% { top: 100%; }
     }
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
-    }
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
+
+    /* ACTION BUTTONS */
+    .btn-action {
+      background: linear-gradient(135deg, #d81e05, #b91c1c);
       color: #fff;
-    }
-    p.description {
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
-      margin-bottom: 32px;
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 36px;
-    }
-    .feature-card {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px;
-    }
-    .feature-card h4 {
-      color: var(--accent);
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-    }
-    .feature-card p {
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.45;
-    }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #000;
       border: none;
-      box-shadow: 0 4px 14px var(--accent-glow);
+      border-radius: 10px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      box-shadow: 0 4px 14px var(--mapfre-red-glow);
+      transition: all 0.2s ease;
     }
-    .btn-primary:hover {
+    .btn-action:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px var(--accent-glow);
+      box-shadow: 0 6px 20px var(--mapfre-red-glow);
       filter: brightness(1.1);
     }
-    .btn-secondary {
+    .btn-outline {
       background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      box-shadow: none;
     }
-    .btn-secondary:hover {
+    .btn-outline:hover {
       background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: #fff;
     }
-    .footer-note {
-      margin-top: 24px;
-      font-size: 0.8rem;
-      color: #64748b;
+
+    /* DETAIL MODAL / SLIDE-IN */
+    .detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .detail-header {
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 14px;
+    }
+    .detail-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 14px;
+      border-radius: 10px;
+    }
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+    }
+    .breakdown-row.total {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: rgba(15, 20, 35, 0.95);
+      border: 1px solid var(--mapfre-red);
+      box-shadow: 0 0 20px var(--mapfre-red-glow);
+      padding: 12px 18px;
+      border-radius: 8px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      z-index: 100;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="badge"><span class="badge-dot"></span>ENTERPRISE ERP & OCR</div>
-    <h1>MAPFRE Infocol — Peritación Inteligente</h1>
-    <p class="description">Sistema corporativo de automatización pericial, extracción OCR inteligente de pólizas y expedientes, y generación de informes de daños en tiempo real.</p>
 
-    <div class="features">
-      <div class="feature-card"><h4>Extracción OCR Neuronal</h4><p>Digitalización automática de siniestros, presupuestos de talleres y pólizas con un 99.4% de precisión.</p></div><div class="feature-card"><h4>Auditoría Pericial Automatizada</h4><p>Cálculo de baremos, depreciación de piezas y validación contra base de datos oficial.</p></div><div class="feature-card"><h4>Exportación Instantánea</h4><p>Generación de informes ejecutivos en PDF/Excel para aseguradoras y tramitadores.</p></div>
+  <!-- TOP HEADER -->
+  <header class="mapfre-header">
+    <div class="brand-group">
+      <a href="../../index.html" class="back-btn" id="btn-back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>MSB CONTROL</span>
+      </a>
+      <div class="logo-badge">
+        <div class="mapfre-logo-box">M</div>
+        <div class="logo-text">
+          <h1>MAPFRE INFOCOL</h1>
+          <span>PERITACIÓN INTELIGENTE & OCR SINIESTROS</span>
+        </div>
+      </div>
     </div>
 
-    <div class="actions">
-      <a href="../../index.html" class="btn btn-secondary">← Volver a MSB Control</a>
-      <span class="btn btn-primary" style="opacity:0.7;cursor:default;">🖥️ Aplicación de Servidor Local</span>
+    <div class="header-pills">
+      <div class="pill pill-green">
+        <span style="width:6px;height:6px;border-radius:50%;background:var(--accent-emerald);"></span>
+        <span>BAREMO AUDATEX 2026 ACTIVO</span>
+      </div>
+      <div class="pill">
+        <span>RED: VÍA GITHUB PAGES WEB</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW -->
+  <div class="main-content">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-info">
+          <span>Expedientes Tramitados</span>
+          <h3 id="statTotal">142</h3>
+        </div>
+        <span class="stat-trend trend-up">+18% mes</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <span>Tiempo Medio Pericial</span>
+          <h3>1m 24s</h3>
+        </div>
+        <span class="stat-trend trend-up">-32% tiempo</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <span>Aprobación Automática</span>
+          <h3>91.7%</h3>
+        </div>
+        <span class="stat-trend trend-up">Confianza IA</span>
+      </div>
+      <div class="stat-card">
+        <div class="stat-info">
+          <span>Ahorro Estimado Mapfre</span>
+          <h3>€42.850</h3>
+        </div>
+        <span class="stat-trend trend-up">+24% efic.</span>
+      </div>
     </div>
 
-    <div class="footer-note">
-      <span>ℹ️ Esta aplicación requiere ejecución en servidor local (macOS). Página de demostración / portfolio.</span>
+    <!-- WORKSPACE -->
+    <div class="workspace-grid">
+
+      <!-- LEFT: CLAIMS TABLE -->
+      <section class="card-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Bandeja de Expedientes Activos</span>
+          </div>
+          <div class="filter-group">
+            <button class="filter-btn active" onclick="filterStatus('all')">Todos</button>
+            <button class="filter-btn" onclick="filterStatus('aprobado')">Aprobados</button>
+            <button class="filter-btn" onclick="filterStatus('revision')">En Revisión</button>
+            <button class="filter-btn" onclick="filterStatus('pendiente')">Pendientes</button>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="claims-table">
+            <thead>
+              <tr>
+                <th>ID Expediente</th>
+                <th>Vehículo / Matrícula</th>
+                <th>Asegurado</th>
+                <th>Tipo Daño</th>
+                <th>Importe</th>
+                <th>Estado IA</th>
+              </tr>
+            </thead>
+            <tbody id="claimsTbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RIGHT: OCR SCANNER & DETAIL INSPECTOR -->
+      <aside class="ocr-panel">
+
+        <!-- OCR Upload Card -->
+        <div class="card-panel" style="padding:20px;">
+          <h4 style="font-family:var(--font-display);font-size:0.95rem;margin-bottom:12px;color:#fff;">
+            📸 Escanear Parte Amistoso / Factura
+          </h4>
+          <div class="ocr-dropzone" id="dropzone" onclick="triggerOCRScan()">
+            <div class="laser-scan-line" id="laserLine"></div>
+            <div class="dropzone-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <p style="font-size:0.85rem;font-weight:700;color:#fff;margin-bottom:4px;">Haz clic para subir o simular OCR</p>
+            <p style="font-size:0.75rem;color:var(--text-muted);">PDF, JPG o PNG de siniestros</p>
+          </div>
+          <button class="btn-action" style="margin-top:14px;" onclick="simulateNewClaim()">
+            <span>⚡ Escanear Nuevo Siniestro</span>
+          </button>
+        </div>
+
+        <!-- Selected Claim Detail -->
+        <div class="detail-card" id="detailBox">
+          <div class="detail-header">
+            <div>
+              <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);" id="detId">EXP-2026-0841</span>
+              <h3 style="font-family:var(--font-display);font-size:1.15rem;color:#fff;" id="detVehicle">Mercedes-Benz Clase C</h3>
+            </div>
+            <span class="badge-claim badge-approved" id="detBadge">Aprobado</span>
+          </div>
+
+          <div style="font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:6px;">
+            <div><strong>Asegurado:</strong> <span id="detOwner">Manuel Álvarez Diánez</span></div>
+            <div><strong>Póliza:</strong> <span id="detPolicy">MAP-AUT-994218-A</span></div>
+            <div><strong>Taller Asignado:</strong> <span id="detGarage">Talleres Oficiales Mapfre Norte</span></div>
+            <div><strong>Evaluación IA:</strong> <span id="detVerdict" style="color:var(--accent-emerald);">Conforme a baremo estándar</span></div>
+          </div>
+
+          <div class="detail-breakdown">
+            <div class="breakdown-row"><span>Mano de Obra (4.5h)</span><span id="detLabor">€247,50</span></div>
+            <div class="breakdown-row"><span>Pintura & Materiales</span><span id="detPaint">€380,00</span></div>
+            <div class="breakdown-row"><span>Recambios OEM</span><span id="detParts">€792,50</span></div>
+            <div class="breakdown-row total"><span>Total Baremo Pericial</span><span id="detTotal" style="color:var(--accent-emerald);">€1.420,00</span></div>
+          </div>
+
+          <div style="display:flex;gap:10px;">
+            <button class="btn-action btn-outline" onclick="downloadReport()">
+              <span>📄 Descargar Acta</span>
+            </button>
+            <button class="btn-action" onclick="approveClaim()">
+              <span>✅ Validar Dictamen</span>
+            </button>
+          </div>
+        </div>
+
+      </aside>
+
     </div>
   </div>
+
+  <div class="toast" id="toast">
+    <span>✨</span>
+    <span id="toastMsg">Operación completada</span>
+  </div>
+
+  <script>
+    // Audio synthesizer
+    let audioCtx = null;
+    function playBeep(freq = 600, duration = 0.08) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function showToast(msg) {
+      playBeep(880, 0.12);
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerText = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2600);
+    }
+
+    // CLAIMS DATABASE
+    let CLAIMS = [
+      { id: "EXP-2026-0841", vehicle: "Mercedes-Benz Clase C", plate: "4821-KTY", owner: "Manuel Álvarez Diánez", policy: "MAP-AUT-994218-A", garage: "Talleres Oficiales Norte", type: "Colisión lateral", total: 1420, labor: 247.5, paint: 380, parts: 792.5, status: "aprobado", verdict: "Conforme a baremo estándar" },
+      { id: "EXP-2026-0842", vehicle: "Audi A4 Avant", plate: "9104-LMC", owner: "Elena Castillo Ramos", policy: "MAP-AUT-881240-B", garage: "Audi Service Express", type: "Impacto frontal", total: 2890, labor: 620, paint: 540, parts: 1730, status: "revision", verdict: "Revisión de fijaciones de faros LED" },
+      { id: "EXP-2026-0843", vehicle: "Volkswagen Golf GTI", plate: "1289-JXR", owner: "Javier Méndez Solís", policy: "MAP-AUT-772119-A", garage: "AutoChapa Central", type: "Rotura luna y capó", total: 840, labor: 180, paint: 210, parts: 450, status: "pendiente", verdict: "Pendiente confirmación taller" },
+      { id: "EXP-2026-0844", vehicle: "BMW Serie 3", plate: "5543-MBL", owner: "Patricia Vega Nieto", policy: "MAP-AUT-664420-C", garage: "BMW Motorrad & Cars", type: "Aleta trasera y pilotos", total: 630, labor: 140, paint: 190, parts: 300, status: "aprobado", verdict: "Validado sin discrepancias" },
+      { id: "EXP-2026-0845", vehicle: "Toyota RAV4 Híbrido", plate: "7721-HDF", owner: "Carlos Ruiz Pastor", policy: "MAP-AUT-553198-B", garage: "Toyota Oficial", type: "Alcance trasero en cadena", total: 3150, labor: 740, paint: 610, parts: 1800, status: "revision", verdict: "Requiere calibración de sensores ADAS" }
+    ];
+
+    let currentFilter = 'all';
+    let selectedClaimId = CLAIMS[0].id;
+
+    function renderClaims() {
+      const tbody = document.getElementById('claimsTbody');
+      tbody.innerHTML = '';
+
+      const filtered = CLAIMS.filter(c => {
+        if (currentFilter === 'all') return true;
+        return c.status === currentFilter;
+      });
+
+      filtered.forEach(c => {
+        const tr = document.createElement('tr');
+        if (c.id === selectedClaimId) tr.className = 'selected';
+        tr.onclick = () => selectClaim(c.id);
+
+        let badgeClass = 'badge-pending';
+        let badgeLabel = 'Pendiente';
+        if (c.status === 'aprobado') { badgeClass = 'badge-approved'; badgeLabel = 'Aprobado'; }
+        if (c.status === 'revision') { badgeClass = 'badge-review'; badgeLabel = 'En Revisión'; }
+
+        tr.innerHTML = `
+          <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">${c.id}</td>
+          <td>
+            <strong>${c.vehicle}</strong><br>
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">${c.plate}</span>
+          </td>
+          <td>${c.owner}</td>
+          <td>${c.type}</td>
+          <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">€${c.total.toLocaleString('es-ES', {minimumFractionDigits: 2})}</td>
+          <td><span class="badge-claim ${badgeClass}">${badgeLabel}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('statTotal').innerText = CLAIMS.length;
+    }
+
+    function selectClaim(id) {
+      selectedClaimId = id;
+      playBeep(700, 0.05);
+      renderClaims();
+
+      const c = CLAIMS.find(item => item.id === id);
+      if (!c) return;
+
+      document.getElementById('detId').innerText = c.id;
+      document.getElementById('detVehicle').innerText = c.vehicle;
+      document.getElementById('detOwner').innerText = c.owner;
+      document.getElementById('detPolicy').innerText = c.policy;
+      document.getElementById('detGarage').innerText = c.garage;
+      document.getElementById('detVerdict').innerText = c.verdict;
+
+      document.getElementById('detLabor').innerText = `€${c.labor.toFixed(2)}`;
+      document.getElementById('detPaint').innerText = `€${c.paint.toFixed(2)}`;
+      document.getElementById('detParts').innerText = `€${c.parts.toFixed(2)}`;
+      document.getElementById('detTotal').innerText = `€${c.total.toFixed(2)}`;
+
+      const badge = document.getElementById('detBadge');
+      badge.className = 'badge-claim';
+      if (c.status === 'aprobado') {
+        badge.classList.add('badge-approved');
+        badge.innerText = 'Aprobado';
+      } else if (c.status === 'revision') {
+        badge.classList.add('badge-review');
+        badge.innerText = 'En Revisión';
+      } else {
+        badge.classList.add('badge-pending');
+        badge.innerText = 'Pendiente';
+      }
+    }
+
+    function filterStatus(status) {
+      currentFilter = status;
+      playBeep(650, 0.04);
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      renderClaims();
+    }
+
+    // OCR SCANNER SIMULATION
+    function triggerOCRScan() {
+      const laser = document.getElementById('laserLine');
+      laser.style.display = 'block';
+      playBeep(520, 0.2);
+
+      showToast("Analizando documento con OCR Neuronal...");
+
+      setTimeout(() => {
+        laser.style.display = 'none';
+        simulateNewClaim();
+      }, 1500);
+    }
+
+    function simulateNewClaim() {
+      const randomId = "EXP-2026-" + Math.floor(1000 + Math.random() * 9000);
+      const sampleCars = [
+        { brand: "Porsche Macan GTS", plate: "3499-KLS", owner: "Ricardo Alarcón", total: 4200, labor: 950, paint: 850, parts: 2400 },
+        { brand: "Tesla Model 3 Highland", plate: "6122-MGG", owner: "Sofía Marín", total: 1980, labor: 480, paint: 400, parts: 1100 },
+        { brand: "Cupra Formentor VZ", plate: "8821-LCB", owner: "Hugo Gil", total: 1250, labor: 300, paint: 350, parts: 600 }
+      ];
+      const car = sampleCars[Math.floor(Math.random() * sampleCars.length)];
+
+      const newClaim = {
+        id: randomId,
+        vehicle: car.brand,
+        plate: car.plate,
+        owner: car.owner,
+        policy: "MAP-AUT-" + Math.floor(100000 + Math.random() * 900000) + "-A",
+        garage: "Red Talleres Mapfre Premier",
+        type: "Parte digitalizado OCR",
+        total: car.total,
+        labor: car.labor,
+        paint: car.paint,
+        parts: car.parts,
+        status: "revision",
+        verdict: "Extracción OCR completada con 98.4% de fiabilidad"
+      };
+
+      CLAIMS.unshift(newClaim);
+      selectClaim(newClaim.id);
+      showToast(`¡OCR Completado! Expediente ${randomId} incorporado`);
+    }
+
+    function approveClaim() {
+      const c = CLAIMS.find(item => item.id === selectedClaimId);
+      if (c) {
+        c.status = 'aprobado';
+        c.verdict = 'Aprobado formalmente por el operador pericial';
+        selectClaim(c.id);
+        showToast(`Expediente ${c.id} validado y emitido para pago`);
+      }
+    }
+
+    function downloadReport() {
+      const c = CLAIMS.find(item => item.id === selectedClaimId);
+      if (!c) return;
+
+      const reportText = `========================================================
+MAPFRE ESPAÑA S.A. — INFORME DE PERITACIÓN AUTOMATIZADA
+========================================================
+ID Expediente:     ${c.id}
+Fecha de Emisión:  ${new Date().toLocaleDateString('es-ES')} ${new Date().toLocaleTimeString('es-ES')}
+Asegurado:         ${c.owner}
+Póliza de Seguro:  ${c.policy}
+Vehículo Asegurado: ${c.vehicle}
+Matrícula:         ${c.plate}
+Taller Asignado:   ${c.garage}
+Tipo de Siniestro: ${c.type}
+--------------------------------------------------------
+DESGLOSE ECONÓMICO PERICIAL (AUDATEX):
+- Mano de Obra:        €${c.labor.toFixed(2)}
+- Pintura y Acabado:   €${c.paint.toFixed(2)}
+- Recambios OEM:       €${c.parts.toFixed(2)}
+--------------------------------------------------------
+TOTAL VALORACIÓN:      €${c.total.toFixed(2)}
+ESTADO DICTAMEN:       ${c.status.toUpperCase()}
+VALORACIÓN IA:         ${c.verdict}
+========================================================
+Firma Digital: [MAPFRE-OCR-VERIFIED-SECURE-KEY]
+`;
+      const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Mapfre-Informe-${c.id}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast(`Informe pericial ${c.id} descargado`);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderClaims();
+      selectClaim(CLAIMS[0].id);
+    });
+  </script>
 </body>
 </html>
