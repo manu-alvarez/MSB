@@ -533,3 +533,15 @@ body {
     animation: cardGlitch 0.3s cubic-bezier(.25, .46, .45, .94) both;
     opacity: 0.15; mix-blend-mode: overlay;
 }
+
+.think-block {
+  background: rgba(124, 77, 255, 0.08);
+  border-left: 3px solid #7c4dff;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(226, 238, 255, 0.8);
+}
+
