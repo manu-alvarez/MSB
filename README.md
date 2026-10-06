@@ -68,7 +68,7 @@
 | Puerto | Aplicación | Stack Tecnológico | ID Proceso PM2 | Descripción |
 |:---:|---|---|:---:|---|
 | **4000** | **PERFUME EAN** | Next.js Luxury Catalog | `PERFUME-EAN` | Buscador y catálogo de fragancias de alta gama con escáner de códigos de barras EAN-13, notas olfativas y stock. |
-| **3333** | **Mapfre** | Next.js SSR Suite | `mapfre-infocol` | Suite digital para digitalización, OCR, validación de partes periciales y automatización de siniestros. |
+| **3333** | **Mapfre** | Next.js SSR Suite | `mapfre` | Suite digital para digitalización, OCR, validación de partes periciales y automatización de siniestros. |
 | **3011** | **Perfume Trading Luxury ERP** | Next.js B2B ERP | `perfume-trading` | ERP comercial para cotización de perfumería exclusiva al por mayor, control de lotes y despacho aduanero. |
 | **5176** | **Tu Energía Maya** | Vite + React + MUI | `TU-ENERGIA-MAYA` | Calculadora interactiva de cosmovisión sagrada maya: Kin del día, sellos solares y tonos galácticos. |
 | **5177** | **TAROT MAYA Tzolk'in** | Vite SPA + CSS Neón | `TAROT-MAYA` | Oráculo maya interactivo con tiradas de cartas animadas 3D, efectos luminosos neón y arquetipos ancestrales. |
