@@ -1160,6 +1160,40 @@
       flex-direction: column;
       gap: 10px;
     }
+    .sub-card-list.certs-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 14px;
+    }
+    @media (max-width: 580px) {
+      .sub-card-list.certs-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+    .prev-industrial-box {
+      margin-top: 14px;
+      padding: 10px 12px;
+      background: rgba(245, 158, 11, 0.05);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 10px;
+    }
+    .prev-industrial-box strong {
+      color: #fbbf24;
+      font-size: 0.76rem;
+      display: block;
+      margin-bottom: 3px;
+      font-family: var(--font-display);
+    }
+    .prev-industrial-box p {
+      font-size: 0.73rem;
+      color: #94a3b8;
+      line-height: 1.45;
+      margin: 0;
+    }
+    .prev-industrial-box p span {
+      color: #f1f5f9;
+      font-weight: 600;
+    }
     .sub-card-list li {
       position: relative;
       padding-left: 18px;
@@ -1574,38 +1608,38 @@
                 </svg>
                 <span>Certificaciones Oficiales</span>
               </div>
-              <ul class="sub-card-list">
+              <ul class="sub-card-list certs-2col">
                 <li>
                   <strong>Cisco CCST Networking</strong>
-                  Cisco Certified Support Tech
+                  Cisco Support Tech
                 </li>
                 <li>
                   <strong>Cisco CCST Cybersecurity</strong>
-                  Cisco Certified Support Tech
+                  Cisco Support Tech
                 </li>
                 <li>
                   <strong>Core Generative AI Skills</strong>
-                  Cisco Networking Academy &bull; 2026
+                  Cisco Academy &bull; 2026
                 </li>
                 <li>
                   <strong>Python Essentials 1</strong>
-                  Cisco &bull; OpenEDG Python Inst. &bull; 2026
+                  Cisco &bull; OpenEDG &bull; 2026
                 </li>
                 <li>
-                  <strong>Kanban Essentials Certified (KEC)</strong>
-                  CertiProf &bull; Metodologías Ágiles
+                  <strong>Kanban Essentials (KEC)</strong>
+                  CertiProf &bull; Metodologías
                 </li>
                 <li>
-                  <strong>Scrum Fundamentals Certified (SFC)</strong>
+                  <strong>Scrum Fundamentals (SFC)</strong>
                   SCRUMstudy &bull; Gestión Ágil
                 </li>
                 <li>
-                  <strong>Six Sigma Yellow Belt Certified</strong>
-                  Lean &bull; Optimización Continua
+                  <strong>Six Sigma Yellow Belt</strong>
+                  Lean &bull; Mejora Continua
                 </li>
                 <li>
-                  <strong>Carnet Carretillas y Elevadoras</strong>
-                  Operador de Maquinaria &bull; Vigente
+                  <strong>Carnet UNE 58451</strong>
+                  Carretillas &bull; Vigente
                 </li>
               </ul>
             </div>
@@ -1627,31 +1661,14 @@
                   <strong>IT Support Intern</strong>
                   CodeArts Solutions &bull; Jun 2025 – Sep 2025
                 </li>
-                <li>
-                  <strong>Op. Línea de Producción / Maquinista</strong>
-                  Newton Energies &bull; Nov 2024 – Feb 2025
-                </li>
-                <li>
-                  <strong>Op. Producción / Preparador Mezclas</strong>
-                  Döhler &bull; Dic 2023 – Oct 2024
-                </li>
-                <li>
-                  <strong>Operador Logístico y Carretillero</strong>
-                  Procter & Gamble &bull; Ene 2022 – Sep 2023
-                </li>
-                <li>
-                  <strong>Op. Acondicionamiento y Envasado</strong>
-                  GB Foods &bull; Oct 2021 – Ene 2022
-                </li>
-                <li>
-                  <strong>Mozo de Almacén y Carretillero</strong>
-                  Agrup. Logística Bebidas &bull; Jun 2021 – Oct 2021
-                </li>
-                <li>
-                  <strong>Operario Picking & Radiofrecuencia</strong>
-                  Logista &bull; Ene 2021 – Jun 2021
-                </li>
               </ul>
+
+              <div class="prev-industrial-box">
+                <strong>Operador Logístico & Maquinista (2020 – 2025)</strong>
+                <p>
+                  Trayectoria previa en plantas multinacionales: <span>Procter &amp; Gamble (P&amp;G)</span>, <span>Becton Dickinson</span>, <span>Döhler</span>, <span>GB Foods</span> y <span>Logista</span> (Normativa UNE 58451 & Six Sigma).
+                </p>
+              </div>
             </div>
           </div>
         </div>
