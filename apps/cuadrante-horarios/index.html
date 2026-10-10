@@ -3,6 +3,7 @@
 <head>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="alternate icon" href="./favicon.ico" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
@@ -11,8 +12,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Horarios">
     
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgZmlsbD0iIzFmNGU3OCIgcng9IjExMCIvPjxwYXRoIGQ9Ik0yNTYgODBDMTU4LjkgODAgODAgMTU4LjkgODAgMjU2czc4LjkgMTc2IDE3NiAxNzYgMTc2LTc4LjkgMTc2LTE3NlMzNTMuMSA4MCAyNTYgODB6bTAgMzIwYy03OS40IDAtMTQ0LTY0LjYtMTQ0LTE0NFMxNzYuNiAxMTIgMjU2IDExMnMxNDQgNjQuNiAxNDQgMTQ0LTY0LjYgMTQ0LTE0NCAxNDR6bTE2LTE5MmgtMTZ2OTYuMWwwIC4xbDcyLjUgNDguMSAxNS4zLTI0LjktNjMuOC00Mi4zVjIwOHoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=">
-
     <title>Cuadrante de horarios</title>
     
     <style>
@@ -684,8 +683,7 @@
             let html = generateTableHTML(false);
             // Prepend utf-8 BOM for Excel
             let blob = new Blob(['\uFEFF<html><head>
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="alternate icon" href="./favicon.ico" /><meta charset="utf-8"></head><body>' + html + '</body></html>'], {type:'application/vnd.ms-excel'});
+    <meta charset="utf-8"></head><body>' + html + '</body></html>'], {type:'application/vnd.ms-excel'});
             let u = URL.createObjectURL(blob);
             let a = document.createElement('a');
             
