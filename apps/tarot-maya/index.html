@@ -6,22 +6,29 @@
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TAROT MAYA — Tzolk'in Sagrado</title>
+<title>TAROT MAYA — Tzolk'in Sagrado · Oráculo & Tiradas</title>
 <style>
 /* ============================================================
    TAROT MAYA — Tzolk'in Sagrado
-   Design tokens · neon ritual theme
+   Design tokens · Neon Cyber Ritual Theme
    ============================================================ */
 :root{
   --bg:#050508;
+  --bg-card:#0b0d14;
   --ink:#EDEDED;
   --dim:#A7ADC0;
-  --line:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.09);
   --glass:rgba(255,255,255,.045);
   --glass-2:rgba(255,255,255,.02);
   --acc:#00E5FF;
-  --radius:14px;
-  --ease-out:cubic-bezier(.22,.75,.25,1);
+  --gold:#FFD54F;
+  --red:#ef4444;
+  --white:#e8eaf6;
+  --blue:#3b82f6;
+  --yellow:#eab308;
+  --radius:16px;
+  --radius-sm:10px;
+  --ease-out:cubic-bezier(.2,.8,.2,1);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -40,54 +47,64 @@ body{
   transition:opacity 1.2s ease;
   background:
     radial-gradient(620px 420px at 22% 28%, rgba(0,229,255,.14), transparent 70%),
-    radial-gradient(760px 540px at 78% 72%, rgba(0,229,255,.10), transparent 72%);
+    radial-gradient(760px 540px at 78% 72%, rgba(224,64,251,.10), transparent 72%);
 }
 #app{position:relative;z-index:1}
 
-/* ---------- accesibilidad ---------- */
+/* ---------- accesibilidad & utilidades ---------- */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 :focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
 
 /* ---------- topbar ---------- */
 .topbar{
-  position:fixed;top:0;left:0;right:0;z-index:10;
+  position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;justify-content:space-between;align-items:center;
   padding:.8rem clamp(1rem,4vw,2.5rem);
-  background:linear-gradient(to bottom,rgba(5,5,8,.85),transparent);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  background:linear-gradient(to bottom,rgba(5,5,8,.92),rgba(5,5,8,.65) 75%,transparent);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,.05);
 }
-.brand{letter-spacing:.42em;font-weight:700;font-size:.78rem;color:var(--dim);text-transform:uppercase}
+.brand{letter-spacing:.38em;font-weight:700;font-size:.82rem;color:var(--dim);text-transform:uppercase;display:flex;align-items:center;gap:.6rem}
 .brand b{color:var(--acc);text-shadow:0 0 12px rgba(0,229,255,.7)}
+.top-actions{display:flex;align-items:center;gap:.6rem}
 .ghost-btn{
   display:inline-flex;align-items:center;gap:.5rem;
-  padding:.45rem .9rem;border:1px solid var(--line);border-radius:999px;
+  padding:.45rem .95rem;border:1px solid var(--line);border-radius:999px;
   color:var(--dim);font-size:.82rem;letter-spacing:.08em;
-  transition:color .25s,border-color .25s,transform .25s;
+  transition:color .25s,border-color .25s,transform .25s,background .25s;
 }
-.ghost-btn:hover{color:#fff;border-color:rgba(0,229,255,.5);transform:translateY(-1px)}
+.ghost-btn:hover{color:#fff;border-color:rgba(0,229,255,.5);background:rgba(0,229,255,.06);transform:translateY(-1px)}
 .ghost-btn svg{width:15px;height:15px}
+.back-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.45rem 1.1rem;border:1px solid rgba(0,229,255,.4);border-radius:999px;
+  color:var(--acc);background:rgba(0,229,255,.08);font-size:.82rem;font-weight:600;letter-spacing:.06em;
+  transition:all .25s var(--ease-out);
+}
+.back-btn:hover{background:rgba(0,229,255,.2);color:#fff;box-shadow:0 0 16px rgba(0,229,255,.4);transform:translateY(-1px)}
 
 /* ---------- pantallas / fases ---------- */
 main{min-height:100vh;display:flex;flex-direction:column}
 .screen{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:clamp(4.5rem,9vh,6rem) clamp(1rem,4vw,2.5rem) 3rem;
-  max-width:1280px;width:100%;margin:0 auto;text-align:center;
+  padding:clamp(5rem,9vh,6.5rem) clamp(1rem,4vw,2.5rem) 3.5rem;
+  max-width:1380px;width:100%;margin:0 auto;text-align:center;
 }
 .screen.enter{animation:phaseIn .65s var(--ease-out) both}
 .screen.leave{animation:phaseOut .32s ease both}
-@keyframes phaseIn{from{opacity:0;transform:perspective(1200px) translateZ(70px) scale(1.025)}}
-@keyframes phaseOut{to{opacity:0;transform:perspective(1200px) translateZ(-70px) scale(.965)}}
+@keyframes phaseIn{from{opacity:0;transform:perspective(1200px) translateZ(60px) scale(1.02)}}
+@keyframes phaseOut{to{opacity:0;transform:perspective(1200px) translateZ(-60px) scale(.97)}}
 
 .phase-title{
-  font-size:clamp(1.5rem,3.4vw,2.2rem);font-weight:300;letter-spacing:.3em;
-  text-transform:uppercase;margin:0 0 .4rem;
+  font-size:clamp(1.6rem,3.4vw,2.4rem);font-weight:300;letter-spacing:.25em;
+  text-transform:uppercase;margin:0 0 .4rem;color:#fff;
+  text-shadow:0 0 20px rgba(0,229,255,.3);
 }
-.phase-sub{color:var(--dim);font-size:.92rem;margin:0 0 2.2rem}
+.phase-sub{color:var(--dim);font-size:.92rem;margin:0 0 2rem;max-width:700px}
 
 /* ---------- portada ---------- */
-.eyebrow{letter-spacing:.5em;font-size:.72rem;text-transform:uppercase;color:var(--dim);margin:0 0 1.2rem}
+.eyebrow{letter-spacing:.5em;font-size:.75rem;text-transform:uppercase;color:var(--dim);margin:0 0 1.2rem}
 .neon-title{
   margin:0;font-size:clamp(2.6rem,10vw,6.4rem);font-weight:800;
   letter-spacing:.14em;line-height:1.05;color:#fff;
@@ -100,261 +117,438 @@ main{min-height:100vh;display:flex;flex-direction:column}
 .subtitle{
   margin:.9rem 0 0;font-size:clamp(.95rem,2.4vw,1.3rem);font-weight:300;
   letter-spacing:.58em;text-transform:uppercase;color:var(--ink);
-  text-shadow:0 0 20px rgba(0,229,255,.35);
+  text-shadow:0 0 18px rgba(224,64,251,.5);
 }
+.note{margin-top:1.6rem;color:var(--dim);font-size:.82rem;letter-spacing:.22em;text-transform:uppercase}
 .cta{
-  margin:3.2rem auto 0;display:inline-flex;align-items:center;gap:.6rem;
-  padding:.9rem 2.4rem;border-radius:999px;font-weight:600;letter-spacing:.16em;
-  text-transform:uppercase;font-size:.88rem;
-  background:linear-gradient(135deg,rgba(0,229,255,.22),rgba(179,136,255,.18));
-  border:1px solid rgba(0,229,255,.4);color:#fff;
-  box-shadow:0 0 28px rgba(0,229,255,.22);
-  transition:background .35s,transform .25s,box-shadow .35s;
+  margin-top:2.8rem;padding:1.1rem 3.4rem;border-radius:999px;font-size:1.05rem;
+  letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#031015;
+  background:linear-gradient(120deg,#00E5FF,#7FE9FF 55%,#E040FB);
+  box-shadow:0 0 22px rgba(0,229,255,.55),0 0 60px rgba(0,229,255,.25);
+  transition:transform .3s var(--ease-out),box-shadow .3s;
 }
-.cta:hover{background:linear-gradient(135deg,rgba(0,229,255,.38),rgba(179,136,255,.32));transform:translateY(-2px);box-shadow:0 0 42px rgba(0,229,255,.36)}
-.note{margin:1.6rem 0 0;font-size:.74rem;color:var(--dim);letter-spacing:.08em}
+.cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 32px rgba(0,229,255,.8),0 0 80px rgba(224,64,251,.4)}
 
-/* ---------- menú selección ---------- */
-.menu{display:grid;gap:1.1rem;width:100%;max-width:680px;text-align:left}
+/* ---------- menú de tiradas ---------- */
+.menu{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));
+  gap:1.4rem;width:100%;max-width:1240px;margin-top:.6rem;
+}
 .opt{
-  padding:1.3rem 1.5rem;border-radius:var(--radius);
-  border:1px solid var(--line);background:var(--glass);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  transition:border-color .3s,background .3s,transform .3s;
+  position:relative;text-align:left;padding:1.6rem;border-radius:var(--radius);
+  background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.015));
+  border:1px solid var(--line);
+  box-shadow:0 12px 36px rgba(0,0,0,.45);
+  transition:transform .35s var(--ease-out),border-color .35s,box-shadow .35s;
+  display:flex;flex-direction:column;justify-content:space-between;
 }
-.opt:hover,.opt:focus-visible{border-color:rgba(0,229,255,.45);background:rgba(0,229,255,.06);transform:translateY(-1px)}
-.opt h3{margin:0 0 .3rem;font-size:1.08rem;font-weight:600;letter-spacing:.06em}
-.opt p{margin:0;color:var(--dim);font-size:.86rem}
-.tag{
-  display:inline-block;margin-bottom:.5rem;padding:.18rem .65rem;border-radius:999px;
-  font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  background:rgba(0,229,255,.12);color:var(--acc);border:1px solid rgba(0,229,255,.2);
+.opt:hover{
+  transform:translateY(-5px);border-color:rgba(0,229,255,.45);
+  box-shadow:0 18px 46px rgba(0,0,0,.65),0 0 28px rgba(0,229,255,.18);
 }
-.pill-row{display:flex;gap:.5rem;margin:.7rem 0 .5rem}
-.pill{
-  padding:.32rem .75rem;border-radius:999px;border:1px solid var(--line);
-  font-size:.82rem;letter-spacing:.04em;color:var(--dim);
-  transition:color .25s,border-color .25s,background .25s;
+.opt .tag{
+  font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--acc);
+  margin-bottom:.6rem;display:inline-block;font-weight:600;
 }
-.pill[aria-pressed="true"]{color:#fff;border-color:var(--acc);background:rgba(0,229,255,.16)}
+.opt h3{margin:0 0 .5rem;font-size:1.25rem;font-weight:600;letter-spacing:.05em;color:#fff}
+.opt p{margin:0 0 1.2rem;color:var(--dim);font-size:.88rem;line-height:1.55}
 .mini-btn{
-  display:inline-flex;align-items:center;gap:.5rem;margin-top:.4rem;
-  padding:.5rem 1.2rem;border-radius:999px;font-weight:600;font-size:.8rem;
-  letter-spacing:.1em;text-transform:uppercase;
-  background:rgba(0,229,255,.14);border:1px solid rgba(0,229,255,.28);color:var(--acc);
-  transition:background .3s,transform .25s;
+  width:100%;padding:.7rem;border-radius:10px;border:1px solid rgba(0,229,255,.4);
+  background:rgba(0,229,255,.08);color:var(--acc);font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;font-size:.82rem;transition:all .25s;
 }
-.mini-btn:hover{background:rgba(0,229,255,.28);transform:translateY(-1px)}
+.mini-btn:hover{background:var(--acc);color:#031015;box-shadow:0 0 20px rgba(0,229,255,.5)}
+.opt input[type="date"]{
+  width:100%;padding:.65rem;border-radius:8px;border:1px solid var(--line);
+  background:rgba(0,0,0,.4);color:#fff;font-family:inherit;font-size:.9rem;
+  margin-bottom:.8rem;color-scheme:dark;
+}
+.opt input[type="date"]:focus{border-color:var(--acc);outline:none;box-shadow:0 0 12px rgba(0,229,255,.3)}
+.err{color:#ff5252;font-size:.8rem;min-height:1.2rem;margin:0 0 .5rem}
 
-/* ---------- barajado ---------- */
-.deck{display:flex;gap:.7rem;justify-content:center;perspective:800px;margin:2rem 0}
-.dcard{
-  width:52px;height:78px;border-radius:10px;border:1.5px solid rgba(0,229,255,.4);
-  background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(179,136,255,.06));
+/* ---------- MESA DE LA BARAJA (FAN PICKER) ---------- */
+.deck-instructions{
+  display:flex;justify-content:space-between;align-items:center;
+  width:100%;max-width:960px;margin:0 auto 1.4rem;padding:0 .5rem;
+}
+.deck-counter-badge{
+  display:inline-flex;align-items:center;gap:.6rem;padding:.5rem 1.2rem;border-radius:999px;
+  background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.35);
+  font-size:.9rem;font-weight:600;color:var(--acc);letter-spacing:.08em;
+}
+.deck-actions{display:flex;gap:.8rem}
+.deck-fan-wrap{
+  position:relative;width:100%;max-width:1100px;min-height:380px;
+  display:flex;justify-content:center;align-items:center;margin:1.5rem auto 2.5rem;
+  perspective:1400px;overflow:visible;
+}
+.fan-card{
+  position:absolute;width:125px;height:200px;border-radius:12px;
+  background:radial-gradient(circle at 50% 50%, rgba(20, 24, 38, 0.98), rgba(8, 10, 16, 0.98));
+  border:1.5px solid rgba(255,255,255,.14);
+  box-shadow:0 8px 24px rgba(0,0,0,.7);
+  cursor:pointer;user-select:none;-webkit-user-select:none;
+  transform-origin:50% 120%;
+  transition:transform .3s var(--ease-out),box-shadow .3s,border-color .3s;
   display:flex;align-items:center;justify-content:center;
-  animation:shuffleIn .5s calc(var(--i)*.08s) var(--ease-out) both,
-            shuffleFloat 2.4s calc(var(--i)*.3s) ease-in-out infinite alternate;
-  color:rgba(0,229,255,.65);
 }
-.dcard svg{width:32px;height:32px}
-@keyframes shuffleIn{from{opacity:0;transform:rotateY(100deg) translateY(40px)}}
-@keyframes shuffleFloat{to{transform:translateY(-6px) rotateY(8deg)}}
-.shuffle-msg{color:var(--dim);font-size:.88rem;letter-spacing:.15em}
+.fan-card::before{
+  content:"";position:absolute;inset:5px;border:1px solid rgba(0,229,255,.25);border-radius:8px;
+}
+.fan-card svg{width:50%;height:50%;color:var(--acc);opacity:.75}
+.fan-card:hover{
+  z-index:50!important;border-color:var(--acc);
+  box-shadow:0 16px 36px rgba(0,0,0,.85),0 0 24px rgba(0,229,255,.45);
+  transform:translateY(-28px) scale(1.12)!important;
+}
+.fan-card.is-chosen{
+  border-color:#e040fb!important;
+  box-shadow:0 0 28px rgba(224,64,251,.6)!important;
+  opacity:.4;pointer-events:none;transform:scale(.9) translateY(-10px)!important;
+}
+.fan-card .pick-badge{
+  position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;
+  background:#e040fb;color:#fff;font-weight:700;font-size:.75rem;
+  display:flex;align-items:center;justify-content:center;
+}
 
-/* ---------- cartas revelado ---------- */
-.spread{display:flex;flex-wrap:wrap;gap:1.1rem;justify-content:center;perspective:900px;width:100%}
-.spread.cross{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;gap:1.1rem;max-width:520px;justify-items:center}
-.spread.cross .tcard:nth-child(1){grid-column:2;grid-row:2}
-.spread.cross .tcard:nth-child(2){grid-column:2;grid-row:1}
-.spread.cross .tcard:nth-child(3){grid-column:1;grid-row:2}
-.spread.cross .tcard:nth-child(4){grid-column:3;grid-row:2}
-.spread.cross .tcard:nth-child(5){grid-column:2;grid-row:3}
+/* ---------- TAPETE DE REVELADO (SPREAD MAT) ---------- */
+.spread-wrapper{width:100%;max-width:1300px;margin:0 auto}
+.spread-mat{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:clamp(1rem,2.2vw,2rem);width:100%;margin:1.5rem auto 2.5rem;
+}
+/* Layouts específicos */
+.spread-mat.layout-1{max-width:320px}
+.spread-mat.layout-3{max-width:880px;display:grid;grid-template-columns:repeat(3,1fr)}
+.spread-mat.layout-5-cross{
+  max-width:840px;display:grid;
+  grid-template-areas:
+    ". guide ."
+    "antipode destiny analog"
+    ". occult .";
+  grid-template-columns:1fr 1fr 1fr;gap:1.4rem;align-items:center;justify-items:center;
+}
+.spread-mat.layout-7{
+  max-width:1050px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+}
+.spread-mat.layout-13{
+  max-width:1280px;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+}
 
+.tcard-slot{
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;width:100%;
+}
+.slot-destiny{grid-area:destiny}
+.slot-guide{grid-area:guide}
+.slot-analog{grid-area:analog}
+.slot-antipode{grid-area:antipode}
+.slot-occult{grid-area:occult}
+
+.pos-label{
+  font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);
+  font-weight:600;text-align:center;max-width:210px;
+}
+.slot-destiny .pos-label{color:var(--acc);font-weight:700;text-shadow:0 0 10px rgba(0,229,255,.5)}
+
+/* ---------- CARTA DE TAROT 3D ---------- */
 .tcard{
-  width:110px;flex-shrink:0;aspect-ratio:2/3;border-radius:var(--radius);
-  perspective:600px;cursor:pointer;
+  width:min(210px,100%);aspect-ratio:5/8;position:relative;
+  perspective:1400px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  user-select:none;-webkit-user-select:none;
   transition:transform .3s var(--ease-out);
 }
-.tcard:hover{transform:translateY(-4px)}
+.tcard:hover{transform:translateY(-6px)}
 .card-inner{
-  position:relative;width:100%;height:100%;
-  transform-style:preserve-3d;
-  transition:transform .65s var(--ease-out);
+  position:absolute;inset:0;transform-style:preserve-3d;
+  transition:transform .8s var(--ease-out);border-radius:var(--radius);
 }
 .tcard.is-revealed .card-inner{transform:rotateY(180deg)}
+
 .face{
-  position:absolute;inset:0;backface-visibility:hidden;
-  border-radius:var(--radius);overflow:hidden;
+  position:absolute;inset:0;border-radius:var(--radius);
+  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  overflow:hidden;
+}
+
+/* REVERSO (BOCA ABAJO) */
+.face.back{
+  background:radial-gradient(circle at 50% 50%, rgba(22, 28, 44, 0.98), rgba(7, 9, 15, 0.99));
+  border:1.5px solid rgba(255,255,255,.14);
+  box-shadow:0 12px 32px rgba(0,0,0,.65);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:14px;transition:box-shadow .3s,border-color .3s;
 }
-.back{
-  border:1.5px solid rgba(0,229,255,.4);
-  background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(179,136,255,.06));
-  color:rgba(0,229,255,.65);
+.face.back::before{
+  content:"";position:absolute;inset:7px;border:1px solid rgba(0,229,255,.3);border-radius:10px;
+  pointer-events:none;
 }
-.back svg{width:44px;height:44px}
-.front{
+.face.back::after{
+  content:"";position:absolute;inset:12px;border:1px dashed rgba(255,213,79,.25);border-radius:8px;
+  pointer-events:none;
+}
+.tcard:not(.is-revealed):hover .face.back{
+  border-color:var(--acc);box-shadow:0 16px 36px rgba(0,0,0,.75),0 0 24px rgba(0,229,255,.3);
+}
+.back-mandala{
+  width:62%;height:62%;color:var(--acc);opacity:.8;
+  filter:drop-shadow(0 0 10px rgba(0,229,255,.45));
+  animation:backSpin 36s linear infinite;
+}
+@keyframes backSpin{to{transform:rotate(360deg)}}
+.back-hint{
+  position:absolute;bottom:12px;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--dim);opacity:.7;
+}
+
+/* ANVERSO (BOCA ARRIBA - REVELADA) */
+.face.front{
   transform:rotateY(180deg);
-  border:1.5px solid;border-color:var(--n,var(--acc));
-  background:linear-gradient(160deg,rgba(0,0,0,.7),rgba(0,0,0,.5));
-  padding:.5rem;
+  background:linear-gradient(170deg,rgba(18,22,34,.98),rgba(8,10,16,.99));
+  border:1.5px solid color-mix(in srgb,var(--n) 65%,transparent);
+  box-shadow:
+    0 0 24px color-mix(in srgb,var(--n) 35%,transparent),
+    inset 0 0 30px color-mix(in srgb,var(--n) 14%,transparent);
+  display:flex;flex-direction:column;padding:8px;
 }
-.front .glyph{width:52px;height:52px;stroke:var(--n,var(--acc));fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.tname{font-size:.68rem;font-weight:700;letter-spacing:.1em;color:var(--n,var(--acc));margin-top:.2rem}
-.tcaption{font-size:.54rem;color:var(--dim);text-align:center;margin-top:.15rem;line-height:1.3}
+.card-top-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:2px 4px 6px;border-bottom:1px solid rgba(255,255,255,.08);
+}
+.card-kin-badge{
+  font-size:.68rem;font-weight:700;color:var(--n);letter-spacing:.08em;
+  text-shadow:0 0 8px color-mix(in srgb,var(--n) 70%,transparent);
+}
+.card-tone-notation{
+  display:flex;align-items:center;gap:4px;color:var(--n);
+}
+.maya-tone-glyph{width:32px;height:18px}
 
-.reveal-bar{display:flex;align-items:center;gap:1rem;margin-top:1.8rem;flex-wrap:wrap;justify-content:center}
-#reveal-progress{font-size:.82rem;color:var(--dim);letter-spacing:.06em}
-.hint{font-size:.76rem;color:var(--dim);margin:0 0 1.4rem;letter-spacing:.04em}
+.card-img-box{
+  position:relative;flex:1;min-height:0;margin:6px 0;
+  border-radius:10px;overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--n) 40%,transparent);
+  box-shadow:inset 0 0 16px rgba(0,0,0,.6);
+  background:#020305;
+}
+.card-art-img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .4s var(--ease-out);
+}
+.tcard:hover .card-art-img{transform:scale(1.04)}
 
-/* ---------- resultados ---------- */
-.print-head{display:none}
-.results-head{text-align:center;margin:0 0 2.2rem}
-.results-head h2{margin:0;font-size:1.5rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase}
-.rdate{color:var(--dim);font-size:.82rem;margin:.3rem 0 0;letter-spacing:.06em}
-.results-grid{display:grid;gap:1.6rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
-.results-hero{grid-template-columns:1fr;max-width:560px;margin:0 auto}
-.results-wrap{text-align:left;padding:0 clamp(.5rem,2vw,1.5rem)}
-.results-wrap.glitching{animation:glitchReveal .42s ease both}
-@keyframes glitchReveal{
-  0%{clip-path:inset(6% 0 88% 0)} 15%{clip-path:inset(56% 0 12% 0)}
-  30%{clip-path:inset(0 0 68% 0)} 45%{clip-path:inset(70% 0 0 0)}
-  60%{clip-path:inset(0)} 75%{clip-path:inset(40% 0 48% 0)} 100%{clip-path:inset(0)}
+.card-bottom-info{
+  padding:4px 2px 2px;text-align:center;
+}
+.card-title{
+  margin:0;font-size:.84rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:#fff;text-shadow:0 0 10px rgba(255,255,255,.3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.card-sub{
+  margin:2px 0 0;font-size:.68rem;color:var(--dim);letter-spacing:.08em;
+}
+.card-keys{
+  margin:3px 0 0;font-size:.62rem;color:var(--n);letter-spacing:.04em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+/* ---------- BARRA DE CONTROL DEL REVELADO ---------- */
+.control-bar{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+  gap:1rem;margin-top:1.5rem;width:100%;max-width:800px;
+}
+.action-btn{
+  padding:.8rem 1.8rem;border-radius:999px;font-size:.88rem;letter-spacing:.12em;
+  font-weight:600;text-transform:uppercase;transition:all .25s var(--ease-out);
+  display:inline-flex;align-items:center;gap:.6rem;
+}
+.action-btn.primary{
+  background:linear-gradient(120deg,#00E5FF,#7FE9FF 60%,#E040FB);color:#031015;
+  box-shadow:0 0 20px rgba(0,229,255,.5);
+}
+.action-btn.primary:hover:not(:disabled){
+  transform:translateY(-2px);box-shadow:0 0 28px rgba(0,229,255,.8);
+}
+.action-btn.primary:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.action-btn.secondary{
+  border:1px solid var(--line);color:var(--dim);background:rgba(255,255,255,.03);
+}
+.action-btn.secondary:hover{border-color:rgba(0,229,255,.5);color:#fff;background:rgba(0,229,255,.08)}
+
+/* ---------- MODAL INSPECTOR DE CARTA ---------- */
+.modal-backdrop{
+  position:fixed;inset:0;z-index:200;background:rgba(2,3,6,.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(1rem,4vw,2.5rem);
+  animation:modalFadeIn .3s ease both;
+}
+@keyframes modalFadeIn{from{opacity:0}to{opacity:1}}
+.modal-content{
+  position:relative;width:100%;max-width:920px;max-height:90vh;overflow-y:auto;
+  background:linear-gradient(155deg,rgba(18,22,34,.98),rgba(8,10,16,.99));
+  border:1.5px solid color-mix(in srgb,var(--modal-color,#00E5FF) 60%,transparent);
+  box-shadow:0 24px 60px rgba(0,0,0,.85),0 0 40px color-mix(in srgb,var(--modal-color,#00E5FF) 25%,transparent);
+  border-radius:20px;padding:clamp(1.5rem,3.5vw,2.4rem);
+  display:grid;grid-template-columns:minmax(260px,340px) 1fr;gap:2rem;text-align:left;
+}
+@media (max-width:768px){
+  .modal-content{grid-template-columns:1fr;max-height:85vh}
+}
+.modal-close-btn{
+  position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;
+  border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--dim);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  transition:all .2s;
+}
+.modal-close-btn:hover{color:#fff;border-color:var(--acc);background:rgba(0,229,255,.15);transform:scale(1.08)}
+
+.modal-left{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.modal-art-box{
+  width:100%;aspect-ratio:1;border-radius:14px;overflow:hidden;
+  border:1.5px solid color-mix(in srgb,var(--modal-color,#00E5FF) 50%,transparent);
+  box-shadow:0 0 24px color-mix(in srgb,var(--modal-color,#00E5FF) 30%,transparent);
+  background:#020305;
+}
+.modal-art-box img{width:100%;height:100%;object-fit:cover;display:block}
+.modal-pos-tag{
+  padding:.4rem 1rem;border-radius:999px;font-size:.78rem;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:700;background:rgba(255,255,255,.06);
+  border:1px solid color-mix(in srgb,var(--modal-color,#00E5FF) 40%,transparent);
+  color:var(--modal-color,#00E5FF);text-align:center;
+}
+
+.modal-right{display:flex;flex-direction:column;gap:1.2rem}
+.modal-header h2{
+  margin:0;font-size:1.8rem;font-weight:700;letter-spacing:.08em;color:#fff;
+}
+.modal-header p{margin:4px 0 0;color:var(--dim);font-size:.9rem}
+.modal-dl{display:grid;grid-template-columns:1fr;gap:1rem;margin:0}
+.modal-sec{
+  padding:.9rem 1.1rem;border-radius:12px;background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+}
+.modal-sec dt{
+  font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc);
+  font-weight:700;margin-bottom:.3rem;
+}
+.modal-sec dd{margin:0;font-size:.88rem;color:var(--ink);line-height:1.55}
+
+/* ---------- RESULTADOS / INFORME COMPLETO ---------- */
+.results-wrap{width:100%;max-width:1280px;margin:0 auto}
+.cosmic-banner{
+  background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(224,64,251,.08));
+  border:1px solid rgba(0,229,255,.25);border-radius:14px;
+  padding:1.4rem 1.8rem;margin-bottom:2.2rem;text-align:left;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;
+}
+.cosmic-item b{display:block;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:.2rem}
+.cosmic-item span{font-size:.95rem;color:#fff;font-weight:600}
+.cosmic-item p{margin:.2rem 0 0;font-size:.8rem;color:var(--dim);line-height:1.4}
+
+.results-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.8rem;margin-bottom:2.5rem;
 }
 .rcard{
-  margin:0;padding:1.4rem;border-radius:var(--radius);
-  border:1px solid color-mix(in srgb,var(--n) 30%,transparent);
-  background:linear-gradient(160deg,color-mix(in srgb,var(--n) 6%,var(--bg)),var(--glass-2));
+  background:linear-gradient(155deg,rgba(18,22,34,.9),rgba(8,10,16,.95));
+  border:1px solid color-mix(in srgb,var(--n) 50%,transparent);
+  border-radius:18px;padding:1.6rem;text-align:left;
+  box-shadow:0 12px 36px rgba(0,0,0,.6),0 0 20px color-mix(in srgb,var(--n) 18%,transparent);
+  display:flex;flex-direction:column;gap:1.2rem;
 }
-.rcard .pos{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--n,var(--acc));font-weight:600}
-.rcard .glyph{width:60px;height:60px;margin:.7rem 0;stroke:var(--n,var(--acc));fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.rcard h3{margin:0 0 .15rem;font-size:1.2rem;font-weight:700;color:var(--n,var(--acc))}
-.rcard h3 small{display:block;font-size:.78rem;font-weight:400;color:var(--dim);margin-top:.1rem}
-.rcard .meta{font-size:.78rem;color:var(--dim);margin:.5rem 0 .8rem;line-height:1.6}
-.rcard dl{margin:0;display:grid;gap:.6rem}
-.rcard dt{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--n,var(--acc));margin:0}
-.rcard dd{margin:0 0 .1rem;font-size:.86rem;color:var(--ink);line-height:1.55}
-.tone-text{font-size:.86rem;color:var(--dim);margin:.8rem 0 0;padding:.8rem;border-radius:10px;background:var(--glass);border-left:3px solid var(--n,var(--acc))}
-.live{font-size:.84rem;margin:.8rem 0 0;padding:.6rem .8rem;border-radius:10px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.14);color:var(--ink)}
-.kin-badge{
-  display:inline-flex;flex-direction:column;align-items:center;
-  padding:.6rem 1rem;border-radius:14px;
-  background:linear-gradient(135deg,color-mix(in srgb,var(--n) 14%,transparent),color-mix(in srgb,var(--n) 6%,transparent));
-  border:1px solid color-mix(in srgb,var(--n) 30%,transparent);margin-bottom:.8rem;
+.rcard-head{display:flex;gap:1.2rem;align-items:center}
+.rcard-thumb{
+  width:90px;height:90px;border-radius:12px;overflow:hidden;flex-shrink:0;
+  border:1px solid color-mix(in srgb,var(--n) 50%,transparent);
+  box-shadow:0 0 14px color-mix(in srgb,var(--n) 30%,transparent);
 }
-.kin-badge b{font-size:1.6rem;line-height:1;color:var(--n,var(--acc))}
-.kin-badge span{font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:var(--dim)}
+.rcard-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.rcard-info h3{margin:0;font-size:1.25rem;font-weight:700;color:#fff}
+.rcard-info .pos-badge{
+  display:inline-block;padding:.2rem .6rem;border-radius:999px;font-size:.65rem;
+  letter-spacing:.16em;text-transform:uppercase;font-weight:700;
+  background:color-mix(in srgb,var(--n) 15%,transparent);color:var(--n);margin-bottom:.3rem;
+}
+.rcard-info p{margin:.2rem 0 0;font-size:.8rem;color:var(--dim)}
 
-/* ---------- contexto cosmologico ---------- */
-.context-bar{
-  display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin:0 0 2rem;
+.rcard-body dl{margin:0;display:grid;grid-template-columns:1fr;gap:.8rem}
+.rcard-body dt{
+  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--n);
+  font-weight:700;margin-bottom:.2rem;
 }
-.ctx-chip{
-  display:inline-flex;align-items:center;gap:.4rem;
-  padding:.35rem .8rem;border-radius:999px;font-size:.72rem;
-  letter-spacing:.06em;border:1px solid var(--line);
-  background:var(--glass);color:var(--dim);
-}
-.ctx-chip b{color:var(--ink);font-weight:600}
-.ctx-chip .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.castle-banner{
-  text-align:center;padding:1rem;border-radius:var(--radius);margin:0 0 1.6rem;
-  background:var(--glass);border:1px solid var(--line);
-}
-.castle-banner h4{margin:0 0 .3rem;font-size:.88rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-.castle-banner p{margin:0;font-size:.78rem;color:var(--dim);line-height:1.5}
+.rcard-body dd{margin:0;font-size:.85rem;color:var(--ink);line-height:1.5}
 
-/* ---------- oracle cross layout ---------- */
-.oracle-grid{
-  display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;
-  gap:1.2rem;max-width:720px;margin:0 auto 1.6rem;
+.actions{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:2.5rem;
 }
-.oracle-grid .rcard:nth-child(1){grid-column:2;grid-row:2} /* Destino/Centro */
-.oracle-grid .rcard:nth-child(2){grid-column:2;grid-row:1} /* Guía/Arriba */
-.oracle-grid .rcard:nth-child(3){grid-column:3;grid-row:2} /* Análogo/Derecha */
-.oracle-grid .rcard:nth-child(4){grid-column:1;grid-row:2} /* Antípoda/Izquierda */
-.oracle-grid .rcard:nth-child(5){grid-column:2;grid-row:3} /* Oculto/Abajo */
-
-/* ---------- acciones ---------- */
-.actions{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:2rem}
 .act{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.55rem 1.1rem;border-radius:999px;font-size:.82rem;font-weight:500;
-  letter-spacing:.06em;border:1px solid var(--line);color:var(--dim);
-  transition:color .25s,border-color .25s,transform .25s,background .25s;
+  display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.6rem;border-radius:999px;
+  border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--dim);
+  font-size:.85rem;font-weight:600;letter-spacing:.08em;transition:all .25s;
 }
-.act:hover{color:#fff;border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.08);transform:translateY(-1px)}
+.act:hover{color:#fff;border-color:var(--acc);background:rgba(0,229,255,.1);transform:translateY(-2px)}
+.act.primary{background:var(--acc);color:#031015;border-color:var(--acc);font-weight:700}
+.act.primary:hover{box-shadow:0 0 24px rgba(0,229,255,.7);color:#000}
 .act svg{width:16px;height:16px}
-.act.danger{border-color:rgba(255,80,80,.3);color:rgba(255,120,120,.8)}
-.act.danger:hover{border-color:rgba(255,80,80,.6);background:rgba(255,80,80,.1)}
-.act.danger.armed{border-color:rgba(255,50,50,.7);color:#ff5e5e;background:rgba(255,80,80,.14)}
 
-/* ---------- historial ---------- */
-#history-panel{
-  position:fixed;inset:0;z-index:100;background:rgba(5,5,8,.88);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  padding:2.5rem clamp(1rem,4vw,2rem);overflow-y:auto;
-  opacity:0;transform:translateY(10px);pointer-events:none;
-  transition:opacity .32s ease,transform .32s ease;
+/* ---------- HISTORIAL PANEL ---------- */
+.history-panel{
+  position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);z-index:150;
+  background:rgba(8,10,16,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-left:1px solid rgba(255,255,255,.1);box-shadow:-12px 0 40px rgba(0,0,0,.8);
+  padding:2rem clamp(1.2rem,3vw,1.8rem);transform:translateX(100%);
+  transition:transform .4s var(--ease-out);display:flex;flex-direction:column;
 }
-#history-panel.open{opacity:1;transform:none;pointer-events:auto}
-#history-panel h2{font-size:1.2rem;letter-spacing:.3em;text-transform:uppercase;font-weight:300;margin:0 0 1.4rem}
+.history-panel.open{transform:translateX(0)}
+.hist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.8rem}
+.hist-head h2{margin:0;font-size:1.3rem;font-weight:600;letter-spacing:.1em;color:#fff}
+.hist-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:.9rem;padding-right:4px}
 .hist-item{
-  display:block;width:100%;text-align:left;
-  padding:.9rem 1rem;border-radius:var(--radius);margin:0 0 .6rem;
-  border:1px solid var(--line);background:var(--glass);
-  transition:border-color .25s,background .25s;
+  text-align:left;padding:1rem;border-radius:12px;background:rgba(255,255,255,.03);
+  border:1px solid var(--line);transition:all .2s;cursor:pointer;
 }
-.hist-item:hover{border-color:rgba(0,229,255,.35);background:rgba(0,229,255,.06)}
-.hist-item b{display:block;font-size:.88rem;margin-bottom:.15rem}
-.hist-item span{font-size:.76rem;color:var(--dim)}
-.hist-empty{color:var(--dim);font-size:.88rem}
-.hist-clear{margin-top:1.4rem}
+.hist-item:hover{border-color:var(--acc);background:rgba(0,229,255,.06);transform:translateX(-3px)}
+.hist-item b{display:block;font-size:.9rem;color:#fff;margin-bottom:.2rem}
+.hist-item span{font-size:.78rem;color:var(--dim)}
+.hist-empty{color:var(--dim);font-size:.9rem;text-align:center;margin-top:3rem}
 
-/* ---------- toast ---------- */
-#toast{
-  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);
-  padding:.6rem 1.4rem;border-radius:999px;font-size:.82rem;font-weight:500;
-  background:rgba(0,229,255,.18);border:1px solid rgba(0,229,255,.3);color:#fff;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  transition:transform .4s var(--ease-out);z-index:200;pointer-events:none;
+/* ---------- TOAST ---------- */
+.toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(30px);
+  padding:.7rem 1.6rem;border-radius:999px;background:rgba(8,10,16,.95);
+  border:1px solid var(--acc);color:#fff;font-size:.85rem;letter-spacing:.08em;
+  box-shadow:0 10px 30px rgba(0,0,0,.7),0 0 20px rgba(0,229,255,.4);
+  opacity:0;pointer-events:none;transition:all .3s var(--ease-out);z-index:300;
 }
-#toast.show{transform:translateX(-50%) translateY(0)}
-.err{color:#FF8A80;font-size:.82rem;margin:.4rem 0 0}
-input[type="date"]{
-  padding:.45rem .7rem;border-radius:10px;border:1px solid var(--line);
-  background:var(--glass);color:var(--ink);font:inherit;font-size:.88rem;
-  margin-top:.5rem;width:100%;max-width:240px;
-  transition:border-color .25s;
-}
-input[type="date"]:focus{border-color:var(--acc)}
-input[type="date"].invalid{border-color:#FF5252}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-footer{
-  position:fixed;bottom:0;left:0;right:0;z-index:10;
-  text-align:center;padding:.6rem 1rem;
-  font-size:.62rem;letter-spacing:.12em;color:rgba(255,255,255,.2);
-  background:linear-gradient(to top,rgba(5,5,8,.7),transparent);
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:768px){
+  .spread-mat.layout-5-cross{
+    grid-template-areas:
+      "guide"
+      "destiny"
+      "analog"
+      "antipode"
+      "occult";
+    grid-template-columns:1fr;
+    max-width:240px;
+  }
+  .spread-mat.layout-3{grid-template-columns:1fr;max-width:240px}
+  .fan-card{width:90px;height:145px}
+  .deck-fan-wrap{min-height:300px}
 }
-/* ---------- impresión ---------- */
+
+/* ---------- IMPRESIÓN ---------- */
 @media print{
   body{background:#fff;color:#111}
-  .topbar,footer,#bg,.aura,#toast,#history-panel,.actions,.reveal-bar,.hint{display:none!important}
-  .print-head{display:block;text-align:center;margin-bottom:1.5rem}
-  .print-head h1{font-size:1.5rem;margin:0} .print-head p{margin:.3rem 0 0;font-size:.9rem}
-  .rcard{break-inside:avoid;border:1px solid #ccc;background:#fafafa!important}
-  .rcard .glyph{stroke:#333!important}
-  .rcard h3{color:#222!important} .rcard .pos{color:#555!important}
-  .rcard dt{color:#444!important} .live{background:#f0f0f0!important;border-color:#ccc!important}
-}
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
-  *,*::before,*::after{
-    animation-duration:.01ms!important;animation-iteration-count:1!important;
-    transition-duration:.01ms!important;
-  }
-  .tcard .card-inner{transition:none}
-  .results-wrap.glitching{animation:none!important}
+  #bg,.aura,.topbar,.actions,.deck-actions,.control-bar{display:none!important}
+  .screen{padding:0;max-width:100%}
+  .cosmic-banner{background:#f5f5f5;border-color:#ccc;color:#111}
+  .cosmic-item span,.cosmic-item b{color:#111}
+  .rcard{background:#fff;border:1px solid #ccc;box-shadow:none;break-inside:avoid}
+  .rcard-info h3,.rcard-body dd{color:#111}
+  .rcard-body dt{color:#444}
 }
 </style>
 </head>
@@ -364,244 +558,427 @@ footer{
 <div class="aura" id="aura1" style="--a:rgb(0,229,255);opacity:1" aria-hidden="true"></div>
 <div class="aura" id="aura2" aria-hidden="true"></div>
 
+<!-- TOPBAR -->
 <header class="topbar">
-  <span class="brand"><b>TAROT</b> MAYA</span>
-  <button type="button" class="ghost-btn" id="btn-history" aria-haspopup="dialog">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-    Historial
-  </button>
+  <div style="display:flex;align-items:center;gap:1rem">
+    <button type="button" class="back-btn" id="btn-back" style="display:none" aria-label="Volver al menú de tiradas">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      <span>Menú</span>
+    </button>
+    <span class="brand"><b>TAROT</b> MAYA · Tzolk'in</span>
+  </div>
+  <div class="top-actions">
+    <button type="button" class="ghost-btn" id="btn-sound" aria-label="Alternar sonido">
+      <span id="sound-icon">🔊</span>
+      <span id="sound-label">Sonido</span>
+    </button>
+    <button type="button" class="ghost-btn" id="btn-history" aria-haspopup="dialog" aria-label="Abrir historial de lecturas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <span>Historial</span>
+    </button>
+  </div>
 </header>
 
 <main id="app">
 
-  <!-- FASE: portada -->
-  <section class="screen" id="screen-intro" tabindex="-1" aria-label="Portada">
-    <p class="eyebrow">Calendario sagrado de 260 kines</p>
+  <!-- FASE: PORTADA -->
+  <section class="screen" id="screen-intro" tabindex="-1" aria-label="Portada del Tarot Maya">
+    <p class="eyebrow">Oráculo Sagrado · 260 Kines · 20 Sellos · 13 Tonos</p>
     <h1 class="neon-title">TAROT MAYA</h1>
     <p class="subtitle">Tzolk'in Sagrado</p>
-    <button type="button" class="cta" id="btn-start">Iniciar lectura</button>
-    <p class="note">20 sellos solares · 13 tonos galácticos · 4 rumbos · 5 castillos · correlación GMT 584283</p>
+    <button type="button" class="cta" id="btn-start">Iniciar Consulta</button>
+    <p class="note">Fórmulas galácticas reales · Ilustraciones de sellos solares · Correlación GMT 584283</p>
   </section>
 
-  <!-- FASE: selección -->
-  <section class="screen" id="screen-select" tabindex="-1" hidden aria-label="Selección de lectura">
-    <h2 class="phase-title">Elige tu consulta</h2>
-    <p class="phase-sub">Cada tirada entrelaza sellos, tonos y rumbos con la energía del Tzolk'in</p>
+  <!-- FASE: SELECCIÓN DE TIRADA -->
+  <section class="screen" id="screen-select" tabindex="-1" hidden aria-label="Selección de Tirada">
+    <h2 class="phase-title">Elige tu Tirada</h2>
+    <p class="phase-sub">Consulta al oráculo a través de las frecuencias del tiempo natural maya</p>
     <div class="menu">
-      <button type="button" class="opt" data-type="kin-dia">
-        <span class="tag">1 carta · hoy</span>
-        <h3>Kin del día</h3>
-        <p>La energía exacta del Tzolk'in para hoy: tu sello, tu tono, tu onda encantada y tu castillo.</p>
+      <button type="button" class="opt" data-type="guia">
+        <span class="tag">1 carta · foco sagrado</span>
+        <h3>Nahual Guía del Momento</h3>
+        <p>Una sola carta para una respuesta directa, enfoque de consciencia o consejo inmediato del oráculo.</p>
       </button>
-      <button type="button" class="opt" data-type="oraculo">
+
+      <button type="button" class="opt" data-type="triada">
+        <span class="tag">3 cartas · línea temporal</span>
+        <h3>Tríada del Tiempo</h3>
+        <p>Pasado / Raíz · Presente / Desafío · Futuro / Destino. Claridad sobre el origen y evolución de tu situación.</p>
+      </button>
+
+      <button type="button" class="opt" data-type="cruz">
         <span class="tag">5 cartas · oráculo sagrado</span>
-        <h3>Oráculo de la Quinta Fuerza</h3>
-        <p>Destino al centro, Guía arriba, Análogo como apoyo, Antípoda como desafío y el Poder Oculto. Calculado con las fórmulas reales del Dreamspell.</p>
+        <h3>Cruz Maya (Quinta Fuerza)</h3>
+        <p>Destino al centro, Guía arriba, Análogo a la derecha, Antípoda a la izquierda y Oculto abajo. El mapa cósmico completo.</p>
       </button>
+
+      <button type="button" class="opt" data-type="siete">
+        <span class="tag">7 cartas · sendero cósmico</span>
+        <h3>Sendero de las 7 Direcciones</h3>
+        <p>Este (Fuego), Norte (Aire), Oeste (Agua), Sur (Tierra), Cielo (Cosmos), Madre Tierra (Raíz) y Corazón (Centro).</p>
+      </button>
+
       <button type="button" class="opt" data-type="onda">
-        <span class="tag">13 cartas · onda encantada</span>
+        <span class="tag">13 cartas · ciclo de manifestación</span>
         <h3>Onda Encantada</h3>
-        <p>Las 13 posiciones de tu onda actual: Propósito, Desafío, Servicio, Forma, Radiancia, Igualdad, Sintonización, Integridad, Intención, Manifestación, Liberación, Cooperación y Presencia.</p>
+        <p>Las 13 posiciones del ciclo tonal: desde el Propósito magnético hasta el Vuelo cósmico de trascendencia.</p>
       </button>
+
+      <button type="button" class="opt" data-type="kin-dia">
+        <span class="tag">Sincronario · hoy</span>
+        <h3>Kin Sagrado del Día</h3>
+        <p>La energía astronómica del Tzolk'in para hoy: tu sello solar, tono galáctico, onda encantada y castillo en curso.</p>
+      </button>
+
       <div class="opt">
-        <span class="tag">3 · 5 · 7 · 9 cartas</span>
-        <h3>Tirada del Tzolk'in</h3>
-        <p>Consulta libre con cartas consecutivas del Tzolk'in a partir del kin de hoy.</p>
-        <div class="pill-row" role="group" aria-label="Número de cartas">
-          <button type="button" class="pill" data-count="3" aria-pressed="false">3</button>
-          <button type="button" class="pill" data-count="5" aria-pressed="true">5</button>
-          <button type="button" class="pill" data-count="7" aria-pressed="false">7</button>
-          <button type="button" class="pill" data-count="9" aria-pressed="false">9</button>
-        </div>
-        <button type="button" class="mini-btn" id="btn-free">Iniciar tirada</button>
-      </div>
-      <div class="opt">
-        <span class="tag">5 cartas · tu sello natal</span>
-        <h3>Oráculo natal</h3>
-        <p>Tu kin de nacimiento y su Oráculo de la Quinta Fuerza completo: el mapa energético con el que llegaste al mundo.</p>
+        <span class="tag">Oráculo natal por fecha</span>
+        <h3>Tu Kin de Nacimiento</h3>
+        <p>Introduce tu fecha de nacimiento para desvelar tu sello personal y su Oráculo de la Quinta Fuerza natal.</p>
         <label class="sr-only" for="natal-date">Fecha de nacimiento</label>
         <input type="date" id="natal-date" min="1900-01-01">
         <p class="err" id="natal-err" aria-live="polite"></p>
-        <button type="button" class="mini-btn" id="btn-natal">Consultar oráculo natal</button>
+        <button type="button" class="mini-btn" id="btn-natal">Calcular Oráculo Natal</button>
       </div>
     </div>
   </section>
 
-  <!-- FASE: barajado -->
-  <section class="screen" id="screen-shuffle" tabindex="-1" hidden aria-label="Barajando">
-    <h2 class="phase-title">Consultando el Tzolk'in</h2>
-    <div class="deck" id="deck" aria-hidden="true"></div>
-    <p class="shuffle-msg">Los sellos se entretejen en el tiempo…</p>
+  <!-- FASE: MESA DE LA BARAJA (FAN PICKING) -->
+  <section class="screen" id="screen-deck" tabindex="-1" hidden aria-label="Mesa de la baraja">
+    <h2 class="phase-title" id="deck-title">Elige tus Cartas</h2>
+    <p class="phase-sub" id="deck-subtitle">Conecta con tu intención y selecciona las cartas que sientas llamar</p>
+    
+    <div class="deck-instructions">
+      <div class="deck-counter-badge" id="deck-counter">
+        <span>Cartas seleccionadas:</span>
+        <b id="deck-picked-count">0</b> de <b id="deck-total-count">3</b>
+      </div>
+      <div class="deck-actions">
+        <button type="button" class="action-btn secondary" id="btn-deck-back">← Volver</button>
+        <button type="button" class="action-btn primary" id="btn-auto-deal">🎲 Tirada al Azar</button>
+      </div>
+    </div>
+
+    <div class="deck-fan-wrap" id="deck-fan-container" aria-label="Baraja de cartas extendida">
+      <!-- Generado dinámicamente -->
+    </div>
   </section>
 
-  <!-- FASE: revelado -->
+  <!-- FASE: TAPETE RITUAL DE REVELADO -->
   <section class="screen" id="screen-reveal" tabindex="-1" hidden aria-label="Revelado de cartas">
-    <h2 class="phase-title">Revela tu tirada</h2>
-    <p class="hint">Toca cada carta o navega con Tab · Escape revela el resto</p>
-    <div class="spread" id="spread" aria-label="Cartas de la tirada"></div>
-    <div class="reveal-bar">
-      <span id="reveal-progress" aria-hidden="true"></span>
-      <button type="button" id="btn-full" disabled>Ver lectura completa</button>
+    <h2 class="phase-title" id="reveal-title">Revela tu Tirada</h2>
+    <p class="phase-sub">Toca cada carta boca abajo para voltearla · Pulsa en una carta revelada para ver su sabiduría en detalle</p>
+    
+    <div class="spread-wrapper">
+      <div class="spread-mat" id="spread-mat" aria-label="Tapete de la tirada"></div>
+    </div>
+
+    <div class="control-bar">
+      <button type="button" class="action-btn secondary" id="btn-reveal-back">← Cambiar Tirada</button>
+      <button type="button" class="action-btn secondary" id="btn-reveal-all">👁️ Revelar Todas</button>
+      <button type="button" class="action-btn primary" id="btn-view-results" disabled>📜 Ver Lectura Completa</button>
     </div>
   </section>
 
-  <!-- FASE: resultados -->
-  <section class="screen" id="screen-results" tabindex="-1" hidden aria-label="Resultados">
-    <div class="print-head">
-      <h1>TAROT MAYA — TZOLK'IN SAGRADO</h1>
-      <p id="print-date"></p>
-    </div>
-    <div class="results-wrap" id="results-wrap"></div>
-    <div class="actions">
-      <button type="button" class="act" id="btn-new">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 1 2.3 5.7"/><path d="M4 20v-5h5"/></svg>
-        Nueva lectura
-      </button>
-      <button type="button" class="act" id="btn-copy">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-        Copiar lectura
-      </button>
-      <button type="button" class="act" id="btn-dl">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v12m0 0 4-4m-4 4-4-4"/><path d="M4 20h16"/></svg>
-        Descargar .md
-      </button>
-      <button type="button" class="act" id="btn-print">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 8V4h10v4"/><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M7 14h10v6H7z"/></svg>
-        Imprimir / PDF
-      </button>
+  <!-- FASE: INFORME DE RESULTADOS -->
+  <section class="screen" id="screen-results" tabindex="-1" hidden aria-label="Informe de Resultados">
+    <div class="results-wrap">
+      <div class="print-head" style="margin-bottom:1.5rem">
+        <h1 style="margin:0;font-size:1.8rem;letter-spacing:.12em">TAROT MAYA — TZOLK'IN SAGRADO</h1>
+        <p id="print-date" style="color:var(--dim);margin:4px 0 0"></p>
+      </div>
+
+      <div class="cosmic-banner" id="cosmic-banner"></div>
+
+      <div class="results-grid" id="results-grid"></div>
+
+      <div class="actions">
+        <button type="button" class="act primary" id="btn-new">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 1 2.3 5.7"/><path d="M4 20v-5h5"/></svg>
+          Nueva Tirada
+        </button>
+        <button type="button" class="act" id="btn-view-spread">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="9" rx="1"/><rect x="8.5" y="14" width="7" height="9" rx="1"/></svg>
+          Ver Tapete
+        </button>
+        <button type="button" class="act" id="btn-copy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+          Copiar Lectura
+        </button>
+        <button type="button" class="act" id="btn-dl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v12m0 0 4-4m-4 4-4-4"/><path d="M4 20h16"/></svg>
+          Descargar .md
+        </button>
+        <button type="button" class="act" id="btn-print">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 8V4h10v4"/><rect x="4" y="8" width="16" height="8" rx="2"/><path d="M7 14h10v6H7z"/></svg>
+          Imprimir / PDF
+        </button>
+      </div>
     </div>
   </section>
 
 </main>
 
-<aside id="history-panel" role="dialog" aria-modal="true" aria-label="Historial de lecturas" hidden>
-  <h2>Historial</h2>
-  <div id="hist-list"></div>
-  <button type="button" class="act danger hist-clear" id="btn-clear-hist">Borrar historial</button>
+<!-- MODAL INSPECTOR DE CARTA -->
+<div id="card-modal" class="modal-backdrop" hidden aria-modal="true" role="dialog">
+  <div class="modal-content" id="modal-content">
+    <button type="button" class="modal-close-btn" id="btn-close-modal" aria-label="Cerrar modal">&times;</button>
+    <div class="modal-left">
+      <div class="modal-art-box">
+        <img id="modal-img" src="" alt="Carta del Tarot Maya" />
+      </div>
+      <div class="modal-pos-tag" id="modal-pos-badge">POSICIÓN</div>
+    </div>
+    <div class="modal-right">
+      <div class="modal-header">
+        <h2 id="modal-title">NOMBRE DEL SELLO</h2>
+        <p id="modal-meta">Kin 0 · Tono 0 · Rumbo</p>
+      </div>
+      <dl class="modal-dl">
+        <div class="modal-sec">
+          <dt>Luz · Potencial Sagrado</dt>
+          <dd id="modal-light"></dd>
+        </div>
+        <div class="modal-sec">
+          <dt>Sombra · Desafío a Trascender</dt>
+          <dd id="modal-shadow"></dd>
+        </div>
+        <div class="modal-sec">
+          <dt>Consejo del Oráculo</dt>
+          <dd id="modal-guide"></dd>
+        </div>
+        <div class="modal-sec">
+          <dt>Pregunta del Tono Tonal</dt>
+          <dd id="modal-tone-q"></dd>
+        </div>
+        <div class="modal-sec">
+          <dt>Aliado & Práctica Diaria</dt>
+          <dd id="modal-ally"></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL LATERAL DE HISTORIAL -->
+<aside class="history-panel" id="history-panel" hidden aria-label="Historial de lecturas">
+  <div class="hist-head">
+    <h2>Historial de Tiradas</h2>
+    <button type="button" class="ghost-btn" id="btn-close-hist">Cerrar</button>
+  </div>
+  <div class="hist-list" id="hist-list"></div>
+  <div style="margin-top:1.5rem;display:flex;gap:.8rem">
+    <button type="button" class="mini-btn" id="btn-clear-hist" style="border-color:#ff5252;color:#ff5252">Borrar historial</button>
+  </div>
 </aside>
 
-<div id="announcer" class="sr-only" aria-live="polite"></div>
-<div id="toast" role="status" aria-live="polite"></div>
-
-<footer>Tzolk'in · Correlación GMT 584283 · 20 sellos · 13 tonos · 4 rumbos · 5 castillos</footer>
+<!-- NOTIFICACIONES TOAST & ANNOUNCER -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="sr-only" id="announcer" aria-live="assertive"></div>
 
 <script>
-"use strict";
 /* ================================================================
-   MOTOR TZOLK'IN — correlación GMT 584283
-   Verificado: 2012-12-21 → tono 4 · sello 20 (Ajaw) · kin 160
-               2026-09-08 → tono 8 · sello 9  (Muluk) · kin 229
+   MOTOR DE AUDIO PROCEDURAL (WEB AUDIO API)
+   ================================================================ */
+let audioCtx = null;
+let soundEnabled = localStorage.getItem('tarot-maya-sound') !== 'false';
+
+function initAudio() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
+  }
+}
+
+function playSound(type) {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  
+  const now = audioCtx.currentTime;
+  
+  if (type === 'shuffle') {
+    const bufferSize = Math.floor(audioCtx.sampleRate * 0.22);
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.35));
+    }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1400, now);
+    filter.Q.setValueAtTime(1.8, now);
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.1, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start(now);
+  } else if (type === 'deal') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.07);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.07);
+  } else if (type === 'flip') {
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc1.type = 'sine';
+    osc2.type = 'sine';
+    osc1.frequency.setValueAtTime(528, now);
+    osc2.frequency.setValueAtTime(1056, now);
+    gain.gain.setValueAtTime(0.14, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + 0.85);
+    osc2.stop(now + 0.85);
+  } else if (type === 'gong') {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(216, now);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.0005, now + 2.4);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 2.4);
+  }
+}
+
+function updateSoundUI() {
+  const icon = document.getElementById('sound-icon');
+  const label = document.getElementById('sound-label');
+  if (soundEnabled) {
+    icon.textContent = '🔊';
+    label.textContent = 'Sonido';
+  } else {
+    icon.textContent = '🔇';
+    label.textContent = 'Silencio';
+  }
+}
+
+/* ================================================================
+   CÁLCULOS MATEMÁTICOS DEL TZOLK'IN (GMT 584283 & CHINESE REMAINDER)
    ================================================================ */
 function jdn(y,m,d){
   const a=((14-m)/12)|0, yy=y+4800-a, mm=m+12*a-3;
-  return d+(((153*mm+2)/5)|0)+365*yy+((yy/4)|0)-((yy/100)|0)+((yy/400)|0)-32045;
+  return d + (((153*mm+2)/5)|0) + 365*yy + ((yy/4)|0) - ((yy/100)|0) + ((yy/400)|0) - 32045;
 }
 function kinOf(y,m,d){
   const n0=jdn(y,m,d)-584283;
-  return {
-    n0,
-    tone:  (((n0+3)%13)+13)%13+1,
-    nahual:(((n0+19)%20)+20)%20+1,
-    kin:   (((n0+159)%260)+260)%260+1
-  };
+  const kin=((((n0-1)%260)+260)%260)+1;
+  const tone=((((n0-1)%13)+13)%13)+1;
+  const nahual=((((n0-1)%20)+20)%20)+1;
+  return {n0,kin,tone,nahual};
 }
 function crtKin(tone,nahual){
   for(let k=1;k<=260;k++){
-    if(((k-1)%13)+1===tone && ((k-1)%20)+1===nahual) return k;
+    if((((k-1)%13)+1)===tone && (((k-1)%20)+1)===nahual) return k;
   }
   return 1;
 }
 
-/* ================================================================
-   ORÁCULO DE LA QUINTA FUERZA — fórmulas Dreamspell verificadas
-   Sellos 0-indexados (0-19)
-   ================================================================ */
 function getOracle(seal0,tone){
-  const guideOffsets=[0,12,4,16,8];
-  const tg=(tone-1)%5;
-  return {
-    destiny:seal0,
-    guide:(seal0+guideOffsets[tg])%20,
-    analog:(19-seal0+20)%20,
-    antipode:(seal0+10)%20,
-    occult:(17-seal0+20)%20
-  };
+  const guideMap=[0,12,4,16,8];
+  const guideSeal=(seal0+guideMap[(tone-1)%5])%20;
+  const analogSeal=(19-seal0)%20;
+  const antipodeSeal=(seal0+10)%20;
+  const occultSeal=(19-seal0+18)%20;
+  return {destiny:seal0,guide:guideSeal,analog:analogSeal,antipode:antipodeSeal,occult:occultSeal};
 }
 function getWavespellIdx(kin){ return Math.floor((kin-1)/13); }
 function getCastleIdx(kin){ return Math.floor((kin-1)/52); }
 function getWavespellPosition(kin){ return ((kin-1)%13)+1; }
 
-/* Utilidades */
-function mulberry32(a){
-  return function(){
-    a|=0; a=(a+0x6D2B79F5)|0;
-    let t=Math.imul(a^(a>>>15),1|a);
-    t=(t+Math.imul(t^(t>>>7),61|t))^t;
-    return ((t^(t>>>14))>>>0)/4294967296;
-  };
-}
-function seededShuffle(arr,rng){
-  const a=arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(rng()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
 function hexToRgb(h){
-  return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const n=parseInt(h.slice(1),16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
+}
+
+function renderMayaToneDots(tone){
+  const bars=Math.floor(tone/5);
+  const dots=tone%5;
+  let svg='<svg class="maya-tone-glyph" viewBox="0 0 46 26" aria-label="Tono '+tone+'">';
+  if(dots>0){
+    const step=36/(dots+1);
+    for(let i=1;i<=dots;i++){
+      svg+='<circle cx="'+(5+i*step)+'" cy="'+(bars>0?6:13)+'" r="2.8" fill="currentColor"/>';
+    }
+  }
+  const yStart=dots>0?14:(bars===1?13:9);
+  for(let b=0;b<bars;b++){
+    svg+='<rect x="6" y="'+(yStart+b*6)+'" width="34" height="3" rx="1.5" fill="currentColor"/>';
+  }
+  svg+='</svg>';
+  return svg;
 }
 
 /* ================================================================
-   DATOS CANÓNICOS — enriquecidos con Tu Energía Maya
+   ESTRUCTURAS DE DATOS COSMOLÓGICAS (CANÓNICAS)
    ================================================================ */
 const RUMBOS=[
-  {key:"Este", label:"Lak'in", nota:"rojo · inicio",          elem:"Fuego",  colorCSS:"#ef4444"},
-  {key:"Norte",label:"Xaman",  nota:"blanco · refinamiento",  elem:"Aire",   colorCSS:"#e8eaf6"},
-  {key:"Oeste",label:"Chik'in",nota:"azul · transformación",  elem:"Agua",   colorCSS:"#3b82f6"},
-  {key:"Sur",  label:"Nojol",  nota:"amarillo · madurez",     elem:"Tierra", colorCSS:"#eab308"}
+  {key:"Este", label:"Lak'in", nota:"rojo · inicio y nacimiento",    elem:"Fuego",  colorCSS:"#ef4444"},
+  {key:"Norte",label:"Xaman",  nota:"blanco · mente y refinamiento", elem:"Aire",   colorCSS:"#e8eaf6"},
+  {key:"Oeste",label:"Chik'in",nota:"azul · agua y transformación",  elem:"Agua",   colorCSS:"#3b82f6"},
+  {key:"Sur",  label:"Nojol",  nota:"amarillo · tierra y madurez",   elem:"Tierra", colorCSS:"#eab308"}
 ];
 
 const TONES=[null,
   {name:"Jun",galactic:"Magnético",fn:"Propósito",theme:"Unidad / Inicio",
-   question:"¿Qué propósito unifico?",
-   text:"El tono 1 enciende la chispa: todo lo que existe comienza como una unidad que aún no sabe de sí misma. Primer día de la onda: aquí se define la intención. ¿Qué quieres atraer hacia ti? Identifica tu propósito esencial sin titubeos."},
+   question:"¿Cuál es mi propósito esencial?",
+   text:"El tono 1 enciende la chispa: define tu meta y atrae los recursos necesarios hacia ti."},
   {name:"Keb'",galactic:"Lunar",fn:"Desafío",theme:"Dualidad / Polaridad",
-   question:"¿Qué desafío equilibro?",
-   text:"El tono 2 parte la unidad en dos: aparece el espejo, la polaridad que permite conocer. El reto se presenta. ¿Qué polaridad o fricción necesitas equilibrar para poder avanzar? Reconoce tus obstáculos como maestros."},
+   question:"¿Qué desafío o polaridad necesito equilibrar?",
+   text:"El tono 2 presenta el obstáculo como maestro: reconoce los polos y encuentra el eje."},
   {name:"Oxib'",galactic:"Eléctrico",fn:"Servicio",theme:"Acción / Movimiento",
-   question:"¿Cómo activo mi servicio?",
-   text:"El tono 3 es movimiento: la energía sale del umbral y actúa. Hora de activar y chispear. ¿Cómo puedes poner tu energía vibrante al servicio de los demás? Une los polos opuestos en una corriente viva."},
+   question:"¿Cómo activo mi servicio hacia los demás?",
+   text:"El tono 3 es movimiento puro: une los opuestos y activa una corriente de acción viva."},
   {name:"Kajib'",galactic:"Auto-existente",fn:"Forma",theme:"Estabilidad / Fundación",
-   question:"¿Qué forma doy a mi visión?",
-   text:"El tono 4 funda: los cuatro rumbos sostienen la casa. Baja tu visión a la materia. Dale estructura a tu intención. ¿Qué forma concreta necesitas diseñar para tener estabilidad?"},
+   question:"¿Qué estructura concreta doy a mi visión?",
+   text:"El tono 4 funda las bases: diseña la arquitectura que sostendrá tu proyecto."},
   {name:"Job'",galactic:"Entonado",fn:"Radiancia",theme:"Empoderamiento / Centro",
-   question:"¿Cómo tomo mi centro de poder?",
-   text:"El tono 5 toma el centro: empoderamiento, voz propia, autoridad encarnada. Recoge tus recursos y empodérate. Es el día central de la toma de mando. Ejerce tu autoridad natural."},
+   question:"¿Cómo tomo mi centro de autoridad y poder?",
+   text:"El tono 5 toma el mando: reúne tus dones y lidera desde tu autenticidad."},
   {name:"Waqib'",galactic:"Rítmico",fn:"Igualdad",theme:"Flujo / Equilibrio",
-   question:"¿Cómo organizo para equilibrar?",
-   text:"El tono 6 fluye: equilibrio orgánico, ritmo, escucha. Cae en el ritmo biológico de la naturaleza. ¿Qué aspecto de tu vida necesita orden para poder fluir sin estrés?"},
-  {name:"Wuqub'",galactic:"Resonante",fn:"Sintonización",theme:"Espejo / Reflexión",
-   question:"¿Qué canalizo desde mi interior?",
-   text:"El tono 7 es el eje central, la columna mística de la onda. Día de máxima conexión espiritual. Escucha el silencio interior y resuena con tu divinidad."},
+   question:"¿Cómo organizo mi día para fluir en armonía?",
+   text:"El tono 6 equilibra: encuentra el compás orgánico sin desgastar tu energía."},
+  {name:"Wuqub'",galactic:"Resonante",fn:"Sintonización",theme:"Espejo / Conexión Mística",
+   question:"¿Qué canalizo desde mi silencio interior?",
+   text:"El tono 7 es la columna mística central: sintoniza con tu sabiduría superior."},
   {name:"Wajxaqib'",galactic:"Galáctico",fn:"Integridad",theme:"Armonía / Justicia",
-   question:"¿Vivo de acuerdo a lo que predico?",
-   text:"El tono 8 armoniza: justicia, equilibrio entre dar y recibir. ¿Vives de acuerdo a lo que predicas? Es un día para revisar tu coherencia y alinear tus pensamientos, palabras y acciones."},
+   question:"¿Vivo con coherencia entre lo que siento y hago?",
+   text:"El tono 8 evalúa la verdad: alinea pensamiento, palabra y obra."},
   {name:"B'elejeb'",galactic:"Solar",fn:"Intención",theme:"Intención / Realización",
-   question:"¿Cómo pulso hacia mi meta?",
-   text:"El tono 9 realiza: intención que se vuelve hecho, paciencia que da fruto. Pulso puro hacia la meta. Muévete con la fuerza imparable del sol. Pon toda tu voluntad en realizar tu deseo."},
+   question:"¿Cómo pulso con determinación hacia mi meta?",
+   text:"El tono 9 proyecta la voluntad: avanza con la fuerza viva del sol."},
   {name:"Lajuj",galactic:"Planetario",fn:"Manifestación",theme:"Manifestación / Comunidad",
-   question:"¿Qué se materializa en mi vida?",
-   text:"El tono 10 manifiesta: la comunidad ve tu obra y la obra transforma a la comunidad. Lo que has sembrado cristaliza. Observa con gratitud lo que se materializa frente a tus ojos."},
-  {name:"Julajuj",galactic:"Espectral",fn:"Liberación",theme:"Resolución / Liberación",
-   question:"¿Qué necesito soltar y liberar?",
-   text:"El tono 11 resuelve: liberación, claridad, nudos que se desatan. Suelta absolutamente lo que sobra. Disuelve las estructuras que ya no sirven. Suelta el control y deja fluir la energía."},
-  {name:"Kab'lajuj",galactic:"Cristal",fn:"Cooperación",theme:"Comprensión / Síntesis",
-   question:"¿Con quién comparto mi sabiduría?",
-   text:"El tono 12 comprende: síntesis, enseñanza, significado. Comparte la sabiduría de tu proceso con el círculo. Es día de comunidad, mesa redonda, diálogo, transparencia y unión."},
-  {name:"Oxlajuj",galactic:"Cósmico",fn:"Presencia",theme:"Trascendencia / Ascensión",
-   question:"¿Cómo vuelo hacia lo infinito?",
-   text:"El tono 13 trasciende: el vuelo mágico y el cierre trascendental de la onda. Celebra la expansión lograda, perdura en la presencia pura y prepárate para un nuevo comienzo."}
+   question:"¿Qué frutos estoy listo para materializar?",
+   text:"El tono 10 cristaliza la obra: contempla cómo se plasma en la realidad concreta."},
+  {name:"Julajuj",galactic:"Espectral",fn:"Liberación",theme:"Resolución / Disolución",
+   question:"¿Qué cargas o estructuras necesito soltar?",
+   text:"El tono 11 disuelve lo caduco: aligera tu camino para volar libre."},
+  {name:"Kab'lajuj",galactic:"Cristal",fn:"Cooperación",theme:"Comprensión / Mesa Redonda",
+   question:"¿Cómo comparto mi aprendizaje con el círculo?",
+   text:"El tono 12 teje la comunidad: une conciencias y sintetiza la experiencia."},
+  {name:"Oxlajuj",galactic:"Cósmico",fn:"Presencia",theme:"Trascendencia / Vuelo Mágico",
+   question:"¿Cómo perduro en presencia y celebro el ciclo?",
+   text:"El tono 13 trasciende: integra todo el sendero y abre la espiral al infinito."}
 ];
 
 const GLYPHS={
@@ -618,16 +995,20 @@ const GLYPHS={
   11:'<path d="M56 56 a8 8 0 1 1 -16 0 a16 16 0 1 1 32 0 a24 24 0 1 1 -48 0 a32 32 0 1 1 64 0"/><path d="M50 84 v-16"/>',
   12:'<path d="M20 84 h14 v-14 h14 v-14 h14 v-14 h14"/><path d="M20 70 h14 v-14 h14 v-14 h14 v-14 h14"/>',
   13:'<path d="M50 12 v76"/><path d="M34 34 h32"/><path d="M34 66 h32"/><path d="M26 22 h48"/>',
-  14:'<path d="M50 16 78 50 50 84 22 50 Z"/><path d="M50 34 v32"/><circle cx="50" cy="50" r="8"/>',
-  15:'<path d="M14 62 L34 40 L50 52 L66 40 L86 62"/><circle cx="50" cy="26" r="10"/><path d="M50 52 v32"/>',
-  16:'<circle cx="50" cy="44" r="24"/><path d="M38 38 l12 14 l12 -14"/><path d="M50 68 v16"/>',
-  17:'<path d="M50 50 h20 v-24 h-44 v44 h60 v-60 h-76"/>',
-  18:'<path d="M50 8 64 50 50 92 36 50 Z"/><path d="M50 8 v84"/><path d="M36 50 h28"/>',
-  19:'<circle cx="50" cy="54" r="16"/><path d="M50 38 V12"/><path d="M36 44 L18 30"/><path d="M64 44 L82 30"/><path d="M34 62 L14 68"/><path d="M66 62 L86 68"/>',
-  20:'<circle cx="50" cy="50" r="16"/><path d="M50 20 v-8"/><path d="M50 80 v8"/><path d="M20 50 h-8"/><path d="M80 50 h8"/><path d="M29 29 l-6 -6"/><path d="M71 29 l6 -6"/><path d="M29 71 l-6 6"/><path d="M71 71 l6 6"/><circle cx="50" cy="50" r="5"/>'
+  14:'<circle cx="50" cy="50" r="32"/><circle cx="38" cy="44" r="5"/><circle cx="62" cy="44" r="5"/><circle cx="50" cy="62" r="5"/>',
+  15:'<path d="M16 66 C32 30 68 30 84 66"/><circle cx="50" cy="38" r="8"/><path d="M30 76 h40"/>',
+  16:'<path d="M50 12 L84 76 L16 76 Z"/><path d="M36 54 h28"/><circle cx="50" cy="36" r="6"/>',
+  17:'<path d="M20 36 Q50 66 80 36"/><path d="M20 64 Q50 34 80 64"/>',
+  18:'<path d="M18 50 L50 18 L82 50 L50 82 Z"/><path d="M50 18 v64"/><path d="M18 50 h64"/>',
+  19:'<path d="M26 40 Q40 22 54 40 T82 40"/><path d="M36 54 L28 76 L48 76 L40 88"/>',
+  20:'<circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="14"/><path d="M50 10 v8"/><path d="M50 82 v8"/><path d="M10 50 h8"/><path d="M82 50 h8"/>'
 };
 
-/* 20 sellos solares — nombres yucatecos + galácticos + esencias verificadas */
+const SLUGS=[
+  'dragon','wind','night','seed','serpent','worldbridger','hand','star','moon','dog',
+  'monkey','human','skywalker','wizard','eagle','warrior','earth','mirror','storm','sun'
+];
+
 const NAHU=[
  {name:"Imix",galactic:"Dragón",totem:"Cocodrilo / Matriz",color:"#00E5FF",
   essenceKeys:"Nacimiento · Nutrición · Ser",
@@ -772,6 +1153,13 @@ const NAHU=[
 ];
 
 /* 20 Ondas Encantadas — datos de Tu Energía Maya */
+
+
+NAHU.forEach((n, idx) => {
+  n.slug = SLUGS[idx];
+  n.artUrl = './assets/art_seals/' + SLUGS[idx] + '.png';
+});
+
 const WAVESPELLS=[
  {seal:1,name:"Dragón",intention:"Nutrir el Nacimiento",theme:"Nacimiento, Nutrición, Memoria.",
   description:"La primera onda encantada abre el portal del Tzolkin con la fuerza maternal del Dragón Rojo. Todo comienza aquí, en el vientre cósmico."},
@@ -816,6 +1204,8 @@ const WAVESPELLS=[
 ];
 
 /* 5 Castillos del Destino */
+
+
 const CASTLES=[
  {name:"Castillo Rojo del Girar",subtitle:"El Umbral del Nacimiento",color:"#ef4444",icon:"🔴",
   mission:"Iniciar la Rueda del Tiempo",
@@ -834,641 +1224,740 @@ const CASTLES=[
   description:"El quinto castillo es el vuelo mágico de regreso al origen galáctico. Aquí se sincronizan todas las experiencias y la magia y la realidad se funden."}
 ];
 
-const TYPE_LABELS={"kin-dia":"Kin del día","natal":"Oráculo natal","oraculo":"Oráculo de la Quinta Fuerza","onda":"Onda Encantada","free":"Tirada del Tzolk'in"};
-const ORACLE_POS=[
-  {key:"destiny",label:"Destino · Energía Central",desc:"Tu esencia, tu identidad energética, el centro de tu oráculo."},
-  {key:"guide",  label:"Guía · Poder Superior",desc:"La energía que te guía desde arriba, tu norte espiritual y dirección."},
-  {key:"analog", label:"Análogo · Apoyo",desc:"Tu energía de apoyo, la fuerza complementaria que te sostiene."},
-  {key:"antipode",label:"Antípoda · Desafío",desc:"Tu reto transformador, la energía que te confronta para crecer."},
-  {key:"occult", label:"Oculto · Poder Escondido",desc:"Tu poder secreto, la fuerza inconsciente que te potencia desde las sombras."}
-];
-const BACK_SVG='<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 8 92 50 50 92 8 50Z"/><path d="M50 24 76 50 50 76 24 50Z"/><circle cx="50" cy="50" r="5"/></svg>';
-function glyphSVG(n,cls){
-  return '<svg class="'+(cls||'glyph')+'" viewBox="0 0 100 100" role="img" aria-label="Glifo de '+NAHU[n-1].name+'">'+GLYPHS[n]+'</svg>';
-}
+
+
+const MANDALA_SVG='<svg class="back-mandala" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="50" cy="50" r="42" stroke-dasharray="4 2"/><circle cx="50" cy="50" r="30"/><path d="M50 8 92 50 50 92 8 50Z"/><path d="M50 20 80 50 50 80 20 50Z"/><circle cx="50" cy="50" r="7" fill="currentColor" fill-opacity="0.3"/></svg>';
 
 /* ================================================================
-   ESTADO
+   CONFIGURACIÓN DE TIRADAS
+   ================================================================ */
+const SPREAD_CONFIGS={
+  "guia":{
+    count:1, title:"Nahual Guía del Instante", layout:"layout-1",
+    positions:[{label:"Guía del Instante · Tu Foco", desc:"La energía oracular clave para este momento."}]
+  },
+  "triada":{
+    count:3, title:"Tríada del Tiempo", layout:"layout-3",
+    positions:[
+      {label:"1. Pasado · Raíz y Origen", desc:"De dónde vienes, qué lección o causa subyace en tu situación."},
+      {label:"2. Presente · Desafío Activo", desc:"Dónde estás ahora, qué reto o energía viva demanda tu atención."},
+      {label:"3. Futuro · Consejo y Dirección", desc:"Hacia dónde te expandes, el consejo oracular para evolucionar."}
+    ]
+  },
+  "cruz":{
+    count:5, title:"Cruz Maya (Quinta Fuerza)", layout:"layout-5-cross",
+    positions:[
+      {label:"Destino · Centro de Consciencia", desc:"Tu energía central, el núcleo de la consulta.", slot:"slot-destiny"},
+      {label:"Guía · Poder Superior", desc:"La fuerza que te orienta desde arriba, tu dirección espiritual.", slot:"slot-guide"},
+      {label:"Análogo · Apoyo y Compañía", desc:"Tu fuerza gemela que te sostiene y nutre.", slot:"slot-analog"},
+      {label:"Antípoda · Desafío de Evolución", desc:"Tu reto transformador, el polo opuesto que te templa.", slot:"slot-antipode"},
+      {label:"Oculto · Poder Inconsciente", desc:"El tesoro escondido que aflora desde las sombras.", slot:"slot-occult"}
+    ]
+  },
+  "siete":{
+    count:7, title:"Sendero de las 7 Direcciones", layout:"layout-7",
+    positions:[
+      {label:"1. Este (Lak'in) · Fuego y Comienzo", desc:"Inspiración, nacimientos, la chispa de la visión."},
+      {label:"2. Norte (Xaman) · Aire y Sabiduría", desc:"Claridad mental, antepasados, verdad profunda."},
+      {label:"3. Oeste (Chik'in) · Agua y Transformación", desc:"Purificación, muerte alquímica, sanación emocional."},
+      {label:"4. Sur (Nojol) · Tierra y Florecimiento", desc:"Cosecha, generosidad, relaciones y nutrición."},
+      {label:"5. Cielo (Cosmos) · Visión Superior", desc:"Conexión espiritual y propósito universal."},
+      {label:"6. Madre Tierra · Enraizamiento", desc:"Manifestación concreta y sustento material."},
+      {label:"7. Corazón del Cosmos · Integración", desc:"El centro de unión donde todo converge."}
+    ]
+  },
+  "onda":{
+    count:13, title:"Onda Encantada (13 Tonos)", layout:"layout-13",
+    positions:Array.from({length:13},(_,i)=>({
+      label:"Tono "+(i+1)+" · "+TONES[i+1].galactic,
+      desc:TONES[i+1].fn+" — "+TONES[i+1].question
+    }))
+  },
+  "kin-dia":{
+    count:1, title:"Kin Sagrado del Día", layout:"layout-1",
+    positions:[{label:"Kin de Hoy", desc:"La firma galáctica activa en el cosmos el día de hoy."}]
+  },
+  "natal":{
+    count:5, title:"Oráculo Natal (Quinta Fuerza)", layout:"layout-5-cross",
+    positions:[
+      {label:"Kin Destino Natal", desc:"La energía con la que naciste.", slot:"slot-destiny"},
+      {label:"Guía Natal", desc:"Tu norte evolutivo.", slot:"slot-guide"},
+      {label:"Análogo Natal", desc:"Tu aliado afín.", slot:"slot-analog"},
+      {label:"Antípoda Natal", desc:"Tu desafío maestro de vida.", slot:"slot-antipode"},
+      {label:"Oculto Natal", desc:"Tu poder latente inconsciente.", slot:"slot-occult"}
+    ]
+  }
+};
+
+/* ================================================================
+   ESTADO GLOBAL DE LA APLICACIÓN
    ================================================================ */
 const state={
   phase:"intro",
-  reading:null,
-  viewing:null,
-  revealed:0,
-  freeCount:5,
-  reduced:window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  freshResults:false
+  activeType:"triada",
+  pickedCards:[],     // Cartas elegidas del abanico
+  deckCards:[],       // Baraja de 20 sellos mezclada para el abanico
+  reading:null,       // Lectura activa
+  revealedCount:0,    // Cartas volteadas
+  reduced:window.matchMedia("(prefers-reduced-motion: reduce)").matches
 };
+
 const $=id=>document.getElementById(id);
 const announcer=$("announcer");
 function announce(msg){ announcer.textContent=""; setTimeout(()=>{announcer.textContent=msg;},40); }
 let toastT=null;
 function toast(msg){
   const t=$("toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2600);
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2800);
 }
 
 /* ================================================================
-   FONDO VIVO — partículas, constelaciones, estallidos
+   FONDO CINÉTICO DE PARTÍCULAS
    ================================================================ */
 const canvas=$("bg"), ctx=canvas.getContext("2d");
 let W=0,H=0;
-function resize(){
+function resizeCanvas(){
   const d=Math.min(window.devicePixelRatio||1,2);
-  W=window.innerWidth; H=window.innerHeight;
-  canvas.width=W*d; canvas.height=H*d;
-  ctx.setTransform(d,0,0,d,0,0);
+  W=canvas.width=window.innerWidth*d;
+  H=canvas.height=window.innerHeight*d;
+  canvas.style.width=window.innerWidth+"px";
+  canvas.style.height=window.innerHeight+"px";
 }
-window.addEventListener("resize",resize); resize();
+window.addEventListener("resize",resizeCanvas);
+resizeCanvas();
 
-const NP=70, parts=[];
+const NP=65, parts=[];
 for(let i=0;i<NP;i++){
   parts.push({
-    x:Math.random()*W, y:Math.random()*H,
-    vx:(Math.random()-.5)*.25, vy:(Math.random()-.5)*.25,
-    r:Math.random()*1.6+.6, z:Math.random()*.8+.2
+    x:Math.random(),y:Math.random(),
+    r:Math.random()*1.8+.6,
+    vx:(Math.random()-.5)*.0003,vy:(Math.random()-.5)*.0003,
+    a:Math.random()*.7+.2
   });
-}
-let mx=.5,my=.5,tx=.5,ty=.5;
-window.addEventListener("pointermove",e=>{mx=e.clientX/W;my=e.clientY/H;},{passive:true});
-
-const ACC={cur:[0,229,255],tgt:[0,229,255]};
-const PHASE_RGB={intro:[0,229,255],select:[179,136,255],shuffle:[255,196,0],reveal:[224,64,251],results:[255,213,79]};
-function setAccent(name){
-  ACC.tgt=PHASE_RGB[name]||PHASE_RGB.intro;
-  if(state.reduced)ACC.cur=ACC.tgt.slice();
-  setAura(ACC.tgt);
-}
-const auras=[$("aura1"),$("aura2")];
-let auraIdx=0;
-function setAura(rgb){
-  auraIdx=1-auraIdx;
-  const el=auras[auraIdx];
-  el.style.setProperty("--a","rgb("+rgb.join(",")+")");
-  el.style.opacity="1";
-  auras[1-auraIdx].style.opacity="0";
 }
 const bursts=[];
 function spawnBurst(x,y,rgb){
   if(state.reduced)return;
-  for(let i=0;i<26;i++){
-    const a=Math.random()*Math.PI*2, s=Math.random()*3.2+1;
-    bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,rgb});
+  const d=Math.min(window.devicePixelRatio||1,2);
+  for(let i=0;i<24;i++){
+    const ang=Math.random()*Math.PI*2, spd=(Math.random()*4.5+1.2)*d;
+    bursts.push({
+      x:x*d,y:y*d,
+      vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,
+      rgb,life:1
+    });
   }
 }
-function step(){
-  tx+=(mx-tx)*.04; ty+=(my-ty)*.04;
-  for(let i=0;i<3;i++)ACC.cur[i]+=(ACC.tgt[i]-ACC.cur[i])*.03;
-  const r=Math.round(ACC.cur[0]),g=Math.round(ACC.cur[1]),b=Math.round(ACC.cur[2]);
+
+function stepCanvas(){
   ctx.clearRect(0,0,W,H);
-  for(const p of parts){
+  for(let i=0;i<parts.length;i++){
+    const p=parts[i];
     p.x+=p.vx; p.y+=p.vy;
-    if(p.x<-10)p.x=W+10; if(p.x>W+10)p.x=-10;
-    if(p.y<-10)p.y=H+10; if(p.y>H+10)p.y=-10;
+    if(p.x<0)p.x=1; if(p.x>1)p.x=0;
+    if(p.y<0)p.y=1; if(p.y>1)p.y=0;
+    ctx.fillStyle="rgba(0,229,255,"+(p.a*.3)+")";
+    ctx.beginPath(); ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2); ctx.fill();
   }
-  const ox=(tx-.5)*26, oy=(ty-.5)*26;
-  ctx.lineWidth=1;
-  for(let i=0;i<NP;i++)for(let j=i+1;j<NP;j++){
-    const a=parts[i],c=parts[j];
-    const dx=a.x-c.x,dy=a.y-c.y,d2=dx*dx+dy*dy;
-    if(d2<12100){
-      const al=(1-Math.sqrt(d2)/110)*.16;
-      ctx.strokeStyle="rgba("+r+","+g+","+b+","+al+")";
-      ctx.beginPath();
-      ctx.moveTo(a.x+ox*a.z,a.y+oy*a.z);
-      ctx.lineTo(c.x+ox*c.z,c.y+oy*c.z);
-      ctx.stroke();
-    }
-  }
-  ctx.shadowBlur=10; ctx.shadowColor="rgba("+r+","+g+","+b+",.9)";
-  for(const p of parts){
-    ctx.fillStyle="rgba("+r+","+g+","+b+","+(.35+p.z*.45)+")";
-    ctx.beginPath(); ctx.arc(p.x+ox*p.z,p.y+oy*p.z,p.r,0,7); ctx.fill();
-  }
-  ctx.shadowBlur=0;
   for(let i=bursts.length-1;i>=0;i--){
-    const q=bursts[i];
-    q.x+=q.vx; q.y+=q.vy; q.vx*=.96; q.vy*=.96; q.vy+=.03; q.life-=.02;
-    if(q.life<=0){bursts.splice(i,1);continue;}
-    ctx.fillStyle="rgba("+q.rgb[0]+","+q.rgb[1]+","+q.rgb[2]+","+q.life+")";
-    ctx.beginPath(); ctx.arc(q.x,q.y,2.2*q.life+.4,0,7); ctx.fill();
+    const b=bursts[i];
+    b.x+=b.vx; b.y+=b.vy; b.vx*=.95; b.vy*=.95; b.life-=.025;
+    if(b.life<=0){bursts.splice(i,1);continue;}
+    ctx.fillStyle="rgba("+b.rgb[0]+","+b.rgb[1]+","+b.rgb[2]+","+b.life+")";
+    ctx.beginPath(); ctx.arc(b.x,b.y,2.5*b.life+.5,0,Math.PI*2); ctx.fill();
   }
 }
-let raf=null,running=false;
-function frame(){ if(!running)return; step(); raf=requestAnimationFrame(frame); }
-function startLoop(){ if(state.reduced){step();return;} if(running)return; running=true; raf=requestAnimationFrame(frame); }
-function stopLoop(){ running=false; if(raf)cancelAnimationFrame(raf); }
-document.addEventListener("visibilitychange",()=>{ document.hidden?stopLoop():startLoop(); });
-startLoop();
+function loop(){ stepCanvas(); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
 
 /* ================================================================
-   FASES
+   NAVEGACIÓN Y GESTIÓN DE FASES
    ================================================================ */
 function setPhase(name){
   const cur=document.querySelector(".screen:not([hidden])");
   const next=$("screen-"+name);
   if(cur===next)return;
   state.phase=name;
-  setAccent(name);
-  clearInterval(typer); typer=null;
+
+  // Botón atrás en el topbar
+  const backBtn=$("btn-back");
+  if(name==="intro"){
+    backBtn.style.display="none";
+  }else{
+    backBtn.style.display="inline-flex";
+  }
+
   if(cur){
     cur.classList.add("leave");
-    setTimeout(()=>{cur.hidden=true;cur.classList.remove("leave");},320);
+    setTimeout(()=>{cur.hidden=true;cur.classList.remove("leave");},280);
     setTimeout(()=>{
       next.hidden=false; next.classList.remove("leave"); next.classList.add("enter");
-      setTimeout(()=>next.classList.remove("enter"),700);
+      setTimeout(()=>next.classList.remove("enter"),600);
       next.focus({preventScroll:true});
-    },300);
+    },260);
   }else{
     next.hidden=false; next.classList.add("enter");
-    setTimeout(()=>next.classList.remove("enter"),700);
+    setTimeout(()=>next.classList.remove("enter"),600);
     next.focus({preventScroll:true});
   }
 }
 
-/* ================================================================
-   CONSTRUCCIÓN DE TIRADAS
-   ================================================================ */
-function todayYMD(){
-  const n=new Date();
-  return {y:n.getFullYear(),m:n.getMonth()+1,d:n.getDate()};
-}
-function buildReading(type,opts){
-  opts=opts||{};
-  const t=todayYMD();
-  const base=kinOf(t.y,t.m,t.d);
-  const cards=[];
-
-  if(type==="kin-dia"){
-    /* Kin del día — 1 carta */
-    cards.push({n:base.nahual,tone:base.tone,kin:base.kin,pos:"Kin del día",key:"day",color:NAHU[base.nahual-1].color});
-
-  }else if(type==="oraculo"||type==="natal"){
-    /* Oráculo de la Quinta Fuerza — 5 cartas determinísticas */
-    let refKin;
-    if(type==="natal"){
-      refKin=kinOf(opts.by,opts.bm,opts.bd);
-    }else{
-      refKin=base;
-    }
-    const oracle=getOracle(refKin.nahual-1,refKin.tone);
-    const positions=[oracle.destiny,oracle.guide,oracle.analog,oracle.antipode,oracle.occult];
-    positions.forEach((seal0,i)=>{
-      const seal1=seal0+1;
-      /* El tono del oráculo: destino=original, guía=mismo, análogo/antípoda/oculto=derivados */
-      let oTone;
-      if(i===0) oTone=refKin.tone;
-      else if(i===1) oTone=refKin.tone; /* guía comparte tono */
-      else if(i===4) oTone=((14-refKin.tone)%13+13)%13+1; /* oculto: tono complemento */
-      else oTone=refKin.tone; /* análogo y antípoda comparten tono */
-      const oKin=crtKin(oTone,seal1);
-      cards.push({
-        n:seal1,tone:oTone,kin:oKin,
-        pos:ORACLE_POS[i].label,posDesc:ORACLE_POS[i].desc,
-        key:ORACLE_POS[i].key,color:NAHU[seal0].color
-      });
-    });
-
-  }else if(type==="onda"){
-    /* Onda Encantada — 13 cartas, posiciones consecutivas del Tzolkin */
-    const wsIdx=getWavespellIdx(base.kin);
-    const wsStartKin=wsIdx*13+1;
-    for(let i=0;i<13;i++){
-      const k=wsStartKin+i;
-      const tone=((k-1)%13)+1;
-      const nah=((k-1)%20)+1;
-      const T=TONES[tone];
-      cards.push({
-        n:nah,tone:tone,kin:k,
-        pos:"Tono "+tone+" "+T.galactic+" — "+T.fn,
-        posDesc:T.question,
-        key:"t"+tone,color:NAHU[nah-1].color
-      });
-    }
-
-  }else if(type==="free"){
-    /* Tirada del Tzolk'in — cartas consecutivas desde el kin de hoy */
-    for(let i=0;i<state.freeCount;i++){
-      const k=((base.kin-1+i)%260)+1;
-      const tone=((k-1)%13)+1;
-      const nah=((k-1)%20)+1;
-      cards.push({
-        n:nah,tone:tone,kin:k,
-        pos:"Posición "+(i+1)+(i===0?" · Hoy":""),
-        key:"c"+i,color:NAHU[nah-1].color
-      });
-    }
-  }
-  return {
-    type, typeLabel:TYPE_LABELS[type],
-    dateLabel:new Date().toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}),
-    cards,
-    /* Contexto cosmológico */
-    wsIdx:getWavespellIdx(base.kin),
-    castleIdx:getCastleIdx(base.kin),
-    wsPos:getWavespellPosition(base.kin),
-    baseKin:base
-  };
-}
-
-/* ================================================================
-   HISTORIAL (localStorage)
-   ================================================================ */
-const HKEY="tarot-maya-history";
-function loadHistory(){
-  try{ const v=JSON.parse(localStorage.getItem(HKEY)||"[]"); return Array.isArray(v)?v:[]; }
-  catch(e){ return []; }
-}
-function saveHistory(r){
-  try{
-    const h=loadHistory();
-    h.unshift({
-      ts:Date.now(), type:r.type, typeLabel:r.typeLabel, dateLabel:r.dateLabel,
-      cards:r.cards.map(c=>({n:c.n,tone:c.tone,kin:c.kin,pos:c.pos}))
-    });
-    localStorage.setItem(HKEY,JSON.stringify(h.slice(0,10)));
-  }catch(e){}
-}
-function readingFromEntry(e){
-  return {
-    type:e.type, typeLabel:e.typeLabel, dateLabel:e.dateLabel,
-    cards:e.cards.map(c=>({n:c.n,tone:c.tone,kin:c.kin,pos:c.pos,key:"h",color:NAHU[c.n-1].color})),
-    wsIdx:0,castleIdx:0,wsPos:1,baseKin:{kin:1,tone:1,nahual:1}
-  };
-}
-function renderHistory(){
-  const list=$("hist-list"), h=loadHistory();
-  list.textContent="";
-  if(!h.length){
-    const p=document.createElement("p");
-    p.className="hist-empty";
-    p.textContent="Aún no hay lecturas guardadas.";
-    list.appendChild(p);
-    return;
-  }
-  h.forEach(e=>{
-    const b=document.createElement("button");
-    b.type="button"; b.className="hist-item";
-    const d=new Date(e.ts);
-    b.innerHTML="<b></b><span></span>";
-    b.querySelector("b").textContent=e.typeLabel+" · "+e.cards.length+(e.cards.length===1?" carta":" cartas");
-    b.querySelector("span").textContent=d.toLocaleDateString("es-ES",{day:"numeric",month:"short",year:"numeric"})+" · "+NAHU[e.cards[0].n-1].name;
-    b.addEventListener("click",()=>{
-      closeHistory();
-      state.viewing=readingFromEntry(e);
-      state.freshResults=false;
-      renderResults();
-      setPhase("results");
-    });
-    list.appendChild(b);
-  });
-}
-
-/* panel historial */
-const histPanel=$("history-panel");
-let histReturnFocus=null;
-function openHistory(){
-  histReturnFocus=document.activeElement;
-  histPanel.hidden=false;
-  renderHistory();
-  requestAnimationFrame(()=>histPanel.classList.add("open"));
-  $("btn-clear-hist").focus();
-}
-function closeHistory(){
-  histPanel.classList.remove("open");
-  setTimeout(()=>{histPanel.hidden=true;},420);
-  if(histReturnFocus)histReturnFocus.focus();
-}
-$("btn-history").addEventListener("click",openHistory);
-let clearArmed=false,clearT=null;
-$("btn-clear-hist").addEventListener("click",function(){
-  if(!clearArmed){
-    clearArmed=true;
-    this.textContent="¿Confirmar borrado?";
-    this.classList.add("armed");
-    announce("Pulsa de nuevo para confirmar el borrado del historial.");
-    clearTimeout(clearT);
-    clearT=setTimeout(()=>{clearArmed=false;this.textContent="Borrar historial";this.classList.remove("armed");},4000);
-  }else{
-    clearTimeout(clearT);
-    try{localStorage.removeItem(HKEY);}catch(e){}
-    clearArmed=false;
-    this.textContent="Borrar historial";
-    this.classList.remove("armed");
-    renderHistory();
-    toast("Historial borrado");
-    announce("Historial borrado.");
-  }
+$("btn-back").addEventListener("click",()=>setPhase("select"));
+$("btn-start").addEventListener("click",()=>{
+  playSound('shuffle');
+  setPhase("select");
 });
 
+/* Sonido toggle */
+$("btn-sound").addEventListener("click",()=>{
+  soundEnabled=!soundEnabled;
+  localStorage.setItem('tarot-maya-sound',soundEnabled);
+  updateSoundUI();
+  toast(soundEnabled?"Sonido activado":"Sonido silenciado");
+});
+updateSoundUI();
+
 /* ================================================================
-   SELECCIÓN
+   SELECCIÓN DE TIRADAS
    ================================================================ */
-$("btn-start").addEventListener("click",()=>setPhase("select"));
-document.querySelectorAll(".opt[data-type]").forEach(b=>{
-  b.addEventListener("click",()=>startReading(b.dataset.type));
+document.querySelectorAll(".opt[data-type]").forEach(btn=>{
+  btn.addEventListener("click",()=>initSpread(btn.dataset.type));
 });
-document.querySelectorAll(".pill[data-count]").forEach(p=>{
-  p.addEventListener("click",()=>{
-    state.freeCount=+p.dataset.count;
-    document.querySelectorAll(".pill[data-count]").forEach(q=>q.setAttribute("aria-pressed",q===p?"true":"false"));
-  });
-});
-$("btn-free").addEventListener("click",()=>startReading("free"));
+
+/* Natal */
 const natalInput=$("natal-date"), natalErr=$("natal-err");
-natalInput.max=todayYMD().y+"-"+String(todayYMD().m).padStart(2,"0")+"-"+String(todayYMD().d).padStart(2,"0");
-natalInput.addEventListener("input",()=>{ natalErr.textContent=""; natalInput.classList.remove("invalid"); natalInput.removeAttribute("aria-invalid"); });
+const now=new Date();
+natalInput.max=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
+natalInput.addEventListener("input",()=>{ natalErr.textContent=""; natalInput.classList.remove("invalid"); });
+
 $("btn-natal").addEventListener("click",()=>{
-  const v=natalInput.value;
+  const val=natalInput.value;
   natalErr.textContent="";
-  natalInput.classList.remove("invalid");
-  if(!v){
-    natalErr.textContent="Introduce tu fecha de nacimiento.";
-    natalInput.classList.add("invalid"); natalInput.setAttribute("aria-invalid","true");
-    announce("Error: introduce tu fecha de nacimiento.");
+  if(!val){
+    natalErr.textContent="Por favor, introduce tu fecha de nacimiento.";
     return;
   }
-  const [by,bm,bd]=v.split("-").map(Number);
-  const max=new Date(natalInput.max+"T23:59:59");
-  const d=new Date(v+"T12:00:00");
-  if(by<1900||d>max||isNaN(d.getTime())){
-    natalErr.textContent="La fecha debe estar entre 1900 y hoy.";
-    natalInput.classList.add("invalid"); natalInput.setAttribute("aria-invalid","true");
-    announce("Error: la fecha debe estar entre 1900 y hoy.");
+  const [by,bm,bd]=val.split("-").map(Number);
+  if(by<1900||isNaN(by)){
+    natalErr.textContent="La fecha debe ser válida desde 1900.";
     return;
   }
-  startReading("natal",{by,bm,bd});
+  initNatalReading(by,bm,bd);
 });
 
-function startReading(type,opts){
-  state.reading=buildReading(type,opts);
-  state.revealed=0;
-  saveHistory(state.reading);
-  state.freshResults=true;
-  setPhase("shuffle");
-  renderDeck();
-  setTimeout(()=>{
-    if(state.phase==="shuffle"){ renderReveal(); setPhase("reveal"); }
-  },state.reduced?420:1850);
-}
-function renderDeck(){
-  const deck=$("deck"); deck.textContent="";
-  for(let i=0;i<8;i++){
-    const c=document.createElement("div");
-    c.className="dcard";
-    c.style.setProperty("--i",i);
-    c.innerHTML=BACK_SVG;
-    deck.appendChild(c);
+function initSpread(type){
+  state.activeType=type;
+  if(type==="kin-dia"){
+    buildDayReading();
+    return;
   }
+  prepareDeckFan();
+  setPhase("deck");
+}
+
+function initNatalReading(by,bm,bd){
+  const k=kinOf(by,bm,bd);
+  const seal0=k.nahual-1;
+  const oracle=getOracle(seal0,k.tone);
+  const cfg=SPREAD_CONFIGS["natal"];
+  
+  const cards=[
+    {n:oracle.destiny+1,tone:k.tone,pos:cfg.positions[0].label,desc:cfg.positions[0].desc,slot:cfg.positions[0].slot},
+    {n:oracle.guide+1,tone:k.tone,pos:cfg.positions[1].label,desc:cfg.positions[1].desc,slot:cfg.positions[1].slot},
+    {n:oracle.analog+1,tone:k.tone,pos:cfg.positions[2].label,desc:cfg.positions[2].desc,slot:cfg.positions[2].slot},
+    {n:oracle.antipode+1,tone:k.tone,pos:cfg.positions[3].label,desc:cfg.positions[3].desc,slot:cfg.positions[3].slot},
+    {n:oracle.occult+1,tone:((14-k.tone)%13)||13,pos:cfg.positions[4].label,desc:cfg.positions[4].desc,slot:cfg.positions[4].slot}
+  ];
+
+  cards.forEach(c=>{
+    c.kin=crtKin(c.tone,c.n);
+    c.color=NAHU[c.n-1].color;
+  });
+
+  state.reading={
+    type:"natal",
+    title:"Oráculo Natal de Nacimiento",
+    dateLabel:bd+"/"+bm+"/"+by,
+    kinBase:k.kin,
+    cards
+  };
+
+  saveHistory(state.reading);
+  setupSpreadMat();
+  setPhase("reveal");
+}
+
+function buildDayReading(){
+  const t=new Date();
+  const k=kinOf(t.getFullYear(),t.getMonth()+1,t.getDate());
+  const cfg=SPREAD_CONFIGS["kin-dia"];
+  
+  const cards=[{
+    n:k.nahual,tone:k.tone,kin:k.kin,
+    pos:cfg.positions[0].label,desc:cfg.positions[0].desc,
+    color:NAHU[k.nahual-1].color
+  }];
+
+  state.reading={
+    type:"kin-dia",
+    title:"Kin Sagrado del Día",
+    dateLabel:t.toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}),
+    kinBase:k.kin,
+    cards
+  };
+
+  saveHistory(state.reading);
+  setupSpreadMat();
+  setPhase("reveal");
 }
 
 /* ================================================================
-   REVELADO
+   MESA DE LA BARAJA INTERACTIVA (FAN PICKER)
    ================================================================ */
-let typer=null;
-function typeText(el,text,done){
-  if(state.reduced){ el.textContent=text; if(done)done(); return; }
-  el.textContent=""; el.dataset.full=text;
-  let i=0;
-  clearInterval(typer);
-  typer=setInterval(()=>{
-    i++;
-    el.textContent=text.slice(0,i);
-    if(i>=text.length){ clearInterval(typer); typer=null; if(done)done(); }
-  },20);
-}
-function finishTyping(){
-  clearInterval(typer); typer=null;
-  document.querySelectorAll(".tcaption").forEach(c=>{ if(c.dataset.full)c.textContent=c.dataset.full; });
-}
-function drawGlyph(svg){
-  if(state.reduced)return;
-  const shapes=svg.querySelectorAll("path,circle");
-  shapes.forEach(p=>{
-    try{
-      const L=p.getTotalLength();
-      p.style.transition="none";
-      p.style.strokeDasharray=L;
-      p.style.strokeDashoffset=L;
-    }catch(e){}
+function prepareDeckFan(){
+  const cfg=SPREAD_CONFIGS[state.activeType];
+  $("deck-title").textContent="Elige "+cfg.count+(cfg.count===1?" Carta":" Cartas");
+  $("deck-subtitle").textContent="Conecta con tu intención y selecciona las cartas para tu "+cfg.title;
+  $("deck-picked-count").textContent="0";
+  $("deck-total-count").textContent=cfg.count;
+
+  state.pickedCards=[];
+  
+  // Barajado Fisher-Yates de los 20 sellos para la baraja
+  const deck=Array.from({length:20},(_,i)=>i+1);
+  for(let i=deck.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [deck[i],deck[j]]=[deck[j],deck[i]];
+  }
+  state.deckCards=deck;
+
+  const container=$("deck-fan-container");
+  container.innerHTML="";
+
+  // Distribuimos las 20 cartas en abanico semicircular
+  const total=deck.length;
+  deck.forEach((sealNum,i)=>{
+    const card=document.createElement("div");
+    card.className="fan-card";
+    card.dataset.index=i;
+    card.dataset.seal=sealNum;
+
+    // Ángulo y desplazamiento en arco
+    const norm=(i/(total-1))-0.5;
+    const rot=norm*48;
+    const tx=norm*640;
+    const ty=Math.abs(norm)*38;
+
+    card.style.transform="translate("+tx+"px,"+ty+"px) rotate("+rot+"deg)";
+    card.style.zIndex=i+1;
+    card.innerHTML=MANDALA_SVG;
+
+    card.addEventListener("click",()=>pickCardFromFan(card,i,sealNum));
+    container.appendChild(card);
   });
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    shapes.forEach(p=>{
-      p.style.transition="stroke-dashoffset 1.1s cubic-bezier(.3,.7,.2,1)";
-      p.style.strokeDashoffset="0";
-    });
-  }));
+
+  playSound('shuffle');
 }
-function renderReveal(){
-  const spread=$("spread");
-  spread.textContent="";
+
+function pickCardFromFan(cardEl,deckIdx,sealNum){
+  const cfg=SPREAD_CONFIGS[state.activeType];
+  if(state.pickedCards.length>=cfg.count) return;
+  if(cardEl.classList.contains("is-chosen")) return;
+
+  cardEl.classList.add("is-chosen");
+  playSound('deal');
+
+  const pickNum=state.pickedCards.length+1;
+  const badge=document.createElement("div");
+  badge.className="pick-badge";
+  badge.textContent=pickNum;
+  cardEl.appendChild(badge);
+
+  // Generamos un tono aleatorio (1-13) para la carta adivinatoria
+  const tone=Math.floor(Math.random()*13)+1;
+  const kin=crtKin(tone,sealNum);
+
+  state.pickedCards.push({
+    n:sealNum,
+    tone,
+    kin,
+    color:NAHU[sealNum-1].color
+  });
+
+  $("deck-picked-count").textContent=state.pickedCards.length;
+
+  if(state.pickedCards.length===cfg.count){
+    setTimeout(()=>{
+      buildReadingFromPicked();
+      setupSpreadMat();
+      setPhase("reveal");
+    },450);
+  }
+}
+
+// Botón "Tirada al Azar"
+$("btn-auto-deal").addEventListener("click",()=>{
+  const cfg=SPREAD_CONFIGS[state.activeType];
+  playSound('shuffle');
+  
+  const chosen=state.deckCards.slice(0,cfg.count).map(sealNum=>{
+    const tone=Math.floor(Math.random()*13)+1;
+    return {
+      n:sealNum,
+      tone,
+      kin:crtKin(tone,sealNum),
+      color:NAHU[sealNum-1].color
+    };
+  });
+
+  state.pickedCards=chosen;
+  buildReadingFromPicked();
+  setupSpreadMat();
+  setPhase("reveal");
+});
+
+$("btn-deck-back").addEventListener("click",()=>setPhase("select"));
+
+function buildReadingFromPicked(){
+  const cfg=SPREAD_CONFIGS[state.activeType];
+  const now=new Date();
+  
+  const cards=state.pickedCards.map((c,idx)=>{
+    const posInfo=cfg.positions[idx]||{label:"Carta "+(idx+1),desc:"Fuerza de la tirada"};
+    return {
+      ...c,
+      pos:posInfo.label,
+      desc:posInfo.desc,
+      slot:posInfo.slot||""
+    };
+  });
+
+  state.reading={
+    type:state.activeType,
+    title:cfg.title,
+    dateLabel:now.toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}),
+    kinBase:cards[0].kin,
+    cards
+  };
+
+  saveHistory(state.reading);
+}
+
+/* ================================================================
+   TAPETE RITUAL DE REVELADO (3D CARD FLIP)
+   ================================================================ */
+function setupSpreadMat(){
+  const mat=$("spread-mat");
+  mat.innerHTML="";
   const r=state.reading;
-  if(r.type==="oraculo"||r.type==="natal")spread.classList.add("cross");
-  else spread.classList.remove("cross");
-  r.cards.forEach((c,i)=>{
+  const cfg=SPREAD_CONFIGS[r.type]||{layout:"layout-3"};
+
+  mat.className="spread-mat "+(cfg.layout||"");
+  $("reveal-title").textContent=r.title;
+  state.revealedCount=0;
+  $("btn-view-results").disabled=true;
+
+  r.cards.forEach((c,idx)=>{
+    const slot=document.createElement("div");
+    slot.className="tcard-slot "+(c.slot||"");
+
+    const posLbl=document.createElement("div");
+    posLbl.className="pos-label";
+    posLbl.textContent=c.pos;
+    slot.appendChild(posLbl);
+
     const N=NAHU[c.n-1];
-    const btn=document.createElement("button");
-    btn.type="button"; btn.className="tcard"; btn.dataset.i=i;
-    btn.dataset.key=c.key;
-    btn.style.setProperty("--n",c.color);
-    btn.setAttribute("aria-label","Carta "+(i+1)+" de "+r.cards.length+", boca abajo. Activar para revelar.");
-    btn.innerHTML=
-      '<span class="card-inner">'+
-        '<span class="face back">'+BACK_SVG+'</span>'+
-        '<span class="face front">'+
-          glyphSVG(c.n)+
-          '<span class="tname">'+N.name+'</span>'+
-          '<span class="tcaption"></span>'+
-        '</span>'+
-      '</span>';
-    btn.addEventListener("click",()=>revealCard(btn));
-    spread.appendChild(btn);
+    const T=TONES[c.tone];
+
+    const card=document.createElement("div");
+    card.className="tcard";
+    card.dataset.index=idx;
+    card.style.setProperty("--n",c.color);
+    card.setAttribute("aria-label","Carta "+(idx+1)+": "+c.pos+". Pulsa para voltear.");
+
+    card.innerHTML=
+      '<div class="card-inner">'+
+        '<div class="face back">'+
+          MANDALA_SVG+
+          '<div class="back-hint">TOCAR PARA VOLTEAR</div>'+
+        '</div>'+
+        '<div class="face front">'+
+          '<div class="card-top-bar">'+
+            '<span class="card-kin-badge">KIN '+c.kin+'</span>'+
+            '<div class="card-tone-notation">'+
+              renderMayaToneDots(c.tone)+
+              '<span style="font-size:0.65rem;font-weight:700">T.'+c.tone+'</span>'+
+            '</div>'+
+          '</div>'+
+          '<div class="card-img-box">'+
+            '<img class="card-art-img" src="'+N.artUrl+'" alt="'+N.name+'" loading="lazy" />'+
+          '</div>'+
+          '<div class="card-bottom-info">'+
+            '<h4 class="card-title">'+N.name+'</h4>'+
+            '<div class="card-sub">'+N.galactic+' · Tono '+T.name+' ('+T.galactic+')</div>'+
+            '<div class="card-keys">'+N.essenceKeys+'</div>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+
+    card.addEventListener("click",()=>{
+      if(!card.classList.contains("is-revealed")){
+        flipCard(card,idx);
+      }else{
+        openCardModal(c);
+      }
+    });
+
+    slot.appendChild(card);
+    mat.appendChild(slot);
   });
-  updateProgress();
-  $("btn-full").disabled=true;
 }
-function revealCard(btn){
-  if(btn.classList.contains("is-revealed")){ finishTyping(); return; }
-  const c=state.reading.cards[+btn.dataset.i];
-  const N=NAHU[c.n-1];
-  btn.classList.add("is-revealed");
-  btn.setAttribute("aria-label",c.pos+": "+N.name+", "+N.galactic+". Carta revelada.");
-  const rect=btn.getBoundingClientRect();
+
+function flipCard(cardEl,idx){
+  if(cardEl.classList.contains("is-revealed")) return;
+
+  cardEl.classList.add("is-revealed");
+  playSound('flip');
+
+  const c=state.reading.cards[idx];
+  const rect=cardEl.getBoundingClientRect();
   spawnBurst(rect.left+rect.width/2,rect.top+rect.height/2,hexToRgb(c.color));
-  drawGlyph(btn.querySelector(".glyph"));
-  const cap=btn.querySelector(".tcaption");
-  typeText(cap,N.galactic+" — "+N.totem);
-  announce("Carta revelada: "+c.pos+". "+N.name+" ("+N.galactic+"), "+N.totem+". Tono "+c.tone+" "+TONES[c.tone].galactic+".");
-  state.revealed++;
-  updateProgress();
+
+  state.revealedCount++;
+  announce("Revelada carta: "+c.pos+". "+NAHU[c.n-1].name+", Kin "+c.kin+".");
+
+  if(state.revealedCount>=state.reading.cards.length){
+    $("btn-view-results").disabled=false;
+    setTimeout(()=>playSound('gong'),600);
+    toast("¡Todas las cartas han sido reveladas!");
+  }
 }
-function revealAll(){
-  const cards=document.querySelectorAll("#spread .tcard:not(.is-revealed)");
-  cards.forEach(btn=>{
-    const c=state.reading.cards[+btn.dataset.i];
-    const N=NAHU[c.n-1];
-    btn.classList.add("is-revealed");
-    btn.setAttribute("aria-label",c.pos+": "+N.name+", "+N.galactic+". Carta revelada.");
-    btn.querySelector(".tcaption").textContent=N.galactic+" — "+N.totem;
-    drawGlyph(btn.querySelector(".glyph"));
-    state.revealed++;
+
+$("btn-reveal-all").addEventListener("click",()=>{
+  const cards=document.querySelectorAll("#spread-mat .tcard:not(.is-revealed)");
+  if(!cards.length) return;
+  cards.forEach((card,i)=>{
+    setTimeout(()=>{
+      flipCard(card,+card.dataset.index);
+    },i*160);
   });
-  finishTyping();
-  updateProgress();
-  announce("Todas las cartas reveladas. Puedes ver la lectura completa.");
-}
-function updateProgress(){
-  const total=state.reading.cards.length;
-  $("reveal-progress").textContent="Reveladas "+state.revealed+" de "+total;
-  if(state.revealed>=total)$("btn-full").disabled=false;
-}
-$("btn-full").addEventListener("click",()=>{
-  state.viewing=state.reading;
-  renderResults();
+});
+
+$("btn-reveal-back").addEventListener("click",()=>setPhase("select"));
+$("btn-view-results").addEventListener("click",()=>{
+  renderFullResults();
   setPhase("results");
 });
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
-    if(!histPanel.hidden){ closeHistory(); return; }
-    if(state.phase==="reveal"){
-      finishTyping();
-      if(state.revealed<state.reading.cards.length)revealAll();
-    }
-  }
-});
 
 /* ================================================================
-   RESULTADOS
+   MODAL INSPECTOR DE CARTA (ZOOM & SABIDURÍA)
    ================================================================ */
-function renderResults(){
-  const r=state.viewing;
-  const wrap=$("results-wrap");
-  $("print-date").textContent=r.typeLabel+" · "+r.dateLabel;
+const modal=$("card-modal");
+function openCardModal(c){
+  const N=NAHU[c.n-1];
+  const T=TONES[c.tone];
+  const R=RUMBOS[(c.n-1)%4];
 
-  /* Cabecera */
-  let html='<div class="results-head"><h2>'+r.typeLabel+'</h2><p class="rdate">'+r.dateLabel+' · Correlación GMT 584283</p></div>';
+  modal.style.setProperty("--modal-color",c.color);
+  $("modal-img").src=N.artUrl;
+  $("modal-img").alt=N.name+" - "+N.galactic;
+  $("modal-pos-badge").textContent=c.pos;
+  $("modal-title").textContent=N.name+" · "+N.galactic;
+  $("modal-meta").textContent="Kin "+c.kin+" · Tono "+c.tone+" "+T.name+" ("+T.galactic+") · Rumbo "+R.key+" ("+R.elem+")";
+  
+  $("modal-light").textContent=N.essence;
+  $("modal-shadow").textContent=N.shadow;
+  $("modal-guide").textContent=N.guide;
+  $("modal-tone-q").textContent=T.question+" — "+T.text;
+  $("modal-ally").textContent=N.ally+" · "+N.live;
 
-  /* Contexto cosmológico */
-  const ws=WAVESPELLS[r.wsIdx];
-  const castle=CASTLES[r.castleIdx];
-  if(ws&&castle){
-    html+='<div class="context-bar">';
-    html+='<span class="ctx-chip"><span class="dot" style="background:'+castle.color+'"></span> '+castle.icon+' <b>'+castle.name+'</b></span>';
-    html+='<span class="ctx-chip">🌊 Onda <b>'+ws.name+'</b> — '+ws.intention+'</span>';
-    html+='<span class="ctx-chip">📍 Posición <b>'+r.wsPos+'/13</b> · '+TONES[r.wsPos].galactic+'</span>';
-    html+='</div>';
-    html+='<div class="castle-banner" style="border-color:'+castle.color+'">';
-    html+='<h4 style="color:'+castle.color+'">'+castle.icon+' '+castle.name+'</h4>';
-    html+='<p><em>'+castle.subtitle+'</em> — '+castle.description+'</p>';
-    html+='</div>';
-  }
-
-  /* Cartas */
-  const single=r.cards.length===1;
-  const isOracle=(r.type==="oraculo"||r.type==="natal");
-  html+='<div class="'+(isOracle?'oracle-grid':'results-grid')+(single?' results-hero':'')+'">';
-  r.cards.forEach(c=>{
-    const N=NAHU[c.n-1], T=TONES[c.tone], R=RUMBOS[(c.n-1)%4];
-    html+='<figure class="rcard" style="--n:'+c.color+'">';
-    if(single) html+='<div class="kin-badge" style="--n:'+c.color+'"><b>'+c.kin+'</b><span>Kin</span></div>';
-    html+='<figcaption><span class="pos">'+c.pos+'</span></figcaption>';
-    if(c.posDesc) html+='<p style="font-size:.76rem;color:var(--dim);margin:0 0 .5rem;font-style:italic">'+c.posDesc+'</p>';
-    html+=glyphSVG(c.n);
-    html+='<h3>'+N.name+' <span style="opacity:.6;font-weight:400">/ '+N.galactic+'</span><small>'+N.totem+' · '+N.essenceKeys+'</small></h3>';
-    html+='<p class="meta">Kin '+c.kin+' · Tono '+c.tone+' '+T.name+' ('+T.galactic+') — '+T.fn+'<br>'+T.theme+'<br>Rumbo '+R.key+' ('+R.label+' · '+R.nota+') · Elemento '+R.elem+'</p>';
-    html+='<dl>';
-    html+='<dt>Esencia</dt><dd>'+N.essence+'</dd>';
-    html+='<dt>Guía del día</dt><dd>'+N.guide+'</dd>';
-    html+='<dt>Sombra</dt><dd>'+N.shadow+'</dd>';
-    html+='<dt>Aliado</dt><dd>'+N.ally+'</dd>';
-    html+='</dl>';
-    if(r.type==="onda") html+='<p class="tone-text"><strong>'+T.galactic+' — '+T.fn+':</strong> '+T.text+'</p>';
-    if(T.question) html+='<p class="live" style="border-color:'+c.color+'"><strong>Pregunta:</strong> '+T.question+'</p>';
-    html+='<p class="live">Cómo vivir este kin hoy: '+N.live+'</p>';
-    html+='</figure>';
-  });
-  html+='</div>';
-
-  /* Onda Encantada actual si es lectura de 1 carta o oráculo */
-  if(ws&&(single||isOracle)){
-    html+='<div class="castle-banner" style="margin-top:1.6rem;border-color:'+NAHU[ws.seal-1].color+'">';
-    html+='<h4 style="color:'+NAHU[ws.seal-1].color+'">🌊 Onda Encantada del '+ws.name+'</h4>';
-    html+='<p><strong>'+ws.intention+'</strong> — '+ws.theme+'</p>';
-    html+='<p>'+ws.description+'</p>';
-    html+='</div>';
-  }
-
-  wrap.innerHTML=html;
-  wrap.querySelectorAll(".glyph").forEach((g,i)=>{
-    setTimeout(()=>drawGlyph(g),i*140);
-  });
-  if(state.freshResults&&!state.reduced){
-    wrap.classList.add("glitching");
-    setTimeout(()=>wrap.classList.remove("glitching"),500);
-  }
+  modal.hidden=false;
+  playSound('deal');
 }
-$("btn-new").addEventListener("click",()=>setPhase("select"));
 
-/* ---------- copiar ---------- */
-function buildMarkdown(r){
-  const L=["# Tarot Maya — "+r.typeLabel,"","Fecha de la tirada: "+r.dateLabel,"","Motor: Tzolk'in · Correlación GMT 584283 · 20 sellos solares · 13 tonos galácticos · 5 castillos",""];
-  const ws=WAVESPELLS[r.wsIdx];
-  const castle=CASTLES[r.castleIdx];
-  if(ws&&castle){
-    L.push("## Contexto Cosmológico","");
-    L.push("- **Castillo:** "+castle.name+" — "+castle.subtitle);
-    L.push("- **Onda Encantada:** "+ws.name+" — "+ws.intention);
-    L.push("- **Posición en la Onda:** "+r.wsPos+"/13 ("+TONES[r.wsPos].galactic+")","");
-  }
-  r.cards.forEach(c=>{
-    const N=NAHU[c.n-1],T=TONES[c.tone],R=RUMBOS[(c.n-1)%4];
-    L.push("## "+c.pos+" — "+N.name+" / "+N.galactic+" ("+N.totem+")","");
-    L.push("**Esencia:** "+N.essenceKeys);
-    L.push("Kin "+c.kin+" · Tono "+c.tone+" "+T.name+" ("+T.galactic+") — "+T.fn+" · "+T.theme);
-    L.push("Rumbo "+R.key+" ("+R.label+") · Elemento "+R.elem,"");
-    L.push("**Esencia:** "+N.essence,"","**Guía:** "+N.guide,"","**Sombra:** "+N.shadow,"","**Aliado:** "+N.ally);
-    if(T.question) L.push("","**Pregunta:** "+T.question);
-    L.push("","*Cómo vivir este kin hoy:* "+N.live,"");
-  });
-  return L.join("\n");
+function closeCardModal(){
+  modal.hidden=true;
 }
-$("btn-copy").addEventListener("click",async()=>{
-  if(!state.viewing)return;
-  const md=buildMarkdown(state.viewing);
-  let ok=false;
-  try{
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      await navigator.clipboard.writeText(md); ok=true;
-    }
-  }catch(e){ ok=false; }
-  if(!ok){
-    try{
-      const ta=document.createElement("textarea");
-      ta.value=md; ta.style.position="fixed"; ta.style.opacity="0";
-      document.body.appendChild(ta); ta.select();
-      ok=document.execCommand("copy");
-      ta.remove();
-    }catch(e){ ok=false; }
-  }
-  toast(ok?"Lectura copiada al portapapeles":"No se pudo copiar automáticamente");
-  announce(ok?"Lectura copiada al portapapeles.":"No se pudo copiar la lectura.");
+$("btn-close-modal").addEventListener("click",closeCardModal);
+modal.addEventListener("click",e=>{ if(e.target===modal)closeCardModal(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape")closeCardModal(); });
+
+/* ================================================================
+   RENDERIZADO DE RESULTADOS COMPLETOS
+   ================================================================ */
+function renderFullResults(){
+  const r=state.reading;
+  $("print-date").textContent=r.title+" · "+r.dateLabel;
+
+  const wIdx=getWavespellIdx(r.kinBase);
+  const cIdx=getCastleIdx(r.kinBase);
+  const wPos=getWavespellPosition(r.kinBase);
+  const W=WAVESPELLS[wIdx]||WAVESPELLS[0];
+  const C=CASTLES[cIdx]||CASTLES[0];
+
+  $("cosmic-banner").innerHTML=
+    '<div class="cosmic-item">'+
+      '<b>Castillo del Destino</b>'+
+      '<span>'+C.name+'</span>'+
+      '<p>'+C.direction+' · '+C.color+' · '+C.corte+'</p>'+
+    '</div>'+
+    '<div class="cosmic-item">'+
+      '<b>Onda Encantada</b>'+
+      '<span>Onda de '+W.seal+' (Kin '+W.kinStart+'-'+(W.kinStart+12)+')</span>'+
+      '<p>Intención: '+W.intent+'</p>'+
+    '</div>'+
+    '<div class="cosmic-item">'+
+      '<b>Posición Sagrada</b>'+
+      '<span>Paso '+wPos+' de 13 en la Onda</span>'+
+      '<p>'+TONES[wPos].fn+': '+TONES[wPos].question+'</p>'+
+    '</div>';
+
+  const grid=$("results-grid");
+  grid.innerHTML="";
+
+  r.cards.forEach(c=>{
+    const N=NAHU[c.n-1];
+    const T=TONES[c.tone];
+    const R=RUMBOS[(c.n-1)%4];
+
+    const cardEl=document.createElement("article");
+    cardEl.className="rcard";
+    cardEl.style.setProperty("--n",c.color);
+
+    cardEl.innerHTML=
+      '<div class="rcard-head">'+
+        '<div class="rcard-thumb" style="cursor:pointer">'+
+          '<img src="'+N.artUrl+'" alt="'+N.name+'" loading="lazy" />'+
+        '</div>'+
+        '<div class="rcard-info">'+
+          '<span class="pos-badge">'+c.pos+'</span>'+
+          '<h3>'+N.name+' <span style="font-size:0.9rem;font-weight:400;color:var(--dim)">('+N.galactic+')</span></h3>'+
+          '<p>Kin '+c.kin+' · Tono '+c.tone+' '+T.name+' ('+T.galactic+')<br>Rumbo '+R.key+' ('+R.elem+')</p>'+
+        '</div>'+
+      '</div>'+
+      '<div class="rcard-body">'+
+        '<dl>'+
+          '<div><dt>Esencia & Luz</dt><dd>'+N.essence+'</dd></div>'+
+          '<div><dt>Sombra / Reto</dt><dd>'+N.shadow+'</dd></div>'+
+          '<div><dt>Consejo del Oráculo</dt><dd>'+N.guide+'</dd></div>'+
+          '<div><dt>Aliado & Acción</dt><dd>'+N.ally+' — <em>'+N.live+'</em></dd></div>'+
+        '</dl>'+
+      '</div>';
+
+    cardEl.querySelector(".rcard-thumb").addEventListener("click",()=>openCardModal(c));
+    grid.appendChild(cardEl);
+  });
+}
+
+$("btn-new").addEventListener("click",()=>{
+  playSound('shuffle');
+  setPhase("select");
+});
+$("btn-view-spread").addEventListener("click",()=>setPhase("reveal"));
+
+$("btn-copy").addEventListener("click",()=>{
+  const r=state.reading;
+  let text="🔮 "+r.title.toUpperCase()+" — "+r.dateLabel+"\n\n";
+  r.cards.forEach(c=>{
+    const N=NAHU[c.n-1];
+    text+="["+c.pos+"]: "+N.name+" ("+N.galactic+") — Kin "+c.kin+", Tono "+c.tone+"\n";
+    text+="Esencia: "+N.essence+"\nConsejo: "+N.guide+"\n\n";
+  });
+  navigator.clipboard.writeText(text).then(()=>{
+    toast("¡Lectura copiada al portapapeles!");
+  }).catch(()=>toast("No se pudo copiar"));
 });
 
-/* ---------- descargar .md ---------- */
 $("btn-dl").addEventListener("click",()=>{
-  if(!state.viewing)return;
-  const md=buildMarkdown(state.viewing);
-  const blob=new Blob([md],{type:"text/markdown;charset=utf-8"});
-  const url=URL.createObjectURL(blob);
+  const r=state.reading;
+  let md="# "+r.title+"\n\n**Fecha:** "+r.dateLabel+"\n\n---\n\n";
+  r.cards.forEach(c=>{
+    const N=NAHU[c.n-1];
+    md+="### "+c.pos+": "+N.name+" ("+N.galactic+")\n";
+    md+="- **Kin:** "+c.kin+" · **Tono:** "+c.tone+"\n";
+    md+="- **Esencia:** "+N.essence+"\n";
+    md+="- **Sombra:** "+N.shadow+"\n";
+    md+="- **Consejo:** "+N.guide+"\n";
+    md+="- **Aliado:** "+N.ally+"\n\n";
+  });
+  const blob=new Blob([md],{type:"text/markdown"});
   const a=document.createElement("a");
-  a.href=url;
-  a.download="tarot-maya-"+state.viewing.type+"-"+new Date().toISOString().slice(0,10)+".md";
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
-  toast("Descarga iniciada");
-  announce("Descarga de la lectura iniciada.");
+  a.href=URL.createObjectURL(blob);
+  a.download="tarot-maya-"+Date.now()+".md";
+  a.click();
+  toast("Descargando archivo Markdown...");
 });
+
 $("btn-print").addEventListener("click",()=>window.print());
+
+/* ================================================================
+   HISTORIAL LOCAL
+   ================================================================ */
+const HKEY="tarot-maya-history-v2";
+function saveHistory(r){
+  try{
+    const h=JSON.parse(localStorage.getItem(HKEY)||"[]");
+    h.unshift({
+      ts:Date.now(),
+      title:r.title,
+      type:r.type,
+      dateLabel:r.dateLabel,
+      kinBase:r.kinBase,
+      cards:r.cards.map(c=>({n:c.n,tone:c.tone,kin:c.kin,pos:c.pos,desc:c.desc,slot:c.slot||""}))
+    });
+    localStorage.setItem(HKEY,JSON.stringify(h.slice(0,12)));
+  }catch(e){}
+}
+
+function renderHistory(){
+  const list=$("hist-list");
+  list.innerHTML="";
+  let h=[];
+  try{ h=JSON.parse(localStorage.getItem(HKEY)||"[]"); }catch(e){}
+  if(!h.length){
+    list.innerHTML='<p class="hist-empty">Aún no hay lecturas guardadas.</p>';
+    return;
+  }
+  h.forEach((item,idx)=>{
+    const el=document.createElement("div");
+    el.className="hist-item";
+    const d=new Date(item.ts);
+    el.innerHTML=
+      '<b>'+item.title+'</b>'+
+      '<span>'+d.toLocaleDateString("es-ES",{day:"numeric",month:"short"})+' · '+item.cards.length+' cartas ('+NAHU[item.cards[0].n-1].name+')</span>';
+    el.addEventListener("click",()=>{
+      state.reading={
+        type:item.type,
+        title:item.title,
+        dateLabel:item.dateLabel,
+        kinBase:item.kinBase,
+        cards:item.cards.map(c=>({...c,color:NAHU[c.n-1].color}))
+      };
+      closeHistory();
+      renderFullResults();
+      setPhase("results");
+    });
+    list.appendChild(el);
+  });
+}
+
+function openHistory(){
+  renderHistory();
+  $("history-panel").hidden=false;
+  requestAnimationFrame(()=> $("history-panel").classList.add("open"));
+}
+function closeHistory(){
+  $("history-panel").classList.remove("open");
+  setTimeout(()=> $("history-panel").hidden=true,350);
+}
+$("btn-history").addEventListener("click",openHistory);
+$("btn-close-hist").addEventListener("click",closeHistory);
+$("btn-clear-hist").addEventListener("click",()=>{
+  localStorage.removeItem(HKEY);
+  renderHistory();
+  toast("Historial borrado");
+});
+
 </script>
 </body>
 </html>
