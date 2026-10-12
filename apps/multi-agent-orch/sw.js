@@ -6,7 +6,7 @@
  *  - Network-first con timeout: API calls
  */
 
-const SW_VERSION = 'orchestrator-v1.0.0';
+const SW_VERSION = 'orchestrator-v1.0.2';
 const CACHE_STATIC = `${SW_VERSION}-static`;
 const CACHE_RUNTIME = `${SW_VERSION}-runtime`;
 

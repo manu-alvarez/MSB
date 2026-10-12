@@ -4,13 +4,13 @@
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="alternate icon" href="./favicon.ico" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-    <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#1a237e" />
   <meta name="color-scheme" content="dark light" />
   <!-- CSP: en producción real se usa via HTTP headers (vercel.json/netlify.toml).
     Este meta tag es permisivo para desarrollo local. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' http: https: data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src *; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;" />
   <meta name="description" content="Orquestador multi-agente con persistencia, Human-in-the-Loop y Time Travel. PWA offline-first." />
   <meta name="keywords" content="multi-agent, orchestrator, AI, workflow, PWA, LangGraph, HITL, time-travel" />
   <meta name="author" content="Manu" />
@@ -31,8 +31,11 @@
 
   <!-- PWA -->
   <link rel="manifest" href="./manifest.json" />
-  
-  
+  <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16.png" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png" />
+
   <!-- iOS PWA -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -111,6 +114,14 @@
       <!-- Dashboard View -->
       <section class="view active" id="view-dashboard" aria-labelledby="dashboard-title">
         <h2 id="dashboard-title" class="view-title">Dashboard</h2>
+
+        <!-- Quick Start Console -->
+        <div class="card" style="margin-bottom: var(--space-6); padding: var(--space-4); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--radius-lg); display: flex; gap: var(--space-3); align-items: center; box-shadow: var(--shadow-sm);">
+          <input type="text" id="dashboardQueryInput" placeholder="Ejecutar enjambre multi-agente: escribe un objetivo o requerimiento..." style="flex: 1; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); border: 1px solid var(--color-border); background: var(--color-bg-primary); color: var(--color-text-primary); font-size: var(--font-size-base); outline: none;">
+          <button id="dashboardQuerySubmit" class="btn btn-primary" style="white-space: nowrap; padding: var(--space-3) var(--space-5); font-weight: 600;">
+            🚀 Ejecutar Swarm
+          </button>
+        </div>
 
         <div class="stats-grid">
           <article class="stat-card">
@@ -213,7 +224,82 @@
       <!-- Agents View -->
       <section class="view" id="view-agents" aria-labelledby="agents-title" hidden>
         <h2 id="agents-title" class="view-title">Agentes</h2>
-        <div class="agents-grid" id="agentsGrid" role="list" aria-label="Grid de agentes"></div>
+        <div class="agents-grid" id="agentsGrid" role="list" aria-label="Grid de agentes">
+          <article class="agent-card agent-card--idle" data-agent-id="research" role="region" aria-label="Agente Research Agent">
+            <header class="agent-card__header">
+              <span class="agent-card__icon" aria-hidden="true">🔍</span>
+              <h3 class="agent-card__name">Research Agent</h3>
+              <span class="agent-card__status agent-card__status--idle" aria-live="polite">idle</span>
+            </header>
+            <p class="agent-card__desc">Extracción neural de requerimientos y análisis de fuentes objetivas.</p>
+            <dl class="agent-card__stats">
+              <div><dt>Ejecuciones</dt><dd>0</dd></div>
+              <div><dt>Éxito</dt><dd>100.0%</dd></div>
+              <div><dt>Tiempo medio</dt><dd>0ms</dd></div>
+            </dl>
+            <ul class="agent-card__caps" aria-label="Capacidades">
+              <li class="badge">web_search</li>
+              <li class="badge">neural_analysis</li>
+              <li class="badge">source_verification</li>
+              <li class="badge">llm_extraction</li>
+            </ul>
+          </article>
+          <article class="agent-card agent-card--idle" data-agent-id="supervisor" role="region" aria-label="Agente Supervisor Agent">
+            <header class="agent-card__header">
+              <span class="agent-card__icon" aria-hidden="true">🎯</span>
+              <h3 class="agent-card__name">Supervisor Agent</h3>
+              <span class="agent-card__status agent-card__status--idle" aria-live="polite">idle</span>
+            </header>
+            <p class="agent-card__desc">Evaluación de calidad de respuestas, score de satisfacción y loops de iteración.</p>
+            <dl class="agent-card__stats">
+              <div><dt>Ejecuciones</dt><dd>0</dd></div>
+              <div><dt>Éxito</dt><dd>100.0%</dd></div>
+              <div><dt>Tiempo medio</dt><dd>0ms</dd></div>
+            </dl>
+            <ul class="agent-card__caps" aria-label="Capacidades">
+              <li class="badge">quality_scoring</li>
+              <li class="badge">threshold_evaluation</li>
+              <li class="badge">route_decision</li>
+              <li class="badge">loop_control</li>
+            </ul>
+          </article>
+          <article class="agent-card agent-card--idle" data-agent-id="drafting" role="region" aria-label="Agente Drafting Agent">
+            <header class="agent-card__header">
+              <span class="agent-card__icon" aria-hidden="true">✍️</span>
+              <h3 class="agent-card__name">Drafting Agent</h3>
+              <span class="agent-card__status agent-card__status--idle" aria-live="polite">idle</span>
+            </header>
+            <p class="agent-card__desc">Generación de planes de acción formal y preparación de aprobaciones HITL.</p>
+            <dl class="agent-card__stats">
+              <div><dt>Ejecuciones</dt><dd>0</dd></div>
+              <div><dt>Éxito</dt><dd>100.0%</dd></div>
+              <div><dt>Tiempo medio</dt><dd>0ms</dd></div>
+            </dl>
+            <ul class="agent-card__caps" aria-label="Capacidades">
+              <li class="badge">proposal_generation</li>
+              <li class="badge">action_planning</li>
+              <li class="badge">hitl_preparation</li>
+            </ul>
+          </article>
+          <article class="agent-card agent-card--idle" data-agent-id="executor" role="region" aria-label="Agente Executor Agent">
+            <header class="agent-card__header">
+              <span class="agent-card__icon" aria-hidden="true">⚡</span>
+              <h3 class="agent-card__name">Executor Agent</h3>
+              <span class="agent-card__status agent-card__status--idle" aria-live="polite">idle</span>
+            </header>
+            <p class="agent-card__desc">Ejecución de tareas finales, síntesis de resultados y registro de telemetría.</p>
+            <dl class="agent-card__stats">
+              <div><dt>Ejecuciones</dt><dd>0</dd></div>
+              <div><dt>Éxito</dt><dd>100.0%</dd></div>
+              <div><dt>Tiempo medio</dt><dd>0ms</dd></div>
+            </dl>
+            <ul class="agent-card__caps" aria-label="Capacidades">
+              <li class="badge">action_execution</li>
+              <li class="badge">artifact_generation</li>
+              <li class="badge">telemetry_recording</li>
+            </ul>
+          </article>
+        </div>
       </section>
     </main>
 
@@ -279,6 +365,39 @@
   </div>
 
   <!-- Scripts (orden importa: dependencies first) -->
-  <script type="module" src="./js/app.js"></script>
+  <script>
+    // Navegación inmediata por pestañas (100% garantizada en el shell)
+    (function() {
+      function switchTab(view) {
+        document.querySelectorAll('.nav-item').forEach(b => {
+          const isMatch = b.dataset.view === view;
+          b.classList.toggle('active', isMatch);
+          if (isMatch) b.setAttribute('aria-current', 'page');
+          else b.removeAttribute('aria-current');
+        });
+        document.querySelectorAll('.view').forEach(v => {
+          const isMatch = v.id === ('view-' + view);
+          if (isMatch) {
+            v.removeAttribute('hidden');
+            v.hidden = false;
+            v.classList.add('active');
+          } else {
+            v.setAttribute('hidden', '');
+            v.hidden = true;
+            v.classList.remove('active');
+          }
+        });
+      }
+
+      document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.nav-item[data-view]');
+        if (btn) {
+          e.preventDefault();
+          switchTab(btn.dataset.view);
+        }
+      });
+    })();
+  </script>
+  <script type="module" src="./js/app.js?v=1.0.2"></script>
 </body>
 </html>

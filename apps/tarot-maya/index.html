@@ -13,18 +13,13 @@
    Design tokens · neon ritual theme
    ============================================================ */
 :root{
-  --bg:#050508;                 /* negro profundo */
-  --ink:#EDEDED;                /* cuerpo AA sobre --bg */
-  --dim:#A7ADC0;                /* secundario AA */
+  --bg:#050508;
+  --ink:#EDEDED;
+  --dim:#A7ADC0;
   --line:rgba(255,255,255,.08);
   --glass:rgba(255,255,255,.045);
   --glass-2:rgba(255,255,255,.02);
-  --acc:#00E5FF;                /* acento global (Este) */
-  /* Familias de rumbo — documentadas:
-     Este  : cian/teal      #00E5FF-family
-     Norte : blanco/plata   #E8EAF6-family
-     Oeste : violeta/magenta#B388FF-family
-     Sur   : dorado/ámbar   #FFC400-family */
+  --acc:#00E5FF;
   --radius:14px;
   --ease-out:cubic-bezier(.22,.75,.25,1);
 }
@@ -43,9 +38,6 @@ body{
 .aura{
   position:fixed;inset:-20%;z-index:0;pointer-events:none;opacity:0;
   transition:opacity 1.2s ease;
-  background:
-    radial-gradient(620px 420px at 22% 28%, color-mix(in srgb,var(--a) 16%, transparent), transparent 70%),
-    radial-gradient(760px 540px at 78% 72%, color-mix(in srgb,var(--a) 11%, transparent), transparent 72%);
   background:
     radial-gradient(620px 420px at 22% 28%, rgba(0,229,255,.14), transparent 70%),
     radial-gradient(760px 540px at 78% 72%, rgba(0,229,255,.10), transparent 72%);
@@ -108,295 +100,253 @@ main{min-height:100vh;display:flex;flex-direction:column}
 .subtitle{
   margin:.9rem 0 0;font-size:clamp(.95rem,2.4vw,1.3rem);font-weight:300;
   letter-spacing:.58em;text-transform:uppercase;color:var(--ink);
-  text-shadow:0 0 18px rgba(224,64,251,.5);
+  text-shadow:0 0 20px rgba(0,229,255,.35);
 }
-.note{margin-top:1.4rem;color:var(--dim);font-size:.8rem;letter-spacing:.24em;text-transform:uppercase}
 .cta{
-  margin-top:3rem;padding:1rem 3rem;border-radius:999px;font-size:1rem;
-  letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:#031015;
-  background:linear-gradient(120deg,#00E5FF,#7FE9FF 55%,#E040FB);
-  box-shadow:0 0 22px rgba(0,229,255,.55),0 0 60px rgba(0,229,255,.25);
-  transition:transform .3s var(--ease-out),box-shadow .3s;
+  margin:3.2rem auto 0;display:inline-flex;align-items:center;gap:.6rem;
+  padding:.9rem 2.4rem;border-radius:999px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;font-size:.88rem;
+  background:linear-gradient(135deg,rgba(0,229,255,.22),rgba(179,136,255,.18));
+  border:1px solid rgba(0,229,255,.4);color:#fff;
+  box-shadow:0 0 28px rgba(0,229,255,.22);
+  transition:background .35s,transform .25s,box-shadow .35s;
 }
-.cta:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 0 34px rgba(0,229,255,.8),0 0 90px rgba(224,64,251,.3)}
-.cta:active{transform:translateY(0) scale(.99)}
+.cta:hover{background:linear-gradient(135deg,rgba(0,229,255,.38),rgba(179,136,255,.32));transform:translateY(-2px);box-shadow:0 0 42px rgba(0,229,255,.36)}
+.note{margin:1.6rem 0 0;font-size:.74rem;color:var(--dim);letter-spacing:.08em}
 
-/* ---------- selección de lectura ---------- */
-.menu{display:grid;gap:1.1rem;width:100%;max-width:980px;grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr));text-align:left}
+/* ---------- menú selección ---------- */
+.menu{display:grid;gap:1.1rem;width:100%;max-width:680px;text-align:left}
 .opt{
-  padding:1.4rem 1.5rem;border-radius:var(--radius);text-align:left;width:100%;
-  background:linear-gradient(165deg,var(--glass),var(--glass-2));
-  border:1px solid var(--line);
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  transition:transform .35s var(--ease-out),border-color .35s,box-shadow .35s;
-  display:flex;flex-direction:column;gap:.5rem;
+  padding:1.3rem 1.5rem;border-radius:var(--radius);
+  border:1px solid var(--line);background:var(--glass);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:border-color .3s,background .3s,transform .3s;
 }
-.opt:hover{transform:translateY(-5px);border-color:rgba(0,229,255,.45);box-shadow:0 12px 34px rgba(0,0,0,.5),0 0 26px rgba(0,229,255,.14)}
-.opt h3{margin:0;font-size:1.02rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#fff}
-.opt p{margin:0;font-size:.86rem;color:var(--dim)}
-.opt .tag{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--acc)}
-.pill-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.4rem}
+.opt:hover,.opt:focus-visible{border-color:rgba(0,229,255,.45);background:rgba(0,229,255,.06);transform:translateY(-1px)}
+.opt h3{margin:0 0 .3rem;font-size:1.08rem;font-weight:600;letter-spacing:.06em}
+.opt p{margin:0;color:var(--dim);font-size:.86rem}
+.tag{
+  display:inline-block;margin-bottom:.5rem;padding:.18rem .65rem;border-radius:999px;
+  font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  background:rgba(0,229,255,.12);color:var(--acc);border:1px solid rgba(0,229,255,.2);
+}
+.pill-row{display:flex;gap:.5rem;margin:.7rem 0 .5rem}
 .pill{
-  padding:.4rem .95rem;border-radius:999px;border:1px solid var(--line);
-  font-size:.85rem;color:var(--dim);transition:all .25s;
+  padding:.32rem .75rem;border-radius:999px;border:1px solid var(--line);
+  font-size:.82rem;letter-spacing:.04em;color:var(--dim);
+  transition:color .25s,border-color .25s,background .25s;
 }
-.pill[aria-pressed="true"]{color:#031015;background:var(--acc);border-color:var(--acc);box-shadow:0 0 14px rgba(0,229,255,.5)}
-.pill:hover{color:#fff;border-color:rgba(0,229,255,.5)}
-.pill[aria-pressed="true"]:hover{color:#031015}
+.pill[aria-pressed="true"]{color:#fff;border-color:var(--acc);background:rgba(0,229,255,.16)}
 .mini-btn{
-  margin-top:.7rem;align-self:flex-start;padding:.55rem 1.3rem;border-radius:999px;
-  font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);
-  border:1px solid rgba(0,229,255,.5);transition:all .25s;
+  display:inline-flex;align-items:center;gap:.5rem;margin-top:.4rem;
+  padding:.5rem 1.2rem;border-radius:999px;font-weight:600;font-size:.8rem;
+  letter-spacing:.1em;text-transform:uppercase;
+  background:rgba(0,229,255,.14);border:1px solid rgba(0,229,255,.28);color:var(--acc);
+  transition:background .3s,transform .25s;
 }
-.mini-btn:hover{background:rgba(0,229,255,.12);box-shadow:0 0 16px rgba(0,229,255,.3)}
-input[type="date"]{
-  margin-top:.5rem;padding:.55rem .8rem;border-radius:8px;width:100%;max-width:240px;
-  background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--ink);
-  font:inherit;color-scheme:dark;
-}
-input[type="date"]:focus-visible{border-color:var(--acc)}
-input[type="date"].invalid{border-color:#FF5470;box-shadow:0 0 12px rgba(255,84,112,.35)}
-.err{color:#FF8AA0;font-size:.82rem;margin:.5rem 0 0;min-height:1.2em}
+.mini-btn:hover{background:rgba(0,229,255,.28);transform:translateY(-1px)}
 
 /* ---------- barajado ---------- */
-.deck{position:relative;height:300px;width:min(90vw,420px)}
+.deck{display:flex;gap:.7rem;justify-content:center;perspective:800px;margin:2rem 0}
 .dcard{
-  position:absolute;left:50%;top:50%;width:140px;aspect-ratio:5/8;margin:-112px 0 0 -70px;
-  border-radius:12px;border:1px solid var(--line);
-  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  width:52px;height:78px;border-radius:10px;border:1.5px solid rgba(0,229,255,.4);
+  background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(179,136,255,.06));
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 8px 30px rgba(0,0,0,.6),0 0 20px rgba(0,229,255,.08);
-  animation:shuffle 1.5s ease-in-out infinite;
-  animation-delay:calc(var(--i) * -.13s);
+  animation:shuffleIn .5s calc(var(--i)*.08s) var(--ease-out) both,
+            shuffleFloat 2.4s calc(var(--i)*.3s) ease-in-out infinite alternate;
+  color:rgba(0,229,255,.65);
 }
-.dcard svg{width:58%;color:rgba(255,255,255,.22)}
-@keyframes shuffle{
-  0%,100%{transform:translate(0,0) rotate(0deg)}
-  25%{transform:translate(30px,-14px) rotate(7deg)}
-  50%{transform:translate(-24px,10px) rotate(-6deg)}
-  75%{transform:translate(10px,16px) rotate(4deg)}
-}
-.shuffle-msg{color:var(--dim);letter-spacing:.3em;text-transform:uppercase;font-size:.75rem;animation:breath 1.6s ease-in-out infinite}
-@keyframes breath{50%{opacity:.35}}
+.dcard svg{width:32px;height:32px}
+@keyframes shuffleIn{from{opacity:0;transform:rotateY(100deg) translateY(40px)}}
+@keyframes shuffleFloat{to{transform:translateY(-6px) rotateY(8deg)}}
+.shuffle-msg{color:var(--dim);font-size:.88rem;letter-spacing:.15em}
 
-/* ---------- revelado ---------- */
-.hint{color:var(--dim);font-size:.84rem;margin:0 0 2rem}
-.spread{
-  display:grid;width:100%;
-  grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));
-  gap:clamp(.9rem,2.4vw,1.6rem);justify-items:center;align-items:start;
-}
-.spread.cross{grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr))}
+/* ---------- cartas revelado ---------- */
+.spread{display:flex;flex-wrap:wrap;gap:1.1rem;justify-content:center;perspective:900px;width:100%}
+.spread.cross{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;gap:1.1rem;max-width:520px;justify-items:center}
+.spread.cross .tcard:nth-child(1){grid-column:2;grid-row:2}
+.spread.cross .tcard:nth-child(2){grid-column:2;grid-row:1}
+.spread.cross .tcard:nth-child(3){grid-column:1;grid-row:2}
+.spread.cross .tcard:nth-child(4){grid-column:3;grid-row:2}
+.spread.cross .tcard:nth-child(5){grid-column:2;grid-row:3}
+
 .tcard{
-  width:min(215px,100%);aspect-ratio:5/8;padding:0;position:relative;
-  perspective:1200px;-webkit-tap-highlight-color:transparent;
+  width:110px;flex-shrink:0;aspect-ratio:2/3;border-radius:var(--radius);
+  perspective:600px;cursor:pointer;
+  transition:transform .3s var(--ease-out);
 }
+.tcard:hover{transform:translateY(-4px)}
 .card-inner{
-  position:absolute;inset:0;transform-style:preserve-3d;
-  transition:transform .75s var(--ease-out);
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;
+  transition:transform .65s var(--ease-out);
 }
 .tcard.is-revealed .card-inner{transform:rotateY(180deg)}
 .face{
-  position:absolute;inset:0;border-radius:var(--radius);
-  backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:var(--radius);overflow:hidden;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:.9rem;gap:.6rem;overflow:hidden;
 }
-.face.back{
-  border:1px solid var(--line);
-  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
-  box-shadow:0 10px 30px rgba(0,0,0,.55);
-  transition:transform .3s var(--ease-out),box-shadow .3s;
+.back{
+  border:1.5px solid rgba(0,229,255,.4);
+  background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(179,136,255,.06));
+  color:rgba(0,229,255,.65);
 }
-.face.back::after{
-  content:"";position:absolute;inset:8px;border:1px solid rgba(255,255,255,.07);border-radius:9px;
-}
-.tcard:not(.is-revealed):hover .face.back{transform:translateY(-6px);box-shadow:0 16px 36px rgba(0,0,0,.6),0 0 24px rgba(0,229,255,.18)}
-.face.back svg{width:56%;color:rgba(255,255,255,.22);animation:backSpin 26s linear infinite}
-@keyframes backSpin{to{transform:rotate(360deg)}}
-.face.front{
+.back svg{width:44px;height:44px}
+.front{
   transform:rotateY(180deg);
-  border:1px solid rgba(255,255,255,.18);
-  border:1px solid color-mix(in srgb,var(--n) 55%,transparent);
-  background:linear-gradient(165deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
-  box-shadow:0 0 26px rgba(255,255,255,.12);
-  box-shadow:0 0 26px color-mix(in srgb,var(--n) 32%,transparent),
-             inset 0 0 34px color-mix(in srgb,var(--n) 12%,transparent);
+  border:1.5px solid;border-color:var(--n,var(--acc));
+  background:linear-gradient(160deg,rgba(0,0,0,.7),rgba(0,0,0,.5));
+  padding:.5rem;
 }
-.glyph{width:62%;height:auto;color:var(--n);filter:drop-shadow(0 0 7px color-mix(in srgb,var(--n) 65%,transparent))}
-.glyph path,.glyph circle{fill:none;stroke:currentColor;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
-.tname{font-weight:700;letter-spacing:.18em;text-transform:uppercase;font-size:.95rem;color:#fff}
-.tcaption{font-size:.72rem;color:var(--dim);min-height:2.6em;line-height:1.35}
-.reveal-bar{margin-top:2.4rem;display:flex;flex-direction:column;align-items:center;gap:1rem}
-#reveal-progress{color:var(--dim);font-size:.85rem;letter-spacing:.1em}
-#btn-full{
-  padding:.85rem 2.4rem;border-radius:999px;letter-spacing:.24em;text-transform:uppercase;
-  font-size:.85rem;font-weight:600;color:#031015;background:var(--acc);
-  box-shadow:0 0 20px rgba(0,229,255,.5);transition:all .3s var(--ease-out);
-}
-#btn-full:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 32px rgba(0,229,255,.75)}
-#btn-full:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.front .glyph{width:52px;height:52px;stroke:var(--n,var(--acc));fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.tname{font-size:.68rem;font-weight:700;letter-spacing:.1em;color:var(--n,var(--acc));margin-top:.2rem}
+.tcaption{font-size:.54rem;color:var(--dim);text-align:center;margin-top:.15rem;line-height:1.3}
 
-/* cruz maya: layout de cruz en pantallas anchas */
-@media (min-width:760px){
-  .spread.cross{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    grid-template-areas:". north ." "west center east" ". south .";
-    max-width:860px;
-  }
-  .spread.cross .tcard[data-key="center"]{grid-area:center}
-  .spread.cross .tcard[data-key="east"]{grid-area:east}
-  .spread.cross .tcard[data-key="north"]{grid-area:north}
-  .spread.cross .tcard[data-key="south"]{grid-area:south}
-  .spread.cross .tcard[data-key="west"]{grid-area:west}
-}
+.reveal-bar{display:flex;align-items:center;gap:1rem;margin-top:1.8rem;flex-wrap:wrap;justify-content:center}
+#reveal-progress{font-size:.82rem;color:var(--dim);letter-spacing:.06em}
+.hint{font-size:.76rem;color:var(--dim);margin:0 0 1.4rem;letter-spacing:.04em}
 
 /* ---------- resultados ---------- */
-.results-head{margin-bottom:2rem}
-.results-head h2{
-  margin:0;font-size:clamp(1.4rem,3.2vw,2.1rem);font-weight:300;
-  letter-spacing:.28em;text-transform:uppercase;color:#fff;
-  text-shadow:0 0 20px rgba(0,229,255,.4);
-}
-.results-head .rdate{color:var(--dim);font-size:.85rem;margin-top:.5rem;letter-spacing:.12em}
-.results-grid{
-  display:grid;width:100%;gap:1.3rem;
-  grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));
-  text-align:left;
+.print-head{display:none}
+.results-head{text-align:center;margin:0 0 2.2rem}
+.results-head h2{margin:0;font-size:1.5rem;font-weight:300;letter-spacing:.3em;text-transform:uppercase}
+.rdate{color:var(--dim);font-size:.82rem;margin:.3rem 0 0;letter-spacing:.06em}
+.results-grid{display:grid;gap:1.6rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.results-hero{grid-template-columns:1fr;max-width:560px;margin:0 auto}
+.results-wrap{text-align:left;padding:0 clamp(.5rem,2vw,1.5rem)}
+.results-wrap.glitching{animation:glitchReveal .42s ease both}
+@keyframes glitchReveal{
+  0%{clip-path:inset(6% 0 88% 0)} 15%{clip-path:inset(56% 0 12% 0)}
+  30%{clip-path:inset(0 0 68% 0)} 45%{clip-path:inset(70% 0 0 0)}
+  60%{clip-path:inset(0)} 75%{clip-path:inset(40% 0 48% 0)} 100%{clip-path:inset(0)}
 }
 .rcard{
-  margin:0;border-radius:var(--radius);padding:1.5rem 1.5rem 1.3rem;
-  background:linear-gradient(165deg,var(--glass),var(--glass-2));
-  border:1px solid rgba(255,255,255,.12);
-  border:1px solid color-mix(in srgb,var(--n) 38%,rgba(255,255,255,.08));
-  box-shadow:0 12px 34px rgba(0,0,0,.45);
-  box-shadow:0 12px 34px rgba(0,0,0,.45),0 0 26px color-mix(in srgb,var(--n) 14%,transparent);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  display:flex;flex-direction:column;gap:.7rem;
-  transition:transform .4s var(--ease-out),box-shadow .4s;
+  margin:0;padding:1.4rem;border-radius:var(--radius);
+  border:1px solid color-mix(in srgb,var(--n) 30%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--n) 6%,var(--bg)),var(--glass-2));
 }
-.rcard:hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(0,0,0,.55),0 0 34px color-mix(in srgb,var(--n) 24%,transparent)}
-.rcard .pos{
-  font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;color:var(--n);
-  text-shadow:0 0 12px color-mix(in srgb,var(--n) 60%,transparent);
-}
-.rcard .glyph{width:58px;margin:.2rem 0}
-.rcard h3{margin:0;font-size:1.25rem;letter-spacing:.1em;color:#fff}
-.rcard h3 small{display:block;font-weight:300;font-size:.78rem;letter-spacing:.14em;color:var(--dim);text-transform:none;margin-top:.15rem}
-.rcard .meta{margin:0;font-size:.75rem;color:var(--dim);letter-spacing:.05em;line-height:1.5}
-.rcard dl{margin:.2rem 0 0;display:flex;flex-direction:column;gap:.55rem}
-.rcard dt{font-size:.68rem;letter-spacing:.24em;text-transform:uppercase;color:var(--n)}
-.rcard dd{margin:.15rem 0 0;font-size:.88rem;color:var(--ink)}
-.rcard .tone-text{margin:0;font-size:.86rem;color:var(--dim);border-left:2px solid var(--n);padding-left:.8rem}
-.rcard .live{margin:.4rem 0 0;font-size:.88rem;color:#fff;font-style:italic}
-.rcard .live::before{content:"→ ";color:var(--n)}
+.rcard .pos{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--n,var(--acc));font-weight:600}
+.rcard .glyph{width:60px;height:60px;margin:.7rem 0;stroke:var(--n,var(--acc));fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.rcard h3{margin:0 0 .15rem;font-size:1.2rem;font-weight:700;color:var(--n,var(--acc))}
+.rcard h3 small{display:block;font-size:.78rem;font-weight:400;color:var(--dim);margin-top:.1rem}
+.rcard .meta{font-size:.78rem;color:var(--dim);margin:.5rem 0 .8rem;line-height:1.6}
+.rcard dl{margin:0;display:grid;gap:.6rem}
+.rcard dt{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--n,var(--acc));margin:0}
+.rcard dd{margin:0 0 .1rem;font-size:.86rem;color:var(--ink);line-height:1.55}
+.tone-text{font-size:.86rem;color:var(--dim);margin:.8rem 0 0;padding:.8rem;border-radius:10px;background:var(--glass);border-left:3px solid var(--n,var(--acc))}
+.live{font-size:.84rem;margin:.8rem 0 0;padding:.6rem .8rem;border-radius:10px;background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.14);color:var(--ink)}
 .kin-badge{
-  align-self:center;width:110px;height:110px;border-radius:50%;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  border:1px solid rgba(255,255,255,.2);
-  border-color:color-mix(in srgb,var(--n) 60%,transparent);
-  box-shadow:0 0 30px color-mix(in srgb,var(--n) 35%,transparent);
-  margin-bottom:.4rem;
+  display:inline-flex;flex-direction:column;align-items:center;
+  padding:.6rem 1rem;border-radius:14px;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--n) 14%,transparent),color-mix(in srgb,var(--n) 6%,transparent));
+  border:1px solid color-mix(in srgb,var(--n) 30%,transparent);margin-bottom:.8rem;
 }
-.kin-badge b{font-size:2rem;color:#fff;text-shadow:0 0 14px var(--n)}
-.kin-badge span{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
-.results-hero{max-width:640px;margin:0 auto;width:100%}
+.kin-badge b{font-size:1.6rem;line-height:1;color:var(--n,var(--acc))}
+.kin-badge span{font-size:.6rem;text-transform:uppercase;letter-spacing:.2em;color:var(--dim)}
 
-/* micro-glitch de entrada a resultados (2 frames, decorativo) */
-.results-wrap.glitching{animation:glitch .22s steps(2) 2}
-@keyframes glitch{
-  0%{clip-path:inset(0 0 0 0);transform:translate(0)}
-  25%{clip-path:inset(12% 0 55% 0);transform:translate(-7px,2px)}
-  50%{clip-path:inset(58% 0 6% 0);transform:translate(6px,-2px)}
-  75%{clip-path:inset(30% 0 38% 0);transform:translate(-3px,1px)}
-  100%{clip-path:inset(0 0 0 0);transform:translate(0)}
+/* ---------- contexto cosmologico ---------- */
+.context-bar{
+  display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin:0 0 2rem;
 }
+.ctx-chip{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.35rem .8rem;border-radius:999px;font-size:.72rem;
+  letter-spacing:.06em;border:1px solid var(--line);
+  background:var(--glass);color:var(--dim);
+}
+.ctx-chip b{color:var(--ink);font-weight:600}
+.ctx-chip .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.castle-banner{
+  text-align:center;padding:1rem;border-radius:var(--radius);margin:0 0 1.6rem;
+  background:var(--glass);border:1px solid var(--line);
+}
+.castle-banner h4{margin:0 0 .3rem;font-size:.88rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.castle-banner p{margin:0;font-size:.78rem;color:var(--dim);line-height:1.5}
+
+/* ---------- oracle cross layout ---------- */
+.oracle-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;
+  gap:1.2rem;max-width:720px;margin:0 auto 1.6rem;
+}
+.oracle-grid .rcard:nth-child(1){grid-column:2;grid-row:2} /* Destino/Centro */
+.oracle-grid .rcard:nth-child(2){grid-column:2;grid-row:1} /* Guía/Arriba */
+.oracle-grid .rcard:nth-child(3){grid-column:3;grid-row:2} /* Análogo/Derecha */
+.oracle-grid .rcard:nth-child(4){grid-column:1;grid-row:2} /* Antípoda/Izquierda */
+.oracle-grid .rcard:nth-child(5){grid-column:2;grid-row:3} /* Oculto/Abajo */
 
 /* ---------- acciones ---------- */
-.actions{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin:2.6rem 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;margin-top:2rem}
 .act{
-  display:inline-flex;align-items:center;gap:.55rem;
-  padding:.7rem 1.4rem;border-radius:999px;border:1px solid var(--line);
-  font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
-  transition:all .28s var(--ease-out);
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.55rem 1.1rem;border-radius:999px;font-size:.82rem;font-weight:500;
+  letter-spacing:.06em;border:1px solid var(--line);color:var(--dim);
+  transition:color .25s,border-color .25s,transform .25s,background .25s;
 }
-.act:hover{color:#fff;border-color:rgba(0,229,255,.55);box-shadow:0 0 18px rgba(0,229,255,.22);transform:translateY(-2px)}
-.act svg{width:15px;height:15px}
-.act.danger:hover{border-color:rgba(255,84,112,.6);box-shadow:0 0 18px rgba(255,84,112,.25)}
-.act.armed{color:#FF8AA0;border-color:rgba(255,84,112,.7)}
+.act:hover{color:#fff;border-color:rgba(0,229,255,.4);background:rgba(0,229,255,.08);transform:translateY(-1px)}
+.act svg{width:16px;height:16px}
+.act.danger{border-color:rgba(255,80,80,.3);color:rgba(255,120,120,.8)}
+.act.danger:hover{border-color:rgba(255,80,80,.6);background:rgba(255,80,80,.1)}
+.act.danger.armed{border-color:rgba(255,50,50,.7);color:#ff5e5e;background:rgba(255,80,80,.14)}
 
 /* ---------- historial ---------- */
 #history-panel{
-  position:fixed;top:0;right:0;bottom:0;z-index:20;width:min(92vw,380px);
-  background:rgba(8,8,14,.92);border-left:1px solid var(--line);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  padding:1.6rem 1.4rem;overflow-y:auto;text-align:left;
-  transform:translateX(102%);transition:transform .45s var(--ease-out);
-  box-shadow:-20px 0 60px rgba(0,0,0,.6);
+  position:fixed;inset:0;z-index:100;background:rgba(5,5,8,.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  padding:2.5rem clamp(1rem,4vw,2rem);overflow-y:auto;
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .32s ease,transform .32s ease;
 }
-#history-panel.open{transform:translateX(0)}
-#history-panel h2{margin:0 0 1.2rem;font-size:1rem;letter-spacing:.3em;text-transform:uppercase;font-weight:400}
+#history-panel.open{opacity:1;transform:none;pointer-events:auto}
+#history-panel h2{font-size:1.2rem;letter-spacing:.3em;text-transform:uppercase;font-weight:300;margin:0 0 1.4rem}
 .hist-item{
-  width:100%;text-align:left;padding:.85rem 1rem;margin-bottom:.7rem;border-radius:10px;
-  border:1px solid var(--line);background:rgba(255,255,255,.03);
-  transition:all .25s;display:flex;flex-direction:column;gap:.15rem;
+  display:block;width:100%;text-align:left;
+  padding:.9rem 1rem;border-radius:var(--radius);margin:0 0 .6rem;
+  border:1px solid var(--line);background:var(--glass);
+  transition:border-color .25s,background .25s;
 }
-.hist-item:hover{border-color:rgba(0,229,255,.5);box-shadow:0 0 14px rgba(0,229,255,.15)}
-.hist-item b{font-size:.88rem;color:#fff;letter-spacing:.08em}
-.hist-item span{font-size:.75rem;color:var(--dim)}
-.hist-empty{color:var(--dim);font-size:.85rem;font-style:italic}
-.hist-clear{margin-top:1.2rem}
+.hist-item:hover{border-color:rgba(0,229,255,.35);background:rgba(0,229,255,.06)}
+.hist-item b{display:block;font-size:.88rem;margin-bottom:.15rem}
+.hist-item span{font-size:.76rem;color:var(--dim)}
+.hist-empty{color:var(--dim);font-size:.88rem}
+.hist-clear{margin-top:1.4rem}
 
-/* ---------- toast / announcer ---------- */
+/* ---------- toast ---------- */
 #toast{
-  position:fixed;left:50%;bottom:1.6rem;transform:translate(-50%,20px);z-index:30;
-  padding:.75rem 1.5rem;border-radius:999px;font-size:.85rem;color:#fff;
-  background:rgba(10,12,20,.92);border:1px solid rgba(0,229,255,.45);
-  box-shadow:0 0 24px rgba(0,229,255,.3);opacity:0;pointer-events:none;
-  transition:opacity .3s,transform .3s var(--ease-out);
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);
+  padding:.6rem 1.4rem;border-radius:999px;font-size:.82rem;font-weight:500;
+  background:rgba(0,229,255,.18);border:1px solid rgba(0,229,255,.3);color:#fff;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .4s var(--ease-out);z-index:200;pointer-events:none;
 }
-#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+.err{color:#FF8A80;font-size:.82rem;margin:.4rem 0 0}
+input[type="date"]{
+  padding:.45rem .7rem;border-radius:10px;border:1px solid var(--line);
+  background:var(--glass);color:var(--ink);font:inherit;font-size:.88rem;
+  margin-top:.5rem;width:100%;max-width:240px;
+  transition:border-color .25s;
+}
+input[type="date"]:focus{border-color:var(--acc)}
+input[type="date"].invalid{border-color:#FF5252}
 
 footer{
-  position:relative;z-index:1;text-align:center;padding:1.4rem;
-  color:rgba(167,173,192,.55);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  position:fixed;bottom:0;left:0;right:0;z-index:10;
+  text-align:center;padding:.6rem 1rem;
+  font-size:.62rem;letter-spacing:.12em;color:rgba(255,255,255,.2);
+  background:linear-gradient(to top,rgba(5,5,8,.7),transparent);
 }
-
 /* ---------- impresión ---------- */
-.print-head{display:none}
 @media print{
-  #bg,.aura,.topbar,footer,.actions,#history-panel,#toast,#announcer,
-  .reveal-bar,.hint,#screen-intro,#screen-select,#screen-shuffle,#screen-reveal{display:none!important}
-  html,body{background:#fff!important;color:#111!important}
-  .screen{padding:0;display:block;min-height:0}
+  body{background:#fff;color:#111}
+  .topbar,footer,#bg,.aura,#toast,#history-panel,.actions,.reveal-bar,.hint{display:none!important}
   .print-head{display:block;text-align:center;margin-bottom:1.5rem}
-  .print-head h1{font-size:1.4rem;letter-spacing:.3em;margin:0}
-  .print-head p{color:#555;font-size:.85rem;margin:.3rem 0 0}
-  .results-wrap{animation:none!important}
-  .results-head h2{color:#111;text-shadow:none}
-  .results-head .rdate{color:#555}
-  .rcard{background:#fff;border:1px solid #bbb;box-shadow:none;break-inside:avoid;backdrop-filter:none}
-  .rcard h3,.rcard dd,.rcard .live{color:#111;text-shadow:none}
-  .rcard .pos,.rcard dt{color:#444;text-shadow:none}
-  .rcard .meta,.rcard .tone-text{color:#555}
-  .rcard .glyph{color:#333;filter:none}
-  .kin-badge{box-shadow:none;border-color:#999}
-  .kin-badge b{color:#111;text-shadow:none}
+  .print-head h1{font-size:1.5rem;margin:0} .print-head p{margin:.3rem 0 0;font-size:.9rem}
+  .rcard{break-inside:avoid;border:1px solid #ccc;background:#fafafa!important}
+  .rcard .glyph{stroke:#333!important}
+  .rcard h3{color:#222!important} .rcard .pos{color:#555!important}
+  .rcard dt{color:#444!important} .live{background:#f0f0f0!important;border-color:#ccc!important}
 }
-
-/* ---------- responsive fino ---------- */
-@media (max-width:480px){
-  .spread{grid-template-columns:1fr 1fr}
-  .spread.cross{grid-template-columns:1fr 1fr}
-  .tcard{width:100%}
-  .deck{height:260px}
-}
-@media (min-width:2000px){
-  .screen{max-width:1480px}
-  .results-grid{grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}
-}
-
-/* ---------- movimiento reducido ---------- */
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{
@@ -430,64 +380,64 @@ footer{
     <h1 class="neon-title">TAROT MAYA</h1>
     <p class="subtitle">Tzolk'in Sagrado</p>
     <button type="button" class="cta" id="btn-start">Iniciar lectura</button>
-    <p class="note">20 nahuales · 13 tonos · 4 rumbos · correlación GMT 584283</p>
+    <p class="note">20 sellos solares · 13 tonos galácticos · 4 rumbos · 5 castillos · correlación GMT 584283</p>
   </section>
 
   <!-- FASE: selección -->
   <section class="screen" id="screen-select" tabindex="-1" hidden aria-label="Selección de lectura">
     <h2 class="phase-title">Elige tu consulta</h2>
-    <p class="phase-sub">Cada tirada entrelaza nahuales, tonos y rumbos con el día que habitas</p>
+    <p class="phase-sub">Cada tirada entrelaza sellos, tonos y rumbos con la energía del Tzolk'in</p>
     <div class="menu">
       <button type="button" class="opt" data-type="kin-dia">
         <span class="tag">1 carta · hoy</span>
         <h3>Kin del día</h3>
-        <p>La energía exacta del Tzolk'in para la fecha de hoy, calculada con la correlación GMT.</p>
+        <p>La energía exacta del Tzolk'in para hoy: tu sello, tu tono, tu onda encantada y tu castillo.</p>
       </button>
-      <button type="button" class="opt" data-type="cruz">
-        <span class="tag">5 cartas · cruz sagrada</span>
-        <h3>Cruz Maya</h3>
-        <p>Centro como esencia, Este como guía, Norte como desafío, Sur como aliado y Oeste como lo oculto.</p>
+      <button type="button" class="opt" data-type="oraculo">
+        <span class="tag">5 cartas · oráculo sagrado</span>
+        <h3>Oráculo de la Quinta Fuerza</h3>
+        <p>Destino al centro, Guía arriba, Análogo como apoyo, Antípoda como desafío y el Poder Oculto. Calculado con las fórmulas reales del Dreamspell.</p>
       </button>
-      <button type="button" class="opt" data-type="rueda">
-        <span class="tag">13 cartas · ciclo completo</span>
-        <h3>Rueda del Año</h3>
-        <p>Una carta por cada tono, del 1 Jun al 13 Oxlajuj: el mapa completo de tu ciclo anual.</p>
+      <button type="button" class="opt" data-type="onda">
+        <span class="tag">13 cartas · onda encantada</span>
+        <h3>Onda Encantada</h3>
+        <p>Las 13 posiciones de tu onda actual: Propósito, Desafío, Servicio, Forma, Radiancia, Igualdad, Sintonización, Integridad, Intención, Manifestación, Liberación, Cooperación y Presencia.</p>
       </button>
       <div class="opt">
         <span class="tag">3 · 5 · 7 · 9 cartas</span>
-        <h3>Tirada libre</h3>
-        <p>Tú decides la profundidad de la consulta; el oráculo decide el hilo.</p>
+        <h3>Tirada del Tzolk'in</h3>
+        <p>Consulta libre con cartas consecutivas del Tzolk'in a partir del kin de hoy.</p>
         <div class="pill-row" role="group" aria-label="Número de cartas">
           <button type="button" class="pill" data-count="3" aria-pressed="false">3</button>
           <button type="button" class="pill" data-count="5" aria-pressed="true">5</button>
           <button type="button" class="pill" data-count="7" aria-pressed="false">7</button>
           <button type="button" class="pill" data-count="9" aria-pressed="false">9</button>
         </div>
-        <button type="button" class="mini-btn" id="btn-free">Iniciar tirada libre</button>
+        <button type="button" class="mini-btn" id="btn-free">Iniciar tirada</button>
       </div>
       <div class="opt">
-        <span class="tag">1 carta · tu sello</span>
-        <h3>Kin natal</h3>
-        <p>El kin con el que llegaste al mundo: tu nahual, tu tono, tu firma en el calendario.</p>
+        <span class="tag">5 cartas · tu sello natal</span>
+        <h3>Oráculo natal</h3>
+        <p>Tu kin de nacimiento y su Oráculo de la Quinta Fuerza completo: el mapa energético con el que llegaste al mundo.</p>
         <label class="sr-only" for="natal-date">Fecha de nacimiento</label>
         <input type="date" id="natal-date" min="1900-01-01">
         <p class="err" id="natal-err" aria-live="polite"></p>
-        <button type="button" class="mini-btn" id="btn-natal">Consultar kin natal</button>
+        <button type="button" class="mini-btn" id="btn-natal">Consultar oráculo natal</button>
       </div>
     </div>
   </section>
 
   <!-- FASE: barajado -->
   <section class="screen" id="screen-shuffle" tabindex="-1" hidden aria-label="Barajando">
-    <h2 class="phase-title">Barajando el tiempo</h2>
+    <h2 class="phase-title">Consultando el Tzolk'in</h2>
     <div class="deck" id="deck" aria-hidden="true"></div>
-    <p class="shuffle-msg">Los nahuales se entretejen…</p>
+    <p class="shuffle-msg">Los sellos se entretejen en el tiempo…</p>
   </section>
 
   <!-- FASE: revelado -->
   <section class="screen" id="screen-reveal" tabindex="-1" hidden aria-label="Revelado de cartas">
     <h2 class="phase-title">Revela tu tirada</h2>
-    <p class="hint">Toca cada carta o navega con Tab y activa con Enter o Espacio · Escape revela el resto</p>
+    <p class="hint">Toca cada carta o navega con Tab · Escape revela el resto</p>
     <div class="spread" id="spread" aria-label="Cartas de la tirada"></div>
     <div class="reveal-bar">
       <span id="reveal-progress" aria-hidden="true"></span>
@@ -533,14 +483,14 @@ footer{
 <div id="announcer" class="sr-only" aria-live="polite"></div>
 <div id="toast" role="status" aria-live="polite"></div>
 
-<footer>Tzolk'in · Correlación GMT 584283 · 20 nahuales yucatecos · 13 tonos · 4 rumbos</footer>
+<footer>Tzolk'in · Correlación GMT 584283 · 20 sellos · 13 tonos · 4 rumbos · 5 castillos</footer>
 
 <script>
 "use strict";
 /* ================================================================
    MOTOR TZOLK'IN — correlación GMT 584283
-   Verificado: 2012-12-21 → tono 4 · nahual 20 (Ajaw) · kin 160
-               2026-09-08 → tono 8 · nahual 9  (Muluk) · kin 229
+   Verificado: 2012-12-21 → tono 4 · sello 20 (Ajaw) · kin 160
+               2026-09-08 → tono 8 · sello 9  (Muluk) · kin 229
    ================================================================ */
 function jdn(y,m,d){
   const a=((14-m)/12)|0, yy=y+4800-a, mm=m+12*a-3;
@@ -555,13 +505,33 @@ function kinOf(y,m,d){
     kin:   (((n0+159)%260)+260)%260+1
   };
 }
-/* Cinética inversa: kin válido para un par (tono, nahual) */
 function crtKin(tone,nahual){
   for(let k=1;k<=260;k++){
     if(((k-1)%13)+1===tone && ((k-1)%20)+1===nahual) return k;
   }
   return 1;
 }
+
+/* ================================================================
+   ORÁCULO DE LA QUINTA FUERZA — fórmulas Dreamspell verificadas
+   Sellos 0-indexados (0-19)
+   ================================================================ */
+function getOracle(seal0,tone){
+  const guideOffsets=[0,12,4,16,8];
+  const tg=(tone-1)%5;
+  return {
+    destiny:seal0,
+    guide:(seal0+guideOffsets[tg])%20,
+    analog:(19-seal0+20)%20,
+    antipode:(seal0+10)%20,
+    occult:(17-seal0+20)%20
+  };
+}
+function getWavespellIdx(kin){ return Math.floor((kin-1)/13); }
+function getCastleIdx(kin){ return Math.floor((kin-1)/52); }
+function getWavespellPosition(kin){ return ((kin-1)%13)+1; }
+
+/* Utilidades */
 function mulberry32(a){
   return function(){
     a|=0; a=(a+0x6D2B79F5)|0;
@@ -583,42 +553,57 @@ function hexToRgb(h){
 }
 
 /* ================================================================
-   DATOS CANÓNICOS
+   DATOS CANÓNICOS — enriquecidos con Tu Energía Maya
    ================================================================ */
 const RUMBOS=[
-  {key:"Este", label:"Lak'in", nota:"rojo · inicio",          elem:"Agua"},
-  {key:"Norte",label:"Xaman",  nota:"blanco · mente",         elem:"Aire"},
-  {key:"Oeste",label:"Chik'in",nota:"negro · transformación", elem:"Tierra"},
-  {key:"Sur",  label:"Nojol",  nota:"amarillo · cosecha",     elem:"Fuego"}
+  {key:"Este", label:"Lak'in", nota:"rojo · inicio",          elem:"Fuego",  colorCSS:"#ef4444"},
+  {key:"Norte",label:"Xaman",  nota:"blanco · refinamiento",  elem:"Aire",   colorCSS:"#e8eaf6"},
+  {key:"Oeste",label:"Chik'in",nota:"azul · transformación",  elem:"Agua",   colorCSS:"#3b82f6"},
+  {key:"Sur",  label:"Nojol",  nota:"amarillo · madurez",     elem:"Tierra", colorCSS:"#eab308"}
 ];
+
 const TONES=[null,
-  {name:"Jun",theme:"Unidad / Inicio",
-   text:"El tono 1 enciende la chispa: todo lo que existe comienza como una unidad que aún no sabe de sí misma. Este tramo del año pide iniciativas limpias, sin heredar dudas ajenas. Siembra; no pidas todavía cosecha."},
-  {name:"Keb'",theme:"Dualidad / Polaridad",
-   text:"El tono 2 parte la unidad en dos: aparece el espejo, la polaridad que permite conocer. En este tramo el año te presenta al otro, el desafío, la elección. Toda decisión es un corte fecundo si se hace con conciencia."},
-  {name:"Oxib'",theme:"Acción / Movimiento",
-   text:"El tono 3 es movimiento: la energía sale del umbral y actúa. Ritmo, viaje, primeros resultados imperfectos pero vivos. En este tramo, hacer importa más que perfeccionar."},
-  {name:"Kajib'",theme:"Estabilidad / Fundación",
-   text:"El tono 4 funda: los cuatro rumbos sostienen la casa. Tiempo de estructura, disciplina y cimientos que resistan la tormenta que viene. Lo que hoy se estabiliza, mañana libera."},
-  {name:"Job'",theme:"Empoderamiento / Centro",
-   text:"El tono 5 toma el centro: empoderamiento, voz propia, autoridad encarnada. En este tramo del año dejas de pedir permiso. Sostén el centro mientras la rueda gira a tu alrededor."},
-  {name:"Waqib'",theme:"Flujo / Equilibrio",
-   text:"El tono 6 fluye: equilibrio orgánico, ritmo, escucha. No es la rigidez del cuatro sino la danza del movimiento sano. Este tramo premia la flexibilidad y desgasta el control."},
-  {name:"Wuqub'",theme:"Espejo / Reflexión",
-   text:"El tono 7 es el espejo: reflexión, pausa, verdad vista de frente. En este tramo el año te devuelve exactamente lo que proyectas. Mírate sin adornos: es el pasaje más honesto del ciclo."},
-  {name:"Wajxaqib'",theme:"Armonía / Justicia",
-   text:"El tono 8 armoniza: justicia, equilibrio entre dar y recibir, tejido social. Aquí el año ordena cuentas y reparte consecuencias. Lo justo prospera; lo fingido se revela."},
-  {name:"B'elejeb'",theme:"Intención / Realización",
-   text:"El tono 9 realiza: intención que se vuelve hecho, paciencia que da fruto. Este tramo concentra la potencia del ciclo en gestos concretos. Menos, pero mejor."},
-  {name:"Lajuj",theme:"Manifestación / Comunidad",
-   text:"El tono 10 manifiesta: la comunidad ve tu obra y la obra transforma a la comunidad. En este tramo lo personal se vuelve colectivo. Comparte con generosidad: la manifestación es un acto público."},
-  {name:"Julajuj",theme:"Resolución / Liberación",
-   text:"El tono 11 resuelve: liberación, claridad, nudos que se desatan. Este tramo limpia el ciclo de residuos: personas, hábitos, certezas vencidas. Suelta con gratitud."},
-  {name:"Kab'lajuj",theme:"Comprensión / Síntesis",
-   text:"El tono 12 comprende: síntesis, enseñanza, significado. Todo lo vivido en el año encuentra aquí su lugar en el mapa. Aprende en voz alta: enseñar es integrar."},
-  {name:"Oxlajuj",theme:"Trascendencia / Ascensión",
-   text:"El tono 13 trasciende: ascensión, culminación, apertura al siguiente ciclo. Este tramo final no concluye: eleva. Agradece, celebra y deja la puerta abierta para el nuevo nacimiento."}
+  {name:"Jun",galactic:"Magnético",fn:"Propósito",theme:"Unidad / Inicio",
+   question:"¿Qué propósito unifico?",
+   text:"El tono 1 enciende la chispa: todo lo que existe comienza como una unidad que aún no sabe de sí misma. Primer día de la onda: aquí se define la intención. ¿Qué quieres atraer hacia ti? Identifica tu propósito esencial sin titubeos."},
+  {name:"Keb'",galactic:"Lunar",fn:"Desafío",theme:"Dualidad / Polaridad",
+   question:"¿Qué desafío equilibro?",
+   text:"El tono 2 parte la unidad en dos: aparece el espejo, la polaridad que permite conocer. El reto se presenta. ¿Qué polaridad o fricción necesitas equilibrar para poder avanzar? Reconoce tus obstáculos como maestros."},
+  {name:"Oxib'",galactic:"Eléctrico",fn:"Servicio",theme:"Acción / Movimiento",
+   question:"¿Cómo activo mi servicio?",
+   text:"El tono 3 es movimiento: la energía sale del umbral y actúa. Hora de activar y chispear. ¿Cómo puedes poner tu energía vibrante al servicio de los demás? Une los polos opuestos en una corriente viva."},
+  {name:"Kajib'",galactic:"Auto-existente",fn:"Forma",theme:"Estabilidad / Fundación",
+   question:"¿Qué forma doy a mi visión?",
+   text:"El tono 4 funda: los cuatro rumbos sostienen la casa. Baja tu visión a la materia. Dale estructura a tu intención. ¿Qué forma concreta necesitas diseñar para tener estabilidad?"},
+  {name:"Job'",galactic:"Entonado",fn:"Radiancia",theme:"Empoderamiento / Centro",
+   question:"¿Cómo tomo mi centro de poder?",
+   text:"El tono 5 toma el centro: empoderamiento, voz propia, autoridad encarnada. Recoge tus recursos y empodérate. Es el día central de la toma de mando. Ejerce tu autoridad natural."},
+  {name:"Waqib'",galactic:"Rítmico",fn:"Igualdad",theme:"Flujo / Equilibrio",
+   question:"¿Cómo organizo para equilibrar?",
+   text:"El tono 6 fluye: equilibrio orgánico, ritmo, escucha. Cae en el ritmo biológico de la naturaleza. ¿Qué aspecto de tu vida necesita orden para poder fluir sin estrés?"},
+  {name:"Wuqub'",galactic:"Resonante",fn:"Sintonización",theme:"Espejo / Reflexión",
+   question:"¿Qué canalizo desde mi interior?",
+   text:"El tono 7 es el eje central, la columna mística de la onda. Día de máxima conexión espiritual. Escucha el silencio interior y resuena con tu divinidad."},
+  {name:"Wajxaqib'",galactic:"Galáctico",fn:"Integridad",theme:"Armonía / Justicia",
+   question:"¿Vivo de acuerdo a lo que predico?",
+   text:"El tono 8 armoniza: justicia, equilibrio entre dar y recibir. ¿Vives de acuerdo a lo que predicas? Es un día para revisar tu coherencia y alinear tus pensamientos, palabras y acciones."},
+  {name:"B'elejeb'",galactic:"Solar",fn:"Intención",theme:"Intención / Realización",
+   question:"¿Cómo pulso hacia mi meta?",
+   text:"El tono 9 realiza: intención que se vuelve hecho, paciencia que da fruto. Pulso puro hacia la meta. Muévete con la fuerza imparable del sol. Pon toda tu voluntad en realizar tu deseo."},
+  {name:"Lajuj",galactic:"Planetario",fn:"Manifestación",theme:"Manifestación / Comunidad",
+   question:"¿Qué se materializa en mi vida?",
+   text:"El tono 10 manifiesta: la comunidad ve tu obra y la obra transforma a la comunidad. Lo que has sembrado cristaliza. Observa con gratitud lo que se materializa frente a tus ojos."},
+  {name:"Julajuj",galactic:"Espectral",fn:"Liberación",theme:"Resolución / Liberación",
+   question:"¿Qué necesito soltar y liberar?",
+   text:"El tono 11 resuelve: liberación, claridad, nudos que se desatan. Suelta absolutamente lo que sobra. Disuelve las estructuras que ya no sirven. Suelta el control y deja fluir la energía."},
+  {name:"Kab'lajuj",galactic:"Cristal",fn:"Cooperación",theme:"Comprensión / Síntesis",
+   question:"¿Con quién comparto mi sabiduría?",
+   text:"El tono 12 comprende: síntesis, enseñanza, significado. Comparte la sabiduría de tu proceso con el círculo. Es día de comunidad, mesa redonda, diálogo, transparencia y unión."},
+  {name:"Oxlajuj",galactic:"Cósmico",fn:"Presencia",theme:"Trascendencia / Ascensión",
+   question:"¿Cómo vuelo hacia lo infinito?",
+   text:"El tono 13 trasciende: el vuelo mágico y el cierre trascendental de la onda. Celebra la expansión lograda, perdura en la presencia pura y prepárate para un nuevo comienzo."}
 ];
+
 const GLYPHS={
   1:'<path d="M12 38 Q32 18 50 38 T88 38"/><path d="M24 50 v16"/><path d="M42 50 v22"/><path d="M60 50 v16"/><path d="M12 78 h76"/>',
   2:'<path d="M28 80 C12 60 22 30 48 24 C74 18 84 40 70 50 C58 58 46 48 54 38"/><path d="M28 80 h18"/>',
@@ -641,138 +626,221 @@ const GLYPHS={
   19:'<circle cx="50" cy="54" r="16"/><path d="M50 38 V12"/><path d="M36 44 L18 30"/><path d="M64 44 L82 30"/><path d="M34 62 L14 68"/><path d="M66 62 L86 68"/>',
   20:'<circle cx="50" cy="50" r="16"/><path d="M50 20 v-8"/><path d="M50 80 v8"/><path d="M20 50 h-8"/><path d="M80 50 h8"/><path d="M29 29 l-6 -6"/><path d="M71 29 l6 -6"/><path d="M29 71 l-6 6"/><path d="M71 71 l6 6"/><circle cx="50" cy="50" r="5"/>'
 };
-/* 20 nahuales yucatecos. Color neón dentro de la familia del rumbo:
-   Este cian (1,5,9,13,17) · Norte plata (2,6,10,14,18) ·
-   Oeste violeta (3,7,11,15,19) · Sur ámbar (4,8,12,16,20) */
+
+/* 20 sellos solares — nombres yucatecos + galácticos + esencias verificadas */
 const NAHU=[
- {name:"Imix",totem:"Cocodrilo / Matriz",color:"#00E5FF",
+ {name:"Imix",galactic:"Dragón",totem:"Cocodrilo / Matriz",color:"#00E5FF",
+  essenceKeys:"Nacimiento · Nutrición · Ser",
   essence:"Imix es la matriz primordial: el caudal de donde brota todo lo que existe. Hoy la vida te devuelve a la fuente, al instinto que no necesita permiso para comenzar.",
   guide:"Empieza antes de sentirte listo. La materia que necesitas ya respira dentro de ti; dale forma con las manos y no con la duda.",
   shadow:"En sombra, Imix desborda: apetitos sin cauce y comienzos que nunca echan raíz. Vigila lo que inicias por impulso y no por llamado.",
   ally:"Tu aliada es el agua de la paciencia: lo que hoy parece lento está gestando. Confía en el ritmo del río antes que en el del reloj.",
   live:"Siembra algo — una idea, una conversación, un gesto de cuidado — y regádalo antes de dormir."},
- {name:"Ik'",totem:"Viento / Aliento",color:"#E8EAF6",
+ {name:"Ik'",galactic:"Viento",totem:"Viento / Aliento divino",color:"#E8EAF6",
+  essenceKeys:"Espíritu · Aliento · Comunicación",
   essence:"Ik' es el aliento primero, la palabra que atraviesa y purifica. Hoy el aire trae noticias: escucha lo que se mueve a tu alrededor sin poder verse.",
   guide:"Habla con verdad ligera y deja que lo estancado circule. Una conversación honesta vale más que mil silencios prudentes.",
   shadow:"El viento en sombra dispersa: palabras que hielan, promesas que se lleva la corriente. No confundas ligereza con frivolidad.",
   ally:"Tu aliada es la respiración consciente: tres pausas profundas desatan nudos que la fuerza no puede.",
   live:"Escribe la frase que llevas días callando y dícela en voz alta a quien deba oírla."},
- {name:"Ak'bal",totem:"Noche / Refugio",color:"#B388FF",
+ {name:"Ak'bal",galactic:"Noche",totem:"Noche / Refugio cósmico",color:"#B388FF",
+  essenceKeys:"Abundancia · Intuición · Sueño",
   essence:"Ak'bal es la noche protectora donde las semillas maduran a oscuras. Hoy no es día de lucir, sino de habitar tu interior con ternura.",
   guide:"Retírate del ruido: el refugio no es huida sino incubación. Lo que hoy se calla, mañana amanece con nombre.",
   shadow:"En sombra, la noche se vuelve caverna: miedo que se disfraza de introspección. Distingue el descanso del escondite.",
   ally:"Tu aliado es el silencio compartido: la presencia quieta de alguien de confianza ilumina más que cualquier consejo.",
   live:"Aparta una hora sin pantallas y anota en papel lo que tu sombra lleva tiempo pidiendo."},
- {name:"K'an",totem:"Maíz / Red",color:"#FFC400",
-  essence:"K'an es el maíz maduro y la red que sostiene: abundancia tejiendo vínculos. Hoy la plenitud se reconoce en lo compartido, no en lo acumulado.",
+ {name:"K'an",galactic:"Semilla",totem:"Semilla / Potencial de florecimiento",color:"#FFC400",
+  essenceKeys:"Florecimiento · Atino · Consciencia",
+  essence:"K'an es la semilla que contiene todo el potencial de la creación. Hoy la plenitud se reconoce en lo compartido, no en lo acumulado.",
   guide:"Reconecta con tu red: familia, tribu, colaboradores. La abundancia pide canales; ábrelos con generosidad calculada.",
-  shadow:"En sombra, K'an amarrea: afán de posesión que confunde seguridad con acopio. Suelta lo que ya cumplió su ciclo.",
+  shadow:"En sombra, K'an amarra: afán de posesión que confunde seguridad con acopio. Suelta lo que ya cumplió su ciclo.",
   ally:"Tu aliada es la gratitud: nombrar en voz alta tres dones recibidos reordena la abundancia real.",
   live:"Ofrece algo valioso tuyo — tiempo, saber, recurso — sin esperar reciprocidad inmediata."},
- {name:"Chikchan",totem:"Serpiente / Fuerza vital",color:"#00C2E0",
+ {name:"Chikchan",galactic:"Serpiente",totem:"Serpiente / Fuerza vital",color:"#00C2E0",
+  essenceKeys:"Fuerza Vital · Instinto · Sobrevivencia",
   essence:"Chikchan es la serpiente de energía que asciende cuando el cuerpo despierta. Hoy tu vitalidad pide canal y dirección.",
   guide:"Muévete: el cuerpo es el templo de este día. Danza, camina, trabaja con las manos; la energía estancada se vuelve veneno, la circulada se vuelve medicina.",
   shadow:"En sombra, la serpiente muerde: intensidad que devora, deseo que arrasa fronteras propias y ajenas. Domestícala, no la ahogues.",
   ally:"Tu aliado es el agua que fluye: hidrátate, báñate, llora si hace falta. El líquido desbloquea lo que la mente traba.",
   live:"Dedica veinte minutos al cuerpo con entrega total y observa cómo cambia tu claridad después."},
- {name:"Kimi",totem:"Muerte / Transformación",color:"#CBD5F0",
+ {name:"Kimi",galactic:"Enlazador de Mundos",totem:"Muerte / Puente entre mundos",color:"#CBD5F0",
+  essenceKeys:"Muerte · Oportunidad · Igualdad",
   essence:"Kimi no anuncia un fin sino un tránsito: la puerta que solo se abre si algo se despide. Hoy el viento del norte barre lo que ya no respira.",
   guide:"Suelta deliberadamente: un hábito, una opinión sobre ti mismo, un vínculo muerto. El vacío que dejas es el espacio del próximo don.",
   shadow:"En sombra, Kimi se aferra al duelo: nostalgia que impide el reencuentro con la vida. Honra lo ido sin construirle casa.",
   ally:"Tu aliado es el ritual de cierre: escribir y despedir con un gesto concreto sella el paso con dignidad.",
   live:"Elige una cosa concreta de la que despedirte hoy y realiza un pequeño gesto ritual de despedida."},
- {name:"Manik'",totem:"Venado / Cazador",color:"#C470FF",
-  essence:"Manik' es la mano del cazador y el paso del venado: acción decidida con conciencia. Hoy tu herramienta es la precisión compasiva.",
+ {name:"Manik'",galactic:"Mano",totem:"Mano / Curación y realización",color:"#C470FF",
+  essenceKeys:"Realización · Curación · Conocimiento",
+  essence:"Manik' es la mano que sana y realiza: acción decidida con conciencia. Hoy tu herramienta es la precisión compasiva.",
   guide:"Ejecuta con la mano firme y el corazón suave. Lo que se hace hoy con destreza y respeto deja huella duradera.",
-  shadow:"En sombra, la cacería se vuelve depredación: prisa que atropella, poder que no consulta. Caza lo necesario, no lo posible.",
+  shadow:"En sombra, la mano se vuelve depredadora: prisa que atropella, poder que no consulta. Actúa lo necesario, no lo posible.",
   ally:"Tu aliado es el silencio del rastro: observar antes de actuar duplica la eficacia de cada movimiento.",
   live:"Completa esa tarea que llevas posponiendo, haciéndola con un cuidado artesanal inusual."},
- {name:"Lamat",totem:"Conejo / Estrella de Venus",color:"#FFD54F",
+ {name:"Lamat",galactic:"Estrella",totem:"Estrella / Venus / Arte sagrado",color:"#FFD54F",
+  essenceKeys:"Arte · Elegancia · Embellecer",
   essence:"Lamat es la estrella de la mañana y la abundancia fértil: un brillo que anuncia cosechas. Hoy la belleza es un canal de inteligencia.",
   guide:"Armoniza: ordena tu espacio, embellece tu trabajo, cultiva lo estético. El mundo responde al cuidado con señales de abundancia.",
   shadow:"En sombra, Lamat deslumbra: exceso que confunde brillo con valor, confort que anestesia. Verifica qué es oro y qué es purpurina.",
   ally:"Tu aliada es la armonía doméstica: un rincón ordenado hoy multiplica la claridad de toda la semana.",
   live:"Transforma un detalle de tu entorno cotidiano en algo bello y úsalo como ancla de gratitud."},
- {name:"Muluk",totem:"Agua / Ofrenda",color:"#2BF0FF",
+ {name:"Muluk",galactic:"Luna",totem:"Luna / Agua universal",color:"#2BF0FF",
+  essenceKeys:"Agua Universal · Purificación · Flujo",
   essence:"Muluk es el agua ofrendada: lo que se entrega con pureza regresa multiplicado. Hoy tu palabra tiene peso de rito.",
   guide:"Ofrece: tu tiempo, tu escucha, tu obra. La ofrenda sincera abre puertas que la estrategia no encuentra.",
   shadow:"En sombra, Muluk se derrama: dar para deber, generosidad con letra pequeña. Examina la pureza de tus entregas.",
   ally:"Tu aliada es el agua de lo cotidiano: un vaso ofrecido a otro con presencia plena es un acto sagrado.",
   live:"Haz una ofrenda concreta y desinteresada — material o de tiempo — y no la menciones a nadie."},
- {name:"Ok",totem:"Perro / Guía leal",color:"#F2F5FF",
+ {name:"Ok",galactic:"Perro",totem:"Perro / Corazón leal",color:"#F2F5FF",
+  essenceKeys:"Corazón · Amor · Lealtad",
   essence:"Ok es la lealtad que camina a tu lado: guía, corazón y fiesta compartida. Hoy los vínculos verdaderos se distinguen de las conveniencias.",
   guide:"Acompaña a quien camina contigo: la lealtad de hoy es semilla de futuro. El camino compartido multiplica las fuerzas.",
   shadow:"En sombra, Ok se somete: lealtad mal dirigida, dependencia disfrazada de amor. Pregúntate a quién sirves y por qué.",
   ally:"Tu aliada es la alegría compartida: el juego sincero repara alianzas que las palabras serias encallaron.",
   live:"Contacta a un aliado verdadero y ofrécele apoyo concreto, sin pedir nada a cambio."},
- {name:"Chuwen",totem:"Mono / Artesano del tiempo",color:"#E040FB",
+ {name:"Chuwen",galactic:"Mono",totem:"Mono / Artesano de la magia",color:"#E040FB",
+  essenceKeys:"Magia · Juego · Ilusión",
   essence:"Chuwen es el tejedor del tiempo: manos que juegan, crean y entrelazan hilos invisibles. Hoy tu vocación de artesano toma el mando.",
   guide:"Crea sin pedir permiso: el juego es la técnica más seria del universo. Dedica el día a tu ofrenda de obra.",
   shadow:"En sombra, el mono imita: dispersión entre proyectos, travesura que lastima. Elige un hilo y teje hasta el final.",
   ally:"Tu aliado es el juego consciente: la risa abre bloqueos que el esfuerzo había cerrado.",
   live:"Trabaja en tu creación personal durante un bloque completo, sin interrupciones ni excusas."},
- {name:"Eb'",totem:"Camino / Hierba",color:"#FFAB2E",
-  essence:"Eb' es el sendero que la hierba señala: viaje, humildad y servicio. Hoy el camino te llama más que la meta.",
+ {name:"Eb'",galactic:"Humano",totem:"Humano / Libre voluntad",color:"#FFAB2E",
+  essenceKeys:"Libre Voluntad · Sabiduría · Influencia",
+  essence:"Eb' es el sendero del libre albedrío: viaje, humildad y servicio. Hoy el camino te llama más que la meta.",
   guide:"Camina: cada paso sencillo vale más que el plan perfecto. Sirve mientras avanzas; el rumbo se aclara caminando.",
   shadow:"En sombra, Eb' extravía: muchos caminos, ninguna dirección, ansiedad de llegar. Vuelve al paso siguiente, que es el único real.",
   ally:"Tu aliados son los senderos probados: la humildad de aprender de quien ya caminó acorta el viaje a la mitad.",
   live:"Da un paso concreto hacia tu proyecto más postergado, por pequeño que sea, y anótalo."},
- {name:"Ben",totem:"Caña / Columna / Autoridad",color:"#00E8C0",
-  essence:"Ben es la caña que se alza: columna viva entre el cielo y la tierra. Hoy tu autoridad interior pide postura erguida.",
+ {name:"Ben",galactic:"Caminante del Cielo",totem:"Caña / Explorador del espacio",color:"#00E8C0",
+  essenceKeys:"Espacio · Exploración · Vigilancia",
+  essence:"Ben es la caña que se alza entre el cielo y la tierra: columna viva, exploración constante. Hoy tu autoridad interior pide postura erguida.",
   guide:"Sostén: afirma tu dirección con dignidad y sin violencia. El liderazgo legítimo de hoy se ejerce desde el ejemplo.",
   shadow:"En sombra, la columna se vuelve rígida: autoridad que no escucha, verticalidad que aplasta. Sé firme, no duro.",
   ally:"Tu aliada es la flexibilidad de la caña: ceder en lo accesorio preserva lo esencial.",
   live:"Toma una decisión que venías delegando a otros y hazte responsable de ella por escrito."},
- {name:"Ix",totem:"Jaguar / Magia de la tierra",color:"#D7DEF2",
+ {name:"Ix",galactic:"Mago",totem:"Jaguar / Mago de la atemporalidad",color:"#D7DEF2",
+  essenceKeys:"Atemporalidad · Encantamiento · Receptividad",
   essence:"Ix es la energía de la tierra y del felino nocturno: magia, instinto y poder silencioso. Hoy opera desde el plano que no se anuncia.",
   guide:"Conecta con la tierra: toca el suelo, honra el lugar donde pisas. Tu intuición de hoy es un instrumento de precisión.",
   shadow:"En sombra, Ix manipula: poder que quiere más poder, magia sin ética. Todo don de la tierra cobra interés; opera con respeto.",
   ally:"Tu aliada es la naturaleza: diez minutos de tierra, planta y cielo restauran la inteligencia instintiva.",
   live:"Toma una decisión importante siguiendo tu corazonada, después de documentar qué dice tu lógica."},
- {name:"Men",totem:"Águila / Visión elevada",color:"#A66BFF",
+ {name:"Men",galactic:"Águila",totem:"Águila / Visión creadora",color:"#A66BFF",
+  essenceKeys:"Visión · Mente · Creación",
   essence:"Men es el águila que planea sobre el valle: visión que integra lo que el suelo fragmenta. Hoy te prestan sus alturas.",
   guide:"Eleva la mirada: revisa tu año, tu proyecto, tu vida desde arriba. La estrategia nace de la altura, no del detalle.",
   shadow:"En sombra, el águila se soberbia: planes tan altos que pierden contacto con el suelo. Aterriza cada visión en un paso de hoy.",
   ally:"Tu aliada es la perspectiva del otro: pedir tres opiniones distintas amplía el mapa sin abandonar tu rumbo.",
-  live:"Dibuja el mapa grande de tu meta y marca el primer punto aterrizables de esta semana."},
- {name:"Kib'",totem:"Búho / Karma y perdón",color:"#FFD740",
-  essence:"Kib' es el búho de la noche interior: karma, perdón y limpieza del pasado. Hoy el fuego quema lo que el alma ya no necesita cargar.",
-  guide:"Perdona con la valentía del que se libera: perdona a otros y revisa la deuda que sostienes contigo. Perdonar no es olvidar; es dejar de pagar intereses.",
-  shadow:"En sombra, Kib' acumula: agravios convertidos en identidad, nostalgia de la herida. Examina qué ganarías soltando, no qué perderías.",
+  live:"Dibuja el mapa grande de tu meta y marca el primer punto aterrizable de esta semana."},
+ {name:"Kib'",galactic:"Guerrero",totem:"Guerrero / Inteligencia intrépida",color:"#FFD740",
+  essenceKeys:"Inteligencia · Intrepidez · Cuestionar",
+  essence:"Kib' es el guerrero de la inteligencia: valor para cuestionar, coraje para preguntar. Hoy el fuego quema lo que el alma ya no necesita cargar.",
+  guide:"Cuestiona con la valentía del que busca la verdad: cuestiona a otros y revisa tus propias certezas. Preguntar es un acto de valentía.",
+  shadow:"En sombra, Kib' acumula: agravios convertidos en identidad, miedo disfrazado de prudencia. Examina qué ganarías soltando.",
   ally:"Tu aliado es el gesto sin testigos: una reparación privada — una carta, una ofrenda, una llamada — cancela deudas antiguas.",
   live:"Perdona en voz alta — a ti o a otro — algo que llevas cargando, y quema o guarda el papel del agravio."},
- {name:"Kab'an",totem:"Tierra / Mente estructurada",color:"#35F5E0",
+ {name:"Kab'an",galactic:"Tierra",totem:"Tierra / Navegación sincrónica",color:"#35F5E0",
+  essenceKeys:"Navegación · Evolución · Sincronicidad",
   essence:"Kab'an es el pensamiento que se vuelve tierra: estructura, aprendizaje, plan. Hoy tu mente ordena el caos con placer de arquitecta.",
   guide:"Organiza: sistematiza, enseña, escribe. Lo que hoy ordenas con inteligencia sostiene meses de trabajo futuro.",
   shadow:"En sombra, la estructura aprisiona: dogma, plan que no deja respirar a la vida. Recuerda que el mapa no es el territorio.",
   ally:"Tu aliada es la escritura: pasar el pensamiento al papel revela sus grietas antes de construir sobre ellas.",
   live:"Dedica media hora a ordenar un área de tu vida — agenda, finanzas, ideas — y documenta el sistema."},
- {name:"Etz'nab'",totem:"Pedernal / Verdad que corta",color:"#C3CDEC",
+ {name:"Etz'nab'",galactic:"Espejo",totem:"Espejo / Reflejo infinito",color:"#C3CDEC",
+  essenceKeys:"Sin Fin · Orden · Reflejo",
   essence:"Etz'nab' es el espejo de pedernal: verdad que corta para sanar. Hoy las relaciones y los mitos propios se miran sin filtros.",
   guide:"Di la verdad exacta, con cariño y sin ornamento. La limpieza de hoy ahorra años de confusión.",
   shadow:"En sombra, el pedernal hiere: crudeza sin compasión, verdad usada como arma. Mide la profundidad del corte antes de usar el filo.",
   ally:"Tu aliado es el espejo honesto: alguien que te dice la verdad sin saña es hoy tu mayor tesoro.",
   live:"Mantén esa conversación que evitas por comodidad, formulada en una sola frase clara y honesta."},
- {name:"Kawak",totem:"Tormenta / Trueno / Renovación",color:"#FF4FD8",
+ {name:"Kawak",galactic:"Tormenta",totem:"Tormenta / Autogeneración catalítica",color:"#FF4FD8",
+  essenceKeys:"Autogeneración · Energía · Catalizar",
   essence:"Kawak es la tormenta que limpia el cielo: energía eléctrica, catarsis, fertilidad del aguacero. Hoy la agitación es síntoma de renovación, no de fracaso.",
   guide:"Recibe la lluvia: lo que hoy se agita está aireando tu suelo. Distribuye la tensión en movimiento y no en reacción.",
   shadow:"En sombra, la tormenta descarga sobre otros: humor eléctrico que siembra heridas. Convierte el trueno en lluvia para tu propia tierra.",
   ally:"Tu aliada es la escritura descargada: escribir sin censura diez minutos drena el cielo interno.",
   live:"Sacude el cuerpo — sacude, respira, baila — hasta que la tormenta interna se convierta en agua limpia."},
- {name:"Ajaw",totem:"Sol / Señor / Luz",color:"#FFB300",
+ {name:"Ajaw",galactic:"Sol",totem:"Sol / Fuego universal",color:"#FFB300",
+  essenceKeys:"Fuego Universal · Vida · Iluminar",
   essence:"Ajaw es el señor del sol: plenitud, flores, magistratura de la luz. Hoy tu presencia, cuando es auténtica, ilumina sin pretenderlo.",
   guide:"Brilla con servicio: el sol no gira alrededor de nadie, calienta a todos. Encarna hoy la versión adulta y generosa de tu poder.",
   shadow:"En sombra, el sol deslumbra: ego que confunde protagonismo con liderazgo, idolatría del yo. Verifica quién recibe tu luz y quién solo proyecta tu sombra.",
   ally:"Tu aliada es la floración compartida: celebrar el logro ajeno con alegría genuina multiplica el propio.",
   live:"Ocúpate del centro de tu día con maestría y reconoce públicamente el brillo de alguien más."}
 ];
-const TYPE_LABELS={"kin-dia":"Kin del día","natal":"Kin natal","cruz":"Cruz Maya","rueda":"Rueda del Año","free":"Tirada libre"};
-const CRUZ_POS=[
-  {key:"center",label:"Centro · Esencia"},
-  {key:"east",  label:"Este · Guía"},
-  {key:"north", label:"Norte · Desafío"},
-  {key:"south", label:"Sur · Aliado"},
-  {key:"west",  label:"Oeste · Oculto"}
+
+/* 20 Ondas Encantadas — datos de Tu Energía Maya */
+const WAVESPELLS=[
+ {seal:1,name:"Dragón",intention:"Nutrir el Nacimiento",theme:"Nacimiento, Nutrición, Memoria.",
+  description:"La primera onda encantada abre el portal del Tzolkin con la fuerza maternal del Dragón Rojo. Todo comienza aquí, en el vientre cósmico."},
+ {seal:14,name:"Mago",intention:"Encantar la Atemporalidad",theme:"Atemporalidad, Encantamiento, Receptividad.",
+  description:"La onda del Mago Blanco te invita a trascender el tiempo lineal y abrazar el poder del ahora eterno."},
+ {seal:7,name:"Mano",intention:"Realizar la Curación",theme:"Realización, Curación, Conocimiento.",
+  description:"La onda de la Mano Azul activa el poder sanador de tus manos y tu capacidad de crear resultados tangibles."},
+ {seal:20,name:"Sol",intention:"Iluminar la Vida Universal",theme:"Fuego Universal, Vida, Iluminación.",
+  description:"La onda del Sol Amarillo cierra el primer castillo con la plenitud de la conciencia solar y la maestría de la luz."},
+ {seal:13,name:"Caminante del Cielo",intention:"Explorar el Espacio",theme:"Espacio, Exploración, Vigilancia.",
+  description:"La onda del Caminante del Cielo Rojo abre el segundo castillo con la aventura de explorar nuevos territorios."},
+ {seal:6,name:"Enlazador de Mundos",intention:"Igualar la Oportunidad",theme:"Muerte, Oportunidad, Igualdad.",
+  description:"La onda del Enlazador de Mundos Blanco te invita a soltar lo viejo para cruzar el puente hacia lo nuevo."},
+ {seal:19,name:"Tormenta",intention:"Catalizar la Autogeneración",theme:"Autogeneración, Energía, Catalizar.",
+  description:"La onda de la Tormenta Azul desata la energía transformadora que renueva todo a su paso."},
+ {seal:12,name:"Humano",intention:"Influir con Libre Voluntad",theme:"Libre Voluntad, Sabiduría, Influencia.",
+  description:"La onda del Humano Amarillo celebra el poder de la elección consciente y la sabiduría encarnada."},
+ {seal:5,name:"Serpiente",intention:"Sobrevivir con Fuerza Vital",theme:"Fuerza Vital, Instinto, Sobrevivencia.",
+  description:"La onda de la Serpiente Roja abre el tercer castillo con la fuerza cruda de la energía kundalini."},
+ {seal:18,name:"Espejo",intention:"Reflejar el Orden Sin Fin",theme:"Sin Fin, Orden, Reflejo.",
+  description:"La onda del Espejo Blanco te confronta con la verdad desnuda para que puedas ver sin filtros."},
+ {seal:11,name:"Mono",intention:"Jugar con la Magia",theme:"Magia, Juego, Ilusión.",
+  description:"La onda del Mono Azul teje los hilos del tiempo con juego, humor y creatividad irreverente."},
+ {seal:4,name:"Semilla",intention:"Florecer con Consciencia",theme:"Florecimiento, Atino, Consciencia.",
+  description:"La onda de la Semilla Amarilla siembra las intenciones más puras para que florezcan en su momento."},
+ {seal:17,name:"Tierra",intention:"Navegar la Evolución",theme:"Navegación, Evolución, Sincronicidad.",
+  description:"La onda de la Tierra Roja abre el cuarto castillo con la brújula de la sincronicidad como guía."},
+ {seal:10,name:"Perro",intention:"Amar con Corazón",theme:"Corazón, Amor, Lealtad.",
+  description:"La onda del Perro Blanco te invita a abrir el corazón sin condiciones y amar con la lealtad del alma."},
+ {seal:3,name:"Noche",intention:"Soñar la Abundancia",theme:"Abundancia, Intuición, Sueño.",
+  description:"La onda de la Noche Azul te sumerge en las profundidades del inconsciente para soñar tu abundancia."},
+ {seal:16,name:"Guerrero",intention:"Cuestionar con Inteligencia",theme:"Inteligencia, Intrepidez, Cuestionar.",
+  description:"La onda del Guerrero Amarillo te arma con la pregunta más poderosa: ¿por qué?"},
+ {seal:9,name:"Luna",intention:"Purificar con Agua Universal",theme:"Agua Universal, Purificación, Flujo.",
+  description:"La onda de la Luna Roja abre el quinto castillo con el agua purificadora del sentimiento universal."},
+ {seal:2,name:"Viento",intention:"Comunicar el Espíritu",theme:"Espíritu, Aliento, Comunicación.",
+  description:"La onda del Viento Blanco sopla las palabras del espíritu para que la verdad circule libre."},
+ {seal:15,name:"Águila",intention:"Crear con Visión",theme:"Visión, Mente, Creación.",
+  description:"La onda del Águila Azul eleva la perspectiva para que puedas ver el mapa completo de tu vida."},
+ {seal:8,name:"Estrella",intention:"Embellecer con Arte",theme:"Arte, Elegancia, Embellecer.",
+  description:"La onda de la Estrella Amarilla cierra los 260 días del Tzolkin con una sinfonía de belleza sagrada."}
+];
+
+/* 5 Castillos del Destino */
+const CASTLES=[
+ {name:"Castillo Rojo del Girar",subtitle:"El Umbral del Nacimiento",color:"#ef4444",icon:"🔴",
+  mission:"Iniciar la Rueda del Tiempo",
+  description:"El primer castillo enciende la chispa divina. Aquí todo comienza, todo gira, todo arranca. Representa la sangre, la raíz profunda, la primavera galáctica."},
+ {name:"Castillo Blanco de la Travesía",subtitle:"La Encrucijada de la Muerte",color:"#e8eaf6",icon:"⚪",
+  mission:"Cruzar el Puente y Purificar",
+  description:"El segundo castillo es el puente entre los mundos. Aquí muere lo viejo para que nazca lo eterno. No es destrucción sino alquimia pura del alma."},
+ {name:"Castillo Azul del Quemar",subtitle:"El Caldero de la Magia",color:"#3b82f6",icon:"🔵",
+  mission:"Transformar a través del Fuego",
+  description:"El tercer castillo quema la ilusión para revelar la verdad resplandeciente. Aquí la magia se vuelve real y el subconsciente se destapa."},
+ {name:"Castillo Amarillo del Dar",subtitle:"El Palacio de la Inteligencia",color:"#eab308",icon:"🟡",
+  mission:"Madurar y Compartir la Luz",
+  description:"El cuarto castillo es la recompensa luminosa y la gran cosecha. Todo lo aprendido se transforma en sabiduría compartida bajo el sol del mediodía."},
+ {name:"Castillo Verde del Encantar",subtitle:"El Vuelo de la Sincronización",color:"#10b981",icon:"🟢",
+  mission:"Sincronizar el Alma Humana",
+  description:"El quinto castillo es el vuelo mágico de regreso al origen galáctico. Aquí se sincronizan todas las experiencias y la magia y la realidad se funden."}
+];
+
+const TYPE_LABELS={"kin-dia":"Kin del día","natal":"Oráculo natal","oraculo":"Oráculo de la Quinta Fuerza","onda":"Onda Encantada","free":"Tirada del Tzolk'in"};
+const ORACLE_POS=[
+  {key:"destiny",label:"Destino · Energía Central",desc:"Tu esencia, tu identidad energética, el centro de tu oráculo."},
+  {key:"guide",  label:"Guía · Poder Superior",desc:"La energía que te guía desde arriba, tu norte espiritual y dirección."},
+  {key:"analog", label:"Análogo · Apoyo",desc:"Tu energía de apoyo, la fuerza complementaria que te sostiene."},
+  {key:"antipode",label:"Antípoda · Desafío",desc:"Tu reto transformador, la energía que te confronta para crecer."},
+  {key:"occult", label:"Oculto · Poder Escondido",desc:"Tu poder secreto, la fuerza inconsciente que te potencia desde las sombras."}
 ];
 const BACK_SVG='<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 8 92 50 50 92 8 50Z"/><path d="M50 24 76 50 50 76 24 50Z"/><circle cx="50" cy="50" r="5"/></svg>';
 function glyphSVG(n,cls){
@@ -784,8 +852,8 @@ function glyphSVG(n,cls){
    ================================================================ */
 const state={
   phase:"intro",
-  reading:null,      /* tirada actual (reveal) */
-  viewing:null,      /* tirada mostrada en resultados */
+  reading:null,
+  viewing:null,
   revealed:0,
   freeCount:5,
   reduced:window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -929,42 +997,82 @@ function buildReading(type,opts){
   opts=opts||{};
   const t=todayYMD();
   const base=kinOf(t.y,t.m,t.d);
-  const rng=mulberry32(((base.n0*31)+(type==="free"?state.freeCount:0)+(type==="natal"?777:0))>>>0);
-  const deck=seededShuffle(Array.from({length:20},(_,i)=>i+1),rng);
   const cards=[];
-  let n=1;
-  if(type==="cruz")n=5;
-  else if(type==="rueda")n=13;
-  else if(type==="free")n=state.freeCount;
 
-  for(let i=0;i<n;i++){
-    let tone,nah,kin,posLabel,posKey;
-    if(type==="kin-dia"){
-      tone=base.tone; nah=base.nahual; kin=base.kin;
-      posLabel="Kin del día"; posKey="day";
-    }else if(type==="natal"){
-      const k=kinOf(opts.by,opts.bm,opts.bd);
-      tone=k.tone; nah=k.nahual; kin=k.kin;
-      posLabel="Kin natal"; posKey="natal";
-    }else if(type==="rueda"){
-      tone=i+1; nah=deck[i]; kin=crtKin(tone,nah);
-      posLabel="Tono "+tone+" — "+TONES[tone].name; posKey="tone"+tone;
+  if(type==="kin-dia"){
+    /* Kin del día — 1 carta */
+    cards.push({n:base.nahual,tone:base.tone,kin:base.kin,pos:"Kin del día",key:"day",color:NAHU[base.nahual-1].color});
+
+  }else if(type==="oraculo"||type==="natal"){
+    /* Oráculo de la Quinta Fuerza — 5 cartas determinísticas */
+    let refKin;
+    if(type==="natal"){
+      refKin=kinOf(opts.by,opts.bm,opts.bd);
     }else{
-      tone=((base.n0+i+3)%13)+1; nah=deck[i]; kin=crtKin(tone,nah);
-      if(type==="cruz"){ posLabel=CRUZ_POS[i].label; posKey=CRUZ_POS[i].key; }
-      else{ posLabel="Carta "+(i+1); posKey="c"+i; }
+      refKin=base;
     }
-    cards.push({n:nah,tone,kin,pos:posLabel,key:posKey,color:NAHU[nah-1].color});
+    const oracle=getOracle(refKin.nahual-1,refKin.tone);
+    const positions=[oracle.destiny,oracle.guide,oracle.analog,oracle.antipode,oracle.occult];
+    positions.forEach((seal0,i)=>{
+      const seal1=seal0+1;
+      /* El tono del oráculo: destino=original, guía=mismo, análogo/antípoda/oculto=derivados */
+      let oTone;
+      if(i===0) oTone=refKin.tone;
+      else if(i===1) oTone=refKin.tone; /* guía comparte tono */
+      else if(i===4) oTone=((14-refKin.tone)%13+13)%13+1; /* oculto: tono complemento */
+      else oTone=refKin.tone; /* análogo y antípoda comparten tono */
+      const oKin=crtKin(oTone,seal1);
+      cards.push({
+        n:seal1,tone:oTone,kin:oKin,
+        pos:ORACLE_POS[i].label,posDesc:ORACLE_POS[i].desc,
+        key:ORACLE_POS[i].key,color:NAHU[seal0].color
+      });
+    });
+
+  }else if(type==="onda"){
+    /* Onda Encantada — 13 cartas, posiciones consecutivas del Tzolkin */
+    const wsIdx=getWavespellIdx(base.kin);
+    const wsStartKin=wsIdx*13+1;
+    for(let i=0;i<13;i++){
+      const k=wsStartKin+i;
+      const tone=((k-1)%13)+1;
+      const nah=((k-1)%20)+1;
+      const T=TONES[tone];
+      cards.push({
+        n:nah,tone:tone,kin:k,
+        pos:"Tono "+tone+" "+T.galactic+" — "+T.fn,
+        posDesc:T.question,
+        key:"t"+tone,color:NAHU[nah-1].color
+      });
+    }
+
+  }else if(type==="free"){
+    /* Tirada del Tzolk'in — cartas consecutivas desde el kin de hoy */
+    for(let i=0;i<state.freeCount;i++){
+      const k=((base.kin-1+i)%260)+1;
+      const tone=((k-1)%13)+1;
+      const nah=((k-1)%20)+1;
+      cards.push({
+        n:nah,tone:tone,kin:k,
+        pos:"Posición "+(i+1)+(i===0?" · Hoy":""),
+        key:"c"+i,color:NAHU[nah-1].color
+      });
+    }
   }
   return {
     type, typeLabel:TYPE_LABELS[type],
     dateLabel:new Date().toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}),
-    cards
+    cards,
+    /* Contexto cosmológico */
+    wsIdx:getWavespellIdx(base.kin),
+    castleIdx:getCastleIdx(base.kin),
+    wsPos:getWavespellPosition(base.kin),
+    baseKin:base
   };
 }
 
 /* ================================================================
-   HISTORIAL (localStorage — solo fechas, tipos y números de carta)
+   HISTORIAL (localStorage)
    ================================================================ */
 const HKEY="tarot-maya-history";
 function loadHistory(){
@@ -979,12 +1087,13 @@ function saveHistory(r){
       cards:r.cards.map(c=>({n:c.n,tone:c.tone,kin:c.kin,pos:c.pos}))
     });
     localStorage.setItem(HKEY,JSON.stringify(h.slice(0,10)));
-  }catch(e){/* almacenamiento no disponible: la app sigue funcionando */}
+  }catch(e){}
 }
 function readingFromEntry(e){
   return {
     type:e.type, typeLabel:e.typeLabel, dateLabel:e.dateLabel,
-    cards:e.cards.map(c=>({n:c.n,tone:c.tone,kin:c.kin,pos:c.pos,key:"h",color:NAHU[c.n-1].color}))
+    cards:e.cards.map(c=>({n:c.n,tone:c.tone,kin:c.kin,pos:c.pos,key:"h",color:NAHU[c.n-1].color})),
+    wsIdx:0,castleIdx:0,wsPos:1,baseKin:{kin:1,tone:1,nahual:1}
   };
 }
 function renderHistory(){
@@ -1154,7 +1263,7 @@ function renderReveal(){
   const spread=$("spread");
   spread.textContent="";
   const r=state.reading;
-  if(r.type==="cruz")spread.classList.add("cross");
+  if(r.type==="oraculo"||r.type==="natal")spread.classList.add("cross");
   else spread.classList.remove("cross");
   r.cards.forEach((c,i)=>{
     const N=NAHU[c.n-1];
@@ -1183,13 +1292,13 @@ function revealCard(btn){
   const c=state.reading.cards[+btn.dataset.i];
   const N=NAHU[c.n-1];
   btn.classList.add("is-revealed");
-  btn.setAttribute("aria-label",c.pos+": "+N.name+", "+N.totem+". Carta revelada.");
+  btn.setAttribute("aria-label",c.pos+": "+N.name+", "+N.galactic+". Carta revelada.");
   const rect=btn.getBoundingClientRect();
   spawnBurst(rect.left+rect.width/2,rect.top+rect.height/2,hexToRgb(c.color));
   drawGlyph(btn.querySelector(".glyph"));
   const cap=btn.querySelector(".tcaption");
-  typeText(cap,c.pos+" — "+N.name+", "+N.totem);
-  announce("Carta revelada: "+c.pos+". "+N.name+", "+N.totem+". Tono "+c.tone+" "+TONES[c.tone].name+".");
+  typeText(cap,N.galactic+" — "+N.totem);
+  announce("Carta revelada: "+c.pos+". "+N.name+" ("+N.galactic+"), "+N.totem+". Tono "+c.tone+" "+TONES[c.tone].galactic+".");
   state.revealed++;
   updateProgress();
 }
@@ -1199,8 +1308,8 @@ function revealAll(){
     const c=state.reading.cards[+btn.dataset.i];
     const N=NAHU[c.n-1];
     btn.classList.add("is-revealed");
-    btn.setAttribute("aria-label",c.pos+": "+N.name+", "+N.totem+". Carta revelada.");
-    btn.querySelector(".tcaption").textContent=c.pos+" — "+N.name+", "+N.totem;
+    btn.setAttribute("aria-label",c.pos+": "+N.name+", "+N.galactic+". Carta revelada.");
+    btn.querySelector(".tcaption").textContent=N.galactic+" — "+N.totem;
     drawGlyph(btn.querySelector(".glyph"));
     state.revealed++;
   });
@@ -1235,28 +1344,60 @@ function renderResults(){
   const r=state.viewing;
   const wrap=$("results-wrap");
   $("print-date").textContent=r.typeLabel+" · "+r.dateLabel;
+
+  /* Cabecera */
   let html='<div class="results-head"><h2>'+r.typeLabel+'</h2><p class="rdate">'+r.dateLabel+' · Correlación GMT 584283</p></div>';
+
+  /* Contexto cosmológico */
+  const ws=WAVESPELLS[r.wsIdx];
+  const castle=CASTLES[r.castleIdx];
+  if(ws&&castle){
+    html+='<div class="context-bar">';
+    html+='<span class="ctx-chip"><span class="dot" style="background:'+castle.color+'"></span> '+castle.icon+' <b>'+castle.name+'</b></span>';
+    html+='<span class="ctx-chip">🌊 Onda <b>'+ws.name+'</b> — '+ws.intention+'</span>';
+    html+='<span class="ctx-chip">📍 Posición <b>'+r.wsPos+'/13</b> · '+TONES[r.wsPos].galactic+'</span>';
+    html+='</div>';
+    html+='<div class="castle-banner" style="border-color:'+castle.color+'">';
+    html+='<h4 style="color:'+castle.color+'">'+castle.icon+' '+castle.name+'</h4>';
+    html+='<p><em>'+castle.subtitle+'</em> — '+castle.description+'</p>';
+    html+='</div>';
+  }
+
+  /* Cartas */
   const single=r.cards.length===1;
-  html+='<div class="results-grid'+(single?' results-hero':'')+'">';
+  const isOracle=(r.type==="oraculo"||r.type==="natal");
+  html+='<div class="'+(isOracle?'oracle-grid':'results-grid')+(single?' results-hero':'')+'">';
   r.cards.forEach(c=>{
     const N=NAHU[c.n-1], T=TONES[c.tone], R=RUMBOS[(c.n-1)%4];
-    html+='<figure class="rcard" style="--n:'+c.color+'">'+
-      (single?'<div class="kin-badge" style="--n:'+c.color+'"><b>'+c.kin+'</b><span>Kin</span></div>':'')+
-      '<figcaption><span class="pos">'+c.pos+'</span></figcaption>'+
-      glyphSVG(c.n)+
-      '<h3>'+N.name+'<small>'+N.totem+'</small></h3>'+
-      '<p class="meta">Kin '+c.kin+' · Tono '+c.tone+' '+T.name+' — '+T.theme+'<br>Rumbo '+R.key+' ('+R.label+' · '+R.nota+') · Elemento '+R.elem+'</p>'+
-      '<dl>'+
-        '<dt>Esencia</dt><dd>'+N.essence+'</dd>'+
-        '<dt>Guía</dt><dd>'+N.guide+'</dd>'+
-        '<dt>Sombra</dt><dd>'+N.shadow+'</dd>'+
-        '<dt>Aliado</dt><dd>'+N.ally+'</dd>'+
-      '</dl>'+
-      (r.type==="rueda"?'<p class="tone-text">'+T.text+'</p>':'')+
-      '<p class="live">Cómo vivir este kin hoy: '+N.live+'</p>'+
-    '</figure>';
+    html+='<figure class="rcard" style="--n:'+c.color+'">';
+    if(single) html+='<div class="kin-badge" style="--n:'+c.color+'"><b>'+c.kin+'</b><span>Kin</span></div>';
+    html+='<figcaption><span class="pos">'+c.pos+'</span></figcaption>';
+    if(c.posDesc) html+='<p style="font-size:.76rem;color:var(--dim);margin:0 0 .5rem;font-style:italic">'+c.posDesc+'</p>';
+    html+=glyphSVG(c.n);
+    html+='<h3>'+N.name+' <span style="opacity:.6;font-weight:400">/ '+N.galactic+'</span><small>'+N.totem+' · '+N.essenceKeys+'</small></h3>';
+    html+='<p class="meta">Kin '+c.kin+' · Tono '+c.tone+' '+T.name+' ('+T.galactic+') — '+T.fn+'<br>'+T.theme+'<br>Rumbo '+R.key+' ('+R.label+' · '+R.nota+') · Elemento '+R.elem+'</p>';
+    html+='<dl>';
+    html+='<dt>Esencia</dt><dd>'+N.essence+'</dd>';
+    html+='<dt>Guía del día</dt><dd>'+N.guide+'</dd>';
+    html+='<dt>Sombra</dt><dd>'+N.shadow+'</dd>';
+    html+='<dt>Aliado</dt><dd>'+N.ally+'</dd>';
+    html+='</dl>';
+    if(r.type==="onda") html+='<p class="tone-text"><strong>'+T.galactic+' — '+T.fn+':</strong> '+T.text+'</p>';
+    if(T.question) html+='<p class="live" style="border-color:'+c.color+'"><strong>Pregunta:</strong> '+T.question+'</p>';
+    html+='<p class="live">Cómo vivir este kin hoy: '+N.live+'</p>';
+    html+='</figure>';
   });
   html+='</div>';
+
+  /* Onda Encantada actual si es lectura de 1 carta o oráculo */
+  if(ws&&(single||isOracle)){
+    html+='<div class="castle-banner" style="margin-top:1.6rem;border-color:'+NAHU[ws.seal-1].color+'">';
+    html+='<h4 style="color:'+NAHU[ws.seal-1].color+'">🌊 Onda Encantada del '+ws.name+'</h4>';
+    html+='<p><strong>'+ws.intention+'</strong> — '+ws.theme+'</p>';
+    html+='<p>'+ws.description+'</p>';
+    html+='</div>';
+  }
+
   wrap.innerHTML=html;
   wrap.querySelectorAll(".glyph").forEach((g,i)=>{
     setTimeout(()=>drawGlyph(g),i*140);
@@ -1265,19 +1406,28 @@ function renderResults(){
     wrap.classList.add("glitching");
     setTimeout(()=>wrap.classList.remove("glitching"),500);
   }
-  wrap.querySelectorAll("path,circle").forEach(p=>{ if(!p.style.strokeDashoffset)p.style.strokeDashoffset=""; });
 }
 $("btn-new").addEventListener("click",()=>setPhase("select"));
 
 /* ---------- copiar ---------- */
 function buildMarkdown(r){
-  const L=["# Tarot Maya — "+r.typeLabel,"","Fecha de la tirada: "+r.dateLabel,"","Motor: Tzolk'in · Correlación GMT 584283 · 20 nahuales · 13 tonos",""];
+  const L=["# Tarot Maya — "+r.typeLabel,"","Fecha de la tirada: "+r.dateLabel,"","Motor: Tzolk'in · Correlación GMT 584283 · 20 sellos solares · 13 tonos galácticos · 5 castillos",""];
+  const ws=WAVESPELLS[r.wsIdx];
+  const castle=CASTLES[r.castleIdx];
+  if(ws&&castle){
+    L.push("## Contexto Cosmológico","");
+    L.push("- **Castillo:** "+castle.name+" — "+castle.subtitle);
+    L.push("- **Onda Encantada:** "+ws.name+" — "+ws.intention);
+    L.push("- **Posición en la Onda:** "+r.wsPos+"/13 ("+TONES[r.wsPos].galactic+")","");
+  }
   r.cards.forEach(c=>{
     const N=NAHU[c.n-1],T=TONES[c.tone],R=RUMBOS[(c.n-1)%4];
-    L.push("## "+c.pos+" — "+N.name+" ("+N.totem+")","");
-    L.push("Kin "+c.kin+" · Tono "+c.tone+" "+T.name+" — "+T.theme+" · Rumbo "+R.key+" ("+R.label+") · Elemento "+R.elem,"");
+    L.push("## "+c.pos+" — "+N.name+" / "+N.galactic+" ("+N.totem+")","");
+    L.push("**Esencia:** "+N.essenceKeys);
+    L.push("Kin "+c.kin+" · Tono "+c.tone+" "+T.name+" ("+T.galactic+") — "+T.fn+" · "+T.theme);
+    L.push("Rumbo "+R.key+" ("+R.label+") · Elemento "+R.elem,"");
     L.push("**Esencia:** "+N.essence,"","**Guía:** "+N.guide,"","**Sombra:** "+N.shadow,"","**Aliado:** "+N.ally);
-    if(r.type==="rueda")L.push("","**Tramo del año (tono "+c.tone+"):** "+T.text);
+    if(T.question) L.push("","**Pregunta:** "+T.question);
     L.push("","*Cómo vivir este kin hoy:* "+N.live,"");
   });
   return L.join("\n");
