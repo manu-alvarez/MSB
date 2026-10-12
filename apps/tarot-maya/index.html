@@ -188,28 +188,32 @@ main{min-height:100vh;display:flex;flex-direction:column}
   border:1.5px solid rgba(255,255,255,.14);
   box-shadow:0 8px 24px rgba(0,0,0,.7);
   cursor:pointer;user-select:none;-webkit-user-select:none;
+  transform:translate(var(--tx, 0px), var(--ty, 0px)) rotate(var(--rot, 0deg));
   transform-origin:50% 120%;
+  z-index:var(--zi, 1);
   transition:transform .3s var(--ease-out),box-shadow .3s,border-color .3s;
   display:flex;align-items:center;justify-content:center;
 }
 .fan-card::before{
   content:"";position:absolute;inset:5px;border:1px solid rgba(0,229,255,.25);border-radius:8px;
+  pointer-events:none;
 }
-.fan-card svg{width:50%;height:50%;color:var(--acc);opacity:.75}
+.fan-card svg{width:50%;height:50%;color:var(--acc);opacity:.75;pointer-events:none}
 .fan-card:hover{
-  z-index:50!important;border-color:var(--acc);
+  z-index:100!important;border-color:var(--acc);
   box-shadow:0 16px 36px rgba(0,0,0,.85),0 0 24px rgba(0,229,255,.45);
-  transform:translateY(-28px) scale(1.12)!important;
+  transform:translate(var(--tx, 0px), calc(var(--ty, 0px) - 34px)) rotate(var(--rot, 0deg)) scale(1.12)!important;
 }
 .fan-card.is-chosen{
   border-color:#e040fb!important;
   box-shadow:0 0 28px rgba(224,64,251,.6)!important;
-  opacity:.4;pointer-events:none;transform:scale(.9) translateY(-10px)!important;
+  opacity:.4;pointer-events:none;
+  transform:translate(var(--tx, 0px), calc(var(--ty, 0px) + 14px)) rotate(var(--rot, 0deg)) scale(.92)!important;
 }
 .fan-card .pick-badge{
   position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;
   background:#e040fb;color:#fff;font-weight:700;font-size:.75rem;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:center;pointer-events:none;
 }
 
 /* ---------- TAPETE DE REVELADO (SPREAD MAT) ---------- */
@@ -294,11 +298,12 @@ main{min-height:100vh;display:flex;flex-direction:column}
   width:62%;height:62%;color:var(--acc);opacity:.8;
   filter:drop-shadow(0 0 10px rgba(0,229,255,.45));
   animation:backSpin 36s linear infinite;
+  pointer-events:none;
 }
 @keyframes backSpin{to{transform:rotate(360deg)}}
 .back-hint{
   position:absolute;bottom:12px;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;
-  color:var(--dim);opacity:.7;
+  color:var(--dim);opacity:.7;pointer-events:none;
 }
 
 /* ANVERSO (BOCA ARRIBA - REVELADA) */
@@ -1402,7 +1407,21 @@ function setPhase(name){
   }
 }
 
-$("btn-back").addEventListener("click",()=>setPhase("select"));
+$("btn-back").addEventListener("click",()=>{
+  if(state.phase==="results"){
+    setPhase("reveal");
+  }else if(state.phase==="reveal"){
+    if(state.activeType==="kin-dia"||state.activeType==="natal"){
+      setPhase("select");
+    }else{
+      setPhase("deck");
+    }
+  }else if(state.phase==="deck"){
+    setPhase("select");
+  }else if(state.phase==="select"){
+    setPhase("intro");
+  }
+});
 $("btn-start").addEventListener("click",()=>{
   playSound('shuffle');
   setPhase("select");
@@ -1534,8 +1553,11 @@ function prepareDeckFan(){
   const container=$("deck-fan-container");
   container.innerHTML="";
 
-  // Distribuimos las 20 cartas en abanico semicircular
+  // Distribuimos las 20 cartas en abanico semicircular con variables CSS
   const total=deck.length;
+  const containerWidth=Math.min(window.innerWidth-40, 960);
+  const spreadWidth=Math.max(260, containerWidth * 0.72);
+
   deck.forEach((sealNum,i)=>{
     const card=document.createElement("div");
     card.className="fan-card";
@@ -1544,13 +1566,22 @@ function prepareDeckFan(){
 
     // Ángulo y desplazamiento en arco
     const norm=(i/(total-1))-0.5;
-    const rot=norm*48;
-    const tx=norm*640;
-    const ty=Math.abs(norm)*38;
+    const rot=norm*42;
+    const tx=norm*spreadWidth;
+    const ty=Math.abs(norm)*(containerWidth<600?18:36);
 
-    card.style.transform="translate("+tx+"px,"+ty+"px) rotate("+rot+"deg)";
-    card.style.zIndex=i+1;
+    card.style.setProperty("--tx", tx.toFixed(1)+"px");
+    card.style.setProperty("--ty", ty.toFixed(1)+"px");
+    card.style.setProperty("--rot", rot.toFixed(2)+"deg");
+    card.style.setProperty("--zi", (i+1));
     card.innerHTML=MANDALA_SVG;
+
+    card.addEventListener("mouseenter",()=>{
+      if(!card.classList.contains("is-chosen")) card.style.zIndex="120";
+    });
+    card.addEventListener("mouseleave",()=>{
+      if(!card.classList.contains("is-chosen")) card.style.zIndex=(i+1);
+    });
 
     card.addEventListener("click",()=>pickCardFromFan(card,i,sealNum));
     container.appendChild(card);
@@ -1690,7 +1721,7 @@ function setupSpreadMat(){
             '</div>'+
           '</div>'+
           '<div class="card-img-box">'+
-            '<img class="card-art-img" src="'+N.artUrl+'" alt="'+N.name+'" loading="lazy" />'+
+            '<img class="card-art-img" src="'+N.artUrl+'" alt="'+N.name+'" loading="eager" />'+
           '</div>'+
           '<div class="card-bottom-info">'+
             '<h4 class="card-title">'+N.name+'</h4>'+
@@ -1794,22 +1825,25 @@ function renderFullResults(){
   const wPos=getWavespellPosition(r.kinBase);
   const W=WAVESPELLS[wIdx]||WAVESPELLS[0];
   const C=CASTLES[cIdx]||CASTLES[0];
+  const kinStart = wIdx * 13 + 1;
+  const kinEnd = wIdx * 13 + 13;
+  const toneInfo = TONES[wPos] || TONES[1];
 
   $("cosmic-banner").innerHTML=
     '<div class="cosmic-item">'+
       '<b>Castillo del Destino</b>'+
-      '<span>'+C.name+'</span>'+
-      '<p>'+C.direction+' · '+C.color+' · '+C.corte+'</p>'+
+      '<span>'+C.icon+' '+C.name+'</span>'+
+      '<p>'+C.subtitle+' · '+C.mission+'</p>'+
     '</div>'+
     '<div class="cosmic-item">'+
       '<b>Onda Encantada</b>'+
-      '<span>Onda de '+W.seal+' (Kin '+W.kinStart+'-'+(W.kinStart+12)+')</span>'+
-      '<p>Intención: '+W.intent+'</p>'+
+      '<span>Onda del '+W.name+' (Kin '+kinStart+' - '+kinEnd+')</span>'+
+      '<p>Intención: '+W.intention+'</p>'+
     '</div>'+
     '<div class="cosmic-item">'+
       '<b>Posición Sagrada</b>'+
       '<span>Paso '+wPos+' de 13 en la Onda</span>'+
-      '<p>'+TONES[wPos].fn+': '+TONES[wPos].question+'</p>'+
+      '<p>Tono '+toneInfo.name+' ('+toneInfo.galactic+'): '+toneInfo.question+'</p>'+
     '</div>';
 
   const grid=$("results-grid");
