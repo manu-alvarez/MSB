@@ -216,6 +216,37 @@ main{min-height:100vh;display:flex;flex-direction:column}
   display:flex;align-items:center;justify-content:center;pointer-events:none;
 }
 
+/* ---------- BARAJADO CEREMONIAL (LOBEHUB ANIMATION) ---------- */
+.deck{
+  position:relative;height:260px;width:min(90vw,360px);margin:1.8rem auto 2.4rem;
+}
+.dcard{
+  position:absolute;left:50%;top:50%;width:130px;aspect-ratio:5/8;margin:-104px 0 0 -65px;
+  border-radius:12px;border:1.5px solid rgba(255,255,255,.14);
+  background:radial-gradient(circle at 50% 50%, rgba(20,24,38,.98), rgba(8,10,16,.99));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.75),0 0 20px rgba(0,229,255,.15);
+  animation:shuffle 1.4s ease-in-out infinite;
+  animation-delay:calc(var(--i) * -.14s);
+}
+.dcard::before{
+  content:"";position:absolute;inset:6px;border:1px solid rgba(0,229,255,.25);border-radius:8px;
+  pointer-events:none;
+}
+.dcard svg{width:56%;height:56%;color:var(--acc);opacity:.75;pointer-events:none}
+@keyframes shuffle{
+  0%,100%{transform:translate(0,0) rotate(0deg)}
+  25%{transform:translate(34px,-16px) rotate(7deg)}
+  50%{transform:translate(-28px,12px) rotate(-6deg)}
+  75%{transform:translate(14px,18px) rotate(4deg)}
+}
+.shuffle-msg{
+  color:var(--acc);letter-spacing:.26em;text-transform:uppercase;font-size:.82rem;
+  font-weight:600;margin-top:1.4rem;animation:breath 1.6s ease-in-out infinite;
+  text-shadow:0 0 12px rgba(0,229,255,.5);
+}
+@keyframes breath{50%{opacity:.35;transform:scale(.98)}}
+
 /* ---------- TAPETE DE REVELADO (SPREAD MAT) ---------- */
 .spread-wrapper{width:100%;max-width:1300px;margin:0 auto}
 .spread-mat{
@@ -241,7 +272,7 @@ main{min-height:100vh;display:flex;flex-direction:column}
 }
 
 .tcard-slot{
-  display:flex;flex-direction:column;align-items:center;gap:.6rem;width:100%;
+  display:flex;flex-direction:column;align-items:center;gap:.5rem;width:100%;
 }
 .slot-destiny{grid-area:destiny}
 .slot-guide{grid-area:guide}
@@ -254,6 +285,10 @@ main{min-height:100vh;display:flex;flex-direction:column}
   font-weight:600;text-align:center;max-width:210px;
 }
 .slot-destiny .pos-label{color:var(--acc);font-weight:700;text-shadow:0 0 10px rgba(0,229,255,.5)}
+.slot-caption{
+  font-size:.74rem;color:var(--dim);letter-spacing:.04em;text-align:center;
+  min-height:1.4em;line-height:1.35;max-width:210px;margin-top:.2rem;
+}
 
 /* ---------- CARTA DE TAROT 3D ---------- */
 .tcard{
@@ -527,21 +562,235 @@ main{min-height:100vh;display:flex;flex-direction:column}
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width:768px){
-  .spread-mat.layout-5-cross{
-    grid-template-areas:
-      "guide"
-      "destiny"
-      "analog"
-      "antipode"
-      "occult";
-    grid-template-columns:1fr;
-    max-width:240px;
+/* ---------- RESPONSIVE MEJORADO ---------- */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+@media (max-width: 768px){
+  .topbar {
+    padding: .5rem .8rem;
   }
-  .spread-mat.layout-3{grid-template-columns:1fr;max-width:240px}
-  .fan-card{width:90px;height:145px}
-  .deck-fan-wrap{min-height:300px}
+  .brand {
+    font-size: .78rem;
+    letter-spacing: .16em;
+  }
+  .brand .brand-full {
+    display: none;
+  }
+  .top-actions {
+    gap: .35rem;
+  }
+  .ghost-btn {
+    padding: .4rem .65rem;
+    font-size: .75rem;
+  }
+  .ghost-btn .btn-text,
+  .back-btn .btn-text {
+    display: none;
+  }
+  .back-btn {
+    padding: .4rem .7rem;
+  }
+  .screen {
+    padding: 4.8rem .8rem 2.5rem;
+  }
+  .phase-title {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    letter-spacing: .16em;
+  }
+  .phase-sub {
+    font-size: .84rem;
+    margin-bottom: 1.4rem;
+  }
+  .menu {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .opt {
+    padding: 1.2rem;
+  }
+
+  /* Baraja interactiva en móvil */
+  .deck-fan-wrap {
+    min-height: 240px;
+    max-width: 100vw;
+    overflow: hidden;
+    margin: 1rem auto 1.6rem;
+  }
+  .fan-card {
+    width: 76px;
+    height: 122px;
+    border-radius: 8px;
+  }
+  .deck-instructions {
+    flex-direction: column;
+    gap: .8rem;
+    align-items: center;
+  }
+  .deck-actions {
+    width: 100%;
+    justify-content: center;
+  }
+  .action-btn {
+    padding: .7rem 1.4rem;
+    font-size: .82rem;
+  }
+
+  /* Tapete de Revelado en móvil */
+  .spread-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+  }
+  .spread-mat {
+    gap: .9rem .5rem;
+    margin: 1rem auto 2rem;
+  }
+  .tcard {
+    width: clamp(115px, 30vw, 150px);
+    aspect-ratio: 5/8;
+  }
+  .tcard-slot {
+    gap: .35rem;
+  }
+  .pos-label {
+    font-size: .65rem;
+    letter-spacing: .1em;
+  }
+  .card-top-bar {
+    padding: 2px 2px 4px;
+  }
+  .card-kin-badge {
+    font-size: .6rem;
+  }
+  .card-title {
+    font-size: .74rem;
+    letter-spacing: .08em;
+  }
+  .card-sub {
+    font-size: .6rem;
+  }
+  .card-keys {
+    font-size: .56rem;
+  }
+
+  /* Cruz Maya compacta en móvil: verdadera forma de Cruz */
+  .spread-mat.layout-5-cross {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+      ". guide ."
+      "antipode destiny analog"
+      ". occult .";
+    gap: .8rem .4rem;
+    max-width: 370px;
+    width: 100%;
+  }
+  .spread-mat.layout-5-cross .tcard {
+    width: 100%;
+    max-width: 110px;
+  }
+  .spread-mat.layout-5-cross .pos-label {
+    font-size: .6rem;
+    letter-spacing: .06em;
+  }
+
+  /* Tríada en móvil: 3 en fila */
+  .spread-mat.layout-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .5rem;
+    max-width: 375px;
+  }
+  .spread-mat.layout-3 .tcard {
+    width: 100%;
+    max-width: 115px;
+  }
+
+  /* 7 y 13 cartas en cuadrícula de 2 columnas */
+  .spread-mat.layout-7,
+  .spread-mat.layout-13 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .8rem .6rem;
+    max-width: 360px;
+  }
+  .spread-mat.layout-7 .tcard,
+  .spread-mat.layout-13 .tcard {
+    width: 100%;
+    max-width: 140px;
+  }
+
+  /* Modal Inspector en móvil */
+  .modal-backdrop {
+    padding: .8rem;
+    align-items: flex-start;
+  }
+  .modal-content {
+    flex-direction: column;
+    max-height: 92vh;
+    padding: 1.4rem 1rem;
+    gap: 1.2rem;
+  }
+  .modal-left {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .modal-art-box {
+    width: 150px;
+    height: 150px;
+  }
+  .modal-right {
+    width: 100%;
+  }
+  .modal-header h2 {
+    font-size: 1.25rem;
+  }
+  .modal-meta {
+    font-size: .78rem;
+  }
+  .modal-sec dt {
+    font-size: .72rem;
+  }
+  .modal-sec dd {
+    font-size: .86rem;
+  }
+
+  /* Resultados y Banner en móvil */
+  .cosmic-banner {
+    grid-template-columns: 1fr;
+    gap: .8rem;
+    padding: 1.2rem;
+  }
+  .results-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .rcard {
+    padding: 1.2rem;
+  }
+  .rcard-head {
+    gap: .8rem;
+  }
+  .rcard-thumb {
+    width: 72px;
+    height: 72px;
+  }
+  .rcard-info h3 {
+    font-size: 1.1rem;
+  }
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    gap: .6rem;
+  }
+  .act {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ---------- IMPRESIÓN ---------- */
@@ -568,18 +817,18 @@ main{min-height:100vh;display:flex;flex-direction:column}
   <div style="display:flex;align-items:center;gap:1rem">
     <button type="button" class="back-btn" id="btn-back" style="display:none" aria-label="Volver al menú de tiradas">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-      <span>Menú</span>
+      <span class="btn-text">Menú</span>
     </button>
-    <span class="brand"><b>TAROT</b> MAYA · Tzolk'in</span>
+    <span class="brand"><b>TAROT</b> MAYA <span class="brand-full">· Tzolk'in</span></span>
   </div>
   <div class="top-actions">
     <button type="button" class="ghost-btn" id="btn-sound" aria-label="Alternar sonido">
       <span id="sound-icon">🔊</span>
-      <span id="sound-label">Sonido</span>
+      <span class="btn-text" id="sound-label">Sonido</span>
     </button>
     <button type="button" class="ghost-btn" id="btn-history" aria-haspopup="dialog" aria-label="Abrir historial de lecturas">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-      <span>Historial</span>
+      <span class="btn-text">Historial</span>
     </button>
   </div>
 </header>
@@ -592,60 +841,76 @@ main{min-height:100vh;display:flex;flex-direction:column}
     <h1 class="neon-title">TAROT MAYA</h1>
     <p class="subtitle">Tzolk'in Sagrado</p>
     <button type="button" class="cta" id="btn-start">Iniciar Consulta</button>
-    <p class="note">Fórmulas galácticas reales · Ilustraciones de sellos solares · Correlación GMT 584283</p>
+    <p class="note">Sincronario Galáctico Dreamspell 13:20 · Ilustraciones HD de Sellos Solares · 260 Kines</p>
   </section>
 
   <!-- FASE: SELECCIÓN DE TIRADA -->
   <section class="screen" id="screen-select" tabindex="-1" hidden aria-label="Selección de Tirada">
     <h2 class="phase-title">Elige tu Tirada</h2>
-    <p class="phase-sub">Consulta al oráculo a través de las frecuencias del tiempo natural maya</p>
+    <p class="phase-sub">Consulta al oráculo a través de las frecuencias del tiempo sagrado maya</p>
     <div class="menu">
       <button type="button" class="opt" data-type="guia">
-        <span class="tag">1 carta · foco sagrado</span>
-        <h3>Nahual Guía del Momento</h3>
-        <p>Una sola carta para una respuesta directa, enfoque de consciencia o consejo inmediato del oráculo.</p>
+        <span class="tag">1 Carta · Arquetipo Sagrado</span>
+        <h3>Nahual Guía Personal</h3>
+        <p>Consulta directa a los 20 Nahuales Mayas tradicionales. Revela tu guardián solar puro del momento: su Tótem sagrado, glifo, rumbo cardinal, elemento, esencia de luz, sombra y medicina de acción.</p>
       </button>
 
       <button type="button" class="opt" data-type="triada">
-        <span class="tag">3 cartas · línea temporal</span>
+        <span class="tag">3 Cartas · Línea Temporal</span>
         <h3>Tríada del Tiempo</h3>
         <p>Pasado / Raíz · Presente / Desafío · Futuro / Destino. Claridad sobre el origen y evolución de tu situación.</p>
       </button>
 
       <button type="button" class="opt" data-type="cruz">
-        <span class="tag">5 cartas · oráculo sagrado</span>
+        <span class="tag">5 Cartas · Oráculo Sagrado</span>
         <h3>Cruz Maya (Quinta Fuerza)</h3>
         <p>Destino al centro, Guía arriba, Análogo a la derecha, Antípoda a la izquierda y Oculto abajo. El mapa cósmico completo.</p>
       </button>
 
       <button type="button" class="opt" data-type="siete">
-        <span class="tag">7 cartas · sendero cósmico</span>
+        <span class="tag">7 Cartas · Sendero Cósmico</span>
         <h3>Sendero de las 7 Direcciones</h3>
         <p>Este (Fuego), Norte (Aire), Oeste (Agua), Sur (Tierra), Cielo (Cosmos), Madre Tierra (Raíz) y Corazón (Centro).</p>
       </button>
 
       <button type="button" class="opt" data-type="onda">
-        <span class="tag">13 cartas · ciclo de manifestación</span>
+        <span class="tag">13 Cartas · Ciclo de Manifestación</span>
         <h3>Onda Encantada</h3>
         <p>Las 13 posiciones del ciclo tonal: desde el Propósito magnético hasta el Vuelo cósmico de trascendencia.</p>
       </button>
 
       <button type="button" class="opt" data-type="kin-dia">
-        <span class="tag">Sincronario · hoy</span>
-        <h3>Kin Sagrado del Día</h3>
-        <p>La energía astronómica del Tzolk'in para hoy: tu sello solar, tono galáctico, onda encantada y castillo en curso.</p>
+        <span class="tag">Sincronario 13 Lunas · Hoy</span>
+        <h3>Kin Sagrado del Día de Hoy</h3>
+        <p>La energía astronómica del sincronario de las 13 Lunas activa HOY en el cosmos: tu sello solar, tono galáctico, onda encantada y castillo en curso.</p>
       </button>
 
       <div class="opt">
-        <span class="tag">Oráculo natal por fecha</span>
-        <h3>Tu Kin de Nacimiento</h3>
-        <p>Introduce tu fecha de nacimiento para desvelar tu sello personal y su Oráculo de la Quinta Fuerza natal.</p>
+        <span class="tag">Sincronario 13:20 · Nacimiento</span>
+        <h3>Tu Kin Natal (Fecha de Nacimiento)</h3>
+        <p>Introduce tu fecha de nacimiento para desvelar con exactitud matemática 13:20 tu Firma Galáctica natal y su Oráculo de la Quinta Fuerza (ej. 07/10/1987 = Kin 107 Mano Eléctrica Azul).</p>
         <label class="sr-only" for="natal-date">Fecha de nacimiento</label>
-        <input type="date" id="natal-date" min="1900-01-01">
+        <input type="text" id="natal-date" placeholder="DD/MM/AAAA o AAAA-MM-DD" autocomplete="bday" style="width:100%;padding:.65rem;border-radius:8px;border:1px solid var(--line);background:rgba(0,0,0,.45);color:#fff;font-family:inherit;font-size:.9rem;margin-bottom:.8rem">
         <p class="err" id="natal-err" aria-live="polite"></p>
         <button type="button" class="mini-btn" id="btn-natal">Calcular Oráculo Natal</button>
       </div>
     </div>
+  </section>
+
+  <!-- FASE: BARAJADO CEREMONIAL (LOBEHUB) -->
+  <section class="screen" id="screen-shuffle" tabindex="-1" hidden aria-label="Barajando el mazo ceremonial">
+    <p class="eyebrow">Conexión con el Tiempo Sagrado</p>
+    <h2 class="phase-title">Sintonizando el Oráculo</h2>
+    <p class="phase-sub" id="shuffle-sub">Los 20 Nahuales y 13 Tonos Galácticos se entretejen en el cosmos…</p>
+    <div class="deck" id="shuffle-deck" aria-label="Mazo sagrado barajándose">
+      <div class="dcard" style="--i:0"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="50" cy="50" r="42" stroke-dasharray="4 2"/><circle cx="50" cy="50" r="30"/><path d="M50 8 92 50 50 92 8 50Z"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg></div>
+      <div class="dcard" style="--i:1"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="50" cy="50" r="42" stroke-dasharray="4 2"/><circle cx="50" cy="50" r="30"/><path d="M50 8 92 50 50 92 8 50Z"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg></div>
+      <div class="dcard" style="--i:2"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="50" cy="50" r="42" stroke-dasharray="4 2"/><circle cx="50" cy="50" r="30"/><path d="M50 8 92 50 50 92 8 50Z"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg></div>
+      <div class="dcard" style="--i:3"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="50" cy="50" r="42" stroke-dasharray="4 2"/><circle cx="50" cy="50" r="30"/><path d="M50 8 92 50 50 92 8 50Z"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg></div>
+      <div class="dcard" style="--i:4"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="50" cy="50" r="42" stroke-dasharray="4 2"/><circle cx="50" cy="50" r="30"/><path d="M50 8 92 50 50 92 8 50Z"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg></div>
+      <div class="dcard" style="--i:5"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="50" cy="50" r="42" stroke-dasharray="4 2"/><circle cx="50" cy="50" r="30"/><path d="M50 8 92 50 50 92 8 50Z"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg></div>
+    </div>
+    <p class="shuffle-msg">Respira profundo y conecta con tu intención sagrada</p>
   </section>
 
   <!-- FASE: MESA DE LA BARAJA (FAN PICKING) -->
@@ -660,6 +925,7 @@ main{min-height:100vh;display:flex;flex-direction:column}
       </div>
       <div class="deck-actions">
         <button type="button" class="action-btn secondary" id="btn-deck-back">← Volver</button>
+        <button type="button" class="action-btn secondary" id="btn-re-shuffle">🔀 Rebarajar</button>
         <button type="button" class="action-btn primary" id="btn-auto-deal">🎲 Tirada al Azar</button>
       </div>
     </div>
@@ -879,37 +1145,100 @@ function updateSoundUI() {
 }
 
 /* ================================================================
-   CÁLCULOS MATEMÁTICOS DEL TZOLK'IN (GMT 584283 & CHINESE REMAINDER)
+   CÁLCULOS MATEMÁTICOS DEL TZOLK'IN — DREAMSPELL 13:20 (TU ENERGÍA MAYA)
+   Ancla canónica: 22 de enero de 2026 = Kin 44 (Semilla Auto-existente Amarilla)
+   En la cuenta Dreamspell de 13 Lunas, el día bisiesto (29 de febrero / 0.0 Hunab Ku)
+   se excluye del conteo de 260 kines.
+   Verificado: 1987-10-07 → Kin 107 (Mano Eléctrica Azul)
    ================================================================ */
-function jdn(y,m,d){
-  const a=((14-m)/12)|0, yy=y+4800-a, mm=m+12*a-3;
-  return d + (((153*mm+2)/5)|0) + 365*yy + ((yy/4)|0) - ((yy/100)|0) + ((yy/400)|0) - 32045;
+function isLeapYear(y) {
+  return (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);
 }
-function kinOf(y,m,d){
-  const n0=jdn(y,m,d)-584283;
-  const kin=((((n0-1)%260)+260)%260)+1;
-  const tone=((((n0-1)%13)+13)%13)+1;
-  const nahual=((((n0-1)%20)+20)%20)+1;
-  return {n0,kin,tone,nahual};
+
+function countLeapDays(d1, d2) {
+  let count = 0;
+  const [start, end] = d1 < d2 ? [new Date(d1), new Date(d2)] : [new Date(d2), new Date(d1)];
+  for (let y = start.getFullYear(); y <= end.getFullYear(); y++) {
+    if (isLeapYear(y)) {
+      const leapDay = new Date(y, 1, 29);
+      if (leapDay >= start && leapDay <= end) count++;
+    }
+  }
+  return count;
 }
-function crtKin(tone,nahual){
-  for(let k=1;k<=260;k++){
-    if((((k-1)%13)+1)===tone && (((k-1)%20)+1)===nahual) return k;
+
+function getDreamspellKin(y, m, d) {
+  const refDate = new Date(2026, 0, 22);
+  const targetDate = new Date(y, m - 1, d);
+  const diffTime = targetDate.getTime() - refDate.getTime();
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+  const leapDays = countLeapDays(refDate, targetDate);
+  const netDays = diffDays >= 0 ? (diffDays - leapDays) : (diffDays + leapDays);
+  
+  const kin = ((((44 + netDays - 1) % 260) + 260) % 260) + 1;
+  const tone = (((kin - 1) % 13) + 1);
+  const nahual = (((kin - 1) % 20) + 1);
+  return { kin, tone, nahual, netDays };
+}
+
+function kinOf(y, m, d) {
+  return getDreamspellKin(y, m, d);
+}
+
+function crtKin(tone, nahual) {
+  for (let k = 1; k <= 260; k++) {
+    if ((((k - 1) % 13) + 1) === tone && (((k - 1) % 20) + 1) === nahual) return k;
   }
   return 1;
 }
 
-function getOracle(seal0,tone){
-  const guideMap=[0,12,4,16,8];
-  const guideSeal=(seal0+guideMap[(tone-1)%5])%20;
-  const analogSeal=(19-seal0)%20;
-  const antipodeSeal=(seal0+10)%20;
-  const occultSeal=(19-seal0+18)%20;
-  return {destiny:seal0,guide:guideSeal,analog:analogSeal,antipode:antipodeSeal,occult:occultSeal};
+const wo = (val, m) => ((val % m) + m) % m;
+const DREAMSPELL_ANALOG = { 0:17, 17:0, 1:16, 16:1, 2:15, 15:2, 3:14, 14:3, 4:13, 13:4, 5:12, 12:5, 6:11, 11:6, 7:10, 10:7, 8:9, 9:8, 18:19, 19:18 };
+
+function getDreamspellOracle(seal0, tone) {
+  let r = DREAMSPELL_ANALOG[seal0];
+  if (r === undefined) r = wo(17 - seal0, 20);
+  const l = wo(seal0 + 10, 20);
+  const c = wo(19 - seal0, 20);
+  let d;
+  switch (tone) {
+    case 1: case 6: case 11: d = seal0; break;
+    case 2: case 7: case 12: d = wo(seal0 - 8, 20); break;
+    case 3: case 8: case 13: d = wo(seal0 + 4, 20); break;
+    case 4: case 9: d = wo(seal0 + 16, 20); break;
+    case 5: case 10: d = wo(seal0 + 8, 20); break;
+    default: d = seal0;
+  }
+  return { destiny: seal0, guide: d, analog: r, antipode: l, occult: c };
 }
-function getWavespellIdx(kin){ return Math.floor((kin-1)/13); }
-function getCastleIdx(kin){ return Math.floor((kin-1)/52); }
-function getWavespellPosition(kin){ return ((kin-1)%13)+1; }
+
+function getOracle(seal0, tone) {
+  return getDreamspellOracle(seal0, tone);
+}
+
+function parseInputDate(str) {
+  if (!str) return null;
+  str = str.trim();
+  // Formato YYYY-MM-DD
+  if (/^\d{4}-\d{1,2}-\d{1,2}$/.test(str)) {
+    const [y, m, d] = str.split('-').map(Number);
+    return { y, m, d };
+  }
+  // Formato DD/MM/YYYY o DD-MM-YYYY o DD.MM.YYYY
+  if (/^\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{4}$/.test(str)) {
+    const parts = str.split(/[\/\-\.]/).map(Number);
+    return { y: parts[2], m: parts[1], d: parts[0] };
+  }
+  const dt = new Date(str);
+  if (!isNaN(dt.getTime())) {
+    return { y: dt.getFullYear(), m: dt.getMonth() + 1, d: dt.getDate() };
+  }
+  return null;
+}
+
+function getWavespellIdx(kin) { return Math.floor((kin - 1) / 13); }
+function getCastleIdx(kin) { return Math.floor((kin - 1) / 52); }
+function getWavespellPosition(kin) { return ((kin - 1) % 13) + 1; }
 
 function hexToRgb(h){
   const n=parseInt(h.slice(1),16);
@@ -1238,11 +1567,13 @@ const MANDALA_SVG='<svg class="back-mandala" viewBox="0 0 100 100" fill="none" s
    ================================================================ */
 const SPREAD_CONFIGS={
   "guia":{
-    count:1, title:"Nahual Guía del Instante", layout:"layout-1",
-    positions:[{label:"Guía del Instante · Tu Foco", desc:"La energía oracular clave para este momento."}]
+    count:1, title:"Nahual Guía Personal", layout:"layout-1",
+    isPureNahual: true,
+    positions:[{label:"Nahual Sagrado · Guardián Solar", desc:"Tu arquetipo cósmico, tótem animal y esencia solar pura para el momento presente."}]
   },
   "triada":{
     count:3, title:"Tríada del Tiempo", layout:"layout-3",
+    isPureNahual: false,
     positions:[
       {label:"1. Pasado · Raíz y Origen", desc:"De dónde vienes, qué lección o causa subyace en tu situación."},
       {label:"2. Presente · Desafío Activo", desc:"Dónde estás ahora, qué reto o energía viva demanda tu atención."},
@@ -1251,6 +1582,7 @@ const SPREAD_CONFIGS={
   },
   "cruz":{
     count:5, title:"Cruz Maya (Quinta Fuerza)", layout:"layout-5-cross",
+    isPureNahual: false,
     positions:[
       {label:"Destino · Centro de Consciencia", desc:"Tu energía central, el núcleo de la consulta.", slot:"slot-destiny"},
       {label:"Guía · Poder Superior", desc:"La fuerza que te orienta desde arriba, tu dirección espiritual.", slot:"slot-guide"},
@@ -1261,6 +1593,7 @@ const SPREAD_CONFIGS={
   },
   "siete":{
     count:7, title:"Sendero de las 7 Direcciones", layout:"layout-7",
+    isPureNahual: false,
     positions:[
       {label:"1. Este (Lak'in) · Fuego y Comienzo", desc:"Inspiración, nacimientos, la chispa de la visión."},
       {label:"2. Norte (Xaman) · Aire y Sabiduría", desc:"Claridad mental, antepasados, verdad profunda."},
@@ -1273,17 +1606,20 @@ const SPREAD_CONFIGS={
   },
   "onda":{
     count:13, title:"Onda Encantada (13 Tonos)", layout:"layout-13",
+    isPureNahual: false,
     positions:Array.from({length:13},(_,i)=>({
       label:"Tono "+(i+1)+" · "+TONES[i+1].galactic,
       desc:TONES[i+1].fn+" — "+TONES[i+1].question
     }))
   },
   "kin-dia":{
-    count:1, title:"Kin Sagrado del Día", layout:"layout-1",
-    positions:[{label:"Kin de Hoy", desc:"La firma galáctica activa en el cosmos el día de hoy."}]
+    count:1, title:"Kin Sagrado del Día de Hoy", layout:"layout-1",
+    isPureNahual: false,
+    positions:[{label:"Firma Galáctica de Hoy", desc:"La energía astronómica del sincronario de las 13 Lunas activa hoy en el cosmos."}]
   },
   "natal":{
     count:5, title:"Oráculo Natal (Quinta Fuerza)", layout:"layout-5-cross",
+    isPureNahual: false,
     positions:[
       {label:"Kin Destino Natal", desc:"La energía con la que naciste.", slot:"slot-destiny"},
       {label:"Guía Natal", desc:"Tu norte evolutivo.", slot:"slot-guide"},
@@ -1314,6 +1650,33 @@ let toastT=null;
 function toast(msg){
   const t=$("toast"); t.textContent=msg; t.classList.add("show");
   clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2800);
+}
+
+/* Efecto Mecanografía (Typewriter) */
+let activeTypers=[];
+function typeText(el,text,speed=20,onDone){
+  if(!el) return;
+  if(state.reduced){
+    el.textContent=text;
+    if(onDone)onDone();
+    return;
+  }
+  el.textContent="";
+  let i=0;
+  const interval=setInterval(()=>{
+    i++;
+    el.textContent=text.slice(0,i);
+    if(i>=text.length){
+      clearInterval(interval);
+      activeTypers=activeTypers.filter(t=>t!==interval);
+      if(onDone)onDone();
+    }
+  },speed);
+  activeTypers.push(interval);
+}
+function clearAllTypers(){
+  activeTypers.forEach(t=>clearInterval(t));
+  activeTypers=[];
 }
 
 /* ================================================================
@@ -1407,6 +1770,18 @@ function setPhase(name){
   }
 }
 
+/* Animación de barajado ceremonial (Lobehub) */
+function startShufflingAnimation(onDone){
+  setPhase("shuffle");
+  playSound('shuffle');
+  setTimeout(()=>playSound('deal'),500);
+  setTimeout(()=>playSound('shuffle'),1100);
+  const dur=state.reduced?350:1600;
+  setTimeout(()=>{
+    if(onDone)onDone();
+  },dur);
+}
+
 $("btn-back").addEventListener("click",()=>{
   if(state.phase==="results"){
     setPhase("reveal");
@@ -1416,7 +1791,7 @@ $("btn-back").addEventListener("click",()=>{
     }else{
       setPhase("deck");
     }
-  }else if(state.phase==="deck"){
+  }else if(state.phase==="deck"||state.phase==="shuffle"){
     setPhase("select");
   }else if(state.phase==="select"){
     setPhase("intro");
@@ -1445,33 +1820,36 @@ document.querySelectorAll(".opt[data-type]").forEach(btn=>{
 
 /* Natal */
 const natalInput=$("natal-date"), natalErr=$("natal-err");
-const now=new Date();
-natalInput.max=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
 natalInput.addEventListener("input",()=>{ natalErr.textContent=""; natalInput.classList.remove("invalid"); });
 
 $("btn-natal").addEventListener("click",()=>{
   const val=natalInput.value;
   natalErr.textContent="";
   if(!val){
-    natalErr.textContent="Por favor, introduce tu fecha de nacimiento.";
+    natalErr.textContent="Introduce tu fecha de nacimiento (ej. 07/10/1987).";
     return;
   }
-  const [by,bm,bd]=val.split("-").map(Number);
-  if(by<1900||isNaN(by)){
-    natalErr.textContent="La fecha debe ser válida desde 1900.";
+  const parsed=parseInputDate(val);
+  if(!parsed||parsed.y<1900||isNaN(parsed.y)||parsed.m<1||parsed.m>12||parsed.d<1||parsed.d>31){
+    natalErr.textContent="Fecha no válida. Formato: DD/MM/AAAA o AAAA-MM-DD.";
     return;
   }
-  initNatalReading(by,bm,bd);
+  initNatalReading(parsed.y,parsed.m,parsed.d);
 });
 
 function initSpread(type){
   state.activeType=type;
   if(type==="kin-dia"){
-    buildDayReading();
+    startShufflingAnimation(()=>{
+      buildDayReading();
+      setPhase("reveal");
+    });
     return;
   }
-  prepareDeckFan();
-  setPhase("deck");
+  startShufflingAnimation(()=>{
+    prepareDeckFan();
+    setPhase("deck");
+  });
 }
 
 function initNatalReading(by,bm,bd){
@@ -1479,13 +1857,14 @@ function initNatalReading(by,bm,bd){
   const seal0=k.nahual-1;
   const oracle=getOracle(seal0,k.tone);
   const cfg=SPREAD_CONFIGS["natal"];
+  const occultTone=((14-k.tone)%13)||13;
   
   const cards=[
     {n:oracle.destiny+1,tone:k.tone,pos:cfg.positions[0].label,desc:cfg.positions[0].desc,slot:cfg.positions[0].slot},
     {n:oracle.guide+1,tone:k.tone,pos:cfg.positions[1].label,desc:cfg.positions[1].desc,slot:cfg.positions[1].slot},
     {n:oracle.analog+1,tone:k.tone,pos:cfg.positions[2].label,desc:cfg.positions[2].desc,slot:cfg.positions[2].slot},
     {n:oracle.antipode+1,tone:k.tone,pos:cfg.positions[3].label,desc:cfg.positions[3].desc,slot:cfg.positions[3].slot},
-    {n:oracle.occult+1,tone:((14-k.tone)%13)||13,pos:cfg.positions[4].label,desc:cfg.positions[4].desc,slot:cfg.positions[4].slot}
+    {n:oracle.occult+1,tone:occultTone,pos:cfg.positions[4].label,desc:cfg.positions[4].desc,slot:cfg.positions[4].slot}
   ];
 
   cards.forEach(c=>{
@@ -1495,15 +1874,18 @@ function initNatalReading(by,bm,bd){
 
   state.reading={
     type:"natal",
-    title:"Oráculo Natal de Nacimiento",
-    dateLabel:bd+"/"+bm+"/"+by,
+    title:"Oráculo Natal de Nacimiento (Quinta Fuerza)",
+    dateLabel:String(bd).padStart(2,'0')+"/"+String(bm).padStart(2,'0')+"/"+by,
     kinBase:k.kin,
+    isPureNahual:false,
     cards
   };
 
   saveHistory(state.reading);
-  setupSpreadMat();
-  setPhase("reveal");
+  startShufflingAnimation(()=>{
+    setupSpreadMat();
+    setPhase("reveal");
+  });
 }
 
 function buildDayReading(){
@@ -1519,15 +1901,15 @@ function buildDayReading(){
 
   state.reading={
     type:"kin-dia",
-    title:"Kin Sagrado del Día",
+    title:"Kin Sagrado del Día de Hoy",
     dateLabel:t.toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}),
     kinBase:k.kin,
+    isPureNahual:false,
     cards
   };
 
   saveHistory(state.reading);
   setupSpreadMat();
-  setPhase("reveal");
 }
 
 /* ================================================================
@@ -1568,7 +1950,7 @@ function prepareDeckFan(){
     const norm=(i/(total-1))-0.5;
     const rot=norm*42;
     const tx=norm*spreadWidth;
-    const ty=Math.abs(norm)*(containerWidth<600?18:36);
+    const ty=Math.abs(norm)*(containerWidth<600?16:34);
 
     card.style.setProperty("--tx", tx.toFixed(1)+"px");
     card.style.setProperty("--ty", ty.toFixed(1)+"px");
@@ -1604,9 +1986,15 @@ function pickCardFromFan(cardEl,deckIdx,sealNum){
   badge.textContent=pickNum;
   cardEl.appendChild(badge);
 
-  // Generamos un tono aleatorio (1-13) para la carta adivinatoria
-  const tone=Math.floor(Math.random()*13)+1;
-  const kin=crtKin(tone,sealNum);
+  let tone=1;
+  let kin=sealNum;
+  if(cfg.isPureNahual){
+    tone=1;
+    kin=sealNum;
+  }else{
+    tone=Math.floor(Math.random()*13)+1;
+    kin=crtKin(tone,sealNum);
+  }
 
   state.pickedCards.push({
     n:sealNum,
@@ -1629,23 +2017,42 @@ function pickCardFromFan(cardEl,deckIdx,sealNum){
 // Botón "Tirada al Azar"
 $("btn-auto-deal").addEventListener("click",()=>{
   const cfg=SPREAD_CONFIGS[state.activeType];
-  playSound('shuffle');
-  
   const chosen=state.deckCards.slice(0,cfg.count).map(sealNum=>{
-    const tone=Math.floor(Math.random()*13)+1;
+    let tone=1;
+    let kin=sealNum;
+    if(cfg.isPureNahual){
+      tone=1;
+      kin=sealNum;
+    }else{
+      tone=Math.floor(Math.random()*13)+1;
+      kin=crtKin(tone,sealNum);
+    }
     return {
       n:sealNum,
       tone,
-      kin:crtKin(tone,sealNum),
+      kin,
       color:NAHU[sealNum-1].color
     };
   });
 
   state.pickedCards=chosen;
   buildReadingFromPicked();
-  setupSpreadMat();
-  setPhase("reveal");
+  startShufflingAnimation(()=>{
+    setupSpreadMat();
+    setPhase("reveal");
+  });
 });
+
+// Botón "Rebarajar"
+const reShuffleBtn=$("btn-re-shuffle");
+if(reShuffleBtn){
+  reShuffleBtn.addEventListener("click",()=>{
+    startShufflingAnimation(()=>{
+      prepareDeckFan();
+      setPhase("deck");
+    });
+  });
+}
 
 $("btn-deck-back").addEventListener("click",()=>setPhase("select"));
 
@@ -1668,6 +2075,7 @@ function buildReadingFromPicked(){
     title:cfg.title,
     dateLabel:now.toLocaleDateString("es-ES",{day:"numeric",month:"long",year:"numeric"}),
     kinBase:cards[0].kin,
+    isPureNahual:!!cfg.isPureNahual,
     cards
   };
 
@@ -1687,6 +2095,9 @@ function setupSpreadMat(){
   $("reveal-title").textContent=r.title;
   state.revealedCount=0;
   $("btn-view-results").disabled=true;
+  clearAllTypers();
+
+  const isPure=r.isPureNahual;
 
   r.cards.forEach((c,idx)=>{
     const slot=document.createElement("div");
@@ -1699,12 +2110,32 @@ function setupSpreadMat(){
 
     const N=NAHU[c.n-1];
     const T=TONES[c.tone];
+    const R=RUMBOS[(c.n-1)%4];
 
     const card=document.createElement("div");
     card.className="tcard";
     card.dataset.index=idx;
     card.style.setProperty("--n",c.color);
     card.setAttribute("aria-label","Carta "+(idx+1)+": "+c.pos+". Pulsa para voltear.");
+
+    // Barra superior de la carta
+    const topBarHtml=isPure
+      ? '<div class="card-top-bar">'+
+          '<span class="card-kin-badge">SELLO '+c.n+' · '+R.key.toUpperCase()+'</span>'+
+          '<span style="font-size:0.65rem;font-weight:700;color:var(--n)">'+R.elem+'</span>'+
+        '</div>'
+      : '<div class="card-top-bar">'+
+          '<span class="card-kin-badge">KIN '+c.kin+'</span>'+
+          '<div class="card-tone-notation">'+
+            renderMayaToneDots(c.tone)+
+            '<span style="font-size:0.65rem;font-weight:700">T.'+c.tone+'</span>'+
+          '</div>'+
+        '</div>';
+
+    // Subtítulo
+    const subHtml=isPure
+      ? '<div class="card-sub">'+N.totem+'</div>'
+      : '<div class="card-sub">'+N.galactic+' · Tono '+T.name+' ('+T.galactic+')</div>';
 
     card.innerHTML=
       '<div class="card-inner">'+
@@ -1713,19 +2144,13 @@ function setupSpreadMat(){
           '<div class="back-hint">TOCAR PARA VOLTEAR</div>'+
         '</div>'+
         '<div class="face front">'+
-          '<div class="card-top-bar">'+
-            '<span class="card-kin-badge">KIN '+c.kin+'</span>'+
-            '<div class="card-tone-notation">'+
-              renderMayaToneDots(c.tone)+
-              '<span style="font-size:0.65rem;font-weight:700">T.'+c.tone+'</span>'+
-            '</div>'+
-          '</div>'+
+          topBarHtml+
           '<div class="card-img-box">'+
             '<img class="card-art-img" src="'+N.artUrl+'" alt="'+N.name+'" loading="eager" />'+
           '</div>'+
           '<div class="card-bottom-info">'+
-            '<h4 class="card-title">'+N.name+'</h4>'+
-            '<div class="card-sub">'+N.galactic+' · Tono '+T.name+' ('+T.galactic+')</div>'+
+            '<h4 class="card-title">'+N.name+' <span style="font-size:0.75rem;font-weight:400;color:var(--dim)">('+N.galactic+')</span></h4>'+
+            subHtml+
             '<div class="card-keys">'+N.essenceKeys+'</div>'+
           '</div>'+
         '</div>'+
@@ -1740,6 +2165,13 @@ function setupSpreadMat(){
     });
 
     slot.appendChild(card);
+
+    // Caption interactivo con efecto máquina de escribir
+    const captionEl=document.createElement("div");
+    captionEl.className="slot-caption";
+    captionEl.id="slot-caption-"+idx;
+    slot.appendChild(captionEl);
+
     mat.appendChild(slot);
   });
 }
@@ -1751,11 +2183,23 @@ function flipCard(cardEl,idx){
   playSound('flip');
 
   const c=state.reading.cards[idx];
+  const N=NAHU[c.n-1];
+  const T=TONES[c.tone];
+  const isPure=state.reading.isPureNahual;
+  
   const rect=cardEl.getBoundingClientRect();
   spawnBurst(rect.left+rect.width/2,rect.top+rect.height/2,hexToRgb(c.color));
 
+  const captionEl=$("slot-caption-"+idx);
+  if(captionEl){
+    const msg=isPure
+      ? (c.pos+" · "+N.name+", "+N.totem)
+      : (c.pos+" · "+N.name+" ("+T.galactic+")");
+    typeText(captionEl,msg,18);
+  }
+
   state.revealedCount++;
-  announce("Revelada carta: "+c.pos+". "+NAHU[c.n-1].name+", Kin "+c.kin+".");
+  announce("Revelada carta: "+c.pos+". "+N.name+(isPure?", "+N.totem:", Kin "+c.kin)+".");
 
   if(state.revealedCount>=state.reading.cards.length){
     $("btn-view-results").disabled=false;
@@ -1788,19 +2232,30 @@ function openCardModal(c){
   const N=NAHU[c.n-1];
   const T=TONES[c.tone];
   const R=RUMBOS[(c.n-1)%4];
+  const isPure=state.reading&&state.reading.isPureNahual;
 
   modal.style.setProperty("--modal-color",c.color);
   $("modal-img").src=N.artUrl;
   $("modal-img").alt=N.name+" - "+N.galactic;
   $("modal-pos-badge").textContent=c.pos;
-  $("modal-title").textContent=N.name+" · "+N.galactic;
-  $("modal-meta").textContent="Kin "+c.kin+" · Tono "+c.tone+" "+T.name+" ("+T.galactic+") · Rumbo "+R.key+" ("+R.elem+")";
-  
-  $("modal-light").textContent=N.essence;
-  $("modal-shadow").textContent=N.shadow;
-  $("modal-guide").textContent=N.guide;
-  $("modal-tone-q").textContent=T.question+" — "+T.text;
-  $("modal-ally").textContent=N.ally+" · "+N.live;
+
+  if(isPure){
+    $("modal-title").textContent="NAHUAL SAGRADO: "+N.name+" · "+N.galactic;
+    $("modal-meta").textContent="Sello Solar "+c.n+" · Rumbo "+R.key+" ("+R.elem+") · Tótem: "+N.totem;
+    $("modal-light").textContent=N.essence;
+    $("modal-shadow").textContent=N.shadow;
+    $("modal-guide").textContent=N.guide;
+    $("modal-tone-q").textContent="Tótem Sagrado: "+N.totem+" — Medicina animal protectora.";
+    $("modal-ally").textContent=N.ally+" · "+N.live;
+  }else{
+    $("modal-title").textContent=N.name+" · "+N.galactic;
+    $("modal-meta").textContent="Kin "+c.kin+" · Tono "+c.tone+" "+T.name+" ("+T.galactic+") · Rumbo "+R.key+" ("+R.elem+")";
+    $("modal-light").textContent=N.essence;
+    $("modal-shadow").textContent=N.shadow;
+    $("modal-guide").textContent=N.guide;
+    $("modal-tone-q").textContent=T.question+" — "+T.text;
+    $("modal-ally").textContent=N.ally+" · "+N.live;
+  }
 
   modal.hidden=false;
   playSound('deal');
@@ -1820,6 +2275,7 @@ function renderFullResults(){
   const r=state.reading;
   $("print-date").textContent=r.title+" · "+r.dateLabel;
 
+  const isPure=r.isPureNahual;
   const wIdx=getWavespellIdx(r.kinBase);
   const cIdx=getCastleIdx(r.kinBase);
   const wPos=getWavespellPosition(r.kinBase);
@@ -1829,22 +2285,43 @@ function renderFullResults(){
   const kinEnd = wIdx * 13 + 13;
   const toneInfo = TONES[wPos] || TONES[1];
 
-  $("cosmic-banner").innerHTML=
-    '<div class="cosmic-item">'+
-      '<b>Castillo del Destino</b>'+
-      '<span>'+C.icon+' '+C.name+'</span>'+
-      '<p>'+C.subtitle+' · '+C.mission+'</p>'+
-    '</div>'+
-    '<div class="cosmic-item">'+
-      '<b>Onda Encantada</b>'+
-      '<span>Onda del '+W.name+' (Kin '+kinStart+' - '+kinEnd+')</span>'+
-      '<p>Intención: '+W.intention+'</p>'+
-    '</div>'+
-    '<div class="cosmic-item">'+
-      '<b>Posición Sagrada</b>'+
-      '<span>Paso '+wPos+' de 13 en la Onda</span>'+
-      '<p>Tono '+toneInfo.name+' ('+toneInfo.galactic+'): '+toneInfo.question+'</p>'+
-    '</div>';
+  if(isPure){
+    const N=NAHU[r.cards[0].n-1];
+    const R=RUMBOS[(r.cards[0].n-1)%4];
+    $("cosmic-banner").innerHTML=
+      '<div class="cosmic-item">'+
+        '<b>Arquetipo Solar Nahual</b>'+
+        '<span>'+N.name+' ('+N.galactic+')</span>'+
+        '<p>Sello Sagrado '+r.cards[0].n+' de los 20 Nahuales Mayas</p>'+
+      '</div>'+
+      '<div class="cosmic-item">'+
+        '<b>Rumbo & Elemento</b>'+
+        '<span>Rumbo '+R.key+' ('+R.elem+')</span>'+
+        '<p>Frecuencia: '+R.nota+'</p>'+
+      '</div>'+
+      '<div class="cosmic-item">'+
+        '<b>Tótem & Animal de Poder</b>'+
+        '<span>'+N.totem+'</span>'+
+        '<p>'+N.essenceKeys+'</p>'+
+      '</div>';
+  }else{
+    $("cosmic-banner").innerHTML=
+      '<div class="cosmic-item">'+
+        '<b>Castillo del Destino</b>'+
+        '<span>'+C.icon+' '+C.name+'</span>'+
+        '<p>'+C.subtitle+' · '+C.mission+'</p>'+
+      '</div>'+
+      '<div class="cosmic-item">'+
+        '<b>Onda Encantada</b>'+
+        '<span>Onda del '+W.name+' (Kin '+kinStart+' - '+kinEnd+')</span>'+
+        '<p>Intención: '+W.intention+'</p>'+
+      '</div>'+
+      '<div class="cosmic-item">'+
+        '<b>Posición Sagrada</b>'+
+        '<span>Paso '+wPos+' de 13 en la Onda</span>'+
+        '<p>Tono '+toneInfo.name+' ('+toneInfo.galactic+'): '+toneInfo.question+'</p>'+
+      '</div>';
+  }
 
   const grid=$("results-grid");
   grid.innerHTML="";
@@ -1858,6 +2335,10 @@ function renderFullResults(){
     cardEl.className="rcard";
     cardEl.style.setProperty("--n",c.color);
 
+    const subText=isPure
+      ? 'Sello Solar '+c.n+' · Rumbo '+R.key+' ('+R.elem+')<br>Tótem: '+N.totem
+      : 'Kin '+c.kin+' · Tono '+c.tone+' '+T.name+' ('+T.galactic+')<br>Rumbo '+R.key+' ('+R.elem+')';
+
     cardEl.innerHTML=
       '<div class="rcard-head">'+
         '<div class="rcard-thumb" style="cursor:pointer">'+
@@ -1866,7 +2347,7 @@ function renderFullResults(){
         '<div class="rcard-info">'+
           '<span class="pos-badge">'+c.pos+'</span>'+
           '<h3>'+N.name+' <span style="font-size:0.9rem;font-weight:400;color:var(--dim)">('+N.galactic+')</span></h3>'+
-          '<p>Kin '+c.kin+' · Tono '+c.tone+' '+T.name+' ('+T.galactic+')<br>Rumbo '+R.key+' ('+R.elem+')</p>'+
+          '<p>'+subText+'</p>'+
         '</div>'+
       '</div>'+
       '<div class="rcard-body">'+
@@ -1894,7 +2375,7 @@ $("btn-copy").addEventListener("click",()=>{
   let text="🔮 "+r.title.toUpperCase()+" — "+r.dateLabel+"\n\n";
   r.cards.forEach(c=>{
     const N=NAHU[c.n-1];
-    text+="["+c.pos+"]: "+N.name+" ("+N.galactic+") — Kin "+c.kin+", Tono "+c.tone+"\n";
+    text+="["+c.pos+"]: "+N.name+" ("+N.galactic+") — "+(r.isPureNahual?"Sello "+c.n:"Kin "+c.kin+", Tono "+c.tone)+"\n";
     text+="Esencia: "+N.essence+"\nConsejo: "+N.guide+"\n\n";
   });
   navigator.clipboard.writeText(text).then(()=>{
@@ -1908,7 +2389,7 @@ $("btn-dl").addEventListener("click",()=>{
   r.cards.forEach(c=>{
     const N=NAHU[c.n-1];
     md+="### "+c.pos+": "+N.name+" ("+N.galactic+")\n";
-    md+="- **Kin:** "+c.kin+" · **Tono:** "+c.tone+"\n";
+    md+="- **"+(r.isPureNahual?"Sello Solar":"Kin")+":** "+(r.isPureNahual?c.n:c.kin+" · **Tono:** "+c.tone)+"\n";
     md+="- **Esencia:** "+N.essence+"\n";
     md+="- **Sombra:** "+N.shadow+"\n";
     md+="- **Consejo:** "+N.guide+"\n";
