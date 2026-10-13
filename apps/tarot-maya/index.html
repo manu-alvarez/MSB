@@ -1455,14 +1455,38 @@ const GLYPHS={
   11:'<path d="M56 56 a8 8 0 1 1 -16 0 a16 16 0 1 1 32 0 a24 24 0 1 1 -48 0 a32 32 0 1 1 64 0"/><path d="M50 84 v-16"/>',
   12:'<path d="M20 84 h14 v-14 h14 v-14 h14 v-14 h14"/><path d="M20 70 h14 v-14 h14 v-14 h14 v-14 h14"/>',
   13:'<path d="M50 12 v76"/><path d="M34 34 h32"/><path d="M34 66 h32"/><path d="M26 22 h48"/>',
-  14:'<circle cx="50" cy="50" r="32"/><circle cx="38" cy="44" r="5"/><circle cx="62" cy="44" r="5"/><circle cx="50" cy="62" r="5"/>',
-  15:'<path d="M16 66 C32 30 68 30 84 66"/><circle cx="50" cy="38" r="8"/><path d="M30 76 h40"/>',
-  16:'<path d="M50 12 L84 76 L16 76 Z"/><path d="M36 54 h28"/><circle cx="50" cy="36" r="6"/>',
-  17:'<path d="M20 36 Q50 66 80 36"/><path d="M20 64 Q50 34 80 64"/>',
-  18:'<path d="M18 50 L50 18 L82 50 L50 82 Z"/><path d="M50 18 v64"/><path d="M18 50 h64"/>',
-  19:'<path d="M26 40 Q40 22 54 40 T82 40"/><path d="M36 54 L28 76 L48 76 L40 88"/>',
-  20:'<circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="14"/><path d="M50 10 v8"/><path d="M50 82 v8"/><path d="M10 50 h8"/><path d="M82 50 h8"/>'
+  14:'<path d="M50 16 78 50 50 84 22 50 Z"/><path d="M50 34 v32"/><circle cx="50" cy="50" r="8"/>',
+  15:'<path d="M14 62 L34 40 L50 52 L66 40 L86 62"/><circle cx="50" cy="26" r="10"/><path d="M50 52 v32"/>',
+  16:'<circle cx="50" cy="44" r="24"/><path d="M38 38 l12 14 l12 -14"/><path d="M50 68 v16"/>',
+  17:'<path d="M50 50 h20 v-24 h-44 v44 h60 v-60 h-76"/>',
+  18:'<path d="M50 8 64 50 50 92 36 50 Z"/><path d="M50 8 v84"/><path d="M36 50 h28"/>',
+  19:'<circle cx="50" cy="54" r="16"/><path d="M50 38 V12"/><path d="M36 44 L18 30"/><path d="M64 44 L82 30"/><path d="M34 62 L14 68"/><path d="M66 62 L86 68"/>',
+  20:'<circle cx="50" cy="50" r="16"/><path d="M50 20 v-8"/><path d="M50 80 v8"/><path d="M20 50 h-8"/><path d="M80 50 h8"/><path d="M29 29 l-6 -6"/><path d="M71 29 l6 -6"/><path d="M29 71 l-6 6"/><path d="M71 71 l6 6"/><circle cx="50" cy="50" r="5"/>'
 };
+
+function glyphSVG(n, cls) {
+  const nahuName = (typeof NAHU !== "undefined" && NAHU[n - 1] ? NAHU[n - 1].name : "Sello " + n);
+  return '<svg class="' + (cls || "glyph") + '" viewBox="0 0 100 100" role="img" aria-label="Glifo de ' + nahuName + '">' + (GLYPHS[n] || "") + '</svg>';
+}
+
+function drawGlyph(svg) {
+  if (!svg || (typeof state !== "undefined" && state.reduced)) return;
+  const shapes = svg.querySelectorAll("path,circle");
+  shapes.forEach(p => {
+    try {
+      const L = p.getTotalLength();
+      p.style.transition = "none";
+      p.style.strokeDasharray = L;
+      p.style.strokeDashoffset = L;
+    } catch(e) {}
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    shapes.forEach(p => {
+      p.style.transition = "stroke-dashoffset 1.1s cubic-bezier(.3,.7,.2,1)";
+      p.style.strokeDashoffset = "0";
+    });
+  }));
+}
 
 const SLUGS=[
   'dragon','wind','night','seed','serpent','worldbridger','hand','star','moon','dog',
