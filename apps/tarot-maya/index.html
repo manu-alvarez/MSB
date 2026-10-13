@@ -341,15 +341,25 @@ main{min-height:100vh;display:flex;flex-direction:column}
   color:var(--dim);opacity:.7;pointer-events:none;
 }
 
-/* ANVERSO (BOCA ARRIBA - REVELADA) */
+/* ANVERSO (BOCA ARRIBA - REVELADA) - BORDES NEÓN SAGRADOS 4 COLORES */
 .face.front{
   transform:rotateY(180deg);
-  background:linear-gradient(170deg,rgba(18,22,34,.98),rgba(8,10,16,.99));
-  border:1.5px solid color-mix(in srgb,var(--n) 65%,transparent);
+  background:linear-gradient(170deg,rgba(14,18,26,.97),rgba(6,8,12,.99));
+  border:2px solid var(--n);
   box-shadow:
-    0 0 24px color-mix(in srgb,var(--n) 35%,transparent),
-    inset 0 0 30px color-mix(in srgb,var(--n) 14%,transparent);
+    0 0 18px color-mix(in srgb,var(--n) 55%,transparent),
+    0 0 36px color-mix(in srgb,var(--n) 26%,transparent),
+    inset 0 0 28px color-mix(in srgb,var(--n) 14%,transparent);
   display:flex;flex-direction:column;padding:8px;
+  border-radius:var(--radius);
+  transition:border-color .3s,box-shadow .3s;
+}
+.tcard:hover .face.front{
+  border-color:var(--n);
+  box-shadow:
+    0 0 26px color-mix(in srgb,var(--n) 80%,transparent),
+    0 0 52px color-mix(in srgb,var(--n) 45%,transparent),
+    inset 0 0 32px color-mix(in srgb,var(--n) 22%,transparent);
 }
 .card-top-bar{
   display:flex;justify-content:space-between;align-items:center;
@@ -390,6 +400,107 @@ main{min-height:100vh;display:flex;flex-direction:column}
 .card-keys{
   margin:3px 0 0;font-size:.62rem;color:var(--n);letter-spacing:.04em;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+
+/* ---------- ESTILO DE CARTAS: GLIFOS NEÓN LOBEHUB ---------- */
+.card-glyph-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding: 4px 2px;
+}
+.card-glyph-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  padding: 6px 0;
+}
+.glyph {
+  width: 64%;
+  height: auto;
+  max-height: 115px;
+  color: var(--n);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--n) 85%, transparent))
+         drop-shadow(0 0 20px color-mix(in srgb, var(--n) 50%, transparent));
+  transition: transform .3s var(--ease-out), filter .3s;
+}
+.tcard:hover .glyph {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--n) 100%, transparent))
+         drop-shadow(0 0 28px color-mix(in srgb, var(--n) 70%, transparent));
+}
+.glyph path, .glyph circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Miniatura de glifo en resultados */
+.rcard-glyph {
+  width: 76%;
+  height: auto;
+  max-height: 65px;
+  color: var(--n);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--n) 80%, transparent));
+}
+.rcard-glyph path, .rcard-glyph circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Selector dentro del modal inspector */
+.modal-toggle-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  justify-content: center;
+  width: 100%;
+}
+.modal-tab-btn {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: .72rem;
+  letter-spacing: .08em;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+  color: var(--dim);
+  cursor: pointer;
+  transition: all .25s;
+}
+.modal-tab-btn:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
+.modal-tab-btn.active {
+  border-color: var(--modal-color);
+  color: #fff;
+  background: color-mix(in srgb, var(--modal-color) 25%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--modal-color) 45%, transparent);
+}
+.modal-glyph-box {
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  background: linear-gradient(170deg, rgba(14,18,26,.96), rgba(6,8,12,.98));
+  border: 2px solid var(--modal-color);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--modal-color) 45%, transparent),
+             inset 0 0 24px color-mix(in srgb, var(--modal-color) 15%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
 }
 
 /* ---------- BARRA DE CONTROL DEL REVELADO ---------- */
@@ -822,6 +933,10 @@ html, body {
     <span class="brand"><b>TAROT</b> MAYA <span class="brand-full">· Tzolk'in</span></span>
   </div>
   <div class="top-actions">
+    <button type="button" class="ghost-btn" id="btn-art-mode" aria-label="Alternar estilo de cartas" title="Alternar entre Glifos Neón (LobeHub) y Arte Ilustrado">
+      <span id="art-mode-icon">✦</span>
+      <span class="btn-text" id="art-mode-label">Glifos Neón</span>
+    </button>
     <button type="button" class="ghost-btn" id="btn-sound" aria-label="Alternar sonido">
       <span id="sound-icon">🔊</span>
       <span class="btn-text" id="sound-label">Sonido</span>
@@ -995,8 +1110,13 @@ html, body {
   <div class="modal-content" id="modal-content">
     <button type="button" class="modal-close-btn" id="btn-close-modal" aria-label="Cerrar modal">&times;</button>
     <div class="modal-left">
-      <div class="modal-art-box">
+      <div class="modal-art-box" id="modal-art-box">
         <img id="modal-img" src="" alt="Carta del Tarot Maya" />
+      </div>
+      <div class="modal-glyph-box" id="modal-glyph-box" style="display:none"></div>
+      <div class="modal-toggle-row">
+        <button type="button" class="modal-tab-btn" id="modal-btn-art" title="Ver ilustración mística">🎴 Ilustración</button>
+        <button type="button" class="modal-tab-btn active" id="modal-btn-glyph" title="Ver glifo sagrado de luz">✦ Glifo Neón</button>
       </div>
       <div class="modal-pos-tag" id="modal-pos-badge">POSICIÓN</div>
     </div>
@@ -1266,11 +1386,17 @@ function renderMayaToneDots(tone){
 /* ================================================================
    ESTRUCTURAS DE DATOS COSMOLÓGICAS (CANÓNICAS)
    ================================================================ */
+/* 4 Familias y Colores Sagrados del Tzolk'in */
+const TZ_RED = "#FF334B";    /* Rojo: Dragón, Serpiente, Luna, Caminante del Cielo, Tierra */
+const TZ_WHITE = "#F4F7FB";  /* Blanco: Viento, Enlazador de Mundos, Perro, Mago, Espejo */
+const TZ_BLUE = "#0099FF";   /* Azul: Noche, Mano, Mono, Águila, Tormenta */
+const TZ_YELLOW = "#FFCC00"; /* Amarillo: Semilla, Estrella, Humano, Guerrero, Sol */
+
 const RUMBOS=[
-  {key:"Este", label:"Lak'in", nota:"rojo · inicio y nacimiento",    elem:"Fuego",  colorCSS:"#ef4444"},
-  {key:"Norte",label:"Xaman",  nota:"blanco · mente y refinamiento", elem:"Aire",   colorCSS:"#e8eaf6"},
-  {key:"Oeste",label:"Chik'in",nota:"azul · agua y transformación",  elem:"Agua",   colorCSS:"#3b82f6"},
-  {key:"Sur",  label:"Nojol",  nota:"amarillo · tierra y madurez",   elem:"Tierra", colorCSS:"#eab308"}
+  {key:"Este", label:"Lak'in", nota:"rojo · inicio y nacimiento",    elem:"Fuego",  colorCSS:TZ_RED},
+  {key:"Norte",label:"Xaman",  nota:"blanco · mente y refinamiento", elem:"Aire",   colorCSS:TZ_WHITE},
+  {key:"Oeste",label:"Chik'in",nota:"azul · agua y transformación",  elem:"Agua",   colorCSS:TZ_BLUE},
+  {key:"Sur",  label:"Nojol",  nota:"amarillo · tierra y madurez",   elem:"Tierra", colorCSS:TZ_YELLOW}
 ];
 
 const TONES=[null,
@@ -1344,140 +1470,140 @@ const SLUGS=[
 ];
 
 const NAHU=[
- {name:"Imix",galactic:"Dragón",totem:"Cocodrilo / Matriz",color:"#00E5FF",
+ {name:"Imix",galactic:"Dragón",totem:"Cocodrilo / Matriz",color:TZ_RED,
   essenceKeys:"Nacimiento · Nutrición · Ser",
   essence:"Imix es la matriz primordial: el caudal de donde brota todo lo que existe. Hoy la vida te devuelve a la fuente, al instinto que no necesita permiso para comenzar.",
   guide:"Empieza antes de sentirte listo. La materia que necesitas ya respira dentro de ti; dale forma con las manos y no con la duda.",
   shadow:"En sombra, Imix desborda: apetitos sin cauce y comienzos que nunca echan raíz. Vigila lo que inicias por impulso y no por llamado.",
   ally:"Tu aliada es el agua de la paciencia: lo que hoy parece lento está gestando. Confía en el ritmo del río antes que en el del reloj.",
   live:"Siembra algo — una idea, una conversación, un gesto de cuidado — y regádalo antes de dormir."},
- {name:"Ik'",galactic:"Viento",totem:"Viento / Aliento divino",color:"#E8EAF6",
+ {name:"Ik'",galactic:"Viento",totem:"Viento / Aliento divino",color:TZ_WHITE,
   essenceKeys:"Espíritu · Aliento · Comunicación",
   essence:"Ik' es el aliento primero, la palabra que atraviesa y purifica. Hoy el aire trae noticias: escucha lo que se mueve a tu alrededor sin poder verse.",
   guide:"Habla con verdad ligera y deja que lo estancado circule. Una conversación honesta vale más que mil silencios prudentes.",
   shadow:"El viento en sombra dispersa: palabras que hielan, promesas que se lleva la corriente. No confundas ligereza con frivolidad.",
   ally:"Tu aliada es la respiración consciente: tres pausas profundas desatan nudos que la fuerza no puede.",
   live:"Escribe la frase que llevas días callando y dícela en voz alta a quien deba oírla."},
- {name:"Ak'bal",galactic:"Noche",totem:"Noche / Refugio cósmico",color:"#B388FF",
+ {name:"Ak'bal",galactic:"Noche",totem:"Noche / Refugio cósmico",color:TZ_BLUE,
   essenceKeys:"Abundancia · Intuición · Sueño",
   essence:"Ak'bal es la noche protectora donde las semillas maduran a oscuras. Hoy no es día de lucir, sino de habitar tu interior con ternura.",
   guide:"Retírate del ruido: el refugio no es huida sino incubación. Lo que hoy se calla, mañana amanece con nombre.",
   shadow:"En sombra, la noche se vuelve caverna: miedo que se disfraza de introspección. Distingue el descanso del escondite.",
   ally:"Tu aliado es el silencio compartido: la presencia quieta de alguien de confianza ilumina más que cualquier consejo.",
   live:"Aparta una hora sin pantallas y anota en papel lo que tu sombra lleva tiempo pidiendo."},
- {name:"K'an",galactic:"Semilla",totem:"Semilla / Potencial de florecimiento",color:"#FFC400",
+ {name:"K'an",galactic:"Semilla",totem:"Semilla / Potencial de florecimiento",color:TZ_YELLOW,
   essenceKeys:"Florecimiento · Atino · Consciencia",
   essence:"K'an es la semilla que contiene todo el potencial de la creación. Hoy la plenitud se reconoce en lo compartido, no en lo acumulado.",
   guide:"Reconecta con tu red: familia, tribu, colaboradores. La abundancia pide canales; ábrelos con generosidad calculada.",
   shadow:"En sombra, K'an amarra: afán de posesión que confunde seguridad con acopio. Suelta lo que ya cumplió su ciclo.",
   ally:"Tu aliada es la gratitud: nombrar en voz alta tres dones recibidos reordena la abundancia real.",
   live:"Ofrece algo valioso tuyo — tiempo, saber, recurso — sin esperar reciprocidad inmediata."},
- {name:"Chikchan",galactic:"Serpiente",totem:"Serpiente / Fuerza vital",color:"#00C2E0",
+ {name:"Chikchan",galactic:"Serpiente",totem:"Serpiente / Fuerza vital",color:TZ_RED,
   essenceKeys:"Fuerza Vital · Instinto · Sobrevivencia",
   essence:"Chikchan es la serpiente de energía que asciende cuando el cuerpo despierta. Hoy tu vitalidad pide canal y dirección.",
   guide:"Muévete: el cuerpo es el templo de este día. Danza, camina, trabaja con las manos; la energía estancada se vuelve veneno, la circulada se vuelve medicina.",
   shadow:"En sombra, la serpiente muerde: intensidad que devora, deseo que arrasa fronteras propias y ajenas. Domestícala, no la ahogues.",
   ally:"Tu aliado es el agua que fluye: hidrátate, báñate, llora si hace falta. El líquido desbloquea lo que la mente traba.",
   live:"Dedica veinte minutos al cuerpo con entrega total y observa cómo cambia tu claridad después."},
- {name:"Kimi",galactic:"Enlazador de Mundos",totem:"Muerte / Puente entre mundos",color:"#CBD5F0",
+ {name:"Kimi",galactic:"Enlazador de Mundos",totem:"Muerte / Puente entre mundos",color:TZ_WHITE,
   essenceKeys:"Muerte · Oportunidad · Igualdad",
   essence:"Kimi no anuncia un fin sino un tránsito: la puerta que solo se abre si algo se despide. Hoy el viento del norte barre lo que ya no respira.",
   guide:"Suelta deliberadamente: un hábito, una opinión sobre ti mismo, un vínculo muerto. El vacío que dejas es el espacio del próximo don.",
   shadow:"En sombra, Kimi se aferra al duelo: nostalgia que impide el reencuentro con la vida. Honra lo ido sin construirle casa.",
   ally:"Tu aliado es el ritual de cierre: escribir y despedir con un gesto concreto sella el paso con dignidad.",
   live:"Elige una cosa concreta de la que despedirte hoy y realiza un pequeño gesto ritual de despedida."},
- {name:"Manik'",galactic:"Mano",totem:"Mano / Curación y realización",color:"#C470FF",
+ {name:"Manik'",galactic:"Mano",totem:"Mano / Curación y realización",color:TZ_BLUE,
   essenceKeys:"Realización · Curación · Conocimiento",
   essence:"Manik' es la mano que sana y realiza: acción decidida con conciencia. Hoy tu herramienta es la precisión compasiva.",
   guide:"Ejecuta con la mano firme y el corazón suave. Lo que se hace hoy con destreza y respeto deja huella duradera.",
   shadow:"En sombra, la mano se vuelve depredadora: prisa que atropella, poder que no consulta. Actúa lo necesario, no lo posible.",
   ally:"Tu aliado es el silencio del rastro: observar antes de actuar duplica la eficacia de cada movimiento.",
   live:"Completa esa tarea que llevas posponiendo, haciéndola con un cuidado artesanal inusual."},
- {name:"Lamat",galactic:"Estrella",totem:"Estrella / Venus / Arte sagrado",color:"#FFD54F",
+ {name:"Lamat",galactic:"Estrella",totem:"Estrella / Venus / Arte sagrado",color:TZ_YELLOW,
   essenceKeys:"Arte · Elegancia · Embellecer",
   essence:"Lamat es la estrella de la mañana y la abundancia fértil: un brillo que anuncia cosechas. Hoy la belleza es un canal de inteligencia.",
   guide:"Armoniza: ordena tu espacio, embellece tu trabajo, cultiva lo estético. El mundo responde al cuidado con señales de abundancia.",
   shadow:"En sombra, Lamat deslumbra: exceso que confunde brillo con valor, confort que anestesia. Verifica qué es oro y qué es purpurina.",
   ally:"Tu aliada es la armonía doméstica: un rincón ordenado hoy multiplica la claridad de toda la semana.",
   live:"Transforma un detalle de tu entorno cotidiano en algo bello y úsalo como ancla de gratitud."},
- {name:"Muluk",galactic:"Luna",totem:"Luna / Agua universal",color:"#2BF0FF",
+ {name:"Muluk",galactic:"Luna",totem:"Luna / Agua universal",color:TZ_RED,
   essenceKeys:"Agua Universal · Purificación · Flujo",
   essence:"Muluk es el agua ofrendada: lo que se entrega con pureza regresa multiplicado. Hoy tu palabra tiene peso de rito.",
   guide:"Ofrece: tu tiempo, tu escucha, tu obra. La ofrenda sincera abre puertas que la estrategia no encuentra.",
   shadow:"En sombra, Muluk se derrama: dar para deber, generosidad con letra pequeña. Examina la pureza de tus entregas.",
   ally:"Tu aliada es el agua de lo cotidiano: un vaso ofrecido a otro con presencia plena es un acto sagrado.",
   live:"Haz una ofrenda concreta y desinteresada — material o de tiempo — y no la menciones a nadie."},
- {name:"Ok",galactic:"Perro",totem:"Perro / Corazón leal",color:"#F2F5FF",
+ {name:"Ok",galactic:"Perro",totem:"Perro / Corazón leal",color:TZ_WHITE,
   essenceKeys:"Corazón · Amor · Lealtad",
   essence:"Ok es la lealtad que camina a tu lado: guía, corazón y fiesta compartida. Hoy los vínculos verdaderos se distinguen de las conveniencias.",
   guide:"Acompaña a quien camina contigo: la lealtad de hoy es semilla de futuro. El camino compartido multiplica las fuerzas.",
   shadow:"En sombra, Ok se somete: lealtad mal dirigida, dependencia disfrazada de amor. Pregúntate a quién sirves y por qué.",
   ally:"Tu aliada es la alegría compartida: el juego sincero repara alianzas que las palabras serias encallaron.",
   live:"Contacta a un aliado verdadero y ofrécele apoyo concreto, sin pedir nada a cambio."},
- {name:"Chuwen",galactic:"Mono",totem:"Mono / Artesano de la magia",color:"#E040FB",
+ {name:"Chuwen",galactic:"Mono",totem:"Mono / Artesano de la magia",color:TZ_BLUE,
   essenceKeys:"Magia · Juego · Ilusión",
   essence:"Chuwen es el tejedor del tiempo: manos que juegan, crean y entrelazan hilos invisibles. Hoy tu vocación de artesano toma el mando.",
   guide:"Crea sin pedir permiso: el juego es la técnica más seria del universo. Dedica el día a tu ofrenda de obra.",
   shadow:"En sombra, el mono imita: dispersión entre proyectos, travesura que lastima. Elige un hilo y teje hasta el final.",
   ally:"Tu aliado es el juego consciente: la risa abre bloqueos que el esfuerzo había cerrado.",
   live:"Trabaja en tu creación personal durante un bloque completo, sin interrupciones ni excusas."},
- {name:"Eb'",galactic:"Humano",totem:"Humano / Libre voluntad",color:"#FFAB2E",
+ {name:"Eb'",galactic:"Humano",totem:"Humano / Libre voluntad",color:TZ_YELLOW,
   essenceKeys:"Libre Voluntad · Sabiduría · Influencia",
   essence:"Eb' es el sendero del libre albedrío: viaje, humildad y servicio. Hoy el camino te llama más que la meta.",
   guide:"Camina: cada paso sencillo vale más que el plan perfecto. Sirve mientras avanzas; el rumbo se aclara caminando.",
   shadow:"En sombra, Eb' extravía: muchos caminos, ninguna dirección, ansiedad de llegar. Vuelve al paso siguiente, que es el único real.",
   ally:"Tu aliados son los senderos probados: la humildad de aprender de quien ya caminó acorta el viaje a la mitad.",
   live:"Da un paso concreto hacia tu proyecto más postergado, por pequeño que sea, y anótalo."},
- {name:"Ben",galactic:"Caminante del Cielo",totem:"Caña / Explorador del espacio",color:"#00E8C0",
+ {name:"Ben",galactic:"Caminante del Cielo",totem:"Caña / Explorador del espacio",color:TZ_RED,
   essenceKeys:"Espacio · Exploración · Vigilancia",
   essence:"Ben es la caña que se alza entre el cielo y la tierra: columna viva, exploración constante. Hoy tu autoridad interior pide postura erguida.",
   guide:"Sostén: afirma tu dirección con dignidad y sin violencia. El liderazgo legítimo de hoy se ejerce desde el ejemplo.",
   shadow:"En sombra, la columna se vuelve rígida: autoridad que no escucha, verticalidad que aplasta. Sé firme, no duro.",
   ally:"Tu aliada es la flexibilidad de la caña: ceder en lo accesorio preserva lo esencial.",
   live:"Toma una decisión que venías delegando a otros y hazte responsable de ella por escrito."},
- {name:"Ix",galactic:"Mago",totem:"Jaguar / Mago de la atemporalidad",color:"#D7DEF2",
+ {name:"Ix",galactic:"Mago",totem:"Jaguar / Mago de la atemporalidad",color:TZ_WHITE,
   essenceKeys:"Atemporalidad · Encantamiento · Receptividad",
   essence:"Ix es la energía de la tierra y del felino nocturno: magia, instinto y poder silencioso. Hoy opera desde el plano que no se anuncia.",
   guide:"Conecta con la tierra: toca el suelo, honra el lugar donde pisas. Tu intuición de hoy es un instrumento de precisión.",
   shadow:"En sombra, Ix manipula: poder que quiere más poder, magia sin ética. Todo don de la tierra cobra interés; opera con respeto.",
   ally:"Tu aliada es la naturaleza: diez minutos de tierra, planta y cielo restauran la inteligencia instintiva.",
   live:"Toma una decisión importante siguiendo tu corazonada, después de documentar qué dice tu lógica."},
- {name:"Men",galactic:"Águila",totem:"Águila / Visión creadora",color:"#A66BFF",
+ {name:"Men",galactic:"Águila",totem:"Águila / Visión creadora",color:TZ_BLUE,
   essenceKeys:"Visión · Mente · Creación",
   essence:"Men es el águila que planea sobre el valle: visión que integra lo que el suelo fragmenta. Hoy te prestan sus alturas.",
   guide:"Eleva la mirada: revisa tu año, tu proyecto, tu vida desde arriba. La estrategia nace de la altura, no del detalle.",
   shadow:"En sombra, el águila se soberbia: planes tan altos que pierden contacto con el suelo. Aterriza cada visión en un paso de hoy.",
   ally:"Tu aliada es la perspectiva del otro: pedir tres opiniones distintas amplía el mapa sin abandonar tu rumbo.",
   live:"Dibuja el mapa grande de tu meta y marca el primer punto aterrizable de esta semana."},
- {name:"Kib'",galactic:"Guerrero",totem:"Guerrero / Inteligencia intrépida",color:"#FFD740",
+ {name:"Kib'",galactic:"Guerrero",totem:"Guerrero / Inteligencia intrépida",color:TZ_YELLOW,
   essenceKeys:"Inteligencia · Intrepidez · Cuestionar",
   essence:"Kib' es el guerrero de la inteligencia: valor para cuestionar, coraje para preguntar. Hoy el fuego quema lo que el alma ya no necesita cargar.",
   guide:"Cuestiona con la valentía del que busca la verdad: cuestiona a otros y revisa tus propias certezas. Preguntar es un acto de valentía.",
   shadow:"En sombra, Kib' acumula: agravios convertidos en identidad, miedo disfrazado de prudencia. Examina qué ganarías soltando.",
   ally:"Tu aliado es el gesto sin testigos: una reparación privada — una carta, una ofrenda, una llamada — cancela deudas antiguas.",
   live:"Perdona en voz alta — a ti o a otro — algo que llevas cargando, y quema o guarda el papel del agravio."},
- {name:"Kab'an",galactic:"Tierra",totem:"Tierra / Navegación sincrónica",color:"#35F5E0",
+ {name:"Kab'an",galactic:"Tierra",totem:"Tierra / Navegación sincrónica",color:TZ_RED,
   essenceKeys:"Navegación · Evolución · Sincronicidad",
   essence:"Kab'an es el pensamiento que se vuelve tierra: estructura, aprendizaje, plan. Hoy tu mente ordena el caos con placer de arquitecta.",
   guide:"Organiza: sistematiza, enseña, escribe. Lo que hoy ordenas con inteligencia sostiene meses de trabajo futuro.",
   shadow:"En sombra, la estructura aprisiona: dogma, plan que no deja respirar a la vida. Recuerda que el mapa no es el territorio.",
   ally:"Tu aliada es la escritura: pasar el pensamiento al papel revela sus grietas antes de construir sobre ellas.",
   live:"Dedica media hora a ordenar un área de tu vida — agenda, finanzas, ideas — y documenta el sistema."},
- {name:"Etz'nab'",galactic:"Espejo",totem:"Espejo / Reflejo infinito",color:"#C3CDEC",
+ {name:"Etz'nab'",galactic:"Espejo",totem:"Espejo / Reflejo infinito",color:TZ_WHITE,
   essenceKeys:"Sin Fin · Orden · Reflejo",
   essence:"Etz'nab' es el espejo de pedernal: verdad que corta para sanar. Hoy las relaciones y los mitos propios se miran sin filtros.",
   guide:"Di la verdad exacta, con cariño y sin ornamento. La limpieza de hoy ahorra años de confusión.",
   shadow:"En sombra, el pedernal hiere: crudeza sin compasión, verdad usada como arma. Mide la profundidad del corte antes de usar el filo.",
   ally:"Tu aliado es el espejo honesto: alguien que te dice la verdad sin saña es hoy tu mayor tesoro.",
   live:"Mantén esa conversación que evitas por comodidad, formulada en una sola frase clara y honesta."},
- {name:"Kawak",galactic:"Tormenta",totem:"Tormenta / Autogeneración catalítica",color:"#FF4FD8",
+ {name:"Kawak",galactic:"Tormenta",totem:"Tormenta / Autogeneración catalítica",color:TZ_BLUE,
   essenceKeys:"Autogeneración · Energía · Catalizar",
   essence:"Kawak es la tormenta que limpia el cielo: energía eléctrica, catarsis, fertilidad del aguacero. Hoy la agitación es síntoma de renovación, no de fracaso.",
   guide:"Recibe la lluvia: lo que hoy se agita está aireando tu suelo. Distribuye la tensión en movimiento y no en reacción.",
   shadow:"En sombra, la tormenta descarga sobre otros: humor eléctrico que siembra heridas. Convierte el trueno en lluvia para tu propia tierra.",
   ally:"Tu aliada es la escritura descargada: escribir sin censura diez minutos drena el cielo interno.",
   live:"Sacude el cuerpo — sacude, respira, baila — hasta que la tormenta interna se convierta en agua limpia."},
- {name:"Ajaw",galactic:"Sol",totem:"Sol / Fuego universal",color:"#FFB300",
+ {name:"Ajaw",galactic:"Sol",totem:"Sol / Fuego universal",color:TZ_YELLOW,
   essenceKeys:"Fuego Universal · Vida · Iluminar",
   essence:"Ajaw es el señor del sol: plenitud, flores, magistratura de la luz. Hoy tu presencia, cuando es auténtica, ilumina sin pretenderlo.",
   guide:"Brilla con servicio: el sol no gira alrededor de nadie, calienta a todos. Encarna hoy la versión adulta y generosa de tu poder.",
@@ -1640,7 +1766,8 @@ const state={
   deckCards:[],       // Baraja de 20 sellos mezclada para el abanico
   reading:null,       // Lectura activa
   revealedCount:0,    // Cartas volteadas
-  reduced:window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  reduced:window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  artMode:localStorage.getItem("tarot_art_style")||"glyphs"
 };
 
 const $=id=>document.getElementById(id);
@@ -1945,6 +2072,7 @@ function prepareDeckFan(){
     card.className="fan-card";
     card.dataset.index=i;
     card.dataset.seal=sealNum;
+    card.style.setProperty("--n", NAHU[sealNum-1].color);
 
     // Ángulo y desplazamiento en arco
     const norm=(i/(total-1))-0.5;
@@ -2085,6 +2213,70 @@ function buildReadingFromPicked(){
 /* ================================================================
    TAPETE RITUAL DE REVELADO (3D CARD FLIP)
    ================================================================ */
+
+function renderCardFrontContent(c, idx, isPure) {
+  const N = NAHU[c.n - 1];
+  const T = TONES[c.tone];
+  const R = RUMBOS[(c.n - 1) % 4];
+
+  if (state.artMode === "glyphs") {
+    const badgeText = isPure ? ("SELLO " + c.n) : ("KIN " + c.kin);
+    const rightNotation = isPure
+      ? ('<span style="font-size:0.65rem;font-weight:700;color:var(--n)">' + R.elem + '</span>')
+      : ('<div class="card-tone-notation">' + renderMayaToneDots(c.tone) + '<span style="font-size:0.65rem;font-weight:700">T.' + c.tone + '</span></div>');
+
+    const subHtml = isPure
+      ? ('Sello ' + c.n + ' · ' + R.key + ' (' + R.elem + ')')
+      : ('Tono ' + c.tone + ' — ' + T.name + ' (' + T.galactic + ')');
+
+    return `
+      <div class="card-top-bar">
+        <span class="card-kin-badge">${badgeText}</span>
+        ${rightNotation}
+      </div>
+      <div class="card-glyph-container">
+        <div class="card-glyph-box">
+          ${glyphSVG(c.n, "glyph")}
+        </div>
+        <div class="card-bottom-info">
+          <h4 class="card-title">${N.name.toUpperCase()}</h4>
+          <div class="card-sub">${subHtml}</div>
+          <div class="card-keys">${isPure ? N.totem : N.essenceKeys}</div>
+        </div>
+      </div>
+    `;
+  } else {
+    const topBarHtml = isPure
+      ? '<div class="card-top-bar">'+
+          '<span class="card-kin-badge">SELLO '+c.n+' · '+R.key.toUpperCase()+'</span>'+
+          '<span style="font-size:0.65rem;font-weight:700;color:var(--n)">'+R.elem+'</span>'+
+        '</div>'
+      : '<div class="card-top-bar">'+
+          '<span class="card-kin-badge">KIN '+c.kin+'</span>'+
+          '<div class="card-tone-notation">'+
+            renderMayaToneDots(c.tone)+
+            '<span style="font-size:0.65rem;font-weight:700">T.'+c.tone+'</span>'+
+          '</div>'+
+        '</div>';
+
+    const subHtml = isPure
+      ? '<div class="card-sub">'+N.totem+'</div>'
+      : '<div class="card-sub">'+N.galactic+' · Tono '+T.name+' ('+T.galactic+')</div>';
+
+    return `
+      ${topBarHtml}
+      <div class="card-img-box">
+        <img class="card-art-img" src="${N.artUrl}" alt="${N.name}" loading="eager" />
+      </div>
+      <div class="card-bottom-info">
+        <h4 class="card-title">${N.name} <span style="font-size:0.75rem;font-weight:400;color:var(--dim)">(${N.galactic})</span></h4>
+        ${subHtml}
+        <div class="card-keys">${N.essenceKeys}</div>
+      </div>
+    `;
+  }
+}
+
 function setupSpreadMat(){
   const mat=$("spread-mat");
   mat.innerHTML="";
@@ -2118,25 +2310,6 @@ function setupSpreadMat(){
     card.style.setProperty("--n",c.color);
     card.setAttribute("aria-label","Carta "+(idx+1)+": "+c.pos+". Pulsa para voltear.");
 
-    // Barra superior de la carta
-    const topBarHtml=isPure
-      ? '<div class="card-top-bar">'+
-          '<span class="card-kin-badge">SELLO '+c.n+' · '+R.key.toUpperCase()+'</span>'+
-          '<span style="font-size:0.65rem;font-weight:700;color:var(--n)">'+R.elem+'</span>'+
-        '</div>'
-      : '<div class="card-top-bar">'+
-          '<span class="card-kin-badge">KIN '+c.kin+'</span>'+
-          '<div class="card-tone-notation">'+
-            renderMayaToneDots(c.tone)+
-            '<span style="font-size:0.65rem;font-weight:700">T.'+c.tone+'</span>'+
-          '</div>'+
-        '</div>';
-
-    // Subtítulo
-    const subHtml=isPure
-      ? '<div class="card-sub">'+N.totem+'</div>'
-      : '<div class="card-sub">'+N.galactic+' · Tono '+T.name+' ('+T.galactic+')</div>';
-
     card.innerHTML=
       '<div class="card-inner">'+
         '<div class="face back">'+
@@ -2144,15 +2317,7 @@ function setupSpreadMat(){
           '<div class="back-hint">TOCAR PARA VOLTEAR</div>'+
         '</div>'+
         '<div class="face front">'+
-          topBarHtml+
-          '<div class="card-img-box">'+
-            '<img class="card-art-img" src="'+N.artUrl+'" alt="'+N.name+'" loading="eager" />'+
-          '</div>'+
-          '<div class="card-bottom-info">'+
-            '<h4 class="card-title">'+N.name+' <span style="font-size:0.75rem;font-weight:400;color:var(--dim)">('+N.galactic+')</span></h4>'+
-            subHtml+
-            '<div class="card-keys">'+N.essenceKeys+'</div>'+
-          '</div>'+
+          renderCardFrontContent(c, idx, isPure)+
         '</div>'+
       '</div>';
 
@@ -2189,6 +2354,7 @@ function flipCard(cardEl,idx){
   
   const rect=cardEl.getBoundingClientRect();
   spawnBurst(rect.left+rect.width/2,rect.top+rect.height/2,hexToRgb(c.color));
+  if(state.artMode==="glyphs"){ const gSvg=cardEl.querySelector(".glyph"); if(gSvg) drawGlyph(gSvg); }
 
   const captionEl=$("slot-caption-"+idx);
   if(captionEl){
@@ -2237,7 +2403,10 @@ function openCardModal(c){
   modal.style.setProperty("--modal-color",c.color);
   $("modal-img").src=N.artUrl;
   $("modal-img").alt=N.name+" - "+N.galactic;
+  const modalGlyphEl=$("modal-glyph-box");
+  if(modalGlyphEl) modalGlyphEl.innerHTML=glyphSVG(c.n, "glyph");
   $("modal-pos-badge").textContent=c.pos;
+  setModalTab(state.artMode==="glyphs" ? "glyph" : "art");
 
   if(isPure){
     $("modal-title").textContent="NAHUAL SAGRADO: "+N.name+" · "+N.galactic;
@@ -2264,6 +2433,75 @@ function openCardModal(c){
 function closeCardModal(){
   modal.hidden=true;
 }
+
+function setModalTab(tab){
+  const artBox=$("modal-art-box");
+  const glyphBox=$("modal-glyph-box");
+  const btnArt=$("modal-btn-art");
+  const btnGlyph=$("modal-btn-glyph");
+  if(!artBox || !glyphBox) return;
+  if(tab==="glyph"){
+    artBox.style.display="none";
+    glyphBox.style.display="flex";
+    if(btnArt) btnArt.classList.remove("active");
+    if(btnGlyph) btnGlyph.classList.add("active");
+    drawGlyph(glyphBox.querySelector(".glyph"));
+  } else {
+    artBox.style.display="block";
+    glyphBox.style.display="none";
+    if(btnArt) btnArt.classList.add("active");
+    if(btnGlyph) btnGlyph.classList.remove("active");
+  }
+}
+
+if($("modal-btn-art")) $("modal-btn-art").addEventListener("click",()=>setModalTab("art"));
+if($("modal-btn-glyph")) $("modal-btn-glyph").addEventListener("click",()=>setModalTab("glyph"));
+
+function updateArtModeUI(){
+  const icon=$("art-mode-icon");
+  const label=$("art-mode-label");
+  if(state.artMode==="glyphs"){
+    if(icon) icon.textContent="✦";
+    if(label) label.textContent="Glifos Neón";
+  }else{
+    if(icon) icon.textContent="🎴";
+    if(label) label.textContent="Ilustración";
+  }
+}
+
+function updateOpenCardsArt(){
+  if(!state.reading||!state.reading.cards) return;
+  const cards=document.querySelectorAll("#spread-mat .tcard");
+  cards.forEach((cardEl,idx)=>{
+    const c=state.reading.cards[idx];
+    if(!c) return;
+    const frontEl=cardEl.querySelector(".face.front");
+    if(frontEl){
+      frontEl.innerHTML=renderCardFrontContent(c,idx,state.reading.isPureNahual);
+      if(cardEl.classList.contains("is-revealed") && state.artMode==="glyphs"){
+        drawGlyph(frontEl.querySelector(".glyph"));
+      }
+    }
+  });
+}
+
+function setArtMode(mode){
+  state.artMode=mode;
+  localStorage.setItem("tarot_art_style", mode);
+  updateArtModeUI();
+  updateOpenCardsArt();
+}
+
+if($("btn-art-mode")){
+  $("btn-art-mode").addEventListener("click",()=>{
+    const nextMode=state.artMode==="glyphs" ? "art" : "glyphs";
+    setArtMode(nextMode);
+    toast(nextMode==="glyphs" ? "Estilo activo: Glifos Neón LobeHub" : "Estilo activo: Ilustración Mística");
+    playSound("deal");
+  });
+}
+updateArtModeUI();
+
 $("btn-close-modal").addEventListener("click",closeCardModal);
 modal.addEventListener("click",e=>{ if(e.target===modal)closeCardModal(); });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape")closeCardModal(); });
@@ -2341,8 +2579,8 @@ function renderFullResults(){
 
     cardEl.innerHTML=
       '<div class="rcard-head">'+
-        '<div class="rcard-thumb" style="cursor:pointer">'+
-          '<img src="'+N.artUrl+'" alt="'+N.name+'" loading="lazy" />'+
+        '<div class="rcard-thumb" style="cursor:pointer" title="Pulsa para inspeccionar">'+
+          (state.artMode==="glyphs" ? glyphSVG(c.n, "rcard-glyph") : '<img src="'+N.artUrl+'" alt="'+N.name+'" loading="lazy" />')+
         '</div>'+
         '<div class="rcard-info">'+
           '<span class="pos-badge">'+c.pos+'</span>'+
