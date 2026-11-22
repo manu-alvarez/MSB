@@ -453,6 +453,5 @@ export class StateManager {
 // ============================================
 const stateManager = new StateManager();
 
-export { StateManager, WorkflowState };
 export { stateManager };
 export default stateManager;
