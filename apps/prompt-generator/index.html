@@ -37,16 +37,6 @@
         to { transform: rotate(360deg); }
       }
     </style>
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then((regs) => {
-          regs.forEach((r) => r.unregister());
-        });
-        if (window.caches) {
-          caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
-        }
-      }
-    </script>
     <script type="module" crossorigin src="./assets/index-BzBRfJh6.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/db-BbKgqkon.js">
     <link rel="modulepreload" crossorigin href="./assets/vendor-DGglHWam.js">
