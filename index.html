@@ -1540,8 +1540,8 @@
 
           <div class="operator-kpis">
             <div class="kpi-card">
-              <div class="kpi-value" style="color:var(--neon-cyan);">35+</div>
-              <div class="kpi-label">Apps Web Online</div>
+              <div class="kpi-value" id="catalogAppsVal" style="color:var(--neon-cyan);">—</div>
+              <div class="kpi-label">Apps en el catálogo</div>
             </div>
             <div class="kpi-card">
               <div class="kpi-value" style="color:#a855f7;">8</div>
@@ -1767,10 +1767,10 @@
         </div>
         <div class="metric-data">
           <h4>Aplicaciones Frontend</h4>
-          <div class="metric-val" id="totalAppsVal">20</div>
+          <div class="metric-val" id="totalAppsVal">—</div>
           <div class="metric-sub">
             <span class="metric-indicator" style="background: var(--neon-emerald); box-shadow: 0 0 8px var(--neon-emerald);"></span>
-            <span>20 Online &bull; 100% Interactivas</span>
+            <span>Entradas en el catálogo</span>
           </div>
         </div>
       </div>
@@ -1821,7 +1821,7 @@
     <!-- Search & Filters Strip -->
     <div class="section-title-row">
       <h2>Aplicaciones</h2>
-      <span class="section-title-count" id="appsResultCount"><strong>20</strong> aplicaciones · 20 online</span>
+      <span class="section-title-count" id="appsResultCount">Cargando catálogo…</span>
     </div>
     <section class="controls-strip">
       <div class="search-row">
@@ -2856,10 +2856,11 @@
       if (elDev) elDev.innerText = SERVICES.filter(s => s.category === 'devtools').length;
       const elTot = document.getElementById('totalAppsVal');
       if (elTot) elTot.innerText = SERVICES.length;
+      document.getElementById('catalogAppsVal').textContent = SERVICES.length;
       const elRes = document.getElementById('appsResultCount');
       if (elRes) {
-        const online = SERVICES.filter(s => s.status !== 'stopped' && s.status !== 'errored').length;
-        elRes.innerHTML = `<strong>${SERVICES.length}</strong> aplicaciones · ${online} online`;
+
+        elRes.innerHTML = `<strong>${SERVICES.length}</strong> aplicaciones en el catálogo`;
       }
     }
 
@@ -2906,13 +2907,13 @@
         const isErrored = service.status === 'errored';
         const isStopped = service.status === 'stopped';
         let statusBadgeClass = 'online';
-        let statusLabel = 'Online';
+        let statusLabel = 'Catalogada';
         if (isErrored) {
           statusBadgeClass = 'errored';
-          statusLabel = 'Requiere BD';
+          statusLabel = 'Error registrado';
         } else if (isStopped) {
           statusBadgeClass = 'stopped';
-          statusLabel = 'Pausado (BD)';
+          statusLabel = 'Pausa registrada';
         }
 
         // Accent color mapping per category fallback
@@ -3006,8 +3007,8 @@
         if (currentCategory !== 'all' || searchQuery) {
           elResDone.innerHTML = `<strong>${filtered.length}</strong> de ${SERVICES.length} aplicaciones`;
         } else {
-          const onlineDone = SERVICES.filter(s => s.status !== 'stopped' && s.status !== 'errored').length;
-          elResDone.innerHTML = `<strong>${SERVICES.length}</strong> aplicaciones · ${onlineDone} online`;
+
+          elResDone.innerHTML = `<strong>${SERVICES.length}</strong> aplicaciones en el catálogo`;
         }
       }
     }
