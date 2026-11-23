@@ -1,0 +1,49 @@
+name: Static site asset integrity
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, ci/verify-static-sites-20261123]
+    paths:
+      - scripts/validate_static_assets.py
+      - .github/workflows/static-sites.yml
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    name: Assets ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        include:
+          - repo: Edelweiss-Cumple
+            entry: index.html
+          - repo: Dream_OS
+            entry: app/index.html
+          - repo: tarot-rws
+            entry: index.html
+          - repo: varios-external
+            entry: "Portfolio-CV Manuel Alvarez.html"
+          - repo: Mequi3D
+            entry: index.html
+          - repo: manu-alvarez.github.io
+            entry: index.html
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: audit
+      - uses: actions/checkout@v4
+        with:
+          repository: manu-alvarez/${{ matrix.repo }}
+          path: site
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify local HTML asset paths
+        run: python audit/scripts/validate_static_assets.py site "${{ matrix.entry }}"
