@@ -1,10 +1,10 @@
 name: Cross-repository frontend acceptance
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ci/verify-public-app-builds-20261123]
-  pull_request:
-    branches: [main]
+    branches: [main, ci/verify-public-app-builds-20261123]
+    paths: [.github/workflows/public-app-builds.yml]
 
 permissions:
   contents: read
