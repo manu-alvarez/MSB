@@ -1,0 +1,43 @@
+name: Static application asset integrity
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ci/static-project-integrity-20261124, main]
+    paths:
+      - .github/workflows/static-project-integrity.yml
+      - scripts/static_asset_integrity.py
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - repo: Edelweiss-Cumple
+            web_dir: .
+          - repo: Dream_OS
+            web_dir: app
+          - repo: tarot-rws
+            web_dir: .
+          - repo: Mequi3D
+            web_dir: .
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: checker
+      - uses: actions/checkout@v4
+        with:
+          repository: manu-alvarez/${{ matrix.repo }}
+          path: target
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify relative local HTML assets
+        run: python checker/scripts/static_asset_integrity.py target ${{ matrix.web_dir }}
