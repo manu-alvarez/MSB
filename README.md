@@ -2,12 +2,10 @@
 
 <div align="center">
   <img src="icons/icon-512.png" alt="MSB Logo" width="180" style="border-radius: 28px; filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.4)); margin-bottom: 20px;" />
-  <p><strong>Panel centralizado de acceso, telemetría y catálogo de las 18 aplicaciones activas en macOS</strong></p>
+  <p><strong>Panel de acceso a las aplicaciones del ecosistema MSB</strong></p>
   <p>
     <a href="http://100.100.2.10:9999"><img src="https://img.shields.io/badge/Tailscale_Node-100.100.2.10%3A9999-00f0ff?style=for-the-badge&logo=tailscale&logoColor=black" alt="Tailscale Node"></a>
     <a href="http://localhost:9999"><img src="https://img.shields.io/badge/Localhost-Port_9999-a855f7?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Localhost Port"></a>
-    <img src="https://img.shields.io/badge/PM2_Cluster-36_Procesos_Activos-10b981?style=for-the-badge&logo=pm2&logoColor=white" alt="PM2 Cluster">
-    <img src="https://img.shields.io/badge/Apps_Frontend-18_Online-f59e0b?style=for-the-badge" alt="Apps Frontend">
   </p>
 </div>
 
@@ -16,7 +14,7 @@
 ## 📑 Tabla de Contenidos
 - [1. Visión General & Identidad](#1-visión-general--identidad)
 - [2. Topología de Red y Enlaces de Acceso](#2-topología-de-red-y-enlaces-de-acceso)
-- [3. Catálogo de Aplicaciones Frontend (18 Aplicaciones)](#3-catálogo-de-aplicaciones-frontend-18-aplicaciones)
+- [3. Selección de aplicaciones frontend](#3-selección-de-aplicaciones-frontend)
   - [🧠 IA & Plataformas Agénticas (6 Apps)](#-ia--plataformas-agénticas-6-apps)
   - [💻 Aplicaciones Web Interactivas (10 Apps)](#-aplicaciones-web-interactivas-10-apps)
   - [⚡ Sistemas, OS & Developer Tools (2 Apps)](#-sistemas-os--developer-tools-2-apps)
@@ -29,10 +27,19 @@
 
 ## 1. Visión General & Identidad
 
-**MSB** (anteriormente conocido durante la fase de desarrollo como *MSB*) es el centro neurálgico de mando y orquestador web que unifica, supervisa y ofrece acceso instantáneo a todas las soluciones de software, microservicios, agentes cognitivos y herramientas de productividad ejecutadas en la estación de trabajo macOS (Hackintosh).
+El [panel publicado en GitHub Pages](https://manu-alvarez.github.io/MSB/) ofrece acceso a las aplicaciones desde [index.html](index.html). El inventario de esta revisión contiene 35 entradas en [servicios.json](servicios.json). La sección 3 describe una selección de proyectos.
+
+### Dónde mantener cada pieza
+
+| Si cambias… | Empieza por… |
+| --- | --- |
+| Una tarjeta o una página del panel de GitHub Pages | Este repositorio. Revisa la tarjeta en [index.html](index.html), su entrada en [servicios.json](servicios.json) y la copia distribuida en [apps/](apps/). |
+| Una ficha del catálogo público de msbross.me | [MSBrossAI/www](https://github.com/manu-alvarez/MSBrossAI/tree/1e37070fa51f660b0966d4d14a1d1e78e453d082/www). El 23 de noviembre de 2026 la portada y 24 de las 25 fichas coincidían con esa revisión al descontar el script común que consulta `/__health`. |
+| El gateway PHP o el proceso de transferencia a Nominalia | Revisa [api.php](https://github.com/manu-alvarez/MSBross.me/blob/6a8f4bd429551532cd243dea749e8165108c2ccb/api.php) y el [script FTP](https://github.com/manu-alvarez/MSBross.me/blob/6a8f4bd429551532cd243dea749e8165108c2ccb/vps_mirror_deploy.py) de MSBross.me. Contrasta el destino con la copia publicada antes de transferir archivos. |
+| La configuración de procesos o infraestructura del servidor | [SERVER-DEV](https://github.com/manu-alvarez/SERVER-DEV/tree/3e8a52b1006639abfba8b71836cb5c4d6b57306d/infrastructure) reúne configuración de infraestructura. Comprueba qué configuración carga el Mac antes de modificar un servicio en ejecución. |
 
 ### Principios Fundamentales:
-- **Zero Mockups / Zero Fakes:** Cada tarjeta representa una aplicación real, desplegada en su respectivo puerto y verificada con código de estado HTTP 200.
+- **Disponibilidad:** Pages sirve las interfaces estáticas. Para comprobar una función que depende del Mac, prueba la operación contra el backend configurado para esa aplicación.
 - **Acceso Sin Fricción:** Enrutamiento optimizado mediante Tailscale Mesh VPN (`100.100.2.10`) para acceso directo multidispositivo (móvil, tablet, portátil, VPS) sin exponer puertos innecesarios a Internet.
 - **Diseño Funcional:** Interfaz basada en glassmorphism cyberpunk, aceleración gráfica por canvas 2D de partículas cinéticas, síntesis de audio procedural Web Audio API y compatibilidad PWA para instalación de escritorio.
 
@@ -48,7 +55,7 @@
 
 ---
 
-## 3. Catálogo de Aplicaciones Frontend (18 Aplicaciones)
+## 3. Selección de aplicaciones frontend
 
 ### 🧠 IA & Plataformas Agénticas (6 Apps)
 
@@ -97,7 +104,7 @@ La raíz del proyecto ha sido organizada siguiendo estándares internacionales d
 /Users/manu/Desktop/MSB/
 ├── index.html                      # Entry point de la aplicación web (Mission Control)
 ├── manifest.json                   # Web App Manifest para instalación PWA
-├── servicios.json                  # Catálogo canónico JSON de las 18 aplicaciones
+├── servicios.json                  # Inventario de servicios y rutas del panel
 ├── ecosystem.desktop.config.cjs    # Definición declarativa de orquestación en PM2
 ├── profile-photo.png               # Avatar oficial del operador
 ├── favicon.ico                     # Favicon de respaldo para navegadores legacy
