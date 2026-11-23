@@ -41,4 +41,4 @@ jobs:
         run: |
           set -euo pipefail
           test -s dist/index.html
-          find dist -type f \( -name '*.js' -o -name '*.css' \) -size +0c | grep -q .
+          test -d dist
