@@ -27,8 +27,6 @@ jobs:
             entry: app/index.html
           - repo: tarot-rws
             entry: index.html
-          - repo: varios-external
-            entry: "Portfolio-CV Manuel Alvarez.html"
           - repo: Mequi3D
             entry: index.html
           - repo: manu-alvarez.github.io
