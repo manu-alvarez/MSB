@@ -1,0 +1,44 @@
+name: Cross-repository frontend acceptance
+
+on:
+  push:
+    branches: [ci/verify-public-app-builds-20261123]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Build ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        repo:
+          - Conspiracy-Projects
+          - LogiSearch
+          - Tarot-Maya
+          - jartos-de-tu-pelo
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: manu-alvarez/${{ matrix.repo }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Compile production application
+        run: npm run build
+      - name: Check bundled HTML and scripts
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s dist/index.html
+          find dist -type f \( -name '*.js' -o -name '*.css' \) -size +0c | grep -q .
