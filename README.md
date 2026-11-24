@@ -27,7 +27,7 @@
 
 ## 1. Visión General & Identidad
 
-El [panel publicado en GitHub Pages](https://manu-alvarez.github.io/MSB/) ofrece acceso a las aplicaciones desde [index.html](index.html). El inventario de esta revisión contiene 35 entradas en [servicios.json](servicios.json). La sección 3 describe una selección de proyectos.
+El [panel publicado en GitHub Pages](https://manu-alvarez.github.io/MSB/) ofrece acceso a las aplicaciones desde [index.html](index.html). El inventario de esta revisión contiene 35 entradas en [servicios.json](servicios.json). Las 35 fichas identifican interfaces **catalogadas**, no servicios verificados como activos; el acceso por Tailscale/localhost depende de cada entorno y backend. Nunca se debe interpretar `catalogued` como disponibilidad online. La sección 3 describe una selección de proyectos.
 
 ### Dónde mantener cada pieza
 
